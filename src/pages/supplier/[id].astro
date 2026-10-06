@@ -1,21 +1,16 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import ContactUnlockModal from '../../components/ContactUnlockModal.astro';
-import { getAllSuppliers, type Supplier } from '../../lib/data';
+import { getAllSuppliers, getSupplierById, type Supplier } from '../../lib/data';
 
-export async function getStaticPaths() {
-  const all = getAllSuppliers();
-  return all.map(s => ({
-    params: { id: String(s.shop_id) },
-    props: { supplier: s }
-  }));
-}
 
 interface Props {
-  supplier: Supplier;
+  supplier?: Supplier;
 }
 
-const { supplier } = Astro.props;
+const { id } = Astro.params;
+const propSupplier = Astro.props.supplier;
+const supplier = propSupplier || (id ? getSupplierById(id) : undefined);
 
 if (!supplier) {
   return Astro.redirect('/directory');

@@ -27,20 +27,50 @@ export interface Supplier {
   company_name: string;
 }
 
-// Multi-path resolution for data file to support running from any directory
+function convertIndexItem(item: any): Supplier {
+  return {
+    shop_id: String(item.i),
+    name: item.n,
+    clean_name: item.n,
+    company_name: item.n,
+    district: String(item.d),
+    floor: String(item.fl),
+    gate: String(item.g),
+    street: String(item.st),
+    booth_no: String(item.b),
+    contact_person: item.cp || 'Stall Manager',
+    is_direct_factory: item.f === 1 ? 'Yes' : 'No',
+    years_in_futian: Number(item.y) || 0,
+    market_credit_score: String(item.s || '7.5'),
+    unmasked_direct_phone: item.p || '',
+    international_mobile: item.p ? (item.p.startsWith('+86') ? item.p : `+86-${item.p}`) : '',
+    sample_products: item.pr || '',
+    chinese_official_category: item.c || '',
+    full_location: `District ${item.d}, Floor ${item.fl}, Gate ${item.g}, Street ${item.st}, Booth ${item.b}`,
+    delivery_address: `Yiwu International Trade City District ${item.d}, Booth ${item.b}`,
+    chinagoods_url: `https://en.chinagoods.com/shop/${item.i}.html`,
+    trust_badges: item.f === 1 ? 'Direct Factory' : 'Verified Stall',
+    all_wechats: item.p || '',
+    email: ''
+  };
+}
+
+// Multi-path resolution for data file to support running from any directory or CI
 function resolveDataFilePath(): string {
   const candidates = [
     path.resolve(process.cwd(), '../data/futian_suppliers/futian_suppliers.json'),
     path.resolve(process.cwd(), 'data/futian_suppliers/futian_suppliers.json'),
     path.resolve(process.cwd(), '../../data/futian_suppliers/futian_suppliers.json'),
-    '/Users/satya/Documents/Yiwu Website/data/futian_suppliers/futian_suppliers.json'
+    '/Users/satya/Documents/Yiwu Website/data/futian_suppliers/futian_suppliers.json',
+    path.resolve(process.cwd(), 'public/search-index.json'),
+    path.resolve(process.cwd(), '../public/search-index.json')
   ];
   for (const c of candidates) {
     if (fs.existsSync(c)) {
       return c;
     }
   }
-  return candidates[candidates.length - 1];
+  return candidates[0];
 }
 
 const DATA_FILE_PATH = resolveDataFilePath();
@@ -59,12 +89,17 @@ export function getAllSuppliers(): Supplier[] {
     const filePath = resolveDataFilePath();
     if (fs.existsSync(filePath)) {
       const content = fs.readFileSync(filePath, 'utf-8');
-      cachedSuppliers = JSON.parse(content) as Supplier[];
+      const parsed = JSON.parse(content);
+      if (filePath.endsWith('search-index.json')) {
+        cachedSuppliers = (parsed as any[]).map(convertIndexItem);
+      } else {
+        cachedSuppliers = parsed as Supplier[];
+      }
       lastLoadTime = now;
       return cachedSuppliers;
     }
   } catch (err) {
-    console.error('Error loading futian_suppliers.json:', err);
+    console.error('Error loading suppliers data:', err);
   }
 
   return cachedSuppliers || [];
