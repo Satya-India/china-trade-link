@@ -5,7 +5,7 @@ import cloudflare from '@astrojs/cloudflare';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://www.chinatradelink.net',
+  site: 'https://www.sinotradelink.com',
   trailingSlash: 'never',
   output: 'server',
   adapter: cloudflare(),
