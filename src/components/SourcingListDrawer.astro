@@ -1,0 +1,311 @@
+---
+---
+
+<!-- Floating Sourcing List Drawer (Apollo-Style Saved Leads) -->
+<div id="sourcing-drawer" class="fixed bottom-6 right-6 z-40 hidden flex-col items-end">
+  <!-- Trigger Bar -->
+  <div class="bg-slate-900/95 backdrop-blur-md text-white rounded-2xl p-3 shadow-2xl border border-slate-700/80 flex items-center gap-3">
+    <div class="flex items-center gap-2 pl-2">
+      <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+      <span class="text-xs font-bold">
+        <span id="drawer-count">0</span> Stalls in Sourcing List
+      </span>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <button 
+        type="button" 
+        id="btn-export-csv"
+        class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-sm transition-all flex items-center gap-1.5 cursor-pointer"
+      >
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+        </svg>
+        <span>Export CSV</span>
+      </button>
+
+      <button 
+        type="button" 
+        id="btn-view-list"
+        class="px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-sm transition-all cursor-pointer"
+      >
+        View List
+      </button>
+
+      <button 
+        type="button" 
+        id="btn-clear-list"
+        class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+        title="Clear List"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Dialog to inspect saved list -->
+<dialog id="shortlist-dialog" class="fixed inset-0 m-auto z-50 p-0 rounded-3xl bg-transparent backdrop:bg-slate-950/70 backdrop:backdrop-blur-sm max-w-2xl w-full shadow-2xl">
+  <div class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-2xl flex flex-col max-h-[85vh]">
+    <!-- Header -->
+    <div class="bg-slate-900 text-white px-6 py-4 flex items-center justify-between border-b border-slate-800">
+      <div>
+        <h3 class="text-base font-black text-white flex items-center gap-2">
+          <span>My Sourcing Shortlist</span>
+          <span id="shortlist-modal-count" class="bg-blue-600 text-white text-[11px] px-2 py-0.5 rounded-full font-bold">0</span>
+        </h3>
+        <p class="text-xs text-slate-400 mt-0.5">Physical market stalls selected for inquiry and visits.</p>
+      </div>
+
+      <button 
+        type="button" 
+        id="shortlist-dialog-close"
+        class="text-slate-400 hover:text-white p-1 rounded-full hover:bg-slate-800 transition-colors"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Scrollable Items List -->
+    <div id="shortlist-items-container" class="p-6 overflow-y-auto space-y-3 flex-1">
+      <!-- Populated via JS -->
+    </div>
+
+    <!-- Footer Controls -->
+    <div class="bg-slate-50 border-t border-slate-200 px-6 py-4 flex items-center justify-between">
+      <button 
+        type="button" 
+        id="shortlist-modal-clear"
+        class="text-xs text-rose-600 hover:text-rose-700 font-bold transition-colors"
+      >
+        Clear All Stalls
+      </button>
+
+      <div class="flex items-center gap-2">
+        <a 
+          href="/concierge" 
+          class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl transition-all shadow-sm"
+        >
+          Book Ground Visit ($99)
+        </a>
+        <button 
+          type="button" 
+          id="shortlist-modal-export"
+          class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl transition-all shadow-sm flex items-center gap-1.5"
+        >
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+          </svg>
+          <span>Download CSV Spreadsheet</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<script>
+  interface ShortlistItem {
+    id: string;
+    name: string;
+    contactPerson: string;
+    phone: string;
+    district: string;
+    booth: string;
+  }
+
+  const STORAGE_KEY = 'cw_sourcing_shortlist';
+
+  function getShortlist(): ShortlistItem[] {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      return stored ? JSON.parse(stored) : [];
+    } catch {
+      return [];
+    }
+  }
+
+  function saveShortlist(items: ShortlistItem[]) {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    } catch (e) {
+      console.error(e);
+    }
+    updateUI();
+  }
+
+  function updateUI() {
+    const list = getShortlist();
+    const drawer = document.getElementById('sourcing-drawer');
+    const drawerCount = document.getElementById('drawer-count');
+    const modalCount = document.getElementById('shortlist-modal-count');
+
+    if (drawer && drawerCount) {
+      if (list.length > 0) {
+        drawer.classList.remove('hidden');
+        drawer.classList.add('flex');
+        drawerCount.textContent = String(list.length);
+      } else {
+        drawer.classList.add('hidden');
+        drawer.classList.remove('flex');
+      }
+    }
+
+    if (modalCount) {
+      modalCount.textContent = String(list.length);
+    }
+
+    // Update bookmark button states on cards
+    document.querySelectorAll('.shortlist-toggle-btn').forEach(btn => {
+      const id = btn.getAttribute('data-id');
+      const isSaved = list.some(item => item.id === id);
+      if (isSaved) {
+        btn.classList.add('text-amber-500', 'bg-amber-50');
+        btn.classList.remove('text-slate-400', 'bg-white');
+        btn.setAttribute('title', 'Remove from Sourcing List');
+      } else {
+        btn.classList.remove('text-amber-500', 'bg-amber-50');
+        btn.classList.add('text-slate-400', 'bg-white');
+        btn.setAttribute('title', 'Save to Sourcing List');
+      }
+    });
+
+    renderModalItems(list);
+  }
+
+  function renderModalItems(list: ShortlistItem[]) {
+    const container = document.getElementById('shortlist-items-container');
+    if (!container) return;
+
+    if (list.length === 0) {
+      container.innerHTML = `
+        <div class="text-center py-8 text-slate-400">
+          <p class="text-sm font-medium">Your sourcing list is empty.</p>
+          <p class="text-xs text-slate-500 mt-1">Click the bookmark icon on any stall card in the directory to save suppliers here.</p>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = list.map(item => `
+      <div class="flex items-center justify-between p-3.5 bg-slate-50 rounded-2xl border border-slate-200">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <span class="text-xs font-bold text-slate-900">${item.name}</span>
+            ${item.booth ? `<span class="text-[10px] font-mono font-bold bg-white text-slate-700 px-1.5 py-0.5 rounded border border-slate-200">Booth ${item.booth}</span>` : ''}
+          </div>
+          <div class="text-xs text-slate-500 flex items-center gap-3">
+            <span>${item.district}</span>
+            <span>•</span>
+            <span>Contact: <strong class="text-slate-700">${item.contactPerson || 'Stall Manager'}</strong></span>
+            <span>•</span>
+            <span class="font-mono text-slate-700">${item.phone || 'Direct Mobile Verified'}</span>
+          </div>
+        </div>
+        <button 
+          type="button" 
+          data-remove-id="${item.id}"
+          class="remove-shortlist-btn text-slate-400 hover:text-rose-500 p-1.5 rounded-lg hover:bg-white transition-colors"
+          title="Remove"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    `).join('');
+
+    // Attach remove handlers
+    container.querySelectorAll('.remove-shortlist-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-remove-id');
+        if (id) {
+          const updated = getShortlist().filter(i => i.id !== id);
+          saveShortlist(updated);
+        }
+      });
+    });
+  }
+
+  function exportCSV() {
+    const list = getShortlist();
+    if (list.length === 0) return;
+
+    const headers = ['Supplier Name', 'District', 'Booth Number', 'Contact Person', 'Direct Phone', 'WhatsApp Link'];
+    const rows = list.map(item => {
+      const cleanPhone = (item.phone || '').replace(/\D/g, '');
+      const waLink = cleanPhone ? `https://wa.me/${cleanPhone.startsWith('86') ? cleanPhone : '86' + cleanPhone}` : '';
+      return [
+        `"${(item.name || '').replace(/"/g, '""')}"`,
+        `"${(item.district || '').replace(/"/g, '""')}"`,
+        `"${(item.booth || '').replace(/"/g, '""')}"`,
+        `"${(item.contactPerson || '').replace(/"/g, '""')}"`,
+        `"${(item.phone || '').replace(/"/g, '""')}"`,
+        `"${waLink}"`
+      ].join(',');
+    });
+
+    const csvContent = '\uFEFF' + [headers.join(','), ...rows].join('\r\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `Yiwu_Market_Sourcing_Shortlist_${new Date().toISOString().slice(0, 10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  // Event Listeners
+  document.addEventListener('click', (e) => {
+    const toggleBtn = (e.target as HTMLElement).closest('.shortlist-toggle-btn') as HTMLElement | null;
+    if (toggleBtn) {
+      const id = toggleBtn.getAttribute('data-id') || '';
+      const name = toggleBtn.getAttribute('data-name') || '';
+      const contactPerson = toggleBtn.getAttribute('data-contact') || '';
+      const phone = toggleBtn.getAttribute('data-phone') || '';
+      const district = toggleBtn.getAttribute('data-district') || '';
+      const booth = toggleBtn.getAttribute('data-booth') || '';
+
+      const list = getShortlist();
+      const existingIdx = list.findIndex(i => i.id === id);
+
+      if (existingIdx >= 0) {
+        list.splice(existingIdx, 1);
+      } else {
+        list.push({ id, name, contactPerson, phone, district, booth });
+      }
+
+      saveShortlist(list);
+    }
+  });
+
+  const dialog = document.getElementById('shortlist-dialog') as HTMLDialogElement | null;
+  document.getElementById('btn-view-list')?.addEventListener('click', () => {
+    dialog?.showModal();
+  });
+  document.getElementById('shortlist-dialog-close')?.addEventListener('click', () => {
+    dialog?.close();
+  });
+  document.getElementById('btn-export-csv')?.addEventListener('click', exportCSV);
+  document.getElementById('shortlist-modal-export')?.addEventListener('click', exportCSV);
+  
+  document.getElementById('btn-clear-list')?.addEventListener('click', () => {
+    if (confirm('Clear all saved stalls from your sourcing list?')) {
+      saveShortlist([]);
+    }
+  });
+
+  document.getElementById('shortlist-modal-clear')?.addEventListener('click', () => {
+    if (confirm('Clear all saved stalls from your sourcing list?')) {
+      saveShortlist([]);
+    }
+  });
+
+  // Init on load
+  document.addEventListener('DOMContentLoaded', updateUI);
+  updateUI();
+</script>

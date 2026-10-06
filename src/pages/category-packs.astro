@@ -1,0 +1,105 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { CATEGORY_PACKS } from '../lib/markets';
+---
+
+<Layout title="Category Directory Packs | ChinaWholesaleMap" activePage="packs">
+  <!-- Header Hero -->
+  <section class="bg-gradient-to-b from-slate-900 to-slate-950 text-white py-16 border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center max-w-3xl">
+      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-500/10 text-amber-300 border border-amber-500/20 mb-4">
+        <span>Instant CSV & Excel Downloads</span>
+      </span>
+      <h1 class="text-3xl sm:text-5xl font-black text-white tracking-tight">
+        Targeted Niche Category Packs
+      </h1>
+      <p class="mt-4 text-sm sm:text-base text-slate-400 leading-relaxed">
+        Why pay thousands for a generic directory? Purchase only the exact market district and product category relevant to your business. Instant digital download with 99.9% verified direct Chinese mobile numbers.
+      </p>
+    </div>
+  </section>
+
+  <!-- Packs Grid -->
+  <section class="py-16 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {CATEGORY_PACKS.map(pack => (
+          <div class={`rounded-3xl border p-8 flex flex-col justify-between transition-all hover:shadow-xl ${pack.popular ? 'bg-white border-amber-400 shadow-lg shadow-amber-500/5 ring-2 ring-amber-400/20' : 'bg-white border-slate-200 shadow-sm'}`}>
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="text-xs font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-lg border border-blue-100">
+                  {pack.district}
+                </span>
+                {pack.popular && (
+                  <span class="bg-amber-500 text-slate-950 text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full">
+                    Best Seller
+                  </span>
+                )}
+              </div>
+
+              <h2 class="text-xl font-black text-slate-900 mb-2">
+                {pack.title}
+              </h2>
+
+              <p class="text-xs text-slate-600 leading-relaxed mb-6">
+                {pack.description}
+              </p>
+
+              <!-- Price Row -->
+              <div class="flex items-baseline gap-2 mb-6 pb-6 border-b border-slate-100">
+                <span class="text-4xl font-black text-slate-900">${pack.price}</span>
+                <span class="text-base text-slate-400 line-through">${pack.originalPrice}</span>
+                <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100 ml-auto">
+                  {pack.supplierCount}
+                </span>
+              </div>
+
+              <!-- Included Features -->
+              <ul class="space-y-3 text-xs text-slate-700 mb-8">
+                {pack.features.map(f => (
+                  <li class="flex items-start gap-2.5">
+                    <svg class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span>{f}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <!-- Instant Checkout Button -->
+            <div>
+              <button 
+                type="button"
+                onclick={`alert('Instant Checkout: You have selected the ${pack.title} ($${pack.price}). In production, this opens Stripe Checkout.')`}
+                class={`w-full py-3.5 rounded-2xl font-bold text-xs text-center transition-all cursor-pointer ${pack.popular ? 'bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-md shadow-amber-500/20' : 'bg-blue-600 hover:bg-blue-500 text-white shadow-md shadow-blue-600/20'}`}
+              >
+                Instant Download (${pack.price}) &rarr;
+              </button>
+              <span class="block text-center text-[10px] text-slate-400 mt-2">
+                One-time payment • Lifetime updates • Single-user license
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- Anti-Piracy & Watermarking Banner -->
+      <div class="mt-16 bg-white rounded-3xl border border-slate-200 p-8 max-w-3xl mx-auto shadow-sm">
+        <div class="flex items-start gap-4">
+          <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-base font-bold text-slate-900">Enterprise Anti-Piracy & Cryptographic Watermarking</h3>
+            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+              To protect the value of your purchase and prevent public file dumping, every downloaded Excel and CSV file is dynamically injected with cryptographic metadata identifying your single-user corporate license. You have full rights to contact every supplier for commercial trade.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

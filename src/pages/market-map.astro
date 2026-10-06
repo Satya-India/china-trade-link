@@ -1,0 +1,210 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { WHOLESALE_MARKETS } from '../lib/markets';
+import { getAllSuppliers } from '../lib/data';
+
+const allSuppliers = getAllSuppliers();
+
+// Calculate floor-by-floor supplier counts for each market
+const floorStats: Record<string, Record<number, number>> = {};
+for (const m of WHOLESALE_MARKETS) {
+  floorStats[m.id] = {};
+  const distNum = m.id.replace('district-', '').replace('huangyuan', '6');
+  for (const f of m.floors) {
+    floorStats[m.id][f.floor] = allSuppliers.filter(s => s.district === distNum && s.floor === String(f.floor)).length;
+  }
+}
+
+const tipsByDistrict: Record<string, string[]> = {
+  'district-1': [
+    "Enter through Gate 1 or Gate 2 for immediate access to plush toys and seasonal items.",
+    "Floor 4 consists of expansive manufacturer showrooms with low sample MOQs and catalog viewing.",
+    "Most stalls close promptly at 17:00 (5:00 PM) - plan for morning visits (09:00 - 12:00) for unhurried factory boss meetings."
+  ],
+  'district-2': [
+    "Gate 21 & 22 are the closest to the Central Square and subway shuttle connection.",
+    "Hardware tools on Floor 2 have heavy OEM export experience for European and US ISO standards.",
+    "Floor 5 houses freight forwarders, translation counters, and export consolidation centers."
+  ],
+  'district-3': [
+    "Pen & stationery manufacturers on Floor 1 offer customized logo engraving starting from 1,000 pcs.",
+    "Cosmetics & beauty tools on Floor 3 cater heavily to Amazon FBA private label sellers.",
+    "Look for 'Direct Factory' badges for tier-1 factory pricing directly from Ningbo and Wenzhou plants."
+  ],
+  'district-4': [
+    "The single largest building in Futian: spans over 1,000,000 m² with over 16,000 booths.",
+    "Floor 1 socks & hosiery is supplied by Datang, Zhuji (the sock capital of the world).",
+    "Bring comfortable walking shoes: walking end-to-end on a single floor is over 1.2 kilometers."
+  ],
+  'district-5': [
+    "Floor 2 and 3 home textiles and bedding come directly from Nantong and Shaoxing weaving mills.",
+    "Auto accessories and motorcycle parts on Floor 4 feature direct tooling workshops.",
+    "Wide aisles make sample transport and wheeled luggage navigation much easier than older districts."
+  ],
+  'huangyuan': [
+    "Dedicated 8-story clothing complex located in downtown Yiwu (separate from Futian Trade City).",
+    "Floor 1 Denim & Jeans has direct manufacturing links to Guangzhou and Xintang denim factories.",
+    "Stalls have fitting mannequins and high-speed local tailors for immediate sample modification."
+  ]
+};
+---
+
+<Layout 
+  title="Futian Market Map & Floor Guide | Yiwu Wholesale Stall Directory"
+  description="Floor-by-floor navigation guide for Yiwu Futian International Trade City Districts 1–5 and Huangyuan Market. Booth counts, categories, and direct factory links."
+  activePage="map"
+>
+  <!-- Hero Section -->
+  <section class="bg-slate-900 text-white py-14 border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-300 text-xs font-bold mb-4">
+        <span>Physical Market Navigation</span>
+      </div>
+      <h1 class="text-3xl sm:text-5xl font-black tracking-tight text-white max-w-4xl mx-auto">
+        Yiwu Wholesale Market <span class="bg-gradient-to-r from-blue-400 via-indigo-300 to-amber-300 bg-clip-text text-transparent">Floor-by-Floor Map</span>
+      </h1>
+      <p class="mt-4 text-sm sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed">
+        With 5.5 million square meters and over 75,000 booths, navigating Yiwu Market blindly wastes days. Use our interactive floor directory to locate exact product zones and contact stalls directly.
+      </p>
+
+      <!-- Quick Market Jump Pills -->
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-2">
+        {WHOLESALE_MARKETS.map(m => (
+          <a 
+            href={`#${m.id}`}
+            class="px-3.5 py-1.5 rounded-full bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 border border-slate-700 hover:border-slate-500 transition-all shadow-sm"
+          >
+            {m.name}
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Market District Guides -->
+  <section class="py-12 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+      {WHOLESALE_MARKETS.map(m => {
+        const distNum = m.id.replace('district-', '').replace('huangyuan', '6');
+        const tips = tipsByDistrict[m.id] || [];
+
+        return (
+          <div id={m.id} class="scroll-mt-24 bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+            <!-- Header Bar -->
+            <div class={`bg-gradient-to-r ${m.accentColor} px-6 sm:px-8 py-6 text-white`}>
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-white/80 mb-1">
+                    <span>{m.chineseName}</span>
+                    <span>•</span>
+                    <span>{m.boothCount}</span>
+                  </div>
+                  <h2 class="text-2xl sm:text-3xl font-black text-white">{m.name}</h2>
+                  <p class="text-xs sm:text-sm text-white/90 mt-1 max-w-2xl">{m.description}</p>
+                </div>
+                <div class="flex items-center gap-2 shrink-0">
+                  <a 
+                    href={`/directory?district=${distNum}`} 
+                    class="px-4 py-2 bg-white/20 hover:bg-white/30 backdrop-blur text-white text-xs font-bold rounded-xl border border-white/30 transition-all shadow-sm"
+                  >
+                    View All Stalls in {m.name} &rarr;
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Floor-by-Floor Breakdown Cards -->
+            <div class="p-6 sm:p-8 space-y-6">
+              <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400">
+                Floor Directory & Verified Categories
+              </h3>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {m.floors.map(f => {
+                  const count = floorStats[m.id]?.[f.floor] || 0;
+                  return (
+                    <div class="bg-slate-50 rounded-2xl border border-slate-200/80 p-5 hover:border-blue-400 transition-all hover:shadow-md flex flex-col justify-between">
+                      <div>
+                        <div class="flex items-center justify-between mb-3">
+                          <span class="inline-flex items-center justify-center w-8 h-8 rounded-xl bg-slate-900 text-white font-mono font-black text-sm">
+                            {f.floor}F
+                          </span>
+                          <span class="text-[11px] font-bold text-slate-500 bg-white px-2 py-0.5 rounded-full border border-slate-200">
+                            {count > 0 ? `${count} verified stalls` : 'Active Zones'}
+                          </span>
+                        </div>
+
+                        <ul class="space-y-1.5 mb-4">
+                          {f.categories.map(cat => (
+                            <li>
+                              <a 
+                                href={`/directory?district=${distNum}&q=${encodeURIComponent(cat.split(' ')[0])}`}
+                                class="text-xs text-slate-700 hover:text-blue-600 flex items-center gap-1.5 transition-colors group"
+                              >
+                                <span class="w-1.5 h-1.5 rounded-full bg-blue-500 group-hover:scale-125 transition-transform"></span>
+                                <span class="group-hover:underline">{cat}</span>
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <a 
+                        href={`/directory?district=${distNum}`} 
+                        class="text-[11px] font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1 pt-2 border-t border-slate-200"
+                      >
+                        <span>Browse {f.floor}F Suppliers</span>
+                        <span>&rarr;</span>
+                      </a>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <!-- Buyer Ground Tips -->
+              {tips.length > 0 && (
+                <div class="mt-6 bg-blue-50/60 rounded-2xl border border-blue-100 p-5">
+                  <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-blue-800 mb-2">
+                    <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>On-the-Ground Sourcing Tips for {m.name}</span>
+                  </div>
+                  <ul class="space-y-1 text-xs text-slate-700">
+                    {tips.map(tip => (
+                      <li class="flex items-start gap-2">
+                        <span class="text-blue-500 font-bold">•</span>
+                        <span>{tip}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              <!-- Stall Inspection CTA for this District -->
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-2xl bg-slate-900 text-white mt-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-xl bg-blue-600/30 border border-blue-500/40 flex items-center justify-center shrink-0 text-blue-300">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 class="text-xs sm:text-sm font-bold text-white">Need a physical stall verified in {m.name}?</h4>
+                    <p class="text-xs text-slate-400">Our local Yiwu team walks directly to any booth, checks business licenses, and collects samples.</p>
+                  </div>
+                </div>
+                <a 
+                  href="/concierge" 
+                  class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl shadow-sm transition-colors text-center shrink-0"
+                >
+                  Book Stall Audit ($99)
+                </a>
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,228 @@
+---
+---
+
+<!-- Quick Search Spotlight Palette (Cmd+K / Ctrl+K) -->
+<dialog id="quick-search-modal" class="fixed inset-0 m-auto z-50 p-0 rounded-3xl bg-transparent backdrop:bg-slate-950/75 backdrop:backdrop-blur-sm max-w-xl w-full shadow-2xl">
+  <div class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-2xl flex flex-col max-h-[80vh]">
+    <!-- Search Bar Input Header -->
+    <div class="p-4 border-b border-slate-200 flex items-center gap-3 bg-slate-50">
+      <div class="text-slate-400 pl-1">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+      </div>
+
+      <input 
+        type="text" 
+        id="spotlight-input"
+        placeholder="Quick search stalls, products, booths (e.g. 62159, Toys, Kitchen)..." 
+        class="w-full bg-transparent text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none"
+        autocomplete="off"
+      />
+
+      <span class="text-[10px] font-mono font-bold bg-slate-200 text-slate-600 px-1.5 py-0.5 rounded border border-slate-300 shrink-0">
+        ESC
+      </span>
+    </div>
+
+    <!-- Live Results Container -->
+    <div id="spotlight-results" class="p-4 overflow-y-auto space-y-2 flex-1 divide-y divide-slate-100">
+      <div class="text-center py-8 text-slate-400 text-xs">
+        <p>Type to search 10,000+ verified physical stalls in Yiwu.</p>
+        <div class="flex items-center justify-center gap-1.5 mt-3">
+          <span class="text-[11px] text-slate-400 font-semibold">Try:</span>
+          <button type="button" class="spotlight-suggest px-2 py-0.5 rounded bg-slate-100 text-slate-700 hover:bg-slate-200">Plush Toys</button>
+          <button type="button" class="spotlight-suggest px-2 py-0.5 rounded bg-slate-100 text-slate-700 hover:bg-slate-200">Kitchenware</button>
+          <button type="button" class="spotlight-suggest px-2 py-0.5 rounded bg-slate-100 text-slate-700 hover:bg-slate-200">Hardware</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Status -->
+    <div class="bg-slate-50 border-t border-slate-200 px-4 py-2.5 flex items-center justify-between text-[11px] text-slate-500">
+      <div class="flex items-center gap-3">
+        <span><kbd class="font-mono bg-white px-1 rounded border border-slate-200">↵</kbd> to open</span>
+        <span><kbd class="font-mono bg-white px-1 rounded border border-slate-200">ESC</kbd> to close</span>
+      </div>
+      <a href="/directory" class="text-blue-600 hover:underline font-semibold">
+        Full Directory &rarr;
+      </a>
+    </div>
+  </div>
+</dialog>
+
+<script>
+  const searchModal = document.getElementById('quick-search-modal') as HTMLDialogElement | null;
+  const searchInput = document.getElementById('spotlight-input') as HTMLInputElement | null;
+  const resultsContainer = document.getElementById('spotlight-results');
+
+  let debounceTimer: ReturnType<typeof setTimeout>;
+  let searchIndex: any[] | null = null;
+  let isLoadingIndex = false;
+
+  function escapeHtml(str: string): string {
+    return (str || '').replace(/[&<>"']/g, m => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    })[m] || m);
+  }
+
+  async function loadSearchIndex() {
+    if (searchIndex) return searchIndex;
+    if ((window as any).__searchIndex) {
+      searchIndex = (window as any).__searchIndex;
+      return searchIndex;
+    }
+    if (isLoadingIndex) return null;
+    isLoadingIndex = true;
+    try {
+      const res = await fetch('/search-index.json');
+      const data = await res.json();
+      searchIndex = data;
+      (window as any).__searchIndex = data;
+      isLoadingIndex = false;
+      return searchIndex;
+    } catch (e) {
+      isLoadingIndex = false;
+      return null;
+    }
+  }
+
+  function openSpotlight() {
+    if (!searchModal) return;
+    searchModal.showModal();
+    searchInput?.focus();
+    loadSearchIndex(); // Preload index on modal open
+  }
+
+  function closeSpotlight() {
+    searchModal?.close();
+  }
+
+  // Keyboard shortcut listener (Cmd+K / Ctrl+K)
+  window.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      if (searchModal?.open) {
+        closeSpotlight();
+      } else {
+        openSpotlight();
+      }
+    }
+  });
+
+  // Attach to search trigger buttons in navbar
+  document.querySelectorAll('.open-search-modal-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openSpotlight();
+    });
+  });
+
+  // Close when clicking modal backdrop
+  searchModal?.addEventListener('click', (e) => {
+    const rect = searchModal.getBoundingClientRect();
+    if (
+      e.clientX < rect.left ||
+      e.clientX > rect.right ||
+      e.clientY < rect.top ||
+      e.clientY > rect.bottom
+    ) {
+      closeSpotlight();
+    }
+  });
+
+  async function performSearch(query: string) {
+    if (!resultsContainer) return;
+    const cleanQ = query.trim().toLowerCase();
+    if (!cleanQ) {
+      resultsContainer.innerHTML = `
+        <div class="text-center py-8 text-slate-400 text-xs">
+          <p>Type to search 10,000+ verified physical stalls in Yiwu.</p>
+          <div class="flex items-center justify-center gap-1.5 mt-3">
+            <span class="text-[11px] text-slate-400 font-semibold">Try:</span>
+            <button type="button" class="spotlight-suggest px-2 py-0.5 rounded bg-slate-100 text-slate-700 hover:bg-slate-200">Plush Toys</button>
+            <button type="button" class="spotlight-suggest px-2 py-0.5 rounded bg-slate-100 text-slate-700 hover:bg-slate-200">Kitchenware</button>
+            <button type="button" class="spotlight-suggest px-2 py-0.5 rounded bg-slate-100 text-slate-700 hover:bg-slate-200">Hardware</button>
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    const index = await loadSearchIndex();
+    if (!index) {
+      resultsContainer.innerHTML = `
+        <div class="text-center py-6 text-slate-400 text-xs flex items-center justify-center gap-2">
+          <span class="w-3 h-3 rounded-full border-2 border-blue-500 border-t-transparent animate-spin"></span>
+          <span>Loading stall index...</span>
+        </div>
+      `;
+      return;
+    }
+
+    const matches: any[] = [];
+    for (let idx = 0; idx < index.length; idx++) {
+      const item = index[idx];
+      const hay = (item.n + ' ' + (item.b || '') + ' ' + (item.pr || '') + ' ' + (item.c || '')).toLowerCase();
+      if (hay.includes(cleanQ)) {
+        matches.push(item);
+        if (matches.length >= 8) break;
+      }
+    }
+
+    if (matches.length === 0) {
+      resultsContainer.innerHTML = `
+        <div class="text-center py-8 text-slate-400 text-xs">
+          <p>No stalls found for "${escapeHtml(query)}".</p>
+          <p class="text-slate-500 mt-1">Try another category, booth number, or district name.</p>
+        </div>
+      `;
+      return;
+    }
+
+    resultsContainer.innerHTML = matches.map((item: any) => `
+      <a 
+        href="/supplier/${item.i}"
+        class="flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 transition-colors group block"
+      >
+        <div class="min-w-0 pr-3">
+          <div class="flex items-center gap-2 mb-0.5">
+            <span class="text-xs font-bold text-slate-900 group-hover:text-blue-600 transition-colors truncate">${escapeHtml(item.n)}</span>
+            ${item.f ? `<span class="text-[10px] font-bold bg-emerald-50 text-emerald-700 px-1.5 py-0.2 rounded border border-emerald-200">Factory</span>` : ''}
+          </div>
+          <p class="text-[11px] text-slate-500 truncate">${escapeHtml(item.pr || 'Verified stall catalog')}</p>
+        </div>
+        <div class="text-right shrink-0">
+          <span class="text-[10px] font-mono font-bold bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded border border-slate-200">
+            Dist ${item.d || '1'} • ${item.b ? `Booth ${escapeHtml(item.b)}` : 'Stall'}
+          </span>
+        </div>
+      </a>
+    `).join('');
+  }
+
+  searchInput?.addEventListener('input', (e) => {
+    clearTimeout(debounceTimer);
+    const target = e.target as HTMLInputElement;
+    debounceTimer = setTimeout(() => {
+      performSearch(target.value);
+    }, 100);
+  });
+
+  // Suggestion pill clicks
+  document.addEventListener('click', (e) => {
+    const suggest = (e.target as HTMLElement).closest('.spotlight-suggest');
+    if (suggest && searchInput) {
+      const q = suggest.textContent?.trim() || '';
+      searchInput.value = q;
+      performSearch(q);
+    }
+  });
+
+  // Pre-fetch search index in background when idle
+  if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+    (window as any).requestIdleCallback(() => loadSearchIndex());
+  } else {
+    setTimeout(loadSearchIndex, 1000);
+  }
+</script>

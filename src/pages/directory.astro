@@ -1,0 +1,634 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SupplierCard from '../components/SupplierCard.astro';
+import ContactUnlockModal from '../components/ContactUnlockModal.astro';
+import { getAllSuppliers } from '../lib/data';
+
+const url = new URL(Astro.request.url);
+const districtFilter = url.searchParams.get('district') || '';
+const searchQuery = (url.searchParams.get('q') || '').trim().toLowerCase();
+const factoryFilter = url.searchParams.get('factory') === 'true';
+const pageParam = parseInt(url.searchParams.get('page') || '1', 10);
+const currentPage = isNaN(pageParam) || pageParam < 1 ? 1 : pageParam;
+const pageSize = 24;
+
+const allSuppliers = getAllSuppliers();
+
+// Initial server-side slice for static HTML / SEO
+const totalItems = allSuppliers.length;
+const totalPages = Math.ceil(totalItems / pageSize) || 1;
+const startIndex = 0;
+const currentSuppliers = allSuppliers.slice(startIndex, pageSize);
+
+const districts = [
+  { id: '', name: 'All Districts' },
+  { id: '1', name: 'District 1 (Toys, Jewelry & Crafts)' },
+  { id: '2', name: 'District 2 (Hardware, Tools & Kitchen)' },
+  { id: '3', name: 'District 3 (Stationery & Sports)' },
+  { id: '4', name: 'District 4 (Footwear & Daily Items)' },
+  { id: '5', name: 'District 5 (Home Textiles & Auto Parts)' },
+  { id: '6', name: 'Huangyuan Market (Garments & Jeans)' },
+  { id: '7', name: 'Production Materials (Machinery & Plastics)' },
+  { id: '60', name: 'District 6 Expansion (Smart Tech & Hardware)' }
+];
+---
+
+<Layout title="Market Stalls Directory | ChinaWholesaleMap" activePage="directory">
+  <!-- Directory Header & Controls -->
+  <section class="bg-slate-900 text-white py-10 border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl">
+        <h1 class="text-2xl sm:text-3xl font-black text-white tracking-tight">
+          Yiwu Wholesale Market Stalls Directory
+        </h1>
+        <p class="text-xs sm:text-sm text-slate-400 mt-1">
+          Search physical stalls, booths, direct factory managers, and unmasked Chinese mobile numbers.
+        </p>
+      </div>
+
+      <!-- Search & Filter Controls Form -->
+      <form id="dir-filter-form" method="GET" action="/directory" class="mt-6 space-y-4">
+        <div class="grid grid-cols-1 sm:grid-cols-12 gap-3">
+          <!-- Text Search Input -->
+          <div class="sm:col-span-6 relative">
+            <input 
+              type="text" 
+              name="q" 
+              id="dir-search-input"
+              value={searchQuery}
+              placeholder="Search product, stall name, or booth number (e.g. Toys, 62159)..."
+              class="w-full pl-4 pr-10 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder:text-slate-500 text-xs sm:text-sm focus:outline-none focus:border-blue-500"
+              autocomplete="off"
+            />
+          </div>
+
+          <!-- District Dropdown -->
+          <div class="sm:col-span-4">
+            <select 
+              name="district" 
+              id="dir-district-select"
+              class="w-full px-3 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs sm:text-sm focus:outline-none focus:border-blue-500"
+            >
+              {districts.map(d => (
+                <option value={d.id} selected={districtFilter === d.id}>
+                  {d.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <!-- Search Button -->
+          <div class="sm:col-span-2">
+            <button 
+              type="submit" 
+              class="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs sm:text-sm rounded-xl transition-colors shadow-sm"
+            >
+              Filter Stalls
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter Tags / Quick Toggles -->
+        <div class="flex items-center flex-wrap gap-4 text-xs pt-1">
+          <label class="flex items-center gap-2 cursor-pointer select-none text-slate-300 hover:text-white">
+            <input 
+              type="checkbox" 
+              name="factory" 
+              id="dir-factory-check"
+              value="true" 
+              checked={factoryFilter}
+              class="rounded border-slate-700 bg-slate-800 text-blue-600 focus:ring-0"
+            />
+            <span class="font-medium">Direct Factories Only</span>
+          </label>
+
+          <a href="/directory" id="dir-reset-link" class="text-blue-400 hover:text-blue-300 font-semibold underline ml-auto">
+            Reset all filters
+          </a>
+        </div>
+
+        <!-- Popular Category Quick Pills -->
+        <div class="flex items-center flex-wrap gap-2 pt-2 border-t border-slate-800">
+          <span class="text-[11px] uppercase font-bold text-slate-400">Trending Niches:</span>
+          {[
+            { label: 'Plush & Toys', q: 'toy' },
+            { label: 'Hardware & Tools', q: 'hardware' },
+            { label: 'Kitchenware', q: 'kitchen' },
+            { label: 'Home Textiles', q: 'textile' },
+            { label: 'Bedding & Quilts', q: 'bedding' },
+            { label: 'Socks & Hosiery', q: 'socks' },
+            { label: 'Auto Parts', q: 'auto' },
+            { label: 'Denim & Garments', q: 'clothing' }
+          ].map(cat => (
+            <button 
+              type="button"
+              data-q={cat.q}
+              class="dir-niche-pill px-2.5 py-1 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 text-xs font-medium border border-slate-700 hover:border-slate-500 transition-colors cursor-pointer"
+            >
+              {cat.label}
+            </button>
+          ))}
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- Results Content Area -->
+  <section class="py-10 bg-slate-50 min-h-screen">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Results Status Bar -->
+      <div class="flex items-center justify-between pb-6 border-b border-slate-200 mb-6 text-xs text-slate-600">
+        <div id="dir-status-text">
+          Showing <strong class="text-slate-900">{totalItems > 0 ? 1 : 0}–{Math.min(pageSize, totalItems)}</strong> of <strong class="text-slate-900">{totalItems.toLocaleString()}</strong> verified suppliers
+        </div>
+        <div class="flex items-center gap-4">
+          <div id="dir-live-badge" class="hidden text-xs font-semibold text-blue-600 items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-blue-600 animate-ping"></span>
+            <span>Live Filter Active</span>
+          </div>
+          <div class="hidden sm:flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+            <span>99.9% Direct Mobile Numbers</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Suppliers Grid Container -->
+      <div id="dir-cards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {currentSuppliers.map(s => (
+          <SupplierCard supplier={s} />
+        ))}
+      </div>
+
+      <!-- Empty State -->
+      <div id="dir-empty-state" class="hidden text-center py-20 bg-white rounded-3xl border border-slate-200 p-8">
+        <div class="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center mx-auto text-slate-400 mb-4">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <h3 class="text-lg font-bold text-slate-900">No matching market stalls found</h3>
+        <p class="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
+          Try adjusting your search keyword or clearing the district filter to view all verified stalls.
+        </p>
+        <button type="button" id="dir-clear-empty-btn" class="mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold transition-colors">
+          Clear Filters
+        </button>
+      </div>
+
+      <!-- Pagination Navigation Container -->
+      <div id="dir-pagination" class="mt-12 flex items-center justify-center gap-2">
+        <span id="dir-pagination-info" class="px-4 py-2 text-xs font-medium text-slate-600 bg-slate-100 rounded-xl">
+          Page 1 of {totalPages}
+        </span>
+        {totalPages > 1 && (
+          <button 
+            type="button"
+            id="dir-next-btn-static"
+            class="dir-page-btn px-4 py-2 rounded-xl bg-blue-600 text-white text-xs font-bold hover:bg-blue-500 transition-colors shadow-sm"
+            data-page="2"
+          >
+            Next Page &rarr;
+          </button>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <!-- Global Contact Unlock Modal Dialog -->
+  <ContactUnlockModal />
+</Layout>
+
+<script>
+  interface SearchItem {
+    i: number | string;
+    n: string;
+    d: string;
+    fl?: string;
+    g?: string;
+    st?: string;
+    b?: string;
+    cp?: string;
+    f?: number;
+    y?: number;
+    s?: string;
+    p?: string;
+    pr?: string;
+    c?: string;
+  }
+
+  const PAGE_SIZE = 24;
+
+  const districtNameMap: Record<string, string> = {
+    '1': 'District 1 (Toys & Jewelry)',
+    '2': 'District 2 (Hardware & Kitchen)',
+    '3': 'District 3 (Stationery & Sports)',
+    '4': 'District 4 (Footwear & Daily)',
+    '5': 'District 5 (Home Textiles & Auto)',
+    '6': 'Huangyuan Market (Apparel)',
+    '7': 'Production Materials (Machinery)',
+    '60': 'District 6 Expansion'
+  };
+
+  const form = document.getElementById('dir-filter-form') as HTMLFormElement | null;
+  const searchInput = document.getElementById('dir-search-input') as HTMLInputElement | null;
+  const districtSelect = document.getElementById('dir-district-select') as HTMLSelectElement | null;
+  const factoryCheck = document.getElementById('dir-factory-check') as HTMLInputElement | null;
+  const statusText = document.getElementById('dir-status-text');
+  const liveBadge = document.getElementById('dir-live-badge');
+  const cardsGrid = document.getElementById('dir-cards-grid');
+  const emptyState = document.getElementById('dir-empty-state');
+  const paginationContainer = document.getElementById('dir-pagination');
+  const resetLink = document.getElementById('dir-reset-link');
+  const clearEmptyBtn = document.getElementById('dir-clear-empty-btn');
+
+  let searchIndex: SearchItem[] | null = null;
+  let isLoadingIndex = false;
+  let debounceTimer: ReturnType<typeof setTimeout>;
+  let currentPage = 1;
+  let currentFilteredList: SearchItem[] = [];
+
+  function escapeHtml(str: string): string {
+    return (str || '').replace(/[&<>"']/g, m => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    })[m] || m);
+  }
+
+  function formatMaskedPhone(phone: string): string {
+    if (!phone) return '+86-***-****-****';
+    const digits = phone.replace(/\D/g, '');
+    if (digits.length >= 11) {
+      return `+86-${digits.slice(0, 3)}-***-${digits.slice(-4)}`;
+    }
+    return '+86-***-****-****';
+  }
+
+  function formatIntlPhone(phone: string): string {
+    if (!phone) return '';
+    const digits = phone.replace(/\D/g, '');
+    if (digits.length === 11 && digits.startsWith('1')) {
+      return `+86-${digits.slice(0, 3)}-${digits.slice(3, 7)}-${digits.slice(7)}`;
+    }
+    return phone;
+  }
+
+  async function loadSearchIndex(): Promise<SearchItem[] | null> {
+    if (searchIndex) return searchIndex;
+    if ((window as any).__searchIndex) {
+      searchIndex = (window as any).__searchIndex;
+      return searchIndex;
+    }
+    if (isLoadingIndex) return null;
+    isLoadingIndex = true;
+    try {
+      const res = await fetch('/search-index.json');
+      const data = await res.json();
+      searchIndex = data;
+      (window as any).__searchIndex = data;
+      isLoadingIndex = false;
+      return searchIndex;
+    } catch (e) {
+      isLoadingIndex = false;
+      return null;
+    }
+  }
+
+  function renderCard(s: SearchItem): string {
+    const distLabel = districtNameMap[s.d] || `District ${s.d || '1'}`;
+    const maskedPhone = formatMaskedPhone(s.p || '');
+    const intlPhone = formatIntlPhone(s.p || '');
+    const prods = (s.pr || '').split(' | ').filter(Boolean).slice(0, 2);
+
+    return `
+      <div class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group hover:border-blue-400">
+        <div>
+          <!-- Top Meta Row -->
+          <div class="flex items-start justify-between gap-3 mb-3">
+            <div>
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-bold bg-blue-50 text-blue-700 border border-blue-200/60">
+                <svg class="w-3.5 h-3.5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                ${escapeHtml(distLabel)}
+              </span>
+            </div>
+
+            <div class="flex items-center gap-1.5">
+              ${s.b ? `<span class="text-xs font-mono font-bold bg-slate-100 text-slate-700 px-2 py-0.5 rounded border border-slate-200">Booth ${escapeHtml(s.b)}</span>` : ''}
+              <button 
+                type="button"
+                data-id="${s.i}"
+                data-name="${escapeHtml(s.n)}"
+                data-contact="${escapeHtml(s.cp || 'Stall Manager')}"
+                data-phone="${escapeHtml(s.p || '')}"
+                data-district="${escapeHtml(distLabel)}"
+                data-booth="${escapeHtml(s.b || '')}"
+                class="shortlist-toggle-btn p-1 rounded-lg border border-slate-200 bg-white text-slate-400 hover:text-amber-500 hover:border-amber-300 transition-colors cursor-pointer"
+                title="Save to Sourcing List"
+                aria-label="Save to Sourcing List"
+              >
+                <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                  <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Company Name -->
+          <h3 class="text-base font-bold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-1 mb-1">
+            <a href="/supplier/${s.i}">${escapeHtml(s.n)}</a>
+          </h3>
+
+          <!-- Physical Location Breakdown -->
+          <div class="text-xs text-slate-600 mb-3 flex items-center flex-wrap gap-x-2 gap-y-1">
+            ${s.fl ? `<span class="bg-slate-50 px-1.5 py-0.5 rounded border border-slate-200 text-slate-600">Floor ${escapeHtml(s.fl)}</span>` : ''}
+            ${s.g ? `<span class="bg-slate-50 px-1.5 py-0.5 rounded border border-slate-200 text-slate-600">Gate ${escapeHtml(s.g)}</span>` : ''}
+            ${s.st ? `<span class="bg-slate-50 px-1.5 py-0.5 rounded border border-slate-200 text-slate-600">Street ${escapeHtml(s.st)}</span>` : ''}
+          </div>
+
+          <!-- Badges Row -->
+          <div class="flex items-center flex-wrap gap-1.5 mb-4">
+            ${s.f ? `
+              <span class="inline-flex items-center gap-1 text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full">
+                <svg class="w-3 h-3 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+                Direct Factory
+              </span>
+            ` : ''}
+
+            ${(s.y || 0) >= 5 ? `
+              <span class="inline-flex items-center gap-1 text-[11px] font-semibold bg-purple-50 text-purple-700 border border-purple-200 px-2 py-0.5 rounded-full">
+                Veteran (${s.y}Y)
+              </span>
+            ` : ''}
+
+            ${s.p ? `
+              <span class="inline-flex items-center gap-1 text-[11px] font-semibold bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded-full">
+                Direct Mobile Verified
+              </span>
+            ` : ''}
+          </div>
+
+          <!-- Sample Products Section -->
+          ${prods.length > 0 ? `
+            <div class="mb-4 bg-slate-50/80 rounded-xl p-2.5 border border-slate-100 text-xs">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1">
+                Catalog Samples:
+              </span>
+              <div class="space-y-1">
+                ${prods.map(p => `
+                  <p class="text-slate-700 truncate flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-slate-400 shrink-0"></span>
+                    <span class="truncate">${escapeHtml(p)}</span>
+                  </p>
+                `).join('')}
+              </div>
+            </div>
+          ` : ''}
+        </div>
+
+        <!-- Apollo-Style Direct Contact Reveal Footer -->
+        <div class="pt-3 border-t border-slate-100 mt-2">
+          <div class="flex items-center justify-between mb-2.5">
+            <div class="text-xs">
+              <span class="text-slate-400 block text-[10px] font-semibold uppercase">Contact Person:</span>
+              <span class="font-bold text-slate-800">${escapeHtml(s.cp || 'Stall Manager')}</span>
+            </div>
+            <div class="text-xs text-right">
+              <span class="text-slate-400 block text-[10px] font-semibold uppercase">Direct Mobile:</span>
+              <span class="font-mono font-bold text-slate-500 flex items-center gap-1 justify-end">
+                <svg class="w-3 h-3 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+                </svg>
+                ${maskedPhone}
+              </span>
+            </div>
+          </div>
+
+          <!-- Action Button Triggering Unlock Modal -->
+          <button 
+            type="button"
+            data-unlock-id="${s.i}"
+            data-supplier-name="${escapeHtml(s.n)}"
+            data-contact-person="${escapeHtml(s.cp || 'Stall Manager')}"
+            data-phone="${escapeHtml(s.p || '')}"
+            data-intl-phone="${escapeHtml(intlPhone)}"
+            data-district="${escapeHtml(distLabel)}"
+            data-booth="${escapeHtml(s.b || '')}"
+            class="unlock-contact-btn w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-xs shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 cursor-pointer"
+          >
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />
+            </svg>
+            <span>Click to Reveal Direct Phone & WeChat</span>
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderPaginationControls(page: number, totalPages: number) {
+    if (!paginationContainer) return;
+    if (totalPages <= 1) {
+      paginationContainer.innerHTML = '';
+      return;
+    }
+
+    let html = '';
+    if (page > 1) {
+      html += `
+        <button 
+          type="button" 
+          data-page="${page - 1}"
+          class="dir-page-btn px-4 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 text-xs font-bold hover:bg-slate-100 transition-colors cursor-pointer"
+        >
+          &larr; Previous Page
+        </button>
+      `;
+    }
+
+    html += `
+      <span class="px-4 py-2 text-xs font-medium text-slate-600 bg-slate-100 rounded-xl">
+        Page ${page} of ${totalPages}
+      </span>
+    `;
+
+    if (page < totalPages) {
+      html += `
+        <button 
+          type="button" 
+          data-page="${page + 1}"
+          class="dir-page-btn px-4 py-2 rounded-xl bg-blue-600 text-white text-xs font-bold hover:bg-blue-500 transition-colors shadow-sm cursor-pointer"
+        >
+          Next Page &rarr;
+        </button>
+      `;
+    }
+
+    paginationContainer.innerHTML = html;
+  }
+
+  async function applyFilters(q: string, district: string, isFactory: boolean, page: number = 1) {
+    const index = await loadSearchIndex();
+    if (!index) return;
+
+    currentPage = page;
+    const cleanQ = (q || '').trim().toLowerCase();
+
+    // Filter index
+    currentFilteredList = index.filter(s => {
+      if (district && String(s.d) !== String(district)) return false;
+      if (isFactory && s.f !== 1) return false;
+      if (cleanQ) {
+        const hay = `${s.n} ${s.b || ''} ${s.pr || ''} ${s.c || ''}`.toLowerCase();
+        if (!hay.includes(cleanQ)) return false;
+      }
+      return true;
+    });
+
+    const total = currentFilteredList.length;
+    const totalPages = Math.ceil(total / PAGE_SIZE) || 1;
+    const startIndex = (currentPage - 1) * PAGE_SIZE;
+    const pagedItems = currentFilteredList.slice(startIndex, startIndex + PAGE_SIZE);
+
+    // Update Status
+    if (statusText) {
+      const distName = district ? (districtNameMap[district] || `District ${district}`) : '';
+      statusText.innerHTML = `
+        Showing <strong class="text-slate-900">${total > 0 ? startIndex + 1 : 0}–${Math.min(startIndex + PAGE_SIZE, total)}</strong> of <strong class="text-slate-900">${total.toLocaleString()}</strong> verified suppliers
+        ${distName ? `<span> in ${escapeHtml(distName)}</span>` : ''}
+        ${cleanQ ? `<span> matching "${escapeHtml(cleanQ)}"</span>` : ''}
+        ${isFactory ? `<span> (Factories Only)</span>` : ''}
+      `;
+    }
+
+    if (liveBadge) {
+      if (cleanQ || district || isFactory) {
+        liveBadge.classList.remove('hidden');
+        liveBadge.classList.add('flex');
+      } else {
+        liveBadge.classList.add('hidden');
+        liveBadge.classList.remove('flex');
+      }
+    }
+
+    // Render Grid
+    if (cardsGrid && emptyState) {
+      if (total === 0) {
+        cardsGrid.innerHTML = '';
+        cardsGrid.classList.add('hidden');
+        emptyState.classList.remove('hidden');
+      } else {
+        emptyState.classList.add('hidden');
+        cardsGrid.classList.remove('hidden');
+        cardsGrid.innerHTML = pagedItems.map(renderCard).join('');
+      }
+    }
+
+    // Render Pagination
+    renderPaginationControls(currentPage, totalPages);
+
+    // Update Browser URL (pushState)
+    const newParams = new URLSearchParams();
+    if (cleanQ) newParams.set('q', cleanQ);
+    if (district) newParams.set('district', district);
+    if (isFactory) newParams.set('factory', 'true');
+    if (currentPage > 1) newParams.set('page', String(currentPage));
+
+    const newUrl = `${window.location.pathname}${newParams.toString() ? '?' + newParams.toString() : ''}`;
+    window.history.replaceState({}, '', newUrl);
+  }
+
+  function handleFilterInput() {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+      const q = searchInput?.value || '';
+      const district = districtSelect?.value || '';
+      const factory = factoryCheck?.checked || false;
+      applyFilters(q, district, factory, 1);
+    }, 150);
+  }
+
+  // Event Listeners
+  searchInput?.addEventListener('input', handleFilterInput);
+  districtSelect?.addEventListener('change', handleFilterInput);
+  factoryCheck?.addEventListener('change', handleFilterInput);
+
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const q = searchInput?.value || '';
+    const district = districtSelect?.value || '';
+    const factory = factoryCheck?.checked || false;
+    applyFilters(q, district, factory, 1);
+  });
+
+  resetLink?.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (searchInput) searchInput.value = '';
+    if (districtSelect) districtSelect.value = '';
+    if (factoryCheck) factoryCheck.checked = false;
+    applyFilters('', '', false, 1);
+  });
+
+  clearEmptyBtn?.addEventListener('click', () => {
+    if (searchInput) searchInput.value = '';
+    if (districtSelect) districtSelect.value = '';
+    if (factoryCheck) factoryCheck.checked = false;
+    applyFilters('', '', false, 1);
+  });
+
+  // Trending Niche Pills
+  document.querySelectorAll('.dir-niche-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      const q = pill.getAttribute('data-q') || '';
+      if (searchInput) {
+        searchInput.value = q;
+        const district = districtSelect?.value || '';
+        const factory = factoryCheck?.checked || false;
+        applyFilters(q, district, factory, 1);
+      }
+    });
+  });
+
+  // Pagination clicks (delegated)
+  document.addEventListener('click', (e) => {
+    const pageBtn = (e.target as HTMLElement).closest('.dir-page-btn') as HTMLElement | null;
+    if (pageBtn) {
+      const p = parseInt(pageBtn.getAttribute('data-page') || '1', 10);
+      const q = searchInput?.value || '';
+      const district = districtSelect?.value || '';
+      const factory = factoryCheck?.checked || false;
+      applyFilters(q, district, factory, p);
+      cardsGrid?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+
+  // Initialize from URL on page load
+  async function init() {
+    const params = new URLSearchParams(window.location.search);
+    const q = params.get('q') || '';
+    const district = params.get('district') || '';
+    const factory = params.get('factory') === 'true';
+    const page = parseInt(params.get('page') || '1', 10);
+
+    if (q && searchInput) searchInput.value = q;
+    if (district && districtSelect) districtSelect.value = district;
+    if (factory && factoryCheck) factoryCheck.checked = true;
+
+    // Preload index in background
+    loadSearchIndex();
+
+    // If query params are present, execute filter immediately
+    if (q || district || factory || page > 1) {
+      applyFilters(q, district, factory, page);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+</script>

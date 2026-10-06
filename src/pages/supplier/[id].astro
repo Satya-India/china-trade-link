@@ -1,0 +1,243 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ContactUnlockModal from '../../components/ContactUnlockModal.astro';
+import { getAllSuppliers, type Supplier } from '../../lib/data';
+
+export async function getStaticPaths() {
+  const all = getAllSuppliers();
+  return all.map(s => ({
+    params: { id: String(s.shop_id) },
+    props: { supplier: s }
+  }));
+}
+
+interface Props {
+  supplier: Supplier;
+}
+
+const { supplier } = Astro.props;
+
+if (!supplier) {
+  return Astro.redirect('/directory');
+}
+
+const rawPhone = supplier.unmasked_direct_phone || '';
+let maskedPhone = '+86-***-****-****';
+if (rawPhone.length >= 11) {
+  const digits = rawPhone.replace(/\D/g, '');
+  if (digits.length >= 11) {
+    maskedPhone = `+86-${digits.slice(0, 3)}-***-${digits.slice(-4)}`;
+  }
+}
+
+const sampleProducts = supplier.sample_products ? supplier.sample_products.split(' | ') : [];
+
+const districtNameMap: Record<string, string> = {
+  '1': 'District 1 (Toys, Plush, Jewelry & Crafts)',
+  '2': 'District 2 (Hardware, Tools & Kitchenware)',
+  '3': 'District 3 (Stationery, Office & Sports)',
+  '4': 'District 4 (Footwear, Socks & Daily Necessities)',
+  '5': 'District 5 (Home Textiles, Bedding & Auto Parts)',
+  '6': 'Huangyuan Garment Market (Apparel & Jeans)'
+};
+
+const districtName = districtNameMap[supplier.district] || `District ${supplier.district || '1'}`;
+---
+
+<Layout 
+  title={`${supplier.clean_name || supplier.name} - Yiwu Market Booth ${supplier.booth_no || ''} | ChinaWholesaleMap`}
+  description={`Direct contact number, WeChat ID, and physical stall coordinates for ${supplier.clean_name || supplier.name} in Yiwu Futian Wholesale Market. Verified offline supplier.`}
+  activePage="directory"
+>
+  <!-- Breadcrumbs & Header -->
+  <section class="bg-slate-900 text-white py-8 border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center gap-2 text-xs text-slate-400 mb-3">
+        <a href="/" class="hover:text-white">Home</a>
+        <span>/</span>
+        <a href="/directory" class="hover:text-white">Directory</a>
+        <span>/</span>
+        <a href={`/directory?district=${supplier.district}`} class="hover:text-white">{districtName}</a>
+        <span>/</span>
+        <span class="text-slate-200 truncate">{supplier.clean_name || supplier.name}</span>
+      </div>
+
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <div class="flex items-center gap-2 mb-2">
+            <span class="bg-blue-600/30 text-blue-300 text-xs font-bold px-2.5 py-1 rounded-md border border-blue-500/40">
+              {districtName}
+            </span>
+            {supplier.booth_no && (
+              <span class="bg-slate-800 text-slate-200 text-xs font-mono font-bold px-2.5 py-1 rounded-md border border-slate-700">
+                Booth {supplier.booth_no}
+              </span>
+            )}
+          </div>
+          <h1 class="text-2xl sm:text-3xl font-black text-white">
+            {supplier.clean_name || supplier.name}
+          </h1>
+          {supplier.company_name && supplier.company_name !== supplier.clean_name && (
+            <p class="text-xs sm:text-sm text-slate-400 mt-0.5">
+              Official Registered Name: {supplier.company_name}
+            </p>
+          )}
+        </div>
+
+        <!-- Quick Unlock Trigger -->
+        <button 
+          type="button"
+          data-unlock-id={supplier.shop_id}
+          data-supplier-name={supplier.clean_name || supplier.name}
+          data-contact-person={supplier.contact_person || 'Stall Manager'}
+          data-phone={supplier.unmasked_direct_phone}
+          data-intl-phone={supplier.international_mobile}
+          data-district={districtName}
+          data-booth={supplier.booth_no}
+          class="unlock-contact-btn px-5 py-3 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-md transition-all shrink-0 flex items-center gap-2 cursor-pointer"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />
+          </svg>
+          <span>Reveal Direct Mobile & WhatsApp</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Detail Content Section -->
+  <section class="py-12 bg-slate-50 min-h-screen">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Main Info (Left 2 cols) -->
+        <div class="lg:col-span-2 space-y-6">
+          <!-- Physical Stall Location Card -->
+          <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
+            <h2 class="text-base font-bold text-slate-900 mb-4 flex items-center gap-2">
+              <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              Physical Market Location & Navigation Coordinates
+            </h2>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs mb-4">
+              <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100">
+                <span class="text-[10px] uppercase font-bold text-slate-400 block">District:</span>
+                <span class="font-bold text-slate-800">District {supplier.district}</span>
+              </div>
+              <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100">
+                <span class="text-[10px] uppercase font-bold text-slate-400 block">Floor:</span>
+                <span class="font-bold text-slate-800">Floor {supplier.floor || '1'}</span>
+              </div>
+              <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100">
+                <span class="text-[10px] uppercase font-bold text-slate-400 block">Gate Entrance:</span>
+                <span class="font-bold text-slate-800">Gate {supplier.gate || 'Direct'}</span>
+              </div>
+              <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100">
+                <span class="text-[10px] uppercase font-bold text-slate-400 block">Booth Number:</span>
+                <span class="font-mono font-bold text-blue-600 text-sm">#{supplier.booth_no || 'Pending'}</span>
+              </div>
+            </div>
+
+            {supplier.full_location && (
+              <div class="text-xs text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-100">
+                <strong class="text-slate-700">Full Stall Address:</strong> {supplier.full_location}
+              </div>
+            )}
+          </div>
+
+          <!-- Product Samples -->
+          {sampleProducts.length > 0 && (
+            <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
+              <h2 class="text-base font-bold text-slate-900 mb-4 flex items-center gap-2">
+                <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
+                Wholesale Product Catalog Samples
+              </h2>
+              <div class="space-y-2">
+                {sampleProducts.map(p => (
+                  <div class="p-3 rounded-xl bg-slate-50 border border-slate-100 text-xs font-medium text-slate-800 flex items-center justify-between">
+                    <span>{p}</span>
+                    <span class="text-[10px] uppercase font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100">
+                      Wholesale Tier
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <!-- Category Classification -->
+          {supplier.chinese_official_category && (
+            <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
+              <h3 class="text-xs uppercase font-bold text-slate-400 mb-2">Market Industry Classification:</h3>
+              <p class="text-sm font-semibold text-slate-800 font-mono">
+                {supplier.chinese_official_category}
+              </p>
+            </div>
+          )}
+        </div>
+
+        <!-- Sidebar / Contact Unlock & Inspection Box (Right col) -->
+        <div class="space-y-6">
+          <!-- Contact Card -->
+          <div class="bg-white rounded-3xl border border-blue-200 p-6 shadow-md">
+            <span class="text-[10px] uppercase font-bold text-blue-600 tracking-wider block mb-1">
+              Verified Direct Contact
+            </span>
+            <h3 class="text-lg font-bold text-slate-900 mb-3">
+              {supplier.contact_person || 'Stall Manager'}
+            </h3>
+
+            <div class="space-y-3 mb-6">
+              <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200">
+                <span class="text-[10px] uppercase font-bold text-slate-400 block">Direct Mobile Line:</span>
+                <span class="font-mono text-base font-bold text-slate-600 block mt-0.5">
+                  {maskedPhone}
+                </span>
+              </div>
+            </div>
+
+            <button 
+              type="button"
+              data-unlock-id={supplier.shop_id}
+              data-supplier-name={supplier.clean_name || supplier.name}
+              data-contact-person={supplier.contact_person || 'Stall Manager'}
+              data-phone={supplier.unmasked_direct_phone}
+              data-intl-phone={supplier.international_mobile}
+              data-district={districtName}
+              data-booth={supplier.booth_no}
+              class="unlock-contact-btn w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <span>Click to Reveal Contact & WeChat</span>
+            </button>
+          </div>
+
+          <!-- On-Demand Stall Audit CTA -->
+          <div class="bg-slate-900 text-white rounded-3xl p-6 border border-slate-800">
+            <span class="text-[10px] uppercase font-bold text-emerald-400 block mb-1">
+              Ground Service in Yiwu
+            </span>
+            <h3 class="text-base font-bold text-white mb-2">
+              Have Us Visit This Stall For You ($99)
+            </h3>
+            <p class="text-xs text-slate-400 mb-4 leading-relaxed">
+              Our bilingual field staff walks to Booth {supplier.booth_no || ''}, inspects their real samples, shoots 4K video, and verifies their wholesale pricing.
+            </p>
+            <a 
+              href={`/concierge?booth=${encodeURIComponent(supplier.booth_no || '')}&name=${encodeURIComponent(supplier.clean_name || supplier.name)}`}
+              class="block w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold rounded-xl text-center border border-slate-700 transition-colors"
+            >
+              Order Stall Visit ($99) &rarr;
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Global Contact Unlock Modal Dialog -->
+  <ContactUnlockModal />
+</Layout>

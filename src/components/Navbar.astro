@@ -1,0 +1,90 @@
+---
+interface Props {
+  activePage?: string;
+}
+
+const { activePage = 'home' } = Astro.props;
+---
+
+<header class="sticky top-0 z-50 bg-slate-900/95 backdrop-blur-md border-b border-slate-800 text-white">
+  <!-- Top ticker banner -->
+  <div class="bg-gradient-to-r from-blue-600 via-indigo-600 to-amber-600 text-white text-xs py-1.5 px-4 font-medium text-center flex items-center justify-center gap-2">
+    <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+    <span><strong>Live Intelligence:</strong> 10,000+ Verified Offline Suppliers from Yiwu Futian & Huangyuan Wholesale Markets with Direct Unmasked Mobiles</span>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <!-- Brand Logo -->
+      <a href="/" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-blue-500/30 group-hover:scale-105 transition-transform">
+          CW
+        </div>
+        <div>
+          <span class="text-lg font-black tracking-tight text-white flex items-center gap-1.5">
+            ChinaWholesale<span class="text-blue-400">Map</span>
+          </span>
+          <span class="block text-[10px] uppercase font-bold tracking-widest text-slate-400 -mt-1">
+            Offline Sourcing Intelligence
+          </span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden md:flex items-center gap-1">
+        <a 
+          href="/" 
+          class={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${activePage === 'home' ? 'text-white bg-slate-800' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}`}
+        >
+          Overview
+        </a>
+        <a 
+          href="/directory" 
+          class={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${activePage === 'directory' ? 'text-white bg-slate-800' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}`}
+        >
+          Market Directory
+        </a>
+        <a 
+          href="/market-map" 
+          class={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${activePage === 'map' ? 'text-white bg-slate-800' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}`}
+        >
+          Market Map & Floors
+        </a>
+        <a 
+          href="/category-packs" 
+          class={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1.5 ${activePage === 'packs' ? 'text-white bg-slate-800' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}`}
+        >
+          <span>Category Packs</span>
+          <span class="bg-amber-500/20 text-amber-300 text-[10px] font-bold px-1.5 py-0.5 rounded border border-amber-500/30">$29+</span>
+        </a>
+        <a 
+          href="/concierge" 
+          class={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1.5 ${activePage === 'concierge' ? 'text-white bg-slate-800' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}`}
+        >
+          <span>On-Demand Concierge</span>
+          <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-1.5 py-0.5 rounded border border-emerald-500/30">Local Audit</span>
+        </a>
+      </nav>
+
+      <!-- Right Action CTA -->
+      <div class="flex items-center gap-3">
+        <button 
+          type="button"
+          class="open-search-modal-btn hidden sm:inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-800 transition-colors border border-slate-700 cursor-pointer"
+        >
+          <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <span>Search Stalls</span>
+          <kbd class="font-mono text-[10px] text-slate-400 bg-slate-900 px-1.5 py-0.5 rounded border border-slate-700">⌘K</kbd>
+        </button>
+        <a 
+          href="/category-packs" 
+          class="inline-flex items-center justify-center px-4 py-2 rounded-lg text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white shadow-md shadow-blue-600/30 transition-all hover:shadow-lg"
+        >
+          Download Directory Pack
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
