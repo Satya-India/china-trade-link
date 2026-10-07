@@ -100,10 +100,34 @@ export const GET: APIRoute = async ({ request, url }) => {
       };
     });
 
+    let orders: any[] = [];
+    try {
+      const ordersRes = await db.prepare(`
+        SELECT 
+          id,
+          paypal_order_id,
+          payer_name,
+          payer_email,
+          amount,
+          currency,
+          item_id,
+          item_title,
+          status,
+          created_at
+        FROM orders
+        ORDER BY created_at DESC
+      `).all();
+      orders = ordersRes.results || [];
+    } catch (orderErr) {
+      console.warn('[Admin API] Could not load orders:', orderErr);
+    }
+
     return new Response(JSON.stringify({
       success: true,
       count: formattedLeads.length,
-      leads: formattedLeads
+      leads: formattedLeads,
+      ordersCount: orders.length,
+      orders: orders
     }), {
       status: 200,
       headers: {
