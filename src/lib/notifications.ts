@@ -12,17 +12,17 @@ export interface InquiryNotificationPayload {
   shopId?: string;
 }
 
-export async function dispatchInquiryAlerts(payload: InquiryNotificationPayload): Promise<void> {
-  let env: any = {};
+export async function dispatchInquiryAlerts(payload: InquiryNotificationPayload, customEnv?: any): Promise<void> {
+  let env: any = (customEnv && (customEnv.runtime?.env || customEnv)) || {};
   try {
     // @ts-ignore
     const cf = await import('cloudflare:workers');
-    if (cf?.env) env = cf.env;
+    if (cf?.env) env = { ...cf.env, ...env };
   } catch {
     // Fallback for non-workerd environments
   }
   if (typeof process !== 'undefined' && process?.env) {
-    env = { ...env, ...process.env };
+    env = { ...process.env, ...env };
   }
 
   const promises: Promise<any>[] = [];
@@ -57,7 +57,9 @@ export async function dispatchInquiryAlerts(payload: InquiryNotificationPayload)
 
 async function sendTelegramAlert(botToken: string, chatId: string, p: InquiryNotificationPayload): Promise<void> {
   try {
-    const text = `🚨 <b>NEW WHOLESALE RFQ RECEIVED</b> 🚨
+    const isUnlock = (p.serviceType || '').toLowerCase().includes('unlock');
+    const title = isUnlock ? '🔓 <b>NEW CONTACT UNLOCK ALERT</b> 🔓' : '🚨 <b>NEW WHOLESALE RFQ RECEIVED</b> 🚨';
+    const text = `${title}
 
 👤 <b>Buyer:</b> ${escapeHtml(p.buyerName)}
 📧 <b>Email:</b> ${escapeHtml(p.buyerEmail)}

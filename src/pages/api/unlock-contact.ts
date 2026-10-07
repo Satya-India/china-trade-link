@@ -150,7 +150,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
       serviceType: 'Contact Unlock (Direct Mobile & WeChat)',
       message: `Buyer unlocked direct stall contact for ${supplierName} (Booth ${supplier.booth_no || 'N/A'}, District ${supplier.district || '1'}). Unmasked line: ${unmaskedPhone}`,
       shopId: cleanShopId
-    }).catch(err => console.error('[Unlock Notification Dispatch Error]:', err));
+    }, locals).catch(err => console.error('[Unlock Notification Dispatch Error]:', err));
 
     const revealsLeft = Math.max(0, DAILY_UNLOCK_LIMIT - (recentCount + 1));
 

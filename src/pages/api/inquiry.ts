@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro';
 import { getD1Database } from '../../lib/data';
 import { dispatchInquiryAlerts } from '../../lib/notifications';
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, locals }) => {
   try {
     let body: any;
     try {
@@ -86,7 +86,7 @@ export const POST: APIRoute = async ({ request }) => {
       serviceType: service_type ? String(service_type).trim() : undefined,
       message: cleanMessage || details,
       shopId: cleanShopId
-    }).catch(err => console.error('[Notification Dispatch Error]:', err));
+    }, locals).catch(err => console.error('[Notification Dispatch Error]:', err));
 
     return new Response(JSON.stringify({
       success: true,
