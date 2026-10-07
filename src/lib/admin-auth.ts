@@ -11,7 +11,7 @@ export async function getAdminSecret(): Promise<string> {
   if (typeof process !== 'undefined' && process?.env?.ADMIN_SECRET) {
     return String(process.env.ADMIN_SECRET).trim();
   }
-  return 'sino2026admin';
+  return 'Sino@2008!';
 }
 
 export async function verifyAdminAuth(request: Request, url?: URL): Promise<boolean> {
