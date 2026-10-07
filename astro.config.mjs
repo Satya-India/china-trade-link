@@ -8,7 +8,11 @@ export default defineConfig({
   site: 'https://www.sinotradelink.com',
   trailingSlash: 'never',
   output: 'server',
-  adapter: cloudflare(),
+  adapter: cloudflare({
+    platformProxy: {
+      enabled: true
+    }
+  }),
   integrations: [react()],
   vite: {
     plugins: [tailwindcss()],

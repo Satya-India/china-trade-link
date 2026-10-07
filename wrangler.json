@@ -1,17 +1,18 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "china-trade-link",
-  "main": "./dist/server/entry.mjs",
   "compatibility_date": "2026-10-01",
-  "assets": {
-    "directory": "./dist/client",
-    "binding": "ASSETS"
-  },
   "d1_databases": [
     {
       "binding": "DB",
       "database_name": "sinotradelink-db",
       "database_id": "ace4b44c-95cf-4172-98e8-d7a0e2c41a9d"
+    }
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "SESSION",
+      "id": "5a252a687f15464cbfd7df0199271ff7"
     }
   ]
 }

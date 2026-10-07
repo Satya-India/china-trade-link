@@ -1,19 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { WHOLESALE_MARKETS } from '../lib/markets';
-import { getAllSuppliers } from '../lib/data';
+import { getFloorStats } from '../lib/data';
 
-const allSuppliers = getAllSuppliers();
-
-// Calculate floor-by-floor supplier counts for each market
-const floorStats: Record<string, Record<number, number>> = {};
-for (const m of WHOLESALE_MARKETS) {
-  floorStats[m.id] = {};
-  const distNum = m.id.replace('district-', '').replace('huangyuan', '6');
-  for (const f of m.floors) {
-    floorStats[m.id][f.floor] = allSuppliers.filter(s => s.district === distNum && s.floor === String(f.floor)).length;
-  }
-}
+const floorStats = await getFloorStats();
 
 const tipsByDistrict: Record<string, string[]> = {
   'district-1': [

@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import SupplierCard from '../components/SupplierCard.astro';
 import ContactUnlockModal from '../components/ContactUnlockModal.astro';
-import { getAllSuppliers } from '../lib/data';
+import { getSuppliersPaginated } from '../lib/data';
 
 const url = new URL(Astro.request.url);
 const districtFilter = url.searchParams.get('district') || '';
@@ -12,13 +12,17 @@ const pageParam = parseInt(url.searchParams.get('page') || '1', 10);
 const currentPage = isNaN(pageParam) || pageParam < 1 ? 1 : pageParam;
 const pageSize = 24;
 
-const allSuppliers = getAllSuppliers();
-
-// Initial server-side slice for static HTML / SEO
-const totalItems = allSuppliers.length;
-const totalPages = Math.ceil(totalItems / pageSize) || 1;
-const startIndex = 0;
-const currentSuppliers = allSuppliers.slice(startIndex, pageSize);
+const {
+  suppliers: currentSuppliers,
+  total: totalItems,
+  totalPages
+} = await getSuppliersPaginated({
+  district: districtFilter,
+  query: searchQuery,
+  isFactory: factoryFilter,
+  page: currentPage,
+  pageSize
+});
 
 const districts = [
   { id: '', name: 'All Districts' },

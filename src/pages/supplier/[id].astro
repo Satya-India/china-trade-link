@@ -10,7 +10,7 @@ interface Props {
 
 const { id } = Astro.params;
 const propSupplier = Astro.props.supplier;
-const supplier = propSupplier || (id ? getSupplierById(id) : undefined);
+const supplier = propSupplier || (id ? await getSupplierById(id) : undefined);
 
 if (!supplier) {
   return Astro.redirect('/directory');

@@ -5,8 +5,8 @@ import ContactUnlockModal from '../components/ContactUnlockModal.astro';
 import { getStats, getFeaturedSuppliers } from '../lib/data';
 import { WHOLESALE_MARKETS, CATEGORY_PACKS, CONCIERGE_SERVICES } from '../lib/markets';
 
-const stats = getStats();
-const featuredSuppliers = getFeaturedSuppliers(8);
+const stats = await getStats();
+const featuredSuppliers = await getFeaturedSuppliers(8);
 ---
 
 <Layout title="Sino Trade Link | 20,000+ Verified China Wholesale Market Suppliers & Direct Contacts" activePage="home">

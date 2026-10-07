@@ -1,27 +1,21 @@
 import type { APIRoute } from 'astro';
-import { getAllSuppliers } from '../../lib/data';
+import { getSuppliersPaginated } from '../../lib/data';
 
-export const GET: APIRoute = async ({ request, url }) => {
-  const q = (url.searchParams.get('q') || '').trim().toLowerCase();
+export const GET: APIRoute = async ({ locals, url }) => {
+  const q = (url.searchParams.get('q') || '').trim();
   const district = url.searchParams.get('district') || '';
   const limit = Math.min(parseInt(url.searchParams.get('limit') || '50', 10), 200);
+  const page = Math.max(1, parseInt(url.searchParams.get('page') || '1', 10));
+  const isFactory = url.searchParams.get('factory') === 'true';
+  const { suppliers, total } = await getSuppliersPaginated({
+    district,
+    query: q,
+    isFactory,
+    page,
+    pageSize: limit
+  });
 
-  const all = getAllSuppliers();
-
-  let results = all;
-
-  if (district) {
-    results = results.filter(s => s.district === district);
-  }
-
-  if (q) {
-    results = results.filter(s => {
-      const text = `${s.name} ${s.clean_name} ${s.company_name} ${s.booth_no} ${s.chinese_official_category} ${s.sample_products}`.toLowerCase();
-      return text.includes(q);
-    });
-  }
-
-  const items = results.slice(0, limit).map(s => ({
+  const items = suppliers.map(s => ({
     id: s.shop_id,
     name: s.clean_name || s.name,
     district: s.district,
@@ -34,7 +28,7 @@ export const GET: APIRoute = async ({ request, url }) => {
   }));
 
   return new Response(JSON.stringify({
-    total: results.length,
+    total,
     returned: items.length,
     data: items
   }), {
