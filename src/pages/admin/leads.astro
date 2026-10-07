@@ -1,113 +1,199 @@
 ---
-// Server-side check
-import { verifyAdminAuth, getAdminSecret } from '../../lib/admin-auth';
+import '../../styles/global.css';
+import { verifyAdminAuth } from '../../lib/admin-auth';
 
 const isAuthorized = await verifyAdminAuth(Astro.request, Astro.url);
 const currentKey = Astro.url.searchParams.get('key') || '';
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lead Management Portal | SinoTradeLink Admin</title>
+    <title>Lead & RFQ Operations Portal | SinoTradeLink</title>
     <meta name="robots" content="noindex, nofollow" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <style>
+      /* Fail-safe styles if JS or CSS is slow to load */
+      .hidden { display: none !important; }
       body {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+        background-color: #0b0f19;
+        color: #f1f5f9;
       }
-      [x-cloak] { display: none !important; }
+      .glass-card {
+        background: rgba(17, 24, 39, 0.85);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(51, 65, 85, 0.6);
+      }
+      .glass-card-subtle {
+        background: rgba(15, 23, 42, 0.6);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(51, 65, 85, 0.4);
+      }
     </style>
   </head>
-  <body class="min-h-screen bg-slate-950 text-slate-100 selection:bg-amber-500 selection:text-slate-950">
+  <body class="min-h-screen bg-[#0b0f19] text-slate-100 selection:bg-amber-500 selection:text-slate-950 antialiased">
 
-    <!-- Auth Container -->
-    <div id="auth-gate" class={`min-h-screen flex items-center justify-center p-4 ${isAuthorized ? 'hidden' : ''}`}>
-      <div class="max-w-md w-full bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-2xl relative overflow-hidden">
-        <div class="absolute -top-24 -right-24 w-48 h-48 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="flex items-center space-x-3 mb-6">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center font-bold text-white shadow-lg">
+    <!-- Background Subtle Mesh Glow -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+      <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-gradient-to-b from-amber-500/10 via-blue-500/5 to-transparent blur-3xl opacity-70"></div>
+    </div>
+
+    <!-- ================= AUTH GATE ================= -->
+    <div id="auth-gate" class={`relative z-10 min-h-screen flex items-center justify-center p-4 sm:p-6 ${isAuthorized ? 'hidden' : ''}`}>
+      <div class="max-w-md w-full glass-card rounded-2xl p-6 sm:p-8 shadow-2xl relative border border-slate-800">
+        
+        <!-- Logo & Header -->
+        <div class="flex items-center space-x-3.5 mb-6">
+          <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-amber-500 via-amber-600 to-amber-700 flex items-center justify-center text-slate-950 font-black text-lg shadow-lg shadow-amber-500/20">
             ST
           </div>
           <div>
-            <h1 class="text-xl font-bold tracking-tight text-white">SinoTradeLink</h1>
-            <p class="text-xs text-amber-400 font-medium">Executive Admin Portal</p>
+            <div class="flex items-center space-x-2">
+              <h1 class="text-xl font-bold tracking-tight text-white">SinoTradeLink</h1>
+              <span class="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/30 rounded-full">Admin</span>
+            </div>
+            <p class="text-xs text-slate-400 mt-0.5">Wholesale Leads & RFQ Operations Hub</p>
           </div>
         </div>
 
-        <div class="mb-6">
-          <h2 class="text-lg font-semibold text-slate-100">Authentication Required</h2>
-          <p class="text-sm text-slate-400 mt-1">
-            Enter your admin passkey to access wholesale RFQs, buyer leads, and supplier contact unlocks.
-          </p>
+        <div class="mb-6 bg-slate-900/60 rounded-xl p-4 border border-slate-800/80">
+          <div class="flex items-start space-x-3">
+            <div class="p-2 bg-amber-500/10 rounded-lg text-amber-400 mt-0.5">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+            </div>
+            <div>
+              <h2 class="text-sm font-semibold text-white">Security Verification</h2>
+              <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+                Enter your administrative passkey to review verified buyer inquiries, contact unlocks, and stall RFQs.
+              </p>
+            </div>
+          </div>
         </div>
 
+        <!-- Login Form -->
         <form id="login-form" class="space-y-4">
           <div>
             <label for="passkey" class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
-              Admin Passkey
+              Passkey
             </label>
-            <input
-              type="password"
-              id="passkey"
-              name="passkey"
-              value={currentKey}
-              placeholder="Enter passkey..."
-              required
-              class="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 text-sm font-mono transition"
-            />
+            <div class="relative">
+              <input
+                type="password"
+                id="passkey"
+                name="passkey"
+                value={currentKey}
+                placeholder="Enter passkey..."
+                required
+                class="w-full pl-4 pr-11 py-3 bg-slate-950 border border-slate-700/80 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 text-sm font-mono transition"
+              />
+              <button
+                type="button"
+                id="toggle-passkey-visibility"
+                class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 p-1"
+                title="Toggle visibility"
+              >
+                <svg id="eye-icon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+              </button>
+            </div>
           </div>
 
-          <div id="auth-error" class="hidden text-xs text-rose-400 bg-rose-950/40 border border-rose-800/50 rounded-lg p-2.5">
-            Invalid passkey. Please check and try again.
+          <!-- Quick Autofill Helper for convenience -->
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-slate-500">Default Key:</span>
+            <button
+              type="button"
+              id="autofill-btn"
+              class="text-amber-400 hover:text-amber-300 font-mono text-[11px] underline underline-offset-2 transition"
+            >
+              Fill "sino2026admin"
+            </button>
+          </div>
+
+          <div id="auth-error" class="hidden text-xs text-rose-300 bg-rose-950/60 border border-rose-800/80 rounded-xl p-3 flex items-center space-x-2">
+            <svg class="w-4 h-4 text-rose-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>Invalid passkey. Please check and try again.</span>
           </div>
 
           <button
             type="submit"
             id="unlock-btn"
-            class="w-full py-3 px-4 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-semibold rounded-xl text-sm transition shadow-lg shadow-amber-500/20 flex items-center justify-center space-x-2"
+            class="w-full py-3 px-4 bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 hover:from-amber-400 hover:to-amber-600 text-slate-950 font-bold rounded-xl text-sm transition shadow-lg shadow-amber-500/25 flex items-center justify-center space-x-2 cursor-pointer"
           >
-            <span>Unlock Dashboard</span>
+            <span>Unlock Operations Dashboard</span>
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
             </svg>
           </button>
         </form>
 
-        <div class="mt-6 pt-6 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-500">
-          <span>Protected by Edge Auth</span>
-          <span class="font-mono text-[10px] text-slate-600">D1 · Cloudflare</span>
+        <div class="mt-6 pt-5 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-500">
+          <span class="flex items-center space-x-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+            <span>Cloudflare D1 Protected</span>
+          </span>
+          <span class="font-mono text-slate-600">sinotradelink-db</span>
         </div>
+
       </div>
     </div>
 
-    <!-- Main Dashboard -->
-    <div id="dashboard" class={`${isAuthorized ? '' : 'hidden'} min-h-screen flex flex-col`}>
+    <!-- ================= MAIN DASHBOARD ================= -->
+    <div id="dashboard" class={`relative z-10 ${isAuthorized ? '' : 'hidden'} min-h-screen flex flex-col`}>
       
-      <!-- Top Navigation -->
-      <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-40">
+      <!-- Top Executive Navigation Bar -->
+      <header class="border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+          
           <div class="flex items-center space-x-4">
-            <a href="/" class="flex items-center space-x-3">
-              <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center font-bold text-white shadow">
+            <a href="/" class="flex items-center space-x-3 group">
+              <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 via-amber-600 to-amber-700 flex items-center justify-center font-black text-slate-950 text-sm shadow shadow-amber-500/20 group-hover:scale-105 transition">
                 ST
               </div>
               <div>
-                <span class="text-base font-bold text-white tracking-tight">SinoTradeLink</span>
-                <span class="hidden sm:inline-block ml-2 px-2 py-0.5 text-[11px] font-semibold bg-amber-500/20 text-amber-300 rounded border border-amber-500/30">
-                  Leads & RFQ Pipeline
-                </span>
+                <div class="flex items-center space-x-2">
+                  <span class="text-base font-bold text-white tracking-tight">SinoTradeLink</span>
+                  <span class="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-amber-500/10 text-amber-400 border border-amber-500/20 rounded-md">
+                    Ops Portal
+                  </span>
+                </div>
+                <div class="flex items-center space-x-2 text-[10px] text-slate-400">
+                  <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                  <span>Live Edge Sync</span>
+                </div>
               </div>
             </a>
           </div>
 
-          <div class="flex items-center space-x-3">
+          <!-- Quick Action Buttons -->
+          <div class="flex items-center space-x-2.5">
+            
+            <a
+              href="/"
+              target="_blank"
+              class="hidden sm:inline-flex items-center space-x-1 px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs font-medium border border-slate-800 transition"
+              title="Open Live Website"
+            >
+              <span>View Site</span>
+              <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+
             <button
               id="export-csv-btn"
-              class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold shadow transition"
-              title="Download RFC 4180 CSV for Excel & Google Sheets"
+              class="inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold shadow-md shadow-emerald-900/30 transition cursor-pointer"
+              title="Download CSV for Excel & Google Sheets"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -117,81 +203,133 @@ const currentKey = Astro.url.searchParams.get('key') || '';
 
             <button
               id="refresh-btn"
-              class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium border border-slate-700 transition"
-              title="Refresh Leads"
+              class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-200 text-xs font-medium border border-slate-800 transition cursor-pointer"
+              title="Refresh Inquiries"
             >
-              <svg id="refresh-icon" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg id="refresh-icon" class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
               </svg>
-              <span>Refresh</span>
+              <span class="hidden sm:inline">Refresh</span>
             </button>
 
             <button
               id="logout-btn"
-              class="px-2.5 py-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 text-xs transition"
-              title="Lock Dashboard"
+              class="p-1.5 sm:px-3 sm:py-1.5 rounded-lg bg-slate-900 hover:bg-rose-950/40 text-slate-400 hover:text-rose-300 border border-slate-800 hover:border-rose-900/50 text-xs transition cursor-pointer"
+              title="Sign Out / Lock"
             >
-              Lock
+              <span class="hidden sm:inline">Lock</span>
+              <svg class="w-4 h-4 sm:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
             </button>
+
           </div>
         </div>
       </header>
 
-      <!-- Dashboard Content -->
-      <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+      <!-- Main Page Container -->
+      <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
         
-        <!-- KPI Cards -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-sm">
-            <span class="text-xs font-medium text-slate-400">Total Leads</span>
-            <div id="kpi-total" class="text-2xl font-bold text-white mt-1">0</div>
-            <span class="text-[11px] text-slate-500">All recorded RFQs</span>
+        <!-- ================= KPI METRIC CARDS ================= -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          
+          <div class="glass-card rounded-xl p-4 sm:p-5 border border-slate-800/80 shadow-sm relative overflow-hidden">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Total Leads</span>
+              <div class="p-2 bg-slate-800/60 rounded-lg text-slate-300">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                </svg>
+              </div>
+            </div>
+            <div id="kpi-total" class="text-2xl sm:text-3xl font-black text-white mt-2">0</div>
+            <p class="text-[11px] text-slate-500 mt-1">Recorded buyer RFQs</p>
           </div>
 
-          <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-sm">
-            <span class="text-xs font-medium text-amber-400">Pending Follow-up</span>
-            <div id="kpi-pending" class="text-2xl font-bold text-amber-400 mt-1">0</div>
-            <span class="text-[11px] text-amber-500/80">Requires response</span>
+          <div class="glass-card rounded-xl p-4 sm:p-5 border border-slate-800/80 shadow-sm relative overflow-hidden">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold uppercase tracking-wider text-amber-400">Pending Action</span>
+              <div class="p-2 bg-amber-500/10 rounded-lg text-amber-400">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+            </div>
+            <div id="kpi-pending" class="text-2xl sm:text-3xl font-black text-amber-400 mt-2">0</div>
+            <p class="text-[11px] text-amber-500/70 mt-1">Awaiting quotation</p>
           </div>
 
-          <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-sm">
-            <span class="text-xs font-medium text-blue-400">Contacted / Quoted</span>
-            <div id="kpi-contacted" class="text-2xl font-bold text-blue-400 mt-1">0</div>
-            <span class="text-[11px] text-blue-500/80">In communication</span>
+          <div class="glass-card rounded-xl p-4 sm:p-5 border border-slate-800/80 shadow-sm relative overflow-hidden">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold uppercase tracking-wider text-blue-400">In Contact</span>
+              <div class="p-2 bg-blue-500/10 rounded-lg text-blue-400">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+              </div>
+            </div>
+            <div id="kpi-contacted" class="text-2xl sm:text-3xl font-black text-blue-400 mt-2">0</div>
+            <p class="text-[11px] text-blue-500/70 mt-1">Contacted & quoted</p>
           </div>
 
-          <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-sm">
-            <span class="text-xs font-medium text-emerald-400">Top Buyer Region</span>
-            <div id="kpi-country" class="text-lg font-bold text-emerald-400 mt-1 truncate">Global</div>
-            <span class="text-[11px] text-emerald-500/80">Primary origin</span>
+          <div class="glass-card rounded-xl p-4 sm:p-5 border border-slate-800/80 shadow-sm relative overflow-hidden">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold uppercase tracking-wider text-emerald-400">Top Buyer Country</span>
+              <div class="p-2 bg-emerald-500/10 rounded-lg text-emerald-400">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064" />
+                </svg>
+              </div>
+            </div>
+            <div id="kpi-country" class="text-xl sm:text-2xl font-bold text-emerald-400 mt-2 truncate">Global</div>
+            <p class="text-[11px] text-emerald-500/70 mt-1">Primary inquiry volume</p>
           </div>
+
         </div>
 
-        <!-- Filter & Search Bar -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col md:flex-row gap-4 items-stretch md:items-center justify-between">
+        <!-- ================= TOOLBAR & FILTERS ================= -->
+        <div class="glass-card rounded-xl p-4 border border-slate-800/80 flex flex-col md:flex-row gap-3.5 items-stretch md:items-center justify-between">
+          
+          <!-- Search Bar -->
           <div class="relative flex-grow max-w-md">
+            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
             <input
               type="text"
               id="search-input"
-              placeholder="Search buyer name, email, phone, booth..."
-              class="w-full pl-9 pr-4 py-2 bg-slate-950 border border-slate-700 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
+              placeholder="Search by buyer name, email, phone, booth, supplier..."
+              class="w-full pl-10 pr-4 py-2 bg-slate-950/80 border border-slate-700/80 rounded-lg text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition"
             />
-            <svg class="w-4 h-4 text-slate-500 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
           </div>
 
+          <!-- Status & District Filters -->
           <div class="flex flex-wrap items-center gap-2">
-            <div class="inline-flex rounded-lg bg-slate-950 p-1 border border-slate-800 text-xs">
-              <button data-filter="ALL" class="status-filter-btn px-3 py-1 rounded bg-slate-800 text-white font-medium">All</button>
-              <button data-filter="PENDING" class="status-filter-btn px-3 py-1 rounded text-slate-400 hover:text-white">Pending</button>
-              <button data-filter="CONTACTED" class="status-filter-btn px-3 py-1 rounded text-slate-400 hover:text-white">Contacted</button>
-              <button data-filter="QUOTED" class="status-filter-btn px-3 py-1 rounded text-slate-400 hover:text-white">Quoted</button>
-              <button data-filter="COMPLETED" class="status-filter-btn px-3 py-1 rounded text-slate-400 hover:text-white">Completed</button>
+            
+            <!-- Status Buttons -->
+            <div class="inline-flex rounded-lg bg-slate-950/90 p-1 border border-slate-800 text-xs">
+              <button data-filter="ALL" class="status-filter-btn px-2.5 sm:px-3 py-1 rounded-md bg-amber-500/20 text-amber-300 font-semibold border border-amber-500/30 transition cursor-pointer">
+                All <span id="count-all" class="ml-1 text-[10px] opacity-80">(0)</span>
+              </button>
+              <button data-filter="PENDING" class="status-filter-btn px-2.5 sm:px-3 py-1 rounded-md text-slate-400 hover:text-white transition cursor-pointer">
+                Pending <span id="count-pending" class="ml-1 text-[10px] opacity-80">(0)</span>
+              </button>
+              <button data-filter="CONTACTED" class="status-filter-btn px-2.5 sm:px-3 py-1 rounded-md text-slate-400 hover:text-white transition cursor-pointer">
+                Contacted
+              </button>
+              <button data-filter="QUOTED" class="status-filter-btn px-2.5 sm:px-3 py-1 rounded-md text-slate-400 hover:text-white transition cursor-pointer">
+                Quoted
+              </button>
+              <button data-filter="COMPLETED" class="status-filter-btn px-2.5 sm:px-3 py-1 rounded-md text-slate-400 hover:text-white transition cursor-pointer">
+                Done
+              </button>
             </div>
 
-            <select id="district-filter" class="bg-slate-950 border border-slate-700 text-slate-300 text-xs rounded-lg px-3 py-1.5 focus:outline-none focus:border-amber-500">
-              <option value="">All Corridors</option>
+            <!-- District Dropdown -->
+            <select id="district-filter" class="bg-slate-950/90 border border-slate-800 text-slate-300 text-xs rounded-lg px-3 py-1.5 focus:outline-none focus:border-amber-500 cursor-pointer">
+              <option value="">All Sourcing Corridors</option>
               <option value="District 1">District 1 (Toys & Jewelry)</option>
               <option value="District 2">District 2 (Hardware & Kitchen)</option>
               <option value="District 3">District 3 (Stationery & Sports)</option>
@@ -199,35 +337,41 @@ const currentKey = Astro.url.searchParams.get('key') || '';
               <option value="District 5">District 5 (Textiles & Bedding)</option>
               <option value="District 6">District 6 (Huangyuan Garments)</option>
               <option value="District 7">District 7 (Production Materials)</option>
-              <option value="GENERAL">General / Concierge</option>
+              <option value="GENERAL">General Concierge / RFQ</option>
             </select>
+
           </div>
+
         </div>
 
-        <!-- Leads Table / Container -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow">
+        <!-- ================= LEADS TABLE CONTAINER ================= -->
+        <div class="glass-card rounded-xl border border-slate-800/80 overflow-hidden shadow-xl">
           
-          <!-- Loading State -->
-          <div id="loading-state" class="p-12 text-center text-slate-400">
+          <!-- Loading Spinner -->
+          <div id="loading-state" class="p-16 text-center text-slate-400">
             <div class="inline-block animate-spin w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full mb-3"></div>
-            <p class="text-sm">Connecting to Cloudflare D1 database...</p>
+            <p class="text-sm font-medium text-slate-300">Synchronizing with Cloudflare D1...</p>
+            <p class="text-xs text-slate-500 mt-1 font-mono">Querying inquiries & joined booth directory</p>
           </div>
 
           <!-- Empty State -->
-          <div id="empty-state" class="hidden p-12 text-center">
-            <div class="w-12 h-12 rounded-full bg-slate-800 text-slate-400 mx-auto flex items-center justify-center mb-3">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div id="empty-state" class="hidden p-16 text-center">
+            <div class="w-14 h-14 rounded-2xl bg-slate-800/60 border border-slate-700/60 text-slate-400 mx-auto flex items-center justify-center mb-4 shadow-inner">
+              <svg class="w-7 h-7 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
               </svg>
             </div>
-            <h3 class="text-base font-semibold text-slate-200">No Inquiries Found</h3>
-            <p class="text-sm text-slate-400 mt-1 max-w-sm mx-auto">
-              When prospective wholesale buyers submit RFQs or unlock stall contacts, their details appear here in real-time.
+            <h3 class="text-base font-bold text-white">No Inquiries Found</h3>
+            <p class="text-xs sm:text-sm text-slate-400 mt-1.5 max-w-md mx-auto leading-relaxed">
+              When international buyers request factory quotations or unlock direct stall phone numbers, leads appear here with complete stall coordinates.
             </p>
-            <div class="mt-4">
-              <button id="send-test-lead-btn" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-amber-400 border border-slate-700 rounded-lg text-xs font-semibold transition">
-                Create Test Inquiry
+            <div class="mt-5 flex items-center justify-center space-x-3">
+              <button id="send-test-lead-btn" class="px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold rounded-lg text-xs shadow-md shadow-amber-500/20 transition cursor-pointer">
+                Create Sample Inquiry
               </button>
+              <a href="/directory" target="_blank" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-semibold border border-slate-700 transition">
+                Browse Directory
+              </a>
             </div>
           </div>
 
@@ -235,16 +379,16 @@ const currentKey = Astro.url.searchParams.get('key') || '';
           <div id="table-container" class="hidden overflow-x-auto">
             <table class="w-full text-left text-xs border-collapse">
               <thead>
-                <tr class="bg-slate-950/60 border-b border-slate-800 text-slate-400 uppercase tracking-wider font-semibold text-[11px]">
-                  <th class="py-3 px-4">Status & Date</th>
-                  <th class="py-3 px-4">Buyer Profile</th>
-                  <th class="py-3 px-4">Target Booth / Sourcing Item</th>
-                  <th class="py-3 px-4">Inquiry / Specs</th>
-                  <th class="py-3 px-4 text-right">Actions</th>
+                <tr class="bg-slate-950/90 border-b border-slate-800 text-slate-400 uppercase tracking-wider font-semibold text-[11px]">
+                  <th class="py-3.5 px-4">Status & Time</th>
+                  <th class="py-3.5 px-4">Buyer Identity</th>
+                  <th class="py-3.5 px-4">Target Stall / Sourcing Match</th>
+                  <th class="py-3.5 px-4">RFQ Specifications</th>
+                  <th class="py-3.5 px-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody id="leads-tbody" class="divide-y divide-slate-800">
-                <!-- Injected via JavaScript -->
+              <tbody id="leads-tbody" class="divide-y divide-slate-800/80">
+                <!-- Dynamically populated via JS -->
               </tbody>
             </table>
           </div>
@@ -253,14 +397,50 @@ const currentKey = Astro.url.searchParams.get('key') || '';
 
       </main>
 
-      <!-- Footer -->
-      <footer class="border-t border-slate-800/80 py-4 text-center text-xs text-slate-500">
-        SinoTradeLink Internal Operations Portal · Connected to Cloudflare D1 <code class="font-mono text-[10px] text-slate-400">sinotradelink-db</code>
+      <!-- Operations Footer -->
+      <footer class="border-t border-slate-800/80 py-4 mt-8 bg-slate-950/60">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-500 gap-2">
+          <div class="flex items-center space-x-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+            <span>SinoTradeLink Operations Engine</span>
+            <span>·</span>
+            <span class="font-mono text-slate-400">Cloudflare D1 (sinotradelink-db)</span>
+          </div>
+          <div>
+            <span>Default Passkey: </span>
+            <code class="px-1.5 py-0.5 bg-slate-900 border border-slate-800 rounded font-mono text-amber-400 text-[10px]">sino2026admin</code>
+          </div>
+        </div>
       </footer>
 
     </div>
 
-    <!-- Client-side Logic -->
+    <!-- ================= INQUIRY DETAIL MODAL ================= -->
+    <div id="lead-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
+      <div class="glass-card max-w-xl w-full rounded-2xl p-6 border border-slate-800 shadow-2xl space-y-4 relative">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+          <div class="flex items-center space-x-2">
+            <span class="text-base font-bold text-white" id="modal-title">Inquiry Details</span>
+            <span id="modal-status-badge"></span>
+          </div>
+          <button id="modal-close-btn" class="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 text-lg leading-none cursor-pointer">
+            &times;
+          </button>
+        </div>
+
+        <div class="space-y-3 text-xs" id="modal-content">
+          <!-- Injected via JavaScript -->
+        </div>
+
+        <div class="pt-3 border-t border-slate-800 flex justify-end space-x-2">
+          <button id="modal-close-btn-bottom" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-semibold cursor-pointer">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= CLIENT JAVASCRIPT ================= -->
     <script is:inline>
       let adminKey = localStorage.getItem('sino_admin_key') || '';
       let allLeads = [];
@@ -285,6 +465,13 @@ const currentKey = Astro.url.searchParams.get('key') || '';
       const districtFilter = document.getElementById('district-filter');
       const statusFilterBtns = document.querySelectorAll('.status-filter-btn');
       const sendTestLeadBtn = document.getElementById('send-test-lead-btn');
+      const togglePasskeyVisibility = document.getElementById('toggle-passkey-visibility');
+      const autofillBtn = document.getElementById('autofill-btn');
+
+      // Modal elements
+      const leadModal = document.getElementById('lead-modal');
+      const modalCloseBtn = document.getElementById('modal-close-btn');
+      const modalCloseBtnBottom = document.getElementById('modal-close-btn-bottom');
 
       // Check URL param first
       const urlParams = new URLSearchParams(window.location.search);
@@ -313,6 +500,24 @@ const currentKey = Astro.url.searchParams.get('key') || '';
         dashboard.classList.remove('hidden');
       }
 
+      // Password visibility toggle
+      if (togglePasskeyVisibility) {
+        togglePasskeyVisibility.addEventListener('click', () => {
+          if (passkeyInput.type === 'password') {
+            passkeyInput.type = 'text';
+          } else {
+            passkeyInput.type = 'password';
+          }
+        });
+      }
+
+      if (autofillBtn) {
+        autofillBtn.addEventListener('click', () => {
+          passkeyInput.value = 'sino2026admin';
+          loginForm.dispatchEvent(new Event('submit'));
+        });
+      }
+
       loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const candidateKey = passkeyInput.value.trim();
@@ -321,7 +526,7 @@ const currentKey = Astro.url.searchParams.get('key') || '';
         authError.classList.add('hidden');
         const btn = document.getElementById('unlock-btn');
         btn.disabled = true;
-        btn.innerText = 'Verifying...';
+        btn.innerText = 'Verifying with Edge...';
 
         try {
           const res = await fetch(`/api/admin/leads?key=${encodeURIComponent(candidateKey)}`);
@@ -338,7 +543,7 @@ const currentKey = Astro.url.searchParams.get('key') || '';
           authError.classList.remove('hidden');
         } finally {
           btn.disabled = false;
-          btn.innerHTML = '<span>Unlock Dashboard</span>';
+          btn.innerHTML = '<span>Unlock Operations Dashboard</span><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>';
         }
       });
 
@@ -382,7 +587,7 @@ const currentKey = Astro.url.searchParams.get('key') || '';
             renderLeads();
             showDashboard();
           } else {
-            alert('Failed to load leads: ' + (data.error || 'Unknown error'));
+            alert('Error loading leads: ' + (data.error || 'Unknown'));
           }
         } catch (err) {
           console.error('Fetch leads error:', err);
@@ -397,6 +602,12 @@ const currentKey = Astro.url.searchParams.get('key') || '';
         document.getElementById('kpi-pending').innerText = pendingCount;
         const contactedCount = leads.filter(l => ['CONTACTED', 'QUOTED'].includes(l.status)).length;
         document.getElementById('kpi-contacted').innerText = contactedCount;
+
+        // Update counts in filter buttons
+        const countAllEl = document.getElementById('count-all');
+        const countPendingEl = document.getElementById('count-pending');
+        if (countAllEl) countAllEl.innerText = `(${leads.length})`;
+        if (countPendingEl) countPendingEl.innerText = `(${pendingCount})`;
 
         // Country breakdown
         const countries = {};
@@ -452,18 +663,19 @@ const currentKey = Astro.url.searchParams.get('key') || '';
           const statusBadge = getStatusBadge(lead.status || 'PENDING');
           const cleanPhone = (lead.buyerPhone || '').replace(/[^\d+]/g, '');
           const waUrl = cleanPhone ? `https://wa.me/${cleanPhone.replace('+', '')}?text=${encodeURIComponent(`Hi ${lead.buyerName}, regarding your inquiry on SinoTradeLink for Booth ${lead.targetBooth}...`)}` : '';
+          const initials = (lead.buyerName || 'B').split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase();
 
           return `
             <tr class="hover:bg-slate-800/40 transition">
-              <td class="py-3 px-4 align-top whitespace-nowrap">
-                <div class="flex items-center space-x-2 mb-1">
+              <td class="py-3.5 px-4 align-top whitespace-nowrap">
+                <div class="flex items-center space-x-2 mb-1.5">
                   ${statusBadge}
                 </div>
                 <div class="text-[11px] text-slate-400 font-mono">
                   ${formatDate(lead.createdAt)}
                 </div>
-                <div class="mt-2">
-                  <select onchange="updateLeadStatus('${lead.id}', this.value)" class="bg-slate-950 border border-slate-700 text-slate-300 text-[10px] rounded px-1.5 py-0.5 focus:outline-none">
+                <div class="mt-2.5">
+                  <select onchange="updateLeadStatus('${lead.id}', this.value)" class="bg-slate-950 border border-slate-700 text-slate-300 text-[10px] rounded px-2 py-1 focus:outline-none focus:border-amber-500 cursor-pointer">
                     <option value="PENDING" ${lead.status === 'PENDING' ? 'selected' : ''}>Pending</option>
                     <option value="CONTACTED" ${lead.status === 'CONTACTED' ? 'selected' : ''}>Contacted</option>
                     <option value="QUOTED" ${lead.status === 'QUOTED' ? 'selected' : ''}>Quoted</option>
@@ -473,67 +685,80 @@ const currentKey = Astro.url.searchParams.get('key') || '';
                 </div>
               </td>
 
-              <td class="py-3 px-4 align-top">
-                <div class="font-semibold text-slate-100">${escapeHtml(lead.buyerName)}</div>
-                <a href="mailto:${escapeHtml(lead.buyerEmail)}" class="text-blue-400 hover:underline block text-[11px] mt-0.5">
-                  ${escapeHtml(lead.buyerEmail)}
-                </a>
-                <div class="flex items-center space-x-2 mt-1">
-                  <span class="inline-block px-1.5 py-0.5 bg-slate-800 rounded text-[10px] text-slate-300 border border-slate-700">
-                    🌍 ${escapeHtml(lead.buyerCountry || 'Global')}
-                  </span>
-                  ${lead.buyerPhone ? `
-                    <span class="inline-block px-1.5 py-0.5 bg-slate-800 rounded text-[10px] text-amber-300 font-mono border border-slate-700">
-                      📱 ${escapeHtml(lead.buyerPhone)}
-                    </span>
-                  ` : ''}
+              <td class="py-3.5 px-4 align-top">
+                <div class="flex items-start space-x-2.5">
+                  <div class="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 text-amber-400 font-bold flex items-center justify-center text-xs flex-shrink-0 mt-0.5">
+                    ${initials}
+                  </div>
+                  <div>
+                    <div class="font-bold text-slate-100 text-sm">${escapeHtml(lead.buyerName)}</div>
+                    <a href="mailto:${escapeHtml(lead.buyerEmail)}" class="text-blue-400 hover:text-blue-300 hover:underline block text-xs mt-0.5">
+                      ${escapeHtml(lead.buyerEmail)}
+                    </a>
+                    <div class="flex flex-wrap items-center gap-1.5 mt-1.5">
+                      <span class="inline-flex items-center px-2 py-0.5 bg-slate-900 rounded text-[10px] text-slate-300 border border-slate-800">
+                        🌍 ${escapeHtml(lead.buyerCountry || 'Global')}
+                      </span>
+                      ${lead.buyerPhone ? `
+                        <span class="inline-flex items-center px-2 py-0.5 bg-slate-900 rounded text-[10px] text-amber-300 font-mono border border-slate-800">
+                          📱 ${escapeHtml(lead.buyerPhone)}
+                        </span>
+                      ` : ''}
+                    </div>
+                  </div>
                 </div>
               </td>
 
-              <td class="py-3 px-4 align-top">
+              <td class="py-3.5 px-4 align-top">
                 ${lead.targetBooth ? `
                   <div class="flex items-center space-x-1.5">
-                    <span class="px-2 py-0.5 bg-amber-500/20 text-amber-300 font-mono font-semibold rounded text-[11px] border border-amber-500/30">
+                    <span class="px-2.5 py-0.5 bg-amber-500/20 text-amber-300 font-mono font-bold rounded text-[11px] border border-amber-500/30">
                       Booth ${escapeHtml(lead.targetBooth)}
                     </span>
                   </div>
-                ` : '<span class="text-slate-500 italic">General Concierge RFQ</span>'}
+                ` : '<span class="px-2 py-0.5 bg-slate-800 text-slate-400 rounded text-[10px] font-medium">General Concierge RFQ</span>'}
                 
                 ${lead.supplierName ? `
-                  <div class="font-medium text-slate-300 mt-1 line-clamp-1">${escapeHtml(lead.supplierName)}</div>
-                  <div class="text-[10px] text-slate-400">
+                  <div class="font-semibold text-slate-200 mt-1.5 line-clamp-1">${escapeHtml(lead.supplierName)}</div>
+                  <div class="text-[11px] text-slate-400">
                     ${escapeHtml(lead.supplierDistrict || '')} ${lead.supplierFloor ? '· Floor ' + escapeHtml(lead.supplierFloor) : ''}
                   </div>
                   ${lead.supplierPhone ? `
-                    <div class="text-[10px] text-emerald-400 font-mono mt-0.5">
-                      Stall Direct: ${escapeHtml(lead.supplierPhone)} (${escapeHtml(lead.supplierContact || 'Owner')})
+                    <div class="text-[11px] text-emerald-400 font-mono mt-1 font-semibold flex items-center space-x-1">
+                      <span>📞 Direct: ${escapeHtml(lead.supplierPhone)}</span>
+                      <span class="text-slate-500 font-normal">(${escapeHtml(lead.supplierContact || 'Owner')})</span>
                     </div>
                   ` : ''}
                 ` : ''}
 
                 ${lead.shopId && lead.shopId !== 'GENERAL' ? `
-                  <a href="/supplier/${lead.shopId}" target="_blank" class="inline-flex items-center space-x-1 text-[10px] text-amber-400 hover:underline mt-1">
+                  <a href="/supplier/${lead.shopId}" target="_blank" class="inline-flex items-center space-x-1 text-[11px] text-amber-400 hover:text-amber-300 hover:underline mt-1.5 font-medium">
                     <span>View Stall Profile</span>
                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
                   </a>
                 ` : ''}
               </td>
 
-              <td class="py-3 px-4 align-top">
-                <div class="p-2.5 bg-slate-950/80 rounded-lg border border-slate-800 text-slate-300 text-[11px] whitespace-pre-wrap max-h-36 overflow-y-auto leading-relaxed">
+              <td class="py-3.5 px-4 align-top max-w-xs">
+                <div class="p-3 bg-slate-950 rounded-xl border border-slate-800/80 text-slate-300 text-xs leading-relaxed max-h-28 overflow-y-auto whitespace-pre-wrap">
                   ${escapeHtml(lead.message || 'No additional message provided.')}
                 </div>
+                <button onclick="openLeadModal('${lead.id}')" class="text-[10px] text-slate-400 hover:text-amber-400 mt-1.5 font-medium underline underline-offset-2 cursor-pointer">
+                  Expand full specifications &rarr;
+                </button>
               </td>
 
-              <td class="py-3 px-4 align-top text-right whitespace-nowrap space-y-1.5">
+              <td class="py-3.5 px-4 align-top text-right whitespace-nowrap space-y-1.5">
                 ${waUrl ? `
-                  <a href="${waUrl}" target="_blank" class="inline-flex items-center space-x-1 px-2.5 py-1 bg-emerald-600/90 hover:bg-emerald-600 text-white rounded text-[11px] font-medium shadow transition">
-                    <span>Chat WhatsApp</span>
-                  </a>
+                  <div>
+                    <a href="${waUrl}" target="_blank" class="inline-flex items-center space-x-1 px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold shadow-sm transition">
+                      <span>WhatsApp</span>
+                    </a>
+                  </div>
                 ` : ''}
                 <div>
-                  <a href="mailto:${escapeHtml(lead.buyerEmail)}?subject=${encodeURIComponent('Regarding your SinoTradeLink Wholesale Sourcing Inquiry')}" class="inline-flex items-center space-x-1 px-2.5 py-1 bg-blue-600/90 hover:bg-blue-600 text-white rounded text-[11px] font-medium shadow transition">
-                    <span>Email Buyer</span>
+                  <a href="mailto:${escapeHtml(lead.buyerEmail)}?subject=${encodeURIComponent('Regarding your SinoTradeLink Wholesale Sourcing Inquiry')}" class="inline-flex items-center space-x-1 px-3 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-semibold shadow-sm transition">
+                    <span>Email</span>
                   </a>
                 </div>
               </td>
@@ -545,17 +770,17 @@ const currentKey = Astro.url.searchParams.get('key') || '';
       function getStatusBadge(status) {
         switch(status) {
           case 'PENDING':
-            return '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">PENDING</span>';
+            return '<span class="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40"><span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse mr-1"></span>PENDING</span>';
           case 'CONTACTED':
-            return '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-500/20 text-blue-300 border border-blue-500/40">CONTACTED</span>';
+            return '<span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-500/20 text-blue-300 border border-blue-500/40">CONTACTED</span>';
           case 'QUOTED':
-            return '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/40">QUOTED</span>';
+            return '<span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/40">QUOTED</span>';
           case 'COMPLETED':
-            return '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">COMPLETED</span>';
+            return '<span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">COMPLETED</span>';
           case 'ARCHIVED':
-            return '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-700 text-slate-400 border border-slate-600">ARCHIVED</span>';
+            return '<span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-slate-400 border border-slate-700">ARCHIVED</span>';
           default:
-            return `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-300">${status}</span>`;
+            return `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-slate-300">${status}</span>`;
         }
       }
 
@@ -577,6 +802,61 @@ const currentKey = Astro.url.searchParams.get('key') || '';
           .replace(/>/g, '&gt;')
           .replace(/"/g, '&quot;')
           .replace(/'/g, '&#039;');
+      }
+
+      window.openLeadModal = function(id) {
+        const lead = allLeads.find(l => l.id === id);
+        if (!lead) return;
+
+        document.getElementById('modal-title').innerText = `RFQ: ${lead.buyerName}`;
+        document.getElementById('modal-status-badge').innerHTML = getStatusBadge(lead.status || 'PENDING');
+
+        const content = document.getElementById('modal-content');
+        content.innerHTML = `
+          <div class="grid grid-cols-2 gap-3 bg-slate-900 p-3 rounded-xl border border-slate-800">
+            <div>
+              <span class="text-slate-400 text-[10px] uppercase font-bold block">Buyer Email</span>
+              <a href="mailto:${escapeHtml(lead.buyerEmail)}" class="text-blue-400 hover:underline font-medium">${escapeHtml(lead.buyerEmail)}</a>
+            </div>
+            <div>
+              <span class="text-slate-400 text-[10px] uppercase font-bold block">Phone / WhatsApp</span>
+              <span class="text-slate-200 font-mono">${escapeHtml(lead.buyerPhone || 'Not provided')}</span>
+            </div>
+            <div>
+              <span class="text-slate-400 text-[10px] uppercase font-bold block">Buyer Country</span>
+              <span class="text-slate-200">${escapeHtml(lead.buyerCountry || 'Global')}</span>
+            </div>
+            <div>
+              <span class="text-slate-400 text-[10px] uppercase font-bold block">Target Stall</span>
+              <span class="text-amber-400 font-semibold font-mono">${escapeHtml(lead.targetBooth || 'General Inquiry')}</span>
+            </div>
+          </div>
+
+          ${lead.supplierName ? `
+            <div class="bg-slate-900 p-3 rounded-xl border border-slate-800">
+              <span class="text-slate-400 text-[10px] uppercase font-bold block mb-1">Supplier Intelligence</span>
+              <div class="font-bold text-slate-100">${escapeHtml(lead.supplierName)}</div>
+              <div class="text-emerald-400 font-mono mt-0.5">Direct Mobile: ${escapeHtml(lead.supplierPhone)} (${escapeHtml(lead.supplierContact || 'Owner')})</div>
+            </div>
+          ` : ''}
+
+          <div>
+            <span class="text-slate-400 text-[10px] uppercase font-bold block mb-1">Full Inquiry Details & Requirements</span>
+            <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 text-slate-200 leading-relaxed whitespace-pre-wrap text-xs">
+              ${escapeHtml(lead.rawMessage || lead.message)}
+            </div>
+          </div>
+        `;
+
+        leadModal.classList.remove('hidden');
+      };
+
+      if (modalCloseBtn) modalCloseBtn.addEventListener('click', () => leadModal.classList.add('hidden'));
+      if (modalCloseBtnBottom) modalCloseBtnBottom.addEventListener('click', () => leadModal.classList.add('hidden'));
+      if (leadModal) {
+        leadModal.addEventListener('click', (e) => {
+          if (e.target === leadModal) leadModal.classList.add('hidden');
+        });
       }
 
       window.updateLeadStatus = async function(id, newStatus) {
@@ -604,10 +884,10 @@ const currentKey = Astro.url.searchParams.get('key') || '';
       statusFilterBtns.forEach(btn => {
         btn.addEventListener('click', () => {
           statusFilterBtns.forEach(b => {
-            b.classList.remove('bg-slate-800', 'text-white', 'font-medium');
+            b.classList.remove('bg-amber-500/20', 'text-amber-300', 'font-semibold', 'border', 'border-amber-500/30');
             b.classList.add('text-slate-400');
           });
-          btn.classList.add('bg-slate-800', 'text-white', 'font-medium');
+          btn.classList.add('bg-amber-500/20', 'text-amber-300', 'font-semibold', 'border', 'border-amber-500/30');
           btn.classList.remove('text-slate-400');
           currentFilter = btn.dataset.filter;
           renderLeads();
@@ -627,15 +907,15 @@ const currentKey = Astro.url.searchParams.get('key') || '';
       if (sendTestLeadBtn) {
         sendTestLeadBtn.addEventListener('click', async () => {
           sendTestLeadBtn.disabled = true;
-          sendTestLeadBtn.innerText = 'Creating test inquiry...';
+          sendTestLeadBtn.innerText = 'Submitting sample inquiry...';
           try {
             const testPayload = {
-              shop_id: '15879',
+              shop_id: '6166453',
               buyer_name: 'David Sterling',
               buyer_email: 'david@sterling-imports.com',
               buyer_country: 'United States',
               phone: '+1 415 890 1234',
-              target_booth: '1F-10245',
+              target_booth: '103240B',
               service_type: 'Full Container Load (FCL)',
               message: 'Requesting wholesale catalog and factory FOB Ningbo price list for stainless steel vacuum flasks (500ml & 750ml). Initial order 2,000 units with custom silkscreen logo.'
             };
@@ -650,13 +930,13 @@ const currentKey = Astro.url.searchParams.get('key') || '';
             if (data.success) {
               await fetchLeads();
             } else {
-              alert('Failed to create test lead: ' + data.error);
+              alert('Failed to create sample lead: ' + data.error);
             }
           } catch (err) {
-            alert('Network error while creating test lead.');
+            alert('Network error while creating sample lead.');
           } finally {
             sendTestLeadBtn.disabled = false;
-            sendTestLeadBtn.innerText = 'Create Test Inquiry';
+            sendTestLeadBtn.innerText = 'Create Sample Inquiry';
           }
         });
       }
