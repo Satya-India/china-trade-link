@@ -1,20 +1,32 @@
 User-agent: *
+Disallow: /admin/
+Disallow: /api/admin/
 Allow: /
 
 # Multilingual and Regional Search Spiders
 User-agent: Googlebot
+Disallow: /admin/
+Disallow: /api/admin/
 Allow: /
 
 User-agent: Bingbot
+Disallow: /admin/
+Disallow: /api/admin/
 Allow: /
 
 User-agent: Baiduspider
+Disallow: /admin/
+Disallow: /api/admin/
 Allow: /
 
 User-agent: Sogou web spider
+Disallow: /admin/
+Disallow: /api/admin/
 Allow: /
 
 User-agent: Yandex
+Disallow: /admin/
+Disallow: /api/admin/
 Allow: /
 
 # XML Sitemaps

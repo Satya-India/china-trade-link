@@ -1,0 +1,668 @@
+---
+// Server-side check
+import { verifyAdminAuth, getAdminSecret } from '../../lib/admin-auth';
+
+const isAuthorized = await verifyAdminAuth(Astro.request, Astro.url);
+const currentKey = Astro.url.searchParams.get('key') || '';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lead Management Portal | SinoTradeLink Admin</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      }
+      [x-cloak] { display: none !important; }
+    </style>
+  </head>
+  <body class="min-h-screen bg-slate-950 text-slate-100 selection:bg-amber-500 selection:text-slate-950">
+
+    <!-- Auth Container -->
+    <div id="auth-gate" class={`min-h-screen flex items-center justify-center p-4 ${isAuthorized ? 'hidden' : ''}`}>
+      <div class="max-w-md w-full bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-2xl relative overflow-hidden">
+        <div class="absolute -top-24 -right-24 w-48 h-48 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="flex items-center space-x-3 mb-6">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center font-bold text-white shadow-lg">
+            ST
+          </div>
+          <div>
+            <h1 class="text-xl font-bold tracking-tight text-white">SinoTradeLink</h1>
+            <p class="text-xs text-amber-400 font-medium">Executive Admin Portal</p>
+          </div>
+        </div>
+
+        <div class="mb-6">
+          <h2 class="text-lg font-semibold text-slate-100">Authentication Required</h2>
+          <p class="text-sm text-slate-400 mt-1">
+            Enter your admin passkey to access wholesale RFQs, buyer leads, and supplier contact unlocks.
+          </p>
+        </div>
+
+        <form id="login-form" class="space-y-4">
+          <div>
+            <label for="passkey" class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+              Admin Passkey
+            </label>
+            <input
+              type="password"
+              id="passkey"
+              name="passkey"
+              value={currentKey}
+              placeholder="Enter passkey..."
+              required
+              class="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 text-sm font-mono transition"
+            />
+          </div>
+
+          <div id="auth-error" class="hidden text-xs text-rose-400 bg-rose-950/40 border border-rose-800/50 rounded-lg p-2.5">
+            Invalid passkey. Please check and try again.
+          </div>
+
+          <button
+            type="submit"
+            id="unlock-btn"
+            class="w-full py-3 px-4 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-semibold rounded-xl text-sm transition shadow-lg shadow-amber-500/20 flex items-center justify-center space-x-2"
+          >
+            <span>Unlock Dashboard</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </button>
+        </form>
+
+        <div class="mt-6 pt-6 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-500">
+          <span>Protected by Edge Auth</span>
+          <span class="font-mono text-[10px] text-slate-600">D1 · Cloudflare</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="dashboard" class={`${isAuthorized ? '' : 'hidden'} min-h-screen flex flex-col`}>
+      
+      <!-- Top Navigation -->
+      <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+          <div class="flex items-center space-x-4">
+            <a href="/" class="flex items-center space-x-3">
+              <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center font-bold text-white shadow">
+                ST
+              </div>
+              <div>
+                <span class="text-base font-bold text-white tracking-tight">SinoTradeLink</span>
+                <span class="hidden sm:inline-block ml-2 px-2 py-0.5 text-[11px] font-semibold bg-amber-500/20 text-amber-300 rounded border border-amber-500/30">
+                  Leads & RFQ Pipeline
+                </span>
+              </div>
+            </a>
+          </div>
+
+          <div class="flex items-center space-x-3">
+            <button
+              id="export-csv-btn"
+              class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold shadow transition"
+              title="Download RFC 4180 CSV for Excel & Google Sheets"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              <span>Export CSV</span>
+            </button>
+
+            <button
+              id="refresh-btn"
+              class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium border border-slate-700 transition"
+              title="Refresh Leads"
+            >
+              <svg id="refresh-icon" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              <span>Refresh</span>
+            </button>
+
+            <button
+              id="logout-btn"
+              class="px-2.5 py-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 text-xs transition"
+              title="Lock Dashboard"
+            >
+              Lock
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Dashboard Content -->
+      <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+        
+        <!-- KPI Cards -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-sm">
+            <span class="text-xs font-medium text-slate-400">Total Leads</span>
+            <div id="kpi-total" class="text-2xl font-bold text-white mt-1">0</div>
+            <span class="text-[11px] text-slate-500">All recorded RFQs</span>
+          </div>
+
+          <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-sm">
+            <span class="text-xs font-medium text-amber-400">Pending Follow-up</span>
+            <div id="kpi-pending" class="text-2xl font-bold text-amber-400 mt-1">0</div>
+            <span class="text-[11px] text-amber-500/80">Requires response</span>
+          </div>
+
+          <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-sm">
+            <span class="text-xs font-medium text-blue-400">Contacted / Quoted</span>
+            <div id="kpi-contacted" class="text-2xl font-bold text-blue-400 mt-1">0</div>
+            <span class="text-[11px] text-blue-500/80">In communication</span>
+          </div>
+
+          <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-sm">
+            <span class="text-xs font-medium text-emerald-400">Top Buyer Region</span>
+            <div id="kpi-country" class="text-lg font-bold text-emerald-400 mt-1 truncate">Global</div>
+            <span class="text-[11px] text-emerald-500/80">Primary origin</span>
+          </div>
+        </div>
+
+        <!-- Filter & Search Bar -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col md:flex-row gap-4 items-stretch md:items-center justify-between">
+          <div class="relative flex-grow max-w-md">
+            <input
+              type="text"
+              id="search-input"
+              placeholder="Search buyer name, email, phone, booth..."
+              class="w-full pl-9 pr-4 py-2 bg-slate-950 border border-slate-700 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
+            />
+            <svg class="w-4 h-4 text-slate-500 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2">
+            <div class="inline-flex rounded-lg bg-slate-950 p-1 border border-slate-800 text-xs">
+              <button data-filter="ALL" class="status-filter-btn px-3 py-1 rounded bg-slate-800 text-white font-medium">All</button>
+              <button data-filter="PENDING" class="status-filter-btn px-3 py-1 rounded text-slate-400 hover:text-white">Pending</button>
+              <button data-filter="CONTACTED" class="status-filter-btn px-3 py-1 rounded text-slate-400 hover:text-white">Contacted</button>
+              <button data-filter="QUOTED" class="status-filter-btn px-3 py-1 rounded text-slate-400 hover:text-white">Quoted</button>
+              <button data-filter="COMPLETED" class="status-filter-btn px-3 py-1 rounded text-slate-400 hover:text-white">Completed</button>
+            </div>
+
+            <select id="district-filter" class="bg-slate-950 border border-slate-700 text-slate-300 text-xs rounded-lg px-3 py-1.5 focus:outline-none focus:border-amber-500">
+              <option value="">All Corridors</option>
+              <option value="District 1">District 1 (Toys & Jewelry)</option>
+              <option value="District 2">District 2 (Hardware & Kitchen)</option>
+              <option value="District 3">District 3 (Stationery & Sports)</option>
+              <option value="District 4">District 4 (Footwear & Daily)</option>
+              <option value="District 5">District 5 (Textiles & Bedding)</option>
+              <option value="District 6">District 6 (Huangyuan Garments)</option>
+              <option value="District 7">District 7 (Production Materials)</option>
+              <option value="GENERAL">General / Concierge</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Leads Table / Container -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow">
+          
+          <!-- Loading State -->
+          <div id="loading-state" class="p-12 text-center text-slate-400">
+            <div class="inline-block animate-spin w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full mb-3"></div>
+            <p class="text-sm">Connecting to Cloudflare D1 database...</p>
+          </div>
+
+          <!-- Empty State -->
+          <div id="empty-state" class="hidden p-12 text-center">
+            <div class="w-12 h-12 rounded-full bg-slate-800 text-slate-400 mx-auto flex items-center justify-center mb-3">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+              </svg>
+            </div>
+            <h3 class="text-base font-semibold text-slate-200">No Inquiries Found</h3>
+            <p class="text-sm text-slate-400 mt-1 max-w-sm mx-auto">
+              When prospective wholesale buyers submit RFQs or unlock stall contacts, their details appear here in real-time.
+            </p>
+            <div class="mt-4">
+              <button id="send-test-lead-btn" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-amber-400 border border-slate-700 rounded-lg text-xs font-semibold transition">
+                Create Test Inquiry
+              </button>
+            </div>
+          </div>
+
+          <!-- Table View -->
+          <div id="table-container" class="hidden overflow-x-auto">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr class="bg-slate-950/60 border-b border-slate-800 text-slate-400 uppercase tracking-wider font-semibold text-[11px]">
+                  <th class="py-3 px-4">Status & Date</th>
+                  <th class="py-3 px-4">Buyer Profile</th>
+                  <th class="py-3 px-4">Target Booth / Sourcing Item</th>
+                  <th class="py-3 px-4">Inquiry / Specs</th>
+                  <th class="py-3 px-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="leads-tbody" class="divide-y divide-slate-800">
+                <!-- Injected via JavaScript -->
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+      </main>
+
+      <!-- Footer -->
+      <footer class="border-t border-slate-800/80 py-4 text-center text-xs text-slate-500">
+        SinoTradeLink Internal Operations Portal · Connected to Cloudflare D1 <code class="font-mono text-[10px] text-slate-400">sinotradelink-db</code>
+      </footer>
+
+    </div>
+
+    <!-- Client-side Logic -->
+    <script is:inline>
+      let adminKey = localStorage.getItem('sino_admin_key') || '';
+      let allLeads = [];
+      let currentFilter = 'ALL';
+      let currentDistrict = '';
+      let searchQuery = '';
+
+      const authGate = document.getElementById('auth-gate');
+      const dashboard = document.getElementById('dashboard');
+      const loginForm = document.getElementById('login-form');
+      const passkeyInput = document.getElementById('passkey');
+      const authError = document.getElementById('auth-error');
+      const exportCsvBtn = document.getElementById('export-csv-btn');
+      const refreshBtn = document.getElementById('refresh-btn');
+      const refreshIcon = document.getElementById('refresh-icon');
+      const logoutBtn = document.getElementById('logout-btn');
+      const loadingState = document.getElementById('loading-state');
+      const emptyState = document.getElementById('empty-state');
+      const tableContainer = document.getElementById('table-container');
+      const leadsTbody = document.getElementById('leads-tbody');
+      const searchInput = document.getElementById('search-input');
+      const districtFilter = document.getElementById('district-filter');
+      const statusFilterBtns = document.querySelectorAll('.status-filter-btn');
+      const sendTestLeadBtn = document.getElementById('send-test-lead-btn');
+
+      // Check URL param first
+      const urlParams = new URLSearchParams(window.location.search);
+      const keyFromUrl = urlParams.get('key');
+      if (keyFromUrl) {
+        adminKey = keyFromUrl;
+        localStorage.setItem('sino_admin_key', adminKey);
+        document.cookie = `admin_key=${encodeURIComponent(adminKey)}; Path=/; Max-Age=2592000; SameSite=Lax`;
+      }
+
+      function init() {
+        if (adminKey) {
+          fetchLeads();
+        } else {
+          showAuthGate();
+        }
+      }
+
+      function showAuthGate() {
+        authGate.classList.remove('hidden');
+        dashboard.classList.add('hidden');
+      }
+
+      function showDashboard() {
+        authGate.classList.add('hidden');
+        dashboard.classList.remove('hidden');
+      }
+
+      loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const candidateKey = passkeyInput.value.trim();
+        if (!candidateKey) return;
+
+        authError.classList.add('hidden');
+        const btn = document.getElementById('unlock-btn');
+        btn.disabled = true;
+        btn.innerText = 'Verifying...';
+
+        try {
+          const res = await fetch(`/api/admin/leads?key=${encodeURIComponent(candidateKey)}`);
+          if (res.ok) {
+            adminKey = candidateKey;
+            localStorage.setItem('sino_admin_key', adminKey);
+            document.cookie = `admin_key=${encodeURIComponent(adminKey)}; Path=/; Max-Age=2592000; SameSite=Lax`;
+            showDashboard();
+            fetchLeads();
+          } else {
+            authError.classList.remove('hidden');
+          }
+        } catch (err) {
+          authError.classList.remove('hidden');
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = '<span>Unlock Dashboard</span>';
+        }
+      });
+
+      logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('sino_admin_key');
+        document.cookie = 'admin_key=; Path=/; Max-Age=0;';
+        adminKey = '';
+        passkeyInput.value = '';
+        showAuthGate();
+      });
+
+      refreshBtn.addEventListener('click', () => {
+        refreshIcon.classList.add('animate-spin');
+        fetchLeads().finally(() => {
+          setTimeout(() => refreshIcon.classList.remove('animate-spin'), 600);
+        });
+      });
+
+      exportCsvBtn.addEventListener('click', () => {
+        const downloadUrl = `/api/admin/export.csv?key=${encodeURIComponent(adminKey)}`;
+        window.open(downloadUrl, '_blank');
+      });
+
+      async function fetchLeads() {
+        loadingState.classList.remove('hidden');
+        emptyState.classList.add('hidden');
+        tableContainer.classList.add('hidden');
+
+        try {
+          const res = await fetch(`/api/admin/leads?key=${encodeURIComponent(adminKey)}`);
+          if (res.status === 401) {
+            showAuthGate();
+            authError.classList.remove('hidden');
+            return;
+          }
+
+          const data = await res.json();
+          if (data.success) {
+            allLeads = data.leads || [];
+            updateKpis(allLeads);
+            renderLeads();
+            showDashboard();
+          } else {
+            alert('Failed to load leads: ' + (data.error || 'Unknown error'));
+          }
+        } catch (err) {
+          console.error('Fetch leads error:', err);
+        } finally {
+          loadingState.classList.add('hidden');
+        }
+      }
+
+      function updateKpis(leads) {
+        document.getElementById('kpi-total').innerText = leads.length;
+        const pendingCount = leads.filter(l => (l.status || 'PENDING') === 'PENDING').length;
+        document.getElementById('kpi-pending').innerText = pendingCount;
+        const contactedCount = leads.filter(l => ['CONTACTED', 'QUOTED'].includes(l.status)).length;
+        document.getElementById('kpi-contacted').innerText = contactedCount;
+
+        // Country breakdown
+        const countries = {};
+        leads.forEach(l => {
+          const c = l.buyerCountry || 'Global';
+          countries[c] = (countries[c] || 0) + 1;
+        });
+        const topCountry = Object.keys(countries).sort((a,b) => countries[b] - countries[a])[0] || 'Global';
+        document.getElementById('kpi-country').innerText = topCountry;
+      }
+
+      function renderLeads() {
+        let filtered = allLeads.slice();
+
+        // Status Filter
+        if (currentFilter !== 'ALL') {
+          filtered = filtered.filter(l => (l.status || 'PENDING') === currentFilter);
+        }
+
+        // District Filter
+        if (currentDistrict) {
+          if (currentDistrict === 'GENERAL') {
+            filtered = filtered.filter(l => !l.supplierDistrict || l.shopId === 'GENERAL');
+          } else {
+            filtered = filtered.filter(l => (l.supplierDistrict || '').includes(currentDistrict));
+          }
+        }
+
+        // Search Filter
+        if (searchQuery) {
+          const q = searchQuery.toLowerCase();
+          filtered = filtered.filter(l => 
+            (l.buyerName && l.buyerName.toLowerCase().includes(q)) ||
+            (l.buyerEmail && l.buyerEmail.toLowerCase().includes(q)) ||
+            (l.buyerPhone && l.buyerPhone.toLowerCase().includes(q)) ||
+            (l.targetBooth && l.targetBooth.toLowerCase().includes(q)) ||
+            (l.supplierName && l.supplierName.toLowerCase().includes(q)) ||
+            (l.message && l.message.toLowerCase().includes(q)) ||
+            (l.buyerCountry && l.buyerCountry.toLowerCase().includes(q))
+          );
+        }
+
+        if (filtered.length === 0) {
+          tableContainer.classList.add('hidden');
+          emptyState.classList.remove('hidden');
+          return;
+        }
+
+        emptyState.classList.add('hidden');
+        tableContainer.classList.remove('hidden');
+
+        leadsTbody.innerHTML = filtered.map(lead => {
+          const statusBadge = getStatusBadge(lead.status || 'PENDING');
+          const cleanPhone = (lead.buyerPhone || '').replace(/[^\d+]/g, '');
+          const waUrl = cleanPhone ? `https://wa.me/${cleanPhone.replace('+', '')}?text=${encodeURIComponent(`Hi ${lead.buyerName}, regarding your inquiry on SinoTradeLink for Booth ${lead.targetBooth}...`)}` : '';
+
+          return `
+            <tr class="hover:bg-slate-800/40 transition">
+              <td class="py-3 px-4 align-top whitespace-nowrap">
+                <div class="flex items-center space-x-2 mb-1">
+                  ${statusBadge}
+                </div>
+                <div class="text-[11px] text-slate-400 font-mono">
+                  ${formatDate(lead.createdAt)}
+                </div>
+                <div class="mt-2">
+                  <select onchange="updateLeadStatus('${lead.id}', this.value)" class="bg-slate-950 border border-slate-700 text-slate-300 text-[10px] rounded px-1.5 py-0.5 focus:outline-none">
+                    <option value="PENDING" ${lead.status === 'PENDING' ? 'selected' : ''}>Pending</option>
+                    <option value="CONTACTED" ${lead.status === 'CONTACTED' ? 'selected' : ''}>Contacted</option>
+                    <option value="QUOTED" ${lead.status === 'QUOTED' ? 'selected' : ''}>Quoted</option>
+                    <option value="COMPLETED" ${lead.status === 'COMPLETED' ? 'selected' : ''}>Completed</option>
+                    <option value="ARCHIVED" ${lead.status === 'ARCHIVED' ? 'selected' : ''}>Archived</option>
+                  </select>
+                </div>
+              </td>
+
+              <td class="py-3 px-4 align-top">
+                <div class="font-semibold text-slate-100">${escapeHtml(lead.buyerName)}</div>
+                <a href="mailto:${escapeHtml(lead.buyerEmail)}" class="text-blue-400 hover:underline block text-[11px] mt-0.5">
+                  ${escapeHtml(lead.buyerEmail)}
+                </a>
+                <div class="flex items-center space-x-2 mt-1">
+                  <span class="inline-block px-1.5 py-0.5 bg-slate-800 rounded text-[10px] text-slate-300 border border-slate-700">
+                    🌍 ${escapeHtml(lead.buyerCountry || 'Global')}
+                  </span>
+                  ${lead.buyerPhone ? `
+                    <span class="inline-block px-1.5 py-0.5 bg-slate-800 rounded text-[10px] text-amber-300 font-mono border border-slate-700">
+                      📱 ${escapeHtml(lead.buyerPhone)}
+                    </span>
+                  ` : ''}
+                </div>
+              </td>
+
+              <td class="py-3 px-4 align-top">
+                ${lead.targetBooth ? `
+                  <div class="flex items-center space-x-1.5">
+                    <span class="px-2 py-0.5 bg-amber-500/20 text-amber-300 font-mono font-semibold rounded text-[11px] border border-amber-500/30">
+                      Booth ${escapeHtml(lead.targetBooth)}
+                    </span>
+                  </div>
+                ` : '<span class="text-slate-500 italic">General Concierge RFQ</span>'}
+                
+                ${lead.supplierName ? `
+                  <div class="font-medium text-slate-300 mt-1 line-clamp-1">${escapeHtml(lead.supplierName)}</div>
+                  <div class="text-[10px] text-slate-400">
+                    ${escapeHtml(lead.supplierDistrict || '')} ${lead.supplierFloor ? '· Floor ' + escapeHtml(lead.supplierFloor) : ''}
+                  </div>
+                  ${lead.supplierPhone ? `
+                    <div class="text-[10px] text-emerald-400 font-mono mt-0.5">
+                      Stall Direct: ${escapeHtml(lead.supplierPhone)} (${escapeHtml(lead.supplierContact || 'Owner')})
+                    </div>
+                  ` : ''}
+                ` : ''}
+
+                ${lead.shopId && lead.shopId !== 'GENERAL' ? `
+                  <a href="/supplier/${lead.shopId}" target="_blank" class="inline-flex items-center space-x-1 text-[10px] text-amber-400 hover:underline mt-1">
+                    <span>View Stall Profile</span>
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                  </a>
+                ` : ''}
+              </td>
+
+              <td class="py-3 px-4 align-top">
+                <div class="p-2.5 bg-slate-950/80 rounded-lg border border-slate-800 text-slate-300 text-[11px] whitespace-pre-wrap max-h-36 overflow-y-auto leading-relaxed">
+                  ${escapeHtml(lead.message || 'No additional message provided.')}
+                </div>
+              </td>
+
+              <td class="py-3 px-4 align-top text-right whitespace-nowrap space-y-1.5">
+                ${waUrl ? `
+                  <a href="${waUrl}" target="_blank" class="inline-flex items-center space-x-1 px-2.5 py-1 bg-emerald-600/90 hover:bg-emerald-600 text-white rounded text-[11px] font-medium shadow transition">
+                    <span>Chat WhatsApp</span>
+                  </a>
+                ` : ''}
+                <div>
+                  <a href="mailto:${escapeHtml(lead.buyerEmail)}?subject=${encodeURIComponent('Regarding your SinoTradeLink Wholesale Sourcing Inquiry')}" class="inline-flex items-center space-x-1 px-2.5 py-1 bg-blue-600/90 hover:bg-blue-600 text-white rounded text-[11px] font-medium shadow transition">
+                    <span>Email Buyer</span>
+                  </a>
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      function getStatusBadge(status) {
+        switch(status) {
+          case 'PENDING':
+            return '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">PENDING</span>';
+          case 'CONTACTED':
+            return '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-500/20 text-blue-300 border border-blue-500/40">CONTACTED</span>';
+          case 'QUOTED':
+            return '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/40">QUOTED</span>';
+          case 'COMPLETED':
+            return '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">COMPLETED</span>';
+          case 'ARCHIVED':
+            return '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-700 text-slate-400 border border-slate-600">ARCHIVED</span>';
+          default:
+            return `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-300">${status}</span>`;
+        }
+      }
+
+      function formatDate(dateStr) {
+        if (!dateStr) return '';
+        try {
+          const d = new Date(dateStr);
+          return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+        } catch {
+          return dateStr;
+        }
+      }
+
+      function escapeHtml(text) {
+        if (!text) return '';
+        return String(text)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
+      window.updateLeadStatus = async function(id, newStatus) {
+        try {
+          const res = await fetch(`/api/admin/leads?key=${encodeURIComponent(adminKey)}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id, status: newStatus })
+          });
+          const data = await res.json();
+          if (data.success) {
+            const target = allLeads.find(l => l.id === id);
+            if (target) target.status = newStatus;
+            updateKpis(allLeads);
+            renderLeads();
+          } else {
+            alert('Failed to update status: ' + (data.error || 'Unknown error'));
+          }
+        } catch (err) {
+          alert('Error communicating with server.');
+        }
+      };
+
+      // Filter events
+      statusFilterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          statusFilterBtns.forEach(b => {
+            b.classList.remove('bg-slate-800', 'text-white', 'font-medium');
+            b.classList.add('text-slate-400');
+          });
+          btn.classList.add('bg-slate-800', 'text-white', 'font-medium');
+          btn.classList.remove('text-slate-400');
+          currentFilter = btn.dataset.filter;
+          renderLeads();
+        });
+      });
+
+      districtFilter.addEventListener('change', (e) => {
+        currentDistrict = e.target.value;
+        renderLeads();
+      });
+
+      searchInput.addEventListener('input', (e) => {
+        searchQuery = e.target.value.trim();
+        renderLeads();
+      });
+
+      if (sendTestLeadBtn) {
+        sendTestLeadBtn.addEventListener('click', async () => {
+          sendTestLeadBtn.disabled = true;
+          sendTestLeadBtn.innerText = 'Creating test inquiry...';
+          try {
+            const testPayload = {
+              shop_id: '15879',
+              buyer_name: 'David Sterling',
+              buyer_email: 'david@sterling-imports.com',
+              buyer_country: 'United States',
+              phone: '+1 415 890 1234',
+              target_booth: '1F-10245',
+              service_type: 'Full Container Load (FCL)',
+              message: 'Requesting wholesale catalog and factory FOB Ningbo price list for stainless steel vacuum flasks (500ml & 750ml). Initial order 2,000 units with custom silkscreen logo.'
+            };
+
+            const res = await fetch('/api/inquiry', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(testPayload)
+            });
+
+            const data = await res.json();
+            if (data.success) {
+              await fetchLeads();
+            } else {
+              alert('Failed to create test lead: ' + data.error);
+            }
+          } catch (err) {
+            alert('Network error while creating test lead.');
+          } finally {
+            sendTestLeadBtn.disabled = false;
+            sendTestLeadBtn.innerText = 'Create Test Inquiry';
+          }
+        });
+      }
+
+      // Start
+      init();
+    </script>
+  </body>
+</html>
