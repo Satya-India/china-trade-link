@@ -3,9 +3,9 @@
 const PAYPAL_CLIENT_ID = "BAA-U7WpNQZudJZbn-39Kd2E2Alw7toZtsb_8pRNtFgIpkZXRT2yUdps5-Eyk-N7a2cz0LF0E0R4SOYGgc";
 ---
 
-<!-- Global PayPal Smart Checkout Modal -->
-<dialog id="paypal-checkout-modal" class="fixed inset-0 m-auto z-50 p-0 rounded-3xl bg-transparent backdrop:bg-slate-950/75 backdrop:backdrop-blur-sm max-w-md w-full shadow-2xl open:animate-in open:fade-in open:zoom-in-95">
-  <div class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-2xl max-h-[92vh] flex flex-col">
+<!-- Global PayPal Smart Checkout Modal Dialog -->
+<dialog id="paypal-checkout-modal" class="fixed inset-0 m-auto z-[9999] p-4 sm:p-0 rounded-3xl bg-transparent max-w-md w-full shadow-2xl">
+  <div class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-2xl max-h-[92vh] flex flex-col w-full">
     <!-- Modal Header -->
     <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 px-6 py-4 text-white relative shrink-0 border-b border-slate-800">
       <button 
@@ -56,13 +56,13 @@ const PAYPAL_CLIENT_ID = "BAA-U7WpNQZudJZbn-39Kd2E2Alw7toZtsb_8pRNtFgIpkZXRT2yUd
       <!-- STATE A: PAYPAL BUTTONS CONTAINER -->
       <div id="checkout-payment-state" class="space-y-4">
         <!-- PayPal Loading Indicator -->
-        <div id="paypal-loading" class="py-8 text-center text-slate-400 text-xs flex flex-col items-center justify-center gap-2">
+        <div id="paypal-loading" class="py-6 text-center text-slate-400 text-xs flex flex-col items-center justify-center gap-2">
           <span class="w-6 h-6 rounded-full border-2 border-blue-600 border-t-transparent animate-spin"></span>
-          <span>Connecting to PayPal Secure Gateway...</span>
+          <span id="paypal-loading-text">Connecting to PayPal Secure Gateway...</span>
         </div>
 
         <!-- Render Target for PayPal Smart Buttons -->
-        <div id="paypal-button-container" class="min-h-[140px] relative z-0"></div>
+        <div id="paypal-button-container" class="min-h-[120px] relative z-0"></div>
 
         <!-- Security Trust Marks -->
         <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400">
@@ -122,144 +122,192 @@ const PAYPAL_CLIENT_ID = "BAA-U7WpNQZudJZbn-39Kd2E2Alw7toZtsb_8pRNtFgIpkZXRT2yUd
   </div>
 </dialog>
 
-<script define:vars={{ PAYPAL_CLIENT_ID }}>
-  let isSdkLoaded = false;
-  let activeItem = {
+<style>
+  dialog#paypal-checkout-modal:not([open]) {
+    display: none !important;
+  }
+  dialog#paypal-checkout-modal[open] {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+  dialog#paypal-checkout-modal::backdrop {
+    background: rgba(2, 6, 23, 0.75);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+</style>
+
+<script is:inline>
+(function() {
+  var PAYPAL_CLIENT_ID = "BAA-U7WpNQZudJZbn-39Kd2E2Alw7toZtsb_8pRNtFgIpkZXRT2yUdps5-Eyk-N7a2cz0LF0E0R4SOYGgc";
+  var isSdkLoaded = false;
+  var isSdkLoading = false;
+  var buttonsRendered = false;
+  var activeItem = {
     id: 'category-pack',
     title: 'Category Wholesaler Pack',
     price: 29.00,
     type: 'pack'
   };
 
-  const modal = document.getElementById('paypal-checkout-modal');
-  const closeBtn = document.getElementById('paypal-modal-close');
-  const itemTitleEl = document.getElementById('checkout-item-title');
-  const itemSubtitleEl = document.getElementById('checkout-item-subtitle');
-  const priceDisplayEl = document.getElementById('checkout-price-display');
-  const paymentState = document.getElementById('checkout-payment-state');
-  const successState = document.getElementById('checkout-success-state');
-  const loadingEl = document.getElementById('paypal-loading');
-  const buttonsContainer = document.getElementById('paypal-button-container');
-
-  const successPayerName = document.getElementById('success-payer-name');
-  const successOrderId = document.getElementById('success-order-id');
-  const successDownloadBtn = document.getElementById('success-download-btn');
-  const successDownloadContainer = document.getElementById('success-download-container');
-  const successConciergeNote = document.getElementById('success-concierge-note');
+  function getEl(id) {
+    return document.getElementById(id);
+  }
 
   function loadPayPalSdk(callback) {
     if (isSdkLoaded && window.paypal) {
-      callback();
+      if (typeof callback === 'function') callback();
       return;
     }
 
-    const script = document.createElement('script');
-    script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=USD&intent=capture`;
+    if (isSdkLoading) {
+      var checkInterval = setInterval(function() {
+        if (isSdkLoaded && window.paypal) {
+          clearInterval(checkInterval);
+          if (typeof callback === 'function') callback();
+        }
+      }, 50);
+      return;
+    }
+
+    isSdkLoading = true;
+    var script = document.createElement('script');
+    script.src = 'https://www.paypal.com/sdk/js?client-id=' + encodeURIComponent(PAYPAL_CLIENT_ID) + '&currency=USD&intent=capture';
     script.async = true;
-    script.onload = () => {
+    script.onload = function() {
       isSdkLoaded = true;
-      callback();
+      isSdkLoading = false;
+      if (typeof callback === 'function') callback();
     };
-    script.onerror = () => {
+    script.onerror = function() {
+      isSdkLoading = false;
+      var loadingEl = getEl('paypal-loading');
       if (loadingEl) {
-        loadingEl.innerHTML = `<span class="text-rose-500 font-bold">Failed to load PayPal SDK. Please check connection.</span>`;
+        loadingEl.innerHTML = '<span class="text-rose-500 font-bold">Failed to connect to PayPal. Please refresh or check connection.</span>';
       }
     };
     document.head.appendChild(script);
   }
 
   function renderButtons() {
-    if (!window.paypal || !buttonsContainer) return;
+    var container = getEl('paypal-button-container');
+    var loadingEl = getEl('paypal-loading');
+    if (!window.paypal || !container) return;
 
-    buttonsContainer.innerHTML = '';
-    if (loadingEl) loadingEl.style.display = 'none';
+    container.innerHTML = '';
+    if (loadingEl) {
+      loadingEl.style.display = 'flex';
+      var loadingText = getEl('paypal-loading-text');
+      if (loadingText) loadingText.textContent = 'Rendering PayPal & Card buttons...';
+    }
 
-    window.paypal.Buttons({
-      style: {
-        layout: 'vertical',
-        color: 'gold',
-        shape: 'rect',
-        label: 'pay',
-        height: 42
-      },
+    try {
+      window.paypal.Buttons({
+        style: {
+          layout: 'vertical',
+          color: 'gold',
+          shape: 'rect',
+          label: 'pay',
+          height: 44
+        },
 
-      createOrder: (data, actions) => {
-        return actions.order.create({
-          purchase_units: [{
-            description: `${activeItem.title} - SinoTradeLink`,
-            amount: {
-              value: activeItem.price.toFixed(2),
-              currency_code: 'USD'
-            }
-          }]
-        });
-      },
-
-      onApprove: async (data, actions) => {
-        if (loadingEl) {
-          loadingEl.style.display = 'flex';
-          loadingEl.innerHTML = `
-            <span class="w-6 h-6 rounded-full border-2 border-emerald-600 border-t-transparent animate-spin"></span>
-            <span>Confirming payment & generating digital delivery...</span>
-          `;
-        }
-
-        try {
-          const details = await actions.order.capture();
-
-          // Post to backend API
-          const response = await fetch('/api/payment/complete', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              orderId: data.orderID,
-              payer: details.payer,
-              amount: activeItem.price.toFixed(2),
-              currency: 'USD',
-              itemId: activeItem.id,
-              itemTitle: activeItem.title
-            })
+        createOrder: function(data, actions) {
+          return actions.order.create({
+            purchase_units: [{
+              description: (activeItem.title || 'Category Pack') + ' - SinoTradeLink',
+              amount: {
+                value: activeItem.price.toFixed(2),
+                currency_code: 'USD'
+              }
+            }]
           });
+        },
 
-          const resData = await response.json();
-
-          // Render Success Screen
-          if (paymentState) paymentState.classList.add('hidden');
-          if (successState) successState.classList.remove('hidden');
-
-          const pName = details.payer?.name ? `${details.payer.name.given_name || ''} ${details.payer.name.surname || ''}`.trim() : 'Customer';
-          if (successPayerName) successPayerName.textContent = pName;
-          if (successOrderId) successOrderId.textContent = `PayPal Ref: ${data.orderID}`;
-
-          if (activeItem.type === 'pack') {
-            if (successDownloadBtn) {
-              const url = resData.downloadUrl || `/api/download-pack?order_id=${encodeURIComponent(resData.orderId)}&item_id=${encodeURIComponent(activeItem.id)}`;
-              successDownloadBtn.href = url;
-            }
-            if (successDownloadContainer) successDownloadContainer.classList.remove('hidden');
-            if (successConciergeNote) successConciergeNote.classList.add('hidden');
-          } else {
-            // Concierge booking
-            if (successDownloadContainer) successDownloadContainer.classList.add('hidden');
-            if (successConciergeNote) successConciergeNote.classList.remove('hidden');
+        onApprove: async function(data, actions) {
+          var loadEl = getEl('paypal-loading');
+          if (loadEl) {
+            loadEl.style.display = 'flex';
+            loadEl.innerHTML = '<span class="w-6 h-6 rounded-full border-2 border-emerald-600 border-t-transparent animate-spin"></span><span>Confirming payment & generating digital delivery...</span>';
           }
 
-        } catch (err) {
-          console.error('[Payment Capture Error]:', err);
-          alert('Payment succeeded with PayPal, but delivery failed to synchronize. Please contact support via WhatsApp with your order ID.');
-        }
-      },
+          try {
+            var details = await actions.order.capture();
 
-      onError: (err) => {
-        console.error('[PayPal Button Error]:', err);
-      }
-    }).render('#paypal-button-container');
+            var response = await fetch('/api/payment/complete', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                orderId: data.orderID,
+                payer: details.payer,
+                amount: activeItem.price.toFixed(2),
+                currency: 'USD',
+                itemId: activeItem.id,
+                itemTitle: activeItem.title
+              })
+            });
+
+            var resData = await response.json();
+
+            var paymentState = getEl('checkout-payment-state');
+            var successState = getEl('checkout-success-state');
+            if (paymentState) paymentState.classList.add('hidden');
+            if (successState) successState.classList.remove('hidden');
+
+            var payerGiven = details.payer && details.payer.name && details.payer.name.given_name ? details.payer.name.given_name : '';
+            var payerSur = details.payer && details.payer.name && details.payer.name.surname ? details.payer.name.surname : '';
+            var pName = (payerGiven + ' ' + payerSur).trim() || 'Customer';
+
+            var successPayerName = getEl('success-payer-name');
+            var successOrderId = getEl('success-order-id');
+            if (successPayerName) successPayerName.textContent = pName;
+            if (successOrderId) successOrderId.textContent = 'PayPal Ref: ' + data.orderID;
+
+            var successDownloadBtn = getEl('success-download-btn');
+            var successDownloadContainer = getEl('success-download-container');
+            var successConciergeNote = getEl('success-concierge-note');
+
+            if (activeItem.type === 'pack') {
+              if (successDownloadBtn) {
+                var url = resData.downloadUrl || ('/api/download-pack?order_id=' + encodeURIComponent(resData.orderId || data.orderID) + '&item_id=' + encodeURIComponent(activeItem.id));
+                successDownloadBtn.href = url;
+              }
+              if (successDownloadContainer) successDownloadContainer.classList.remove('hidden');
+              if (successConciergeNote) successConciergeNote.classList.add('hidden');
+            } else {
+              if (successDownloadContainer) successDownloadContainer.classList.add('hidden');
+              if (successConciergeNote) successConciergeNote.classList.remove('hidden');
+            }
+
+          } catch (err) {
+            console.error('[Payment Capture Error]:', err);
+            alert('Payment was authorized with PayPal, but automatic sync encountered a delay. Please contact WhatsApp support with Order ID: ' + data.orderID);
+          }
+        },
+
+        onError: function(err) {
+          console.error('[PayPal Button Error]:', err);
+        }
+      }).render('#paypal-button-container').then(function() {
+        buttonsRendered = true;
+        if (loadingEl) loadingEl.style.display = 'none';
+      }).catch(function(err) {
+        console.error('[PayPal Render Error]:', err);
+        if (loadingEl) {
+          loadingEl.innerHTML = '<span class="text-rose-500 font-bold">Failed to render PayPal buttons. Please reload the page.</span>';
+        }
+      });
+    } catch (e) {
+      console.error('[PayPal Button Init Error]:', e);
+    }
   }
 
   // Global trigger function to open PayPal Modal
   window.openPayPalCheckout = function(options) {
+    var modal = getEl('paypal-checkout-modal');
     if (!modal) return;
 
+    options = options || {};
     activeItem = {
       id: options.id || 'pack',
       title: options.title || 'Category Pack',
@@ -267,59 +315,99 @@ const PAYPAL_CLIENT_ID = "BAA-U7WpNQZudJZbn-39Kd2E2Alw7toZtsb_8pRNtFgIpkZXRT2yUd
       type: options.type || 'pack'
     };
 
+    var itemTitleEl = getEl('checkout-item-title');
+    var priceDisplayEl = getEl('checkout-price-display');
+    var itemSubtitleEl = getEl('checkout-item-subtitle');
+    var paymentState = getEl('checkout-payment-state');
+    var successState = getEl('checkout-success-state');
+    var loadingEl = getEl('paypal-loading');
+
     if (itemTitleEl) itemTitleEl.textContent = activeItem.title;
-    if (priceDisplayEl) priceDisplayEl.textContent = `$${activeItem.price.toFixed(2)} USD`;
+    if (priceDisplayEl) priceDisplayEl.textContent = '$' + activeItem.price.toFixed(2) + ' USD';
     if (itemSubtitleEl) {
       itemSubtitleEl.textContent = activeItem.type === 'concierge' 
         ? 'On-Demand Bilingual Market Inspection Service'
         : 'Instant Verified Excel & CSV Spreadsheet';
     }
 
-    // Reset view states
     if (paymentState) paymentState.classList.remove('hidden');
     if (successState) successState.classList.add('hidden');
     if (loadingEl) {
       loadingEl.style.display = 'flex';
-      loadingEl.innerHTML = `
-        <span class="w-6 h-6 rounded-full border-2 border-blue-600 border-t-transparent animate-spin"></span>
-        <span>Connecting to PayPal Secure Gateway...</span>
-      `;
+      var loadingText = getEl('paypal-loading-text');
+      if (loadingText) loadingText.textContent = 'Connecting to PayPal Secure Gateway...';
     }
 
-    modal.showModal();
+    // Open native dialog with fallback
+    if (typeof modal.showModal === 'function') {
+      try {
+        modal.showModal();
+      } catch (err) {
+        modal.setAttribute('open', '');
+      }
+    } else {
+      modal.setAttribute('open', '');
+    }
 
-    loadPayPalSdk(() => {
+    loadPayPalSdk(function() {
       renderButtons();
     });
   };
 
-  closeBtn?.addEventListener('click', () => {
-    modal?.close();
-  });
+  // Close handlers
+  var closeBtn = getEl('paypal-modal-close');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', function() {
+      var modal = getEl('paypal-checkout-modal');
+      if (modal) {
+        if (typeof modal.close === 'function') modal.close();
+        else modal.removeAttribute('open');
+      }
+    });
+  }
 
-  modal?.addEventListener('click', (e) => {
-    const rect = modal.getBoundingClientRect();
-    if (
-      e.clientX < rect.left ||
-      e.clientX > rect.right ||
-      e.clientY < rect.top ||
-      e.clientY > rect.bottom
-    ) {
-      modal.close();
-    }
-  });
+  var modalEl = getEl('paypal-checkout-modal');
+  if (modalEl) {
+    modalEl.addEventListener('click', function(e) {
+      var rect = modalEl.getBoundingClientRect();
+      if (
+        e.clientX < rect.left ||
+        e.clientX > rect.right ||
+        e.clientY < rect.top ||
+        e.clientY > rect.bottom
+      ) {
+        if (typeof modalEl.close === 'function') modalEl.close();
+        else modalEl.removeAttribute('open');
+      }
+    });
+  }
 
-  // Attach to all elements with data-paypal-trigger
-  document.addEventListener('click', (e) => {
-    const trigger = (e.target as HTMLElement).closest('.paypal-trigger-btn') as HTMLElement | null;
+  // Global click delegate for .paypal-trigger-btn
+  document.addEventListener('click', function(e) {
+    var target = e.target;
+    var trigger = target && target.closest ? target.closest('.paypal-trigger-btn') : null;
     if (trigger) {
       e.preventDefault();
-      const id = trigger.getAttribute('data-item-id') || 'pack';
-      const title = trigger.getAttribute('data-item-title') || 'Category Pack';
-      const price = parseFloat(trigger.getAttribute('data-item-price') || '29');
-      const type = trigger.getAttribute('data-item-type') || 'pack';
+      var id = trigger.getAttribute('data-item-id') || 'pack';
+      var title = trigger.getAttribute('data-item-title') || 'Category Pack';
+      var price = parseFloat(trigger.getAttribute('data-item-price') || '29');
+      var type = trigger.getAttribute('data-item-type') || 'pack';
 
-      window.openPayPalCheckout({ id, title, price, type });
+      if (typeof window.openPayPalCheckout === 'function') {
+        window.openPayPalCheckout({ id: id, title: title, price: price, type: type });
+      } else {
+        console.warn('PayPal checkout function not ready yet.');
+      }
     }
   });
+
+  // Preload PayPal SDK when idle
+  if (typeof window !== 'undefined') {
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(function() { loadPayPalSdk(); });
+    } else {
+      setTimeout(function() { loadPayPalSdk(); }, 1200);
+    }
+  }
+})();
 </script>
