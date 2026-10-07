@@ -64,12 +64,24 @@ const defaultDetails = prefillBooth || prefillName ? `Booth: ${prefillBooth} (${
               </div>
             </div>
 
-            <a 
-              href="#booking-form"
-              class={`w-full py-3.5 rounded-2xl font-bold text-xs text-center transition-all block ${svc.recommended ? 'bg-blue-600 hover:bg-blue-500 text-white shadow-md shadow-blue-600/20' : 'bg-slate-900 hover:bg-slate-800 text-white'}`}
-            >
-              Request This Service (${svc.price}) &rarr;
-            </a>
+            <div class="space-y-2">
+              <a 
+                href="#booking-form"
+                class={`w-full py-3 rounded-2xl font-bold text-xs text-center transition-all block ${svc.recommended ? 'bg-blue-600 hover:bg-blue-500 text-white shadow-md shadow-blue-600/20' : 'bg-slate-900 hover:bg-slate-800 text-white'}`}
+              >
+                Inquire & Discuss Specs &rarr;
+              </a>
+              <button
+                type="button"
+                data-item-id={svc.id}
+                data-item-title={svc.title}
+                data-item-price={svc.price}
+                data-item-type="concierge"
+                class="paypal-trigger-btn w-full py-2.5 rounded-2xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+              >
+                <span>⚡ Instant PayPal Deposit (${svc.price})</span>
+              </button>
+            </div>
           </div>
         ))}
       </div>
