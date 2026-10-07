@@ -1,0 +1,21 @@
+User-agent: *
+Allow: /
+
+# Multilingual and Regional Search Spiders
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+User-agent: Sogou web spider
+Allow: /
+
+User-agent: Yandex
+Allow: /
+
+# XML Sitemaps
+Sitemap: https://sinotradelink.com/sitemap.xml

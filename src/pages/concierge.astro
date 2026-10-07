@@ -1,6 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { CONCIERGE_SERVICES } from '../lib/markets';
+
+const { searchParams } = Astro.url;
+const prefillBooth = searchParams.get('booth') || '';
+const prefillName = searchParams.get('name') || '';
+const prefillService = searchParams.get('service') || 'audit';
+const defaultDetails = prefillBooth || prefillName ? `Booth: ${prefillBooth} (${prefillName})` : '';
 ---
 
 <Layout title="On-Demand Ground Concierge & Inspection | Sino Trade Link" activePage="concierge">
@@ -78,51 +84,123 @@ import { CONCIERGE_SERVICES } from '../lib/markets';
           <p class="text-xs text-slate-500 mt-1">Our Yiwu field team will review your request and confirm dispatch within 4 hours.</p>
         </div>
 
-        <form class="space-y-4" onsubmit="event.preventDefault(); alert('Booking Received: Our Yiwu operations team will contact you via WhatsApp / Email within 4 hours to confirm dispatch.');">
+        <form id="concierge-form" class="space-y-4">
+          <input type="hidden" name="shop_id" value="CONCIERGE_INSPECTION" />
+
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs font-bold text-slate-700 mb-1">Your Full Name</label>
-              <input type="text" required placeholder="John Smith" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-blue-500" />
+              <label class="block text-xs font-bold text-slate-700 mb-1">Your Full Name *</label>
+              <input type="text" name="buyer_name" required placeholder="John Smith" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-blue-500" />
             </div>
             <div>
-              <label class="block text-xs font-bold text-slate-700 mb-1">Corporate Email</label>
-              <input type="email" required placeholder="john@company.com" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-blue-500" />
+              <label class="block text-xs font-bold text-slate-700 mb-1">Corporate Email *</label>
+              <input type="email" name="buyer_email" required placeholder="john@company.com" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-blue-500" />
             </div>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label class="block text-xs font-bold text-slate-700 mb-1">WhatsApp / Phone Number</label>
-              <input type="text" required placeholder="+1 (555) 000-0000" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-blue-500" />
+              <input type="text" name="phone" placeholder="+1 (555) 000-0000" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-blue-500" />
             </div>
             <div>
               <label class="block text-xs font-bold text-slate-700 mb-1">Service Required</label>
-              <select class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-blue-500">
-                <option value="audit">Physical Stall Audit ($99)</option>
-                <option value="sample">Booth Sample Pickup & Consolidation ($149)</option>
-                <option value="factory">Comprehensive Factory & License Audit ($299)</option>
+              <select name="service_type" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-blue-500">
+                <option value="Physical Stall Audit ($99)" selected={prefillService === 'audit'}>Physical Stall Audit ($99)</option>
+                <option value="Booth Sample Pickup & Consolidation ($149)" selected={prefillService === 'sample'}>Booth Sample Pickup & Consolidation ($149)</option>
+                <option value="Comprehensive Factory & License Audit ($299)" selected={prefillService === 'factory'}>Comprehensive Factory & License Audit ($299)</option>
               </select>
             </div>
           </div>
 
           <div>
             <label class="block text-xs font-bold text-slate-700 mb-1">Stall Details / Target Booth Coordinates</label>
-            <input type="text" required placeholder="e.g. District 5, Floor 2, Booth 62159 (Jiali Home Textiles)" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-blue-500" />
+            <input type="text" name="target_booth" value={defaultDetails} required placeholder="e.g. District 5, Floor 2, Booth 62159 (Jiali Home Textiles)" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-blue-500" />
           </div>
 
           <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Specific Inspection Instructions</label>
-            <textarea rows="3" placeholder="Tell our agent what to inspect (e.g. check quality of cotton sheets, ask for their 500-unit wholesale price, collect physical fabric swatches)..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-blue-500"></textarea>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Specific Inspection Instructions *</label>
+            <textarea name="message" rows="3" required placeholder="Tell our agent what to inspect (e.g. check quality of cotton sheets, ask for their 500-unit wholesale price, collect physical fabric swatches)..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-blue-500"></textarea>
           </div>
 
           <button 
             type="submit" 
+            id="concierge-submit-btn"
             class="w-full py-3.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl shadow-md transition-colors cursor-pointer"
           >
             Submit Ground Audit Request &rarr;
           </button>
         </form>
+
+        <div id="booking-feedback" class="hidden mt-6 p-5 rounded-2xl text-xs"></div>
       </div>
     </div>
   </section>
 </Layout>
+
+<script>
+  const form = document.getElementById('concierge-form') as HTMLFormElement | null;
+  const submitBtn = document.getElementById('concierge-submit-btn') as HTMLButtonElement | null;
+  const feedback = document.getElementById('booking-feedback');
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!submitBtn || !feedback) return;
+
+    const origBtnText = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = `<span>Submitting Request...</span>`;
+    feedback.className = 'hidden';
+
+    const formData = new FormData(form);
+    const payload = {
+      shop_id: 'CONCIERGE_INSPECTION',
+      buyer_name: formData.get('buyer_name'),
+      buyer_email: formData.get('buyer_email'),
+      phone: formData.get('phone'),
+      target_booth: formData.get('target_booth'),
+      service_type: formData.get('service_type'),
+      message: formData.get('message')
+    };
+
+    try {
+      const res = await fetch('/api/inquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        const inquiryId = data.inquiryId ? String(data.inquiryId).slice(0, 8) : 'CONFIRMED';
+        feedback.className = 'mt-6 p-5 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-900';
+        feedback.innerHTML = `
+          <div class="flex items-center gap-2 mb-2 font-black text-sm text-emerald-950">
+            <span>✅ Ground Service Request Registered!</span>
+          </div>
+          <p class="text-xs text-emerald-800 leading-relaxed mb-4">
+            Your inquiry ID is <strong class="font-mono">${inquiryId}</strong>. Our bilingual Yiwu field operations desk has received your target stall specifications and will confirm dispatch within 4 hours.
+          </p>
+          <a 
+            href="https://wa.me/8618058988888?text=Hello%20Sino%20Trade%20Link%2C%20I%20just%20submitted%20a%20Ground%20Audit%20Request%20(Inquiry%20ID%3A%20${inquiryId})%20for%20target%20stall%20inspection."
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-sm transition-colors"
+          >
+            <span>Confirm Directly on WhatsApp With Dispatch Team &rarr;</span>
+          </a>
+        `;
+        form.reset();
+      } else {
+        feedback.className = 'mt-6 p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-xs font-medium';
+        feedback.textContent = data.error || 'Failed to submit request. Please try again.';
+      }
+    } catch {
+      feedback.className = 'mt-6 p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-xs font-medium';
+      feedback.textContent = 'Network error. Please try again or message our WhatsApp team directly.';
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = origBtnText;
+    }
+  });
+</script>

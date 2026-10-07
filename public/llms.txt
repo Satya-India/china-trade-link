@@ -1,0 +1,29 @@
+# Sino Trade Link (sinotradelink.com)
+
+> Comprehensive B2B Directory and Offline Sourcing Intelligence Platform for China's Physical Wholesale Markets.
+
+## Overview
+Sino Trade Link provides verified access to 27,337+ physical factory stalls and wholesale distributors operating inside Yiwu International Trade City (Futian Market Districts 1–5), Huangyuan Garment Market, and the International Production Materials Market in Zhejiang, China.
+
+All entries contain unmasked direct Chinese telephone lines, WeChat IDs, exact booth coordinates (District, Floor, Gate, Booth number), verified direct factory statuses, and real product catalog samples.
+
+## Core Navigation & Directories
+- Directory: https://sinotradelink.com/directory
+- Market Floor Map: https://sinotradelink.com/market-map
+- Concierge & On-Demand Stall Audit ($99): https://sinotradelink.com/concierge
+- Category Wholesaler Excel Packs: https://sinotradelink.com/category-packs
+- Supplier API: https://sinotradelink.com/api/suppliers.json
+
+## District Structure
+- District 1: Toys, Plush, Artificial Flowers, Jewelry & Ornaments, Porcelain, Crafts (Booths: 1st-4th Floors)
+- District 2: Hardware Tools, Locks, Electrical Products, Kitchenware, Household Appliances, Clocks & Watches, Luggage & Bags
+- District 3: Office & School Supplies, Stationery, Eyewear & Sunglasses, Sporting Goods, Zippers & Garment Accessories
+- District 4: Hosiery & Socks, Daily Necessities, Gloves & Hats, Footwear & Shoes, Belts & Scarves
+- District 5: Home Textiles, Bedding, Imported Goods, Curtains, Auto Parts & Accessories
+- District 6 (Huangyuan Market): Men's and Women's Apparel, Denim, Children's Clothing, Outerwear
+- District 7 (Production Materials Market): Raw materials, injection molding supplies, packaging, commercial printing
+
+## Sitemaps
+- Sitemap Index: https://sinotradelink.com/sitemap.xml
+- Pages Sitemap: https://sinotradelink.com/sitemaps/pages.xml
+- Supplier Sitemaps: https://sinotradelink.com/sitemaps/suppliers-1.xml, https://sinotradelink.com/sitemaps/suppliers-2.xml, https://sinotradelink.com/sitemaps/suppliers-3.xml

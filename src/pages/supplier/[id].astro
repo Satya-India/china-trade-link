@@ -79,23 +79,42 @@ const districtName = districtNameMap[supplier.district] || `District ${supplier.
           )}
         </div>
 
-        <!-- Quick Unlock Trigger -->
-        <button 
-          type="button"
-          data-unlock-id={supplier.shop_id}
-          data-supplier-name={supplier.clean_name || supplier.name}
-          data-contact-person={supplier.contact_person || 'Stall Manager'}
-          data-phone={supplier.unmasked_direct_phone}
-          data-intl-phone={supplier.international_mobile}
-          data-district={districtName}
-          data-booth={supplier.booth_no}
-          class="unlock-contact-btn px-5 py-3 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-md transition-all shrink-0 flex items-center gap-2 cursor-pointer"
-        >
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />
-          </svg>
-          <span>Reveal Direct Mobile & WhatsApp</span>
-        </button>
+        <!-- Quick Unlock & RFQ Triggers -->
+        <div class="flex flex-wrap items-center gap-3 shrink-0">
+          <button 
+            type="button"
+            data-unlock-id={supplier.shop_id}
+            data-supplier-name={supplier.clean_name || supplier.name}
+            data-contact-person={supplier.contact_person || 'Stall Manager'}
+            data-phone={supplier.unmasked_direct_phone}
+            data-intl-phone={supplier.international_mobile}
+            data-district={districtName}
+            data-booth={supplier.booth_no}
+            class="unlock-contact-btn px-5 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-md transition-all flex items-center gap-2 cursor-pointer"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <span>Request Quote / RFQ</span>
+          </button>
+
+          <button 
+            type="button"
+            data-unlock-id={supplier.shop_id}
+            data-supplier-name={supplier.clean_name || supplier.name}
+            data-contact-person={supplier.contact_person || 'Stall Manager'}
+            data-phone={supplier.unmasked_direct_phone}
+            data-intl-phone={supplier.international_mobile}
+            data-district={districtName}
+            data-booth={supplier.booth_no}
+            class="unlock-contact-btn px-5 py-3 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-md transition-all flex items-center gap-2 cursor-pointer"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />
+            </svg>
+            <span>Reveal Mobile & WhatsApp</span>
+          </button>
+        </div>
       </div>
     </div>
   </section>
@@ -207,6 +226,32 @@ const districtName = districtNameMap[supplier.district] || `District ${supplier.
               class="unlock-contact-btn w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
               <span>Click to Reveal Contact & WeChat</span>
+            </button>
+          </div>
+
+          <!-- Direct Wholesale RFQ Card -->
+          <div class="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-3xl border border-emerald-200 p-6 shadow-sm">
+            <span class="text-[10px] uppercase font-bold text-emerald-700 tracking-wider block mb-1">
+              Direct Wholesale RFQ
+            </span>
+            <h3 class="text-base font-bold text-slate-900 mb-2">
+              Request MOQ & FOB Price Quote
+            </h3>
+            <p class="text-xs text-slate-600 mb-4 leading-relaxed">
+              Submit volume inquiries directly to Booth {supplier.booth_no || ''}. Our on-site Yiwu liaison team coordinates the quotation directly with the factory.
+            </p>
+            <button 
+              type="button"
+              data-unlock-id={supplier.shop_id}
+              data-supplier-name={supplier.clean_name || supplier.name}
+              data-contact-person={supplier.contact_person || 'Stall Manager'}
+              data-phone={supplier.unmasked_direct_phone}
+              data-intl-phone={supplier.international_mobile}
+              data-district={districtName}
+              data-booth={supplier.booth_no}
+              class="unlock-contact-btn w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl text-center shadow-sm transition-colors cursor-pointer"
+            >
+              Submit RFQ to Stall &rarr;
             </button>
           </div>
 
