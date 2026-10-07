@@ -236,8 +236,8 @@
 
     const headers = ['Supplier Name', 'District', 'Booth Number', 'Contact Person', 'Direct Phone', 'WhatsApp Link'];
     const rows = list.map(item => {
-      const cleanPhone = (item.phone || '').replace(/\D/g, '');
-      const waLink = cleanPhone ? `https://wa.me/${cleanPhone.startsWith('86') ? cleanPhone : '86' + cleanPhone}` : '';
+      const digits = (item.phone || '').replace(/\D/g, '');
+      const waLink = digits.length >= 11 ? `https://wa.me/${digits.startsWith('86') ? digits : '86' + digits}` : `https://sinotradelink.com/supplier/${item.id}`;
       return [
         `"${(item.name || '').replace(/"/g, '""')}"`,
         `"${(item.district || '').replace(/"/g, '""')}"`,

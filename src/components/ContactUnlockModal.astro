@@ -3,13 +3,13 @@
 
 <!-- Global Contact Unlock & RFQ Lead Capture Modal Dialog -->
 <dialog id="contact-unlock-modal" class="fixed inset-0 m-auto z-50 p-0 rounded-3xl bg-transparent backdrop:bg-slate-950/70 backdrop:backdrop-blur-sm max-w-lg w-full shadow-2xl open:animate-in open:fade-in open:zoom-in-95">
-  <div class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-2xl max-h-[90vh] flex flex-col">
+  <div class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-2xl max-h-[92vh] flex flex-col">
     <!-- Top Header Banner -->
     <div class="bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 px-6 py-4 text-white relative shrink-0">
       <button 
         type="button" 
         id="modal-close-btn"
-        class="absolute top-4 right-4 text-white/80 hover:text-white p-1 rounded-full hover:bg-white/10 transition-colors"
+        class="absolute top-4 right-4 text-white/80 hover:text-white p-1 rounded-full hover:bg-white/10 transition-colors cursor-pointer"
         aria-label="Close dialog"
       >
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -25,148 +25,251 @@
         Supplier Name
       </h3>
       <p id="modal-stall-info" class="text-xs text-blue-100 mt-1 flex items-center gap-2">
-        <span>District 5</span> • <span>Booth 62159</span>
+        <span>District 1</span> • <span>Booth 47477</span>
       </p>
     </div>
 
     <!-- Modal Body Content (Scrollable) -->
     <div class="p-6 space-y-5 overflow-y-auto">
-      <!-- Unmasked Contact Card -->
-      <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-3">
-        <div class="flex items-center justify-between">
-          <div>
-            <span class="text-[10px] uppercase font-bold text-slate-400 block">Contact Person:</span>
-            <span id="modal-contact-person" class="text-sm font-bold text-slate-800">Stall Manager</span>
+
+      <!-- STATE A: GATED LEAD CAPTURE FORM (Default before unlock) -->
+      <div id="unlock-gate-view" class="space-y-4">
+        <!-- Masked Phone Preview Box -->
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4">
+          <div class="flex items-center justify-between mb-2">
+            <div>
+              <span class="text-[10px] uppercase font-bold text-slate-400 block">Contact Person:</span>
+              <span id="gate-contact-person" class="text-sm font-bold text-slate-800">Stall Manager</span>
+            </div>
+            <span class="inline-flex items-center gap-1 text-[11px] font-bold bg-amber-50 text-amber-700 border border-amber-200/80 px-2 py-0.5 rounded-full">
+              <svg class="w-3 h-3 text-amber-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+              </svg>
+              Protected Line
+            </span>
           </div>
-          <span class="inline-flex items-center gap-1 text-[11px] font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">
-            <svg class="w-3 h-3 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+
+          <div>
+            <span class="text-[10px] uppercase font-bold text-slate-400 block">Direct Mobile Line:</span>
+            <div class="flex items-center justify-between mt-1 bg-white p-2.5 rounded-xl border border-slate-200">
+              <span id="gate-masked-phone" class="font-mono text-base font-bold text-slate-600 tracking-wide">
+                +86-186-***-9119
+              </span>
+              <span class="text-[11px] text-slate-400 font-medium flex items-center gap-1">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />
+                </svg>
+                Middle digits hidden
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Verification Form -->
+        <div class="bg-blue-50/50 border border-blue-100 rounded-2xl p-4">
+          <div class="flex items-center gap-2 mb-2">
+            <svg class="w-4 h-4 text-blue-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
             </svg>
-            100% Unmasked
+            <h4 class="text-xs font-bold text-slate-900">
+              Anti-Scraping Verification
+            </h4>
+          </div>
+          <p class="text-[11px] text-slate-600 leading-relaxed mb-3">
+            To protect physical stall wholesale lines from automated bots, enter your business details to instantly reveal the stall's unmasked mobile, WeChat ID & WhatsApp chat.
+          </p>
+
+          <form id="gate-unlock-form" class="space-y-2.5">
+            <input type="hidden" id="gate-shop-id" name="shop_id" value="" />
+            <input type="hidden" id="gate-target-booth" name="target_booth" value="" />
+
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-[10px] font-bold uppercase text-slate-500 mb-1">Your Full Name *</label>
+                <input 
+                  type="text" 
+                  id="gate-buyer-name" 
+                  name="buyer_name" 
+                  placeholder="John Smith" 
+                  required 
+                  class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:border-blue-500 bg-white"
+                />
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold uppercase text-slate-500 mb-1">Business Email *</label>
+                <input 
+                  type="email" 
+                  id="gate-buyer-email" 
+                  name="buyer_email" 
+                  placeholder="john@company.com" 
+                  required 
+                  class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:border-blue-500 bg-white"
+                />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-[10px] font-bold uppercase text-slate-500 mb-1">Country / Region</label>
+                <input 
+                  type="text" 
+                  id="gate-buyer-country" 
+                  name="buyer_country" 
+                  placeholder="United States, India, UAE..." 
+                  class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:border-blue-500 bg-white"
+                />
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold uppercase text-slate-500 mb-1">WhatsApp / Phone (Optional)</label>
+                <input 
+                  type="text" 
+                  id="gate-buyer-phone" 
+                  name="buyer_phone" 
+                  placeholder="+1 555-0199" 
+                  class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:border-blue-500 bg-white"
+                />
+              </div>
+            </div>
+
+            <button 
+              type="submit" 
+              id="gate-submit-btn"
+              class="w-full py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer mt-1"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />
+              </svg>
+              <span>Instant Reveal Direct Phone & WeChat (Free)</span>
+            </button>
+            <p class="text-[10px] text-center text-slate-400 mt-1">
+              Instant 1-click reveal • 5 free verified stall reveals per day
+            </p>
+          </form>
+
+          <div id="gate-feedback" class="hidden mt-3 p-3 rounded-xl text-xs font-medium"></div>
+        </div>
+      </div>
+
+      <!-- STATE B: UNLOCKED CONTACT DETAILS VIEW (Shown after verification) -->
+      <div id="unlock-revealed-view" class="hidden space-y-4">
+        <!-- Success Banner -->
+        <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-3 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span class="text-xs font-bold text-emerald-900">Direct Contact Unlocked & Verified</span>
+          </div>
+          <span id="reveals-remaining-badge" class="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">
+            4 reveals left today
           </span>
         </div>
 
-        <div>
-          <span class="text-[10px] uppercase font-bold text-slate-400 block">Direct Mobile / WhatsApp:</span>
-          <div class="flex items-center justify-between mt-1 bg-white p-2.5 rounded-xl border border-slate-200">
-            <span id="modal-phone-display" class="font-mono text-base font-bold text-slate-900 tracking-wide">
-              +86-180-xxxx-xxxx
+        <!-- Unmasked Details Card -->
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-3">
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="text-[10px] uppercase font-bold text-slate-400 block">Stall Manager:</span>
+              <span id="revealed-contact-person" class="text-sm font-bold text-slate-900">Stall Manager</span>
+            </div>
+            <span class="inline-flex items-center gap-1 text-[11px] font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">
+              <svg class="w-3 h-3 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+              </svg>
+              100% Unmasked
             </span>
+          </div>
+
+          <div>
+            <span class="text-[10px] uppercase font-bold text-slate-400 block">Direct Mobile / WhatsApp Line:</span>
+            <div class="flex items-center justify-between mt-1 bg-white p-2.5 rounded-xl border border-slate-200">
+              <span id="revealed-phone-display" class="font-mono text-base font-bold text-slate-900 tracking-wide">
+                +86 186 5796 9119
+              </span>
+              <button 
+                type="button" 
+                id="copy-revealed-phone-btn"
+                class="px-2.5 py-1 text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition-colors flex items-center gap-1 cursor-pointer"
+              >
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+                <span>Copy</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 1-Click WhatsApp & WeChat Direct Triggers -->
+          <div class="grid grid-cols-2 gap-2 pt-1">
+            <a 
+              id="revealed-whatsapp-link" 
+              href="#" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm transition-colors text-center cursor-pointer"
+            >
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.969.54 1.771.82 2.791.82 3.181 0 5.767-2.586 5.768-5.766 0-3.18-2.587-5.766-5.768-5.766zm3.364 8.167c-.14.394-.816.732-1.129.779-.313.047-.692.179-2.285-.48-1.593-.66-2.582-2.247-2.661-2.352-.079-.105-.643-.855-.643-1.63 0-.776.406-1.157.55-1.314.143-.157.313-.196.417-.196.104 0 .209.002.3.007.096.005.225-.037.352.268.13.313.444 1.082.483 1.161.039.078.065.17.013.274-.052.104-.078.17-.156.261-.078.092-.165.205-.235.275-.079.078-.161.163-.069.32.091.157.406.67 871 1.084.599.533 1.103.698 1.26.776.157.078.248.065.34-.039.091-.104.391-.456.495-.613.104-.157.209-.13.352-.078.143.052.912.43 1.069.508.157.078.261.117.3.183.039.065.039.378-.101.772z"/>
+              </svg>
+              <span>Chat on WhatsApp</span>
+            </a>
             <button 
               type="button" 
-              id="copy-phone-btn"
-              class="px-2.5 py-1 text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition-colors flex items-center gap-1 cursor-pointer"
+              id="revealed-wechat-btn"
+              class="py-2.5 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm transition-colors text-center cursor-pointer"
             >
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
               </svg>
-              <span>Copy</span>
+              <span id="revealed-wechat-text">Copy WeChat ID</span>
             </button>
           </div>
         </div>
 
-        <!-- Quick Chat Buttons -->
-        <div class="grid grid-cols-2 gap-2 pt-1">
-          <a 
-            id="whatsapp-link" 
-            href="#" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            class="py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition-colors text-center cursor-pointer"
-          >
-            <span>Open WhatsApp</span>
-          </a>
-          <button 
-            type="button" 
-            id="wechat-btn"
-            class="py-2.5 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition-colors text-center cursor-pointer"
-          >
-            <span>WeChat ID Copied</span>
-          </button>
+        <!-- Direct RFQ Form Section (Optional followup RFQ) -->
+        <div class="border-t border-slate-200 pt-4">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              Send Specifications / Request MOQ Quote
+            </span>
+            <span class="text-[10px] text-slate-500 font-medium">Direct to Coordinator</span>
+          </div>
+
+          <form id="revealed-rfq-form" class="space-y-2.5">
+            <input type="hidden" id="rfq-shop-id" name="shop_id" value="" />
+            <input type="hidden" id="rfq-target-booth" name="target_booth" value="" />
+
+            <textarea 
+              id="rfq-message" 
+              name="message" 
+              rows="2" 
+              required 
+              placeholder="Describe product models, target order quantities (MOQ), and packaging requirements..." 
+              class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:border-blue-500 bg-slate-50"
+            ></textarea>
+
+            <button 
+              type="submit" 
+              id="rfq-submit-btn"
+              class="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl shadow-sm transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+            >
+              <span>Submit RFQ to Stall & Coordinator &rarr;</span>
+            </button>
+          </form>
+
+          <div id="rfq-feedback" class="hidden mt-2 p-3 rounded-xl text-xs font-medium"></div>
         </div>
       </div>
 
-      <!-- Direct RFQ Form Section (Saves directly to Cloudflare D1) -->
-      <div class="border-t border-slate-200 pt-4">
-        <div class="flex items-center justify-between mb-2">
-          <span class="text-xs font-bold text-slate-900 flex items-center gap-1.5">
-            <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            Send Direct RFQ / Request Quotation
-          </span>
-          <span class="text-[10px] text-slate-500 font-medium">Recorded in Database</span>
-        </div>
-
-        <form id="modal-rfq-form" class="space-y-2.5">
-          <input type="hidden" id="rfq-shop-id" name="shop_id" value="" />
-          <input type="hidden" id="rfq-target-booth" name="target_booth" value="" />
-
-          <div class="grid grid-cols-2 gap-2">
-            <input 
-              type="text" 
-              id="rfq-buyer-name" 
-              name="buyer_name" 
-              placeholder="Your Full Name *" 
-              required 
-              class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:border-blue-500 bg-slate-50"
-            />
-            <input 
-              type="email" 
-              id="rfq-buyer-email" 
-              name="buyer_email" 
-              placeholder="Business Email *" 
-              required 
-              class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:border-blue-500 bg-slate-50"
-            />
-          </div>
-
-          <div class="grid grid-cols-2 gap-2">
-            <input 
-              type="text" 
-              id="rfq-buyer-country" 
-              name="buyer_country" 
-              placeholder="Your Country / Region" 
-              class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:border-blue-500 bg-slate-50"
-            />
-            <input 
-              type="text" 
-              id="rfq-buyer-phone" 
-              name="phone" 
-              placeholder="WhatsApp / Phone (Optional)" 
-              class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:border-blue-500 bg-slate-50"
-            />
-          </div>
-
-          <textarea 
-            id="rfq-message" 
-            name="message" 
-            rows="2" 
-            required 
-            placeholder="Describe product models, target order quantities (MOQ), and shipping port..." 
-            class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:border-blue-500 bg-slate-50"
-          ></textarea>
-
-          <button 
-            type="submit" 
-            id="rfq-submit-btn"
-            class="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl shadow-sm transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
-          >
-            <span>Submit RFQ to Stall & Coordinator &rarr;</span>
-          </button>
-        </form>
-
-        <div id="rfq-feedback" class="hidden mt-2 p-3 rounded-xl text-xs font-medium"></div>
-      </div>
-
-      <!-- Upsell 1: Category Pack -->
+      <!-- UPSELL 1: Category Pack -->
       <div class="rounded-2xl bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200/80 p-4">
         <div class="flex items-start justify-between gap-3">
           <div>
             <span class="inline-block text-[10px] font-black uppercase tracking-wider bg-amber-500 text-white px-2 py-0.5 rounded mb-1">
               Save 20+ Hours
             </span>
-            <h4 class="text-xs font-bold text-slate-900">Download the Full Category Excel Sheet ($29)</h4>
+            <h4 class="text-xs font-bold text-slate-900">Download Full Category Excel Sheet ($29)</h4>
             <p class="text-[11px] text-slate-600 mt-0.5">
               Get all 1,500+ direct factory contacts in this niche with clean spreadsheets, WeChat IDs, and booth numbers.
             </p>
@@ -180,11 +283,11 @@
         </div>
       </div>
 
-      <!-- Upsell 2: On-Demand Ground Concierge -->
+      <!-- UPSELL 2: On-Demand Ground Concierge -->
       <div class="rounded-2xl bg-slate-900 text-white p-4 flex items-center justify-between gap-3">
         <div>
           <span class="text-[10px] uppercase font-bold text-emerald-400 block">Can't travel to China?</span>
-          <h4 class="text-xs font-bold text-white">Book an On-Demand Physical Stall Visit ($99)</h4>
+          <h4 class="text-xs font-bold text-white">Book an On-Demand Stall Visit ($99)</h4>
           <p class="text-[11px] text-slate-400">Our local agent walks to this booth, verifies stock, and takes 4K video.</p>
         </div>
         <a 
@@ -194,75 +297,174 @@
           Book Visit
         </a>
       </div>
+
     </div>
   </div>
 </dialog>
 
 <script>
-  // Client-side controller for modal dialog
+  // Client-side controller for Contact Unlock Modal
   const modal = document.getElementById('contact-unlock-modal') as HTMLDialogElement | null;
   const closeBtn = document.getElementById('modal-close-btn');
   const modalSupplierName = document.getElementById('modal-supplier-name');
   const modalStallInfo = document.getElementById('modal-stall-info');
-  const modalContactPerson = document.getElementById('modal-contact-person');
-  const modalPhoneDisplay = document.getElementById('modal-phone-display');
-  const copyPhoneBtn = document.getElementById('copy-phone-btn');
-  const whatsappLink = document.getElementById('whatsapp-link') as HTMLAnchorElement | null;
-  const wechatBtn = document.getElementById('wechat-btn');
 
-  // RFQ Form Elements
-  const rfqForm = document.getElementById('modal-rfq-form') as HTMLFormElement | null;
+  // State Views
+  const gateView = document.getElementById('unlock-gate-view');
+  const revealedView = document.getElementById('unlock-revealed-view');
+
+  // Gate Elements
+  const gateContactPerson = document.getElementById('gate-contact-person');
+  const gateMaskedPhone = document.getElementById('gate-masked-phone');
+  const gateForm = document.getElementById('gate-unlock-form') as HTMLFormElement | null;
+  const gateShopId = document.getElementById('gate-shop-id') as HTMLInputElement | null;
+  const gateTargetBooth = document.getElementById('gate-target-booth') as HTMLInputElement | null;
+  const gateBuyerName = document.getElementById('gate-buyer-name') as HTMLInputElement | null;
+  const gateBuyerEmail = document.getElementById('gate-buyer-email') as HTMLInputElement | null;
+  const gateBuyerCountry = document.getElementById('gate-buyer-country') as HTMLInputElement | null;
+  const gateBuyerPhone = document.getElementById('gate-buyer-phone') as HTMLInputElement | null;
+  const gateSubmitBtn = document.getElementById('gate-submit-btn') as HTMLButtonElement | null;
+  const gateFeedback = document.getElementById('gate-feedback');
+
+  // Revealed View Elements
+  const revealedContactPerson = document.getElementById('revealed-contact-person');
+  const revealedPhoneDisplay = document.getElementById('revealed-phone-display');
+  const copyRevealedPhoneBtn = document.getElementById('copy-revealed-phone-btn');
+  const revealedWhatsappLink = document.getElementById('revealed-whatsapp-link') as HTMLAnchorElement | null;
+  const revealedWechatBtn = document.getElementById('revealed-wechat-btn');
+  const revealedWechatText = document.getElementById('revealed-wechat-text');
+  const revealsRemainingBadge = document.getElementById('reveals-remaining-badge');
+
+  // RFQ Elements
+  const rfqForm = document.getElementById('revealed-rfq-form') as HTMLFormElement | null;
   const rfqShopId = document.getElementById('rfq-shop-id') as HTMLInputElement | null;
   const rfqTargetBooth = document.getElementById('rfq-target-booth') as HTMLInputElement | null;
   const rfqSubmitBtn = document.getElementById('rfq-submit-btn') as HTMLButtonElement | null;
   const rfqFeedback = document.getElementById('rfq-feedback');
 
-  let currentRawPhone = '';
   let currentShopId = '';
+  let currentSupplierName = '';
+  let currentContactPerson = '';
   let currentBooth = '';
+  let currentDistrict = '';
+  let currentUnmaskedPhone = '';
+  let currentWechat = '';
 
-  function openUnlockModal(btn: HTMLElement) {
+  // Retrieve cached unlocks for session
+  function getSessionUnlockedStalls(): Record<string, { phone: string; intl_phone: string; wechat: string }> {
+    try {
+      const data = sessionStorage.getItem('stl_unlocked_stalls');
+      return data ? JSON.parse(data) : {};
+    } catch {
+      return {};
+    }
+  }
+
+  function setSessionUnlockedStall(shopId: string, phone: string, intlPhone: string, wechat: string) {
+    try {
+      const unlocked = getSessionUnlockedStalls();
+      unlocked[shopId] = { phone, intl_phone: intlPhone, wechat };
+      sessionStorage.setItem('stl_unlocked_stalls', JSON.stringify(unlocked));
+    } catch {
+      // storage unavailable
+    }
+  }
+
+  function populateSavedBuyerProfile() {
+    try {
+      if (gateBuyerName && !gateBuyerName.value) {
+        gateBuyerName.value = localStorage.getItem('stl_buyer_name') || '';
+      }
+      if (gateBuyerEmail && !gateBuyerEmail.value) {
+        gateBuyerEmail.value = localStorage.getItem('stl_buyer_email') || '';
+      }
+      if (gateBuyerCountry && !gateBuyerCountry.value) {
+        gateBuyerCountry.value = localStorage.getItem('stl_buyer_country') || '';
+      }
+      if (gateBuyerPhone && !gateBuyerPhone.value) {
+        gateBuyerPhone.value = localStorage.getItem('stl_buyer_phone') || '';
+      }
+    } catch {
+      // storage unavailable
+    }
+  }
+
+  function renderRevealedState(phone: string, intlPhone: string, wechat: string, revealsLeft?: number) {
+    currentUnmaskedPhone = phone;
+    currentWechat = wechat || phone;
+
+    if (gateView) gateView.classList.add('hidden');
+    if (revealedView) revealedView.classList.remove('hidden');
+
+    if (revealedContactPerson) revealedContactPerson.textContent = currentContactPerson || 'Stall Manager';
+    if (revealedPhoneDisplay) revealedPhoneDisplay.textContent = intlPhone || phone || 'Line Available';
+
+    if (revealsRemainingBadge && typeof revealsLeft === 'number') {
+      revealsRemainingBadge.textContent = `${revealsLeft} reveals left today`;
+    }
+
+    // Set WhatsApp link
+    const cleanDigits = phone.replace(/\D/g, '');
+    const intlDigits = cleanDigits.startsWith('86') ? cleanDigits : `86${cleanDigits}`;
+    if (revealedWhatsappLink) {
+      revealedWhatsappLink.href = `https://wa.me/${intlDigits}?text=Hi%20${encodeURIComponent(currentContactPerson)}%2C%20I%20saw%20your%20stall%20at%20Yiwu%20Futian%20Market%20(Booth%20${encodeURIComponent(currentBooth)})%20on%20SinoTradeLink%20and%20would%20like%20to%20inquire%20about%20your%20wholesale%20catalog.`;
+    }
+
+    if (revealedWechatText) {
+      revealedWechatText.textContent = `WeChat: ${currentWechat || 'Click to Copy'}`;
+    }
+
+    if (rfqShopId) rfqShopId.value = currentShopId;
+    if (rfqTargetBooth) rfqTargetBooth.value = currentBooth;
+  }
+
+  function openModal(btn: HTMLElement) {
     if (!modal) return;
 
-    const sName = btn.getAttribute('data-supplier-name') || 'Supplier';
-    const cPerson = btn.getAttribute('data-contact-person') || 'Stall Manager';
-    const rawP = btn.getAttribute('data-phone') || '';
-    const intlP = btn.getAttribute('data-intl-phone') || rawP;
-    const district = btn.getAttribute('data-district') || 'Market Stall';
-    const booth = btn.getAttribute('data-booth') || '';
-    const shopId = btn.getAttribute('data-unlock-id') || '';
+    currentShopId = btn.getAttribute('data-unlock-id') || '';
+    currentSupplierName = btn.getAttribute('data-supplier-name') || 'Supplier';
+    currentContactPerson = btn.getAttribute('data-contact-person') || 'Stall Manager';
+    currentDistrict = btn.getAttribute('data-district') || 'Market Stall';
+    currentBooth = btn.getAttribute('data-booth') || '';
+    const maskedPhone = btn.getAttribute('data-masked-phone') || '+86-186-***-9119';
 
-    currentRawPhone = rawP;
-    currentShopId = shopId;
-    currentBooth = booth;
+    if (modalSupplierName) modalSupplierName.textContent = currentSupplierName;
+    if (modalStallInfo) modalStallInfo.innerHTML = `<span>${currentDistrict}</span>${currentBooth ? ` • <span>Booth ${currentBooth}</span>` : ''}`;
 
-    if (modalSupplierName) modalSupplierName.textContent = sName;
-    if (modalStallInfo) modalStallInfo.innerHTML = `<span>${district}</span>${booth ? ` • <span>Booth ${booth}</span>` : ''}`;
-    if (modalContactPerson) modalContactPerson.textContent = cPerson;
-    if (modalPhoneDisplay) modalPhoneDisplay.textContent = intlP || rawP || 'Verified on Request';
+    if (gateShopId) gateShopId.value = currentShopId;
+    if (gateTargetBooth) gateTargetBooth.value = currentBooth;
+    if (gateContactPerson) gateContactPerson.textContent = currentContactPerson;
+    if (gateMaskedPhone) gateMaskedPhone.textContent = maskedPhone;
 
-    if (rfqShopId) rfqShopId.value = shopId;
-    if (rfqTargetBooth) rfqTargetBooth.value = booth;
+    if (gateFeedback) {
+      gateFeedback.className = 'hidden';
+      gateFeedback.innerHTML = '';
+    }
     if (rfqFeedback) {
       rfqFeedback.className = 'hidden';
       rfqFeedback.innerHTML = '';
     }
 
-    // WhatsApp Direct Link
-    const cleanDigits = rawP.replace(/\D/g, '');
-    const intlDigits = cleanDigits.startsWith('86') ? cleanDigits : `86${cleanDigits}`;
-    if (whatsappLink) {
-      whatsappLink.href = `https://wa.me/${intlDigits}?text=Hi%20${encodeURIComponent(cPerson)}%2C%20I%20saw%20your%20stall%20at%20Yiwu%20Futian%20Market%20and%20would%20like%20to%20inquire%20about%20your%20wholesale%20products.`;
+    populateSavedBuyerProfile();
+
+    // Check if this stall was already unlocked in this session
+    const unlockedStalls = getSessionUnlockedStalls();
+    if (unlockedStalls[currentShopId]) {
+      const u = unlockedStalls[currentShopId];
+      renderRevealedState(u.phone, u.intl_phone, u.wechat);
+    } else {
+      if (gateView) gateView.classList.remove('hidden');
+      if (revealedView) revealedView.classList.add('hidden');
     }
 
     modal.showModal();
   }
 
-  // Attach event listeners to all unlock / RFQ buttons
+  // Click triggers on all unlock buttons across cards and detail pages
   document.addEventListener('click', (e) => {
     const target = (e.target as HTMLElement).closest('.unlock-contact-btn') as HTMLElement | null;
     if (target) {
-      openUnlockModal(target);
+      openModal(target);
     }
   });
 
@@ -270,7 +472,6 @@
     modal?.close();
   });
 
-  // Close when clicking modal backdrop
   modal?.addEventListener('click', (e) => {
     const dialogDimensions = modal.getBoundingClientRect();
     if (
@@ -283,73 +484,160 @@
     }
   });
 
+  // Handle Gate Verification Form Submission
+  gateForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!gateSubmitBtn || !gateFeedback) return;
+
+    const bName = gateBuyerName?.value.trim() || '';
+    const bEmail = gateBuyerEmail?.value.trim() || '';
+    const bCountry = gateBuyerCountry?.value.trim() || '';
+    const bPhone = gateBuyerPhone?.value.trim() || '';
+
+    if (!bName || !bEmail) return;
+
+    // Save profile to local storage for instant auto-fill
+    try {
+      localStorage.setItem('stl_buyer_name', bName);
+      localStorage.setItem('stl_buyer_email', bEmail);
+      if (bCountry) localStorage.setItem('stl_buyer_country', bCountry);
+      if (bPhone) localStorage.setItem('stl_buyer_phone', bPhone);
+    } catch {}
+
+    const origBtnContent = gateSubmitBtn.innerHTML;
+    gateSubmitBtn.disabled = true;
+    gateSubmitBtn.innerHTML = `
+      <span class="w-3.5 h-3.5 rounded-full border-2 border-white border-t-transparent animate-spin"></span>
+      <span>Verifying & Unlocking Direct Stall...</span>
+    `;
+    gateFeedback.className = 'hidden';
+
+    try {
+      const res = await fetch('/api/unlock-contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          shop_id: currentShopId,
+          buyer_name: bName,
+          buyer_email: bEmail,
+          buyer_country: bCountry,
+          buyer_phone: bPhone
+        })
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        setSessionUnlockedStall(currentShopId, data.phone, data.intl_phone, data.wechat);
+        renderRevealedState(data.phone, data.intl_phone, data.wechat, data.reveals_left);
+      } else if (res.status === 429) {
+        // Daily rate limit hit
+        gateFeedback.className = 'mt-3 p-3.5 rounded-2xl text-xs bg-amber-50 text-amber-900 border border-amber-200';
+        gateFeedback.innerHTML = `
+          <div class="font-bold mb-1 flex items-center gap-1.5 text-amber-800">
+            <svg class="w-4 h-4 text-amber-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+            </svg>
+            Daily Reveal Limit Reached (5/5)
+          </div>
+          <p class="text-[11px] text-amber-700 leading-relaxed mb-2">
+            You've reached the free daily quota of 5 unlocked stalls. To access all 1,500+ direct factory contacts in this category, download the verified Excel directory or contact our concierge.
+          </p>
+          <div class="flex items-center gap-2 pt-1">
+            <a href="/category-packs" class="px-2.5 py-1 bg-amber-600 hover:bg-amber-500 text-white rounded-lg font-bold text-[11px]">
+              Category Excel Sheets ($29) &rarr;
+            </a>
+            <a href="/concierge" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-white rounded-lg font-bold text-[11px]">
+              VIP Desk
+            </a>
+          </div>
+        `;
+      } else {
+        gateFeedback.className = 'mt-3 p-3 rounded-xl text-xs font-medium bg-rose-50 text-rose-800 border border-rose-200';
+        gateFeedback.textContent = data.error || 'Unable to unlock contact. Please check your email and try again.';
+      }
+    } catch (err) {
+      gateFeedback.className = 'mt-3 p-3 rounded-xl text-xs font-medium bg-rose-50 text-rose-800 border border-rose-200';
+      gateFeedback.textContent = 'Connection error. Please try again or reach us via WhatsApp.';
+    } finally {
+      gateSubmitBtn.disabled = false;
+      gateSubmitBtn.innerHTML = origBtnContent;
+    }
+  });
+
   // Copy phone action
-  copyPhoneBtn?.addEventListener('click', () => {
-    if (!currentRawPhone) return;
-    navigator.clipboard.writeText(currentRawPhone).then(() => {
-      const orig = copyPhoneBtn.innerHTML;
-      copyPhoneBtn.innerHTML = `<span>Copied!</span>`;
-      setTimeout(() => { copyPhoneBtn.innerHTML = orig; }, 2000);
+  copyRevealedPhoneBtn?.addEventListener('click', () => {
+    if (!currentUnmaskedPhone) return;
+    navigator.clipboard.writeText(currentUnmaskedPhone).then(() => {
+      const orig = copyRevealedPhoneBtn.innerHTML;
+      copyRevealedPhoneBtn.innerHTML = `<span>Copied!</span>`;
+      setTimeout(() => { copyRevealedPhoneBtn.innerHTML = orig; }, 2000);
     });
   });
 
   // Copy WeChat action
-  wechatBtn?.addEventListener('click', () => {
-    if (!currentRawPhone) return;
-    navigator.clipboard.writeText(currentRawPhone).then(() => {
-      const orig = wechatBtn.innerHTML;
-      wechatBtn.innerHTML = `<span>Copied WeChat ID!</span>`;
-      setTimeout(() => { wechatBtn.innerHTML = orig; }, 2000);
+  revealedWechatBtn?.addEventListener('click', () => {
+    if (!currentWechat && !currentUnmaskedPhone) return;
+    const toCopy = currentWechat || currentUnmaskedPhone;
+    navigator.clipboard.writeText(toCopy).then(() => {
+      if (revealedWechatText) {
+        const orig = revealedWechatText.textContent;
+        revealedWechatText.textContent = `Copied ID: ${toCopy}!`;
+        setTimeout(() => { revealedWechatText.textContent = orig; }, 2000);
+      }
     });
   });
 
-  // RFQ Form Async Submission
+  // Submit Follow-up RFQ directly
   rfqForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!rfqSubmitBtn || !rfqFeedback) return;
 
-    const origBtnText = rfqSubmitBtn.innerHTML;
+    const origBtn = rfqSubmitBtn.innerHTML;
     rfqSubmitBtn.disabled = true;
-    rfqSubmitBtn.innerHTML = `<span>Submitting RFQ...</span>`;
+    rfqSubmitBtn.innerHTML = `<span>Submitting Inquiry...</span>`;
     rfqFeedback.className = 'hidden';
 
-    const formData = new FormData(rfqForm);
-    const payload = {
-      shop_id: formData.get('shop_id') || currentShopId,
-      target_booth: formData.get('target_booth') || currentBooth,
-      buyer_name: formData.get('buyer_name'),
-      buyer_email: formData.get('buyer_email'),
-      buyer_country: formData.get('buyer_country'),
-      phone: formData.get('phone'),
-      message: formData.get('message'),
-      service_type: 'rfq'
-    };
+    const bName = localStorage.getItem('stl_buyer_name') || 'Direct Buyer';
+    const bEmail = localStorage.getItem('stl_buyer_email') || '';
+    const bCountry = localStorage.getItem('stl_buyer_country') || 'Global';
+    const bPhone = localStorage.getItem('stl_buyer_phone') || '';
+    const msg = (document.getElementById('rfq-message') as HTMLTextAreaElement)?.value || '';
 
     try {
       const res = await fetch('/api/inquiry', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify({
+          shop_id: currentShopId,
+          target_booth: currentBooth,
+          buyer_name: bName,
+          buyer_email: bEmail,
+          buyer_country: bCountry,
+          phone: bPhone,
+          message: msg,
+          service_type: 'rfq'
+        })
       });
       const data = await res.json();
 
       if (res.ok && data.success) {
         rfqFeedback.className = 'mt-2 p-3 rounded-xl text-xs font-medium bg-emerald-50 text-emerald-800 border border-emerald-200';
         rfqFeedback.innerHTML = `
-          <div class="font-bold text-emerald-900 mb-0.5">✅ RFQ Recorded Successfully!</div>
-          <div>Inquiry ID: <span class="font-mono font-bold">${data.inquiryId ? data.inquiryId.slice(0, 8) : 'CONFIRMED'}</span>. Our Yiwu coordinator and the booth manager will review your specs and email you back.</div>
+          <div class="font-bold text-emerald-900">✅ Inquiry Logged!</div>
+          <div>Our Yiwu coordinator will follow up with Booth ${currentBooth || ''} and email you quotation details.</div>
         `;
         rfqForm.reset();
       } else {
         rfqFeedback.className = 'mt-2 p-3 rounded-xl text-xs font-medium bg-rose-50 text-rose-800 border border-rose-200';
-        rfqFeedback.textContent = data.error || 'Failed to submit RFQ. Please try again.';
+        rfqFeedback.textContent = data.error || 'Failed to submit inquiry.';
       }
-    } catch (err) {
+    } catch {
       rfqFeedback.className = 'mt-2 p-3 rounded-xl text-xs font-medium bg-rose-50 text-rose-800 border border-rose-200';
-      rfqFeedback.textContent = 'Network error. Please check your connection or contact via WhatsApp.';
+      rfqFeedback.textContent = 'Network error while submitting specs.';
     } finally {
       rfqSubmitBtn.disabled = false;
-      rfqSubmitBtn.innerHTML = origBtnText;
+      rfqSubmitBtn.innerHTML = origBtn;
     }
   });
 </script>

@@ -299,8 +299,7 @@ const districts = [
 
   function renderCard(s: SearchItem): string {
     const distLabel = districtNameMap[s.d] || `District ${s.d || '1'}`;
-    const maskedPhone = formatMaskedPhone(s.p || '');
-    const intlPhone = formatIntlPhone(s.p || '');
+    const maskedPhone = s.p ? (s.p.includes('***') ? s.p : formatMaskedPhone(s.p)) : '+86-***-****-****';
     const prods = (s.pr || '').split(' | ').filter(Boolean).slice(0, 2);
 
     return `
@@ -325,7 +324,7 @@ const districts = [
                 data-id="${s.i}"
                 data-name="${escapeHtml(s.n)}"
                 data-contact="${escapeHtml(s.cp || 'Stall Manager')}"
-                data-phone="${escapeHtml(s.p || '')}"
+                data-phone="${escapeHtml(maskedPhone)}"
                 data-district="${escapeHtml(distLabel)}"
                 data-booth="${escapeHtml(s.b || '')}"
                 class="shortlist-toggle-btn p-1 rounded-lg border border-slate-200 bg-white text-slate-400 hover:text-amber-500 hover:border-amber-300 transition-colors cursor-pointer"
@@ -417,8 +416,7 @@ const districts = [
             data-unlock-id="${s.i}"
             data-supplier-name="${escapeHtml(s.n)}"
             data-contact-person="${escapeHtml(s.cp || 'Stall Manager')}"
-            data-phone="${escapeHtml(s.p || '')}"
-            data-intl-phone="${escapeHtml(intlPhone)}"
+            data-masked-phone="${escapeHtml(maskedPhone)}"
             data-district="${escapeHtml(distLabel)}"
             data-booth="${escapeHtml(s.b || '')}"
             class="unlock-contact-btn w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-xs shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 cursor-pointer"
