@@ -2,6 +2,16 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "china-trade-link",
   "compatibility_date": "2026-10-01",
+  "routes": [
+    {
+      "pattern": "sinotradelink.com",
+      "custom_domain": true
+    },
+    {
+      "pattern": "www.sinotradelink.com",
+      "custom_domain": true
+    }
+  ],
   "d1_databases": [
     {
       "binding": "DB",
