@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getD1Database } from '../../lib/data';
+import { dispatchInquiryAlerts } from '../../lib/notifications';
 
 export const POST: APIRoute = async ({ request }) => {
   try {
@@ -73,6 +74,19 @@ export const POST: APIRoute = async ({ request }) => {
     } else {
       console.warn('[D1 Warning] DB binding unavailable, inquiry logged in memory/console:', { id, cleanShopId, buyer_email });
     }
+
+    // Trigger instant notification alerts (Telegram / Email / Webhook)
+    dispatchInquiryAlerts({
+      inquiryId: id,
+      buyerName: buyer_name.trim(),
+      buyerEmail: buyer_email.trim(),
+      buyerPhone: phone ? String(phone).trim() : undefined,
+      buyerCountry: cleanCountry,
+      targetBooth: target_booth ? String(target_booth).trim() : undefined,
+      serviceType: service_type ? String(service_type).trim() : undefined,
+      message: cleanMessage || details,
+      shopId: cleanShopId
+    }).catch(err => console.error('[Notification Dispatch Error]:', err));
 
     return new Response(JSON.stringify({
       success: true,
