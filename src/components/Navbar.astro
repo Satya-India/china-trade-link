@@ -64,6 +64,13 @@ const { activePage = 'home' } = Astro.props;
           <span>On-Demand Concierge</span>
           <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-1.5 py-0.5 rounded border border-emerald-500/30">Local Audit</span>
         </a>
+        <a 
+          href="/for-suppliers" 
+          class={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1.5 ${activePage === 'suppliers' ? 'text-white bg-slate-800' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}`}
+        >
+          <span>List Your Business</span>
+          <span class="bg-amber-500/20 text-amber-300 text-[10px] font-bold px-1.5 py-0.5 rounded border border-amber-500/30">New</span>
+        </a>
       </nav>
 
       <!-- Right Action CTA -->
