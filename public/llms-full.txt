@@ -1,4 +1,4 @@
-# Sino Trade Link
+# Sino Trade Link (Full Specification)
 
 > Verified B2B directory and offline sourcing intelligence platform for China's physical wholesale markets.
 
@@ -13,15 +13,36 @@ Sino Trade Link provides verified access to 27,337+ physical factory stalls and 
 - [Global Supplier Onboarding](https://sinotradelink.com/for-suppliers): Application portal for verified manufacturers and international trade suppliers to list on the platform.
 - [Public Suppliers API](https://sinotradelink.com/api/suppliers.json): JSON feed of verified market suppliers and stall locations.
 
-## Market Districts
+## Market Districts Overview
 
-- [District 1 (Toys, Crafts & Jewelry)](https://sinotradelink.com/directory?district=1): Stalls specializing in plush toys, artificial flowers, jewelry, and arts & crafts.
-- [District 2 (Hardware, Tools & Kitchenware)](https://sinotradelink.com/directory?district=2): Stalls for hardware tools, locks, kitchenware, household appliances, and watches.
-- [District 3 (Office, Stationery & Sports)](https://sinotradelink.com/directory?district=3): School supplies, stationery, sports goods, eyewear, and garment zippers.
-- [District 4 (Footwear, Socks & Daily Items)](https://sinotradelink.com/directory?district=4): Hosiery, daily necessities, shoes, gloves, scarves, and accessories.
-- [District 5 (Home Textiles & Auto Parts)](https://sinotradelink.com/directory?district=5): Curtains, bedding, fabrics, vehicle accessories, and imported goods.
-- [Huangyuan Market (Apparel & Denim)](https://sinotradelink.com/directory?district=6): Men's, women's, and children's wholesale garments and jeans.
-- [Production Materials Market](https://sinotradelink.com/directory?district=7): Raw materials, injection molding, packaging, and commercial supplies.
+### District 1
+- [District 1 Directory](https://sinotradelink.com/directory?district=1): 5,665+ stalls across 4 floors.
+- Categories: Toys, plush animals, artificial flowers, jewelry, ornaments, crystal, decorative crafts, and porcelain.
+- Floors: 1st Floor (Toys & Plush), 2nd Floor (Jewelry & Accessories), 3rd Floor (Crafts & Porcelain), 4th Floor (Factory Outlets).
+
+### District 2
+- [District 2 Directory](https://sinotradelink.com/directory?district=2): 5,075+ stalls across 5 floors.
+- Categories: Hardware tools, locks, electrical equipment, kitchenware, household appliances, telecommunications, clocks, watches, luggage, and bags.
+
+### District 3
+- [District 3 Directory](https://sinotradelink.com/directory?district=3): 5,142+ stalls across 5 floors.
+- Categories: Stationery, school supplies, office equipment, eyewear, sunglasses, sporting goods, recreation equipment, zippers, and garment buttons.
+
+### District 4
+- [District 4 Directory](https://sinotradelink.com/directory?district=4): 5,041+ stalls across 5 floors.
+- Categories: Socks, hosiery, daily necessities, cosmetics, gloves, hats, footwear, shoes, belts, scarves, and sewing materials.
+
+### District 5
+- [District 5 Directory](https://sinotradelink.com/directory?district=5): 4,100+ stalls across 5 floors.
+- Categories: Home textiles, bedsheets, curtains, raw textile fabrics, auto parts, vehicle accessories, and imported international food & lifestyle goods.
+
+### District 6 (Huangyuan Garment Market)
+- [Huangyuan Market Directory](https://sinotradelink.com/directory?district=6): 1,850+ apparel stalls across 8 floors.
+- Categories: Men's apparel, women's fashion, jeans and denim, children's wear, knitwear, and leather outerwear.
+
+### District 7 (Production Materials Market)
+- [Production Materials Directory](https://sinotradelink.com/directory?district=7): 464+ industrial supplier stalls.
+- Categories: Plastic injection molding supplies, packaging materials, commercial printing, machinery accessories.
 
 ## Sitemaps & Feeds
 
