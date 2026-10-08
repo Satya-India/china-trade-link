@@ -1,0 +1,827 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const shippingMethods = [
+  {
+    name: "1. International Express (FedEx IP / IE, UPS, DHL)",
+    bestFor: "Samples & Urgent Parcels (< 21 kg to 300 kg)",
+    transit: "2–3 Days (FedEx IP) • 4–6 Days (FedEx IE)",
+    divisor: "L × W × H (cm) ÷ 5,000",
+    rateBenchmark: "$24–$31 (0.5–1 kg) • $6.00–$7.50/kg (> 21 kg)",
+    badge: "Fastest Door-to-Door",
+    badgeColor: "bg-blue-100 text-blue-800 border-blue-200",
+    insights: [
+      "95% of physical product samples and urgent e-commerce restocks move via Express.",
+      "Never pay freight-collect on a US/EU courier account—Chinese forwarder agent tiers receive 20%–50% volume discounts off official retail tariffs.",
+      "Shipments valued under $800 USD enter the United States duty-free under Section 321 De Minimis.",
+      "Sensitive goods (lithium batteries, liquids, powders, cosmetics) cannot fly on standard mainland courier accounts; they route via Hong Kong DHL/FedEx channels at ~$10+/kg."
+    ]
+  },
+  {
+    name: "2. Air Freight + UPS Combined (AFUC / Air DDP)",
+    bestFor: "Mid-Size Restocks & Amazon FBA (21 kg – 500 kg)",
+    transit: "11–15 Calendar Days",
+    divisor: "L × W × H (cm) ÷ 6,000",
+    rateBenchmark: "$3.80–$5.30 / kg (All-Inclusive DDP)",
+    badge: "Best Value Fast Restock",
+    badgeColor: "bg-indigo-100 text-indigo-800 border-indigo-200",
+    insights: [
+      "Cargo flies consolidated commercial air freight from Shanghai/Hangzhou/Ningbo to LAX/JFK/ORD, clears customs in bulk, and hands off to UPS Ground for final-mile delivery.",
+      "Saves 30%–40% compared to pure Express while arriving in under two weeks.",
+      "Rates scale down at 21 kg+, 51 kg+, 71 kg+, 301 kg+, and 501 kg+ weight breaks."
+    ]
+  },
+  {
+    name: "3. Traditional Commercial Air Cargo",
+    bestFor: "Heavy Urgent Commercial Cargo (500 kg+)",
+    transit: "4–7 Days (Airport-to-Airport / Door)",
+    divisor: "L × W × H (cm) ÷ 6,000",
+    rateBenchmark: "~$5.50 / kg (500 kg+ Reference)",
+    badge: "500 kg+ Heavy Air",
+    badgeColor: "bg-sky-100 text-sky-800 border-sky-200",
+    insights: [
+      "Beware of 'Airport-Only' teaser quotes from online suppliers that exclude destination terminal handling, customs brokerage, and domestic US/EU trucking.",
+      "Between 300 kg and 500 kg, always compare live Express IE agent quotes against traditional Air Cargo—empty aircraft belly space often makes Express competitive."
+    ]
+  },
+  {
+    name: "4. Sea Freight + UPS Combined (SFUC / Fast Sea DDP)",
+    bestFor: "Multi-Carton Market Orders & FBA (100 kg – 2,000 kg)",
+    transit: "25–32 Days (Saves 10+ Days vs LCL)",
+    divisor: "Billed by KG (100 kg+ Minimum)",
+    rateBenchmark: "$1.50/kg (US West) • $1.60/kg (Central) • $1.80/kg (US East)",
+    badge: "Most Popular for E-Commerce",
+    badgeColor: "bg-emerald-100 text-emerald-800 border-emerald-200",
+    insights: [
+      "Fast ocean vessel sails from Ningbo/Shanghai to US port, followed by immediate UPS ground dispatch instead of slow LCL pallet deconsolidation trucks.",
+      "Billed simply per kilogram (including customs duties on DDP lanes), eliminating complex port destination surcharges.",
+      "High-duty categories (textiles, apparel, metal hardware) typically carry a small +$0.30–$0.40/kg tariff surcharge."
+    ]
+  },
+  {
+    name: "5. Sea Freight LCL (Less than Container Load)",
+    bestFor: "Wholesale Pallets & Mixed Cartons (2 CBM – 15 CBM)",
+    transit: "32–45 Days",
+    divisor: "Billed by Volume: L × W × H (cm) ÷ 1,000,000 = CBM",
+    rateBenchmark: "$180–$310/CBM (US West All-In) • $260–$370/CBM (US East All-In)",
+    badge: "2–15 CBM Wholesale",
+    badgeColor: "bg-amber-100 text-amber-800 border-amber-200",
+    insights: [
+      "You share a container with other importers and pay strictly by Cubic Meter (CBM).",
+      "Real-life unit math: 400 boxed wine glasses (19 × 23 × 19 cm per box) = 3.3 CBM total. At $310/CBM all-in to Los Angeles ($1,023 total), landed shipping is just $2.56 per unit.",
+      "Under EXW terms, budget $10–$30/CBM for domestic China trucking to Ningbo Port plus $100–$200 for China export customs clearance."
+    ]
+  },
+  {
+    name: "6. Sea Freight FCL (Full Container Load)",
+    bestFor: "Bulk Wholesale & Multi-Stall Consolidation (15 CBM – 68 CBM)",
+    transit: "18–35 Days (Port-to-Port / Door)",
+    divisor: "20' GP (28 CBM) • 40' GP (58 CBM) • 40' HQ (68 CBM)",
+    rateBenchmark: "Ningbo–LA: ~$1,500–$3,700 (20'GP) • ~$1,600–$4,200 (40'HQ)",
+    badge: "Lowest Per-Unit Cost",
+    badgeColor: "bg-purple-100 text-purple-800 border-purple-200",
+    insights: [
+      "Once your combined Yiwu stall orders exceed 15–18 CBM, booking a dedicated 20' GP container (28 CBM capacity) is often cheaper and safer than LCL.",
+      "China export documentation and terminal handling for a full container is roughly $300 flat.",
+      "For European & Central Asian buyers, the Yixinou (Yiwu–Madrid) Railway Express cuts sea transit time by 50% at less than half the cost of air freight."
+    ]
+  },
+  {
+    name: "7. Postal Parcel & ePacket (< 2 kg)",
+    bestFor: "Single-Item Dropshipping Only (Not Recommended for B2B)",
+    transit: "8–14 Days (Normal) • 30–60 Days (Peak Season)",
+    divisor: "Max 2,000g • L+W+H < 90 cm (Longest Side ≤ 60 cm)",
+    rateBenchmark: "$2.17 Fixed Fee + $0.009/gram (Min 50g = $2.62)",
+    badge: "High Risk / Dropship Only",
+    badgeColor: "bg-rose-100 text-rose-800 border-rose-200",
+    insights: [
+      "While a 120g cosmetic item costs only ~$3.25 via ePacket ($2.17 + $0.009 × 120g), damaged barcode labels or Q4 airport backlogs frequently cause 1–2 month delays with zero compensation.",
+      "For B2B product samples, never risk China Post—use our $149 5-Stall Sample Consolidation Box to combine 5 suppliers into one insured DHL/FedEx IP shipment."
+    ]
+  }
+];
+
+const oemSteps = [
+  {
+    step: "01",
+    title: "Prepare Actionable Specs, Sketches or 3D Prototypes",
+    summary: "Match your preparation level to your customization depth before messaging factories.",
+    details: [
+      "Light Customization (Color, Logo, Packaging): Annotated product photos or a physical sample with sticky notes marking exact changes are 100% sufficient.",
+      "Soft Goods & Simple Crafts (Plush toys, apparel, wood, silicone, scented candles): A clear 2D hand sketch or tech pack allows Chinese factory pattern makers to hand-craft your first prototype.",
+      "Hard Goods (Injection plastic & metal mechanisms): Prepare 3D CAD (STEP/STL) files. In China, SLA 3D-printed plastic parts start at ~$10/pc and a complete functional toy prototype costs ~$300 with a 5–7 day turnaround."
+    ]
+  },
+  {
+    step: "02",
+    title: "Bypass Junior Chat Reps — Reach Direct Factory Showrooms",
+    summary: "Why online marketplace inquiries stall out on multi-round custom development.",
+    details: [
+      "Most online B2B listings are staffed by junior English-speaking sales reps at trading companies who do not understand mold gating, circuit board BOM optimization, or fabric GSM.",
+      "In Yiwu Futian Market, Floor 4 and Floor 5 house direct manufacturer showrooms (and our database flags 10,141 licensed factories) where you negotiate directly with plant owners.",
+      "Case Study Benchmark: Replacing US-sourced PCB components with domestic Shenzhen/Zhejiang equivalents during pre-production engineering routinely cuts unit BOM cost by up to 50%."
+    ]
+  },
+  {
+    step: "03",
+    title: "Use Proven MOQ Negotiation Scripts",
+    summary: "Factories set MOQs to amortize machine setup, raw material minimums, and die-cutting plates.",
+    details: [
+      "Scenario A — Close to MOQ (e.g., ordering 700–800 pcs when MOQ is 1,000 pcs at $5/pc): Offer a slight unit price premium so the factory's setup margin stays intact: \"We want to order 750 units for our initial market test and are happy to pay a slightly higher unit price to cover machine setup. Once validated, we scale to 3,000+ units.\"",
+      "Scenario B — Far Below MOQ (10%–20% of MOQ): Understand fixed amortization. Custom printed boxes require ~2,000 units to spread printing plate costs; ordering 500 means absorbing the full plate fee.",
+      "Scenario C — Zero-Mold Market Testing: For design-driven figures or decor, 3D-print a 100–200 unit test batch to validate ad conversion before investing $2,000+ in steel injection tooling."
+    ]
+  },
+  {
+    step: "04",
+    title: "Protect Your IP: NNN Agreements & Provisional Patents",
+    summary: "Standard Western NDAs are rarely enforceable in Chinese courts—use China-specific legal tools.",
+    details: [
+      "Sign a bilingual NNN Agreement (Non-Disclosure, Non-Use, Non-Circumvention) stamped with the supplier's official red corporate seal (Gongzhang) before sending 3D CAD files.",
+      "Non-Use prevents the factory from selling your mold's output in Yiwu showrooms; Non-Circumvention stops them from bypassing you to sell directly to your customers.",
+      "For structural or functional innovations, file a Provisional Patent (< $300 USD) in your primary target market (e.g., USPTO), locking in a 12-month priority window while you test sales."
+    ]
+  },
+  {
+    step: "05",
+    title: "Map Your 3-Stage Custom Project Budget",
+    summary: "Never evaluate a quote on unit price alone—break down Pre-Production, Bulk EXW, and QC + DDP.",
+    details: [
+      "Stage 1 (Pre-Production & Tooling): Blank apparel screen-print sample ($10–$15); Silicone candle mold (~$35); Vinyl figure mold (~$300); Injection plastic steel mold ($2,000+ per part); Lab compliance testing (SGS/Intertek).",
+      "Stage 2 (Bulk Production EXW): Raw materials, assembly labor, and standard master carton packing.",
+      "Stage 3 (QC & Landed Freight): Pre-shipment inspection ($99–$299 via Sino Trade Link vs $300+/day third-party agencies) + Total Shipping (DDP Price minus EXW Price)."
+    ]
+  },
+  {
+    step: "06",
+    title: "Approve & Stress-Test the Pre-Production (PP) Sample",
+    summary: "The approved PP sample is your golden legal benchmark for mass production and final QC.",
+    details: [
+      "Insist that the PP sample uses the exact bulk material and assembly line process (not a hand-glued prototype).",
+      "Plush & Textiles Check: Inspect seam tension, stitch density, symmetrical embroidery, and zero loose threads.",
+      "Injection Plastics Check: Inspect for sink marks, mold flash on parting lines, uniform Pantone color, and smooth snap-fit cycles.",
+      "Metal & Custom Print Check: Verify burr-free edges, even powder coating, plus the fingernail-scratch test and water-droplet smudge test on printed logos."
+    ]
+  },
+  {
+    step: "07",
+    title: "Verify Compliance & Use PP Samples for Pre-Launch Marketing",
+    summary: "Shoot high-converting creatives while locking in mandatory safety certifications.",
+    details: [
+      "Adding a logo or changing colors on an existing product usually allows you to rely on the factory's valid test reports. Modifying structure, materials, or electronics requires fresh lab testing (SGS / Intertek).",
+      "Strict compliance categories: Children's toys (CPC/ASTM F963/EN71), Electronics (FCC/CE/UL), Food-contact ware (FDA/LFGB), and Cosmetics.",
+      "Use your final PP sample immediately to shoot 4K product videos, Amazon listing renders, or Kickstarter/Indiegogo campaign assets before bulk stock arrives."
+    ]
+  },
+  {
+    step: "08",
+    title: "Leverage Yiwu's Low-MOQ Packaging & Multi-Factory Kitting",
+    summary: "Why Yiwu beats online marketplaces for custom retail boxes and multi-item bundles.",
+    details: [
+      "Searching online for custom packaging often yields high MOQs and inflated quotes. Yiwu's Chouzhou North Packaging Street (#13) and District 3 printing cluster offer flexible runs from a few hundred boxes.",
+      "Building a multi-item bundle (e.g., a 6-piece gift or kitchen kit) requires sourcing each component from a specialized factory, testing box dimensions to avoid Amazon FBA oversized tier penalties, and kitting in one local warehouse."
+    ]
+  },
+  {
+    step: "09",
+    title: "Enforce Pre-Shipment QC Before Paying the Final Balance",
+    summary: "Never wire the final 70%–80% balance until physical cartons are inspected at the stall or factory.",
+    details: [
+      "Once mass production starts, raw material substitutions or rushed packaging can occur if no local eyes are watching.",
+      "Deploy our Yiwu ground team ($99 Stall Audit or $299 Factory Audit) to verify AQL defect tolerances, carton drop-test durability, and barcode accuracy before cargo leaves Zhejiang."
+    ]
+  }
+];
+
+const importChecklist = [
+  {
+    q: "1. What is the real difference between a 5%–10% Commission Sourcing Agent and Sino Trade Link?",
+    a: "Traditional sourcing agencies act as middlemen: they charge 5%–10% commission on your entire order value (and every future reorder) while keeping the actual factory's identity, booth number, and mobile phone hidden from you. Worse, 'zero-commission' or ultra-low-fee agents routinely take undisclosed 5%–15% kickbacks from factories or mark up ocean/air freight rates. Sino Trade Link flips this model: we give you 100% unmasked direct stall mobile numbers (13x/15x/18x) and exact Futian booth coordinates for free or via $29 Category Packs (0% commission forever), and offer flat-fee On-Ground Audits ($99–$299) only when you need physical boots in Yiwu."
+  },
+  {
+    q: "2. Which 5 types of buyers benefit most from combining direct stall data with on-ground execution?",
+    a: "(1) First-time importers who want verified suppliers without risking $3,000+ on flights and hotels; (2) E-commerce & Amazon FBA sellers testing 300–500 unit small-batch private label runs; (3) Established brands optimizing supply chains to cut out 15%–30% trading company markups; (4) Multi-SKU retail, supermarket, hotel, and hospitality buyers procuring 50–500+ different items across multiple market districts; and (5) Specialized buyers sourcing industrial materials, furniture, or stock lots."
+  },
+  {
+    q: "3. What are the 8 essential checkpoints to verify a Chinese supplier before wiring a deposit?",
+    a: "(1) Official Chinese AIC Business License (Unified Social Credit Code & registered capital); (2) Business scope check (confirming 'manufacturing/production' vs pure 'wholesale/trading'); (3) Physical booth coordinate verification (District, Gate, Floor, 5-digit Booth No.); (4) Direct unmasked Chinese mobile number & WeChat ownership match; (5) Operating history & years active in Futian Market; (6) Sample workmanship & specification adherence; (7) Valid export & product compliance certificates (CE, RoHS, CPC, FDA); and (8) Corporate bank account beneficiary match."
+  },
+  {
+    q: "4. What 6 details must be written into your Purchase Order (Proforma Invoice) before production?",
+    a: "(1) Exact product specifications (materials, dimensions, weight, Pantone codes, and approved PP sample reference); (2) Packaging specs (inner box, master carton ply rating, barcode labels, and shipping marks); (3) Incoterm & currency (EXW Booth, FOB Ningbo, or DDP Door); (4) Payment milestone schedule (e.g., 30% deposit, 70% balance after passed QC inspection); (5) Lead time & late-delivery penalty clause; and (6) Defect tolerance threshold (AQL 2.5/4.0) & replacement/compensation agreement."
+  },
+  {
+    q: "5. Why is consolidating samples from multiple Yiwu stalls into one box so important?",
+    a: "Shipping 5 separate 1 kg sample boxes via FedEx IP from 5 different suppliers costs roughly $31 × 5 = $155+ in base courier minimums—and most stall keepers don't have discounted international courier accounts. With our $149 Booth Sample Pickup & Consolidation service, our Yiwu team walks to up to 5 stalls, inspects and photographs every sample in our office, repacks them to minimize volumetric weight (L×W×H/5000), and dispatches one consolidated express parcel."
+  }
+];
+---
+
+<Layout
+  title="China Sourcing, OEM Manufacturing & Shipping Cost Playbook | Sino Trade Link"
+  description="Complete guide to importing from Yiwu & China: 7 shipping methods & landed cost calculator, 9-step private label manufacturing roadmap, MOQ negotiation scripts, and flat-fee vs commission agent comparison."
+  activePage="guide"
+>
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 text-white py-16 border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-bold mb-5">
+        <span>2026 Field Intelligence • Yiwu & China Direct Sourcing Playbook</span>
+      </div>
+      <h1 class="text-3xl sm:text-5xl font-black tracking-tight text-white max-w-4xl mx-auto leading-tight">
+        The Complete <span class="bg-gradient-to-r from-blue-400 via-indigo-300 to-amber-300 bg-clip-text text-transparent">China Sourcing, OEM & Freight</span> Playbook
+      </h1>
+      <p class="mt-4 text-sm sm:text-base text-slate-300 max-w-3xl mx-auto leading-relaxed">
+        Everything you need to source directly from Yiwu's 27,706+ verified stalls, develop private-label products, calculate real-time volumetric & CBM freight costs, and verify factories on the ground—without paying 5%–10% commission middlemen.
+      </p>
+
+      <!-- Quick Section Jump Navigation -->
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-2.5">
+        <a href="#freight-calculator" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold shadow-md transition-all">
+          🧮 Interactive Freight & CBM Calculator
+        </a>
+        <a href="#shipping-methods" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-bold transition-all">
+          🚢 7 China-to-US/Global Shipping Methods
+        </a>
+        <a href="#agent-comparison" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-bold transition-all">
+          ⚖️ Direct Data vs. 10% Commission Agents
+        </a>
+        <a href="#oem-roadmap" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-bold transition-all">
+          🛠️ 9-Step OEM & Private Label Roadmap
+        </a>
+        <a href="#import-faq" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-bold transition-all">
+          ✅ 10-Point Verification Checklist
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Volumetric Weight, CBM & Landed Freight Calculator -->
+  <section id="freight-calculator" class="py-14 bg-slate-50 border-b border-slate-200 scroll-mt-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="bg-white rounded-3xl border border-slate-200 shadow-lg overflow-hidden">
+        <div class="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 px-6 sm:px-8 py-6 text-white flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <span class="text-[11px] font-bold uppercase tracking-wider text-amber-400 block mb-1">
+              Interactive Logistics Estimator
+            </span>
+            <h2 class="text-xl sm:text-2xl font-black text-white">
+              China Freight, Volumetric Weight & Per-Unit Landed Cost Calculator
+            </h2>
+            <p class="text-xs text-slate-300 mt-1">
+              Couriers charge whichever is greater: <strong class="text-white">Actual Gross Weight</strong> or <strong class="text-white">Dimensional Weight (L×W×H ÷ 5000 for Express, ÷ 6000 for Air)</strong>. Enter your carton specs below to see your true billable weight and best shipping mode.
+            </p>
+          </div>
+          <div class="shrink-0 text-right">
+            <span class="inline-block px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-xs font-bold">
+              Instant Live Calculation
+            </span>
+          </div>
+        </div>
+
+        <div class="p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <!-- Inputs Column -->
+          <div class="lg:col-span-5 space-y-4 bg-slate-50 p-6 rounded-2xl border border-slate-200">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
+              1. Enter Master Carton Specifications
+            </h3>
+
+            <div class="grid grid-cols-3 gap-3">
+              <div>
+                <label class="block text-[11px] font-bold text-slate-700 mb-1">Length (cm)</label>
+                <input id="calc-l" type="number" value="50" min="1" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm font-mono font-bold text-slate-900 bg-white focus:outline-none focus:border-blue-500" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-700 mb-1">Width (cm)</label>
+                <input id="calc-w" type="number" value="40" min="1" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm font-mono font-bold text-slate-900 bg-white focus:outline-none focus:border-blue-500" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-700 mb-1">Height (cm)</label>
+                <input id="calc-h" type="number" value="40" min="1" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm font-mono font-bold text-slate-900 bg-white focus:outline-none focus:border-blue-500" />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-[11px] font-bold text-slate-700 mb-1">Weight per Carton (kg)</label>
+                <input id="calc-wt" type="number" value="12" min="0.1" step="0.5" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm font-mono font-bold text-slate-900 bg-white focus:outline-none focus:border-blue-500" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-700 mb-1">Total Cartons</label>
+                <input id="calc-ctns" type="number" value="15" min="1" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm font-mono font-bold text-slate-900 bg-white focus:outline-none focus:border-blue-500" />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-[11px] font-bold text-slate-700 mb-1">Total Units in Order</label>
+                <input id="calc-units" type="number" value="600" min="1" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm font-mono font-bold text-slate-900 bg-white focus:outline-none focus:border-blue-500" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-700 mb-1">Destination Corridor</label>
+                <select id="calc-dest" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-bold text-slate-900 bg-white focus:outline-none focus:border-blue-500">
+                  <option value="west">US West Coast (LA / Long Beach)</option>
+                  <option value="central">US Central / Midwest</option>
+                  <option value="east">US East Coast (NY / Savannah)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="pt-2">
+              <div class="text-[11px] text-slate-500 leading-relaxed">
+                💡 <strong>Try the Wine Glass Example:</strong> Set 19 × 23 × 19 cm, 12 kg, 400 cartons (or 1 carton per unit) to see how volume drives LCL sea freight vs air courier rates.
+              </div>
+            </div>
+          </div>
+
+          <!-- Results Column -->
+          <div class="lg:col-span-7 space-y-5">
+            <!-- Key Metrics Strip -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div class="p-4 rounded-2xl bg-slate-900 text-white">
+                <span class="text-[10px] uppercase font-bold text-slate-400 block">Total Volume</span>
+                <span id="res-cbm" class="text-xl sm:text-2xl font-black font-mono text-amber-400">1.20 CBM</span>
+                <span class="text-[10px] text-slate-400 block mt-0.5">L×W×H ÷ 1,000,000</span>
+              </div>
+              <div class="p-4 rounded-2xl bg-slate-100 border border-slate-200">
+                <span class="text-[10px] uppercase font-bold text-slate-500 block">Actual Gross Wt</span>
+                <span id="res-actual-wt" class="text-xl sm:text-2xl font-black font-mono text-slate-900">180 kg</span>
+                <span class="text-[10px] text-slate-500 block mt-0.5">Physical scale weight</span>
+              </div>
+              <div class="p-4 rounded-2xl bg-blue-50 border border-blue-200">
+                <span class="text-[10px] uppercase font-bold text-blue-700 block">Express Billable Wt</span>
+                <span id="res-exp-wt" class="text-xl sm:text-2xl font-black font-mono text-blue-900">240 kg</span>
+                <span id="res-exp-note" class="text-[10px] text-blue-700 block mt-0.5">Volumetric (÷ 5000)</span>
+              </div>
+              <div class="p-4 rounded-2xl bg-indigo-50 border border-indigo-200">
+                <span class="text-[10px] uppercase font-bold text-indigo-700 block">Air / SFUC Billable</span>
+                <span id="res-air-wt" class="text-xl sm:text-2xl font-black font-mono text-indigo-900">200 kg</span>
+                <span class="text-[10px] text-indigo-700 block mt-0.5">Volumetric (÷ 6000)</span>
+              </div>
+            </div>
+
+            <!-- Estimated Mode Comparison Table -->
+            <div class="rounded-2xl border border-slate-200 overflow-hidden">
+              <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr class="bg-slate-100 text-slate-600 uppercase text-[10px] font-bold border-b border-slate-200">
+                    <th class="py-3 px-4">Shipping Method</th>
+                    <th class="py-3 px-4">Transit Time</th>
+                    <th class="py-3 px-4">Est. Total Freight</th>
+                    <th class="py-3 px-4">Cost / Unit</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200">
+                  <tr class="hover:bg-slate-50">
+                    <td class="py-3 px-4 font-bold text-slate-900">
+                      FedEx / UPS Express (IE)
+                      <span class="block text-[10px] font-normal text-slate-500">Door-to-door air courier</span>
+                    </td>
+                    <td class="py-3 px-4 text-slate-600">4–6 Working Days</td>
+                    <td id="res-cost-express" class="py-3 px-4 font-mono font-bold text-slate-900">$1,500</td>
+                    <td id="res-unit-express" class="py-3 px-4 font-mono font-bold text-blue-600">$2.50 / pc</td>
+                  </tr>
+                  <tr class="hover:bg-slate-50">
+                    <td class="py-3 px-4 font-bold text-slate-900">
+                      Air Freight + UPS (AFUC DDP)
+                      <span class="block text-[10px] font-normal text-slate-500">Air linehaul + UPS final mile</span>
+                    </td>
+                    <td class="py-3 px-4 text-slate-600">11–15 Days</td>
+                    <td id="res-cost-afuc" class="py-3 px-4 font-mono font-bold text-slate-900">$860</td>
+                    <td id="res-unit-afuc" class="py-3 px-4 font-mono font-bold text-blue-600">$1.43 / pc</td>
+                  </tr>
+                  <tr class="bg-emerald-50/60 hover:bg-emerald-50">
+                    <td class="py-3 px-4 font-bold text-emerald-950">
+                      Sea Freight + UPS (SFUC Fast DDP)
+                      <span class="block text-[10px] font-normal text-emerald-700">Fast vessel + UPS ground (100kg+ tier)</span>
+                    </td>
+                    <td class="py-3 px-4 text-emerald-800 font-semibold">25–32 Days</td>
+                    <td id="res-cost-sfuc" class="py-3 px-4 font-mono font-black text-emerald-900">$300</td>
+                    <td id="res-unit-sfuc" class="py-3 px-4 font-mono font-black text-emerald-700">$0.50 / pc</td>
+                  </tr>
+                  <tr class="hover:bg-slate-50">
+                    <td class="py-3 px-4 font-bold text-slate-900">
+                      Traditional Sea LCL (CBM Basis)
+                      <span class="block text-[10px] font-normal text-slate-500">Shared container (best for 3–15 CBM)</span>
+                    </td>
+                    <td class="py-3 px-4 text-slate-600">35–45 Days</td>
+                    <td id="res-cost-lcl" class="py-3 px-4 font-mono font-bold text-slate-900">$620</td>
+                    <td id="res-unit-lcl" class="py-3 px-4 font-mono font-bold text-blue-600">$1.03 / pc</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Dynamic Recommendation Banner -->
+            <div id="res-recommendation" class="p-4 rounded-2xl bg-blue-50 border border-blue-200 text-xs text-blue-950 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <strong class="font-black block text-blue-900">Recommended Mode: Sea Freight + UPS Combined (SFUC)</strong>
+                <span id="res-rec-text" class="text-blue-800">Your shipment is over 100 kg billable weight. SFUC saves ~75% vs Express and arrives 10+ days faster than standard LCL sea freight.</span>
+              </div>
+              <a
+                href="https://www.yiwutradelink.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="shrink-0 px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs text-center transition-colors"
+              >
+                Get Live Freight Quote &rarr;
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 Shipping Methods Deep Dive + Incoterms (EXW vs FOB vs DDP) -->
+  <section id="shipping-methods" class="py-16 bg-white border-b border-slate-200 scroll-mt-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl mb-12">
+        <span class="text-xs font-bold uppercase tracking-wider text-blue-600 block mb-1">
+          Logistics & Landed Cost Architecture
+        </span>
+        <h2 class="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
+          7 Main Shipping Methods from China & How Costs Work
+        </h2>
+        <p class="text-sm text-slate-600 mt-2 leading-relaxed">
+          Choosing the wrong shipping mode or trade term (Incoterm) can wipe out your product margin. Below is the complete breakdown of all 7 transport tiers from Yiwu/Ningbo to the US and global ports.
+        </p>
+      </div>
+
+      <!-- Incoterms Formula Strip -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-12">
+        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+          <div class="flex items-center justify-between mb-2">
+            <span class="px-2.5 py-0.5 rounded-md bg-slate-900 text-white font-mono font-bold text-xs">EXW (Ex Works)</span>
+            <span class="text-[11px] font-bold text-slate-500">Default Yiwu Stall Quote</span>
+          </div>
+          <p class="text-xs text-slate-600 leading-relaxed mb-3">
+            The price at the factory or stall gate only. You pay all 5 logistics legs:
+          </p>
+          <div class="p-3 rounded-xl bg-white border border-slate-200 font-mono text-[11px] text-slate-800">
+            Total Freight = China Trucking ($10–$30/CBM) + China Export Customs ($100–$300) + Main Ocean/Air Leg + Destination Customs/Duty + Final Delivery
+          </div>
+        </div>
+
+        <div class="rounded-2xl border border-blue-200 bg-blue-50/40 p-5">
+          <div class="flex items-center justify-between mb-2">
+            <span class="px-2.5 py-0.5 rounded-md bg-blue-600 text-white font-mono font-bold text-xs">FOB (Free on Board)</span>
+            <span class="text-[11px] font-bold text-blue-700">Best for Container / LCL</span>
+          </div>
+          <p class="text-xs text-slate-600 leading-relaxed mb-3">
+            Supplier pays domestic China trucking to Ningbo/Shanghai Port and China export customs declaration.
+          </p>
+          <div class="p-3 rounded-xl bg-white border border-blue-200 font-mono text-[11px] text-slate-800">
+            Your Cost = Ocean/Air Freight from Ningbo/Shanghai + Destination Customs & Duties + Local US/EU Delivery
+          </div>
+        </div>
+
+        <div class="rounded-2xl border border-emerald-200 bg-emerald-50/40 p-5">
+          <div class="flex items-center justify-between mb-2">
+            <span class="px-2.5 py-0.5 rounded-md bg-emerald-600 text-white font-mono font-bold text-xs">DDP (Delivered Duty Paid)</span>
+            <span class="text-[11px] font-bold text-emerald-700">Easiest All-Inclusive Door</span>
+          </div>
+          <p class="text-xs text-slate-600 leading-relaxed mb-3">
+            Door-to-door price including pickup in Yiwu, export customs, main freight, US/EU import duties, and final delivery.
+          </p>
+          <div class="p-3 rounded-xl bg-white border border-emerald-200 font-mono text-[11px] text-slate-800">
+            Quick Landed Freight Formula:<br/>
+            <strong>DDP Quote − EXW Product Price ≈ Total All-In Shipping & Duty</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7 Methods Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {shippingMethods.map(m => (
+          <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm hover:border-blue-400 transition-all flex flex-col justify-between">
+            <div>
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                <span class={`text-[11px] font-bold px-2.5 py-0.5 rounded-full border ${m.badgeColor}`}>
+                  {m.badge}
+                </span>
+                <span class="text-xs font-mono font-bold text-slate-500">{m.transit}</span>
+              </div>
+
+              <h3 class="text-lg font-black text-slate-900 mb-1">{m.name}</h3>
+              <p class="text-xs font-bold text-blue-600 mb-4">Ideal for: {m.bestFor}</p>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mb-4 text-xs">
+                <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80">
+                  <span class="text-[10px] uppercase font-bold text-slate-400 block">Billing Formula</span>
+                  <span class="font-mono font-bold text-slate-800 text-[11px]">{m.divisor}</span>
+                </div>
+                <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80">
+                  <span class="text-[10px] uppercase font-bold text-slate-400 block">Reference Rate</span>
+                  <span class="font-mono font-bold text-emerald-700 text-[11px]">{m.rateBenchmark}</span>
+                </div>
+              </div>
+
+              <ul class="space-y-2 text-xs text-slate-600">
+                {m.insights.map(ins => (
+                  <li class="flex items-start gap-2">
+                    <span class="text-blue-500 font-bold mt-0.5">•</span>
+                    <span class="leading-relaxed">{ins}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Direct Data + Flat-Fee Ground Execution vs. Traditional 5%–10% Commission Agents -->
+  <section id="agent-comparison" class="py-16 bg-slate-900 text-white border-b border-slate-800 scroll-mt-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl mb-12">
+        <span class="text-xs font-bold uppercase tracking-wider text-amber-400 block mb-1">
+          Supply Chain Transparency
+        </span>
+        <h2 class="text-2xl sm:text-4xl font-black text-white tracking-tight">
+          Why Smart Buyers Replace 10% Commission Agents with Direct Data + Flat-Fee Audits
+        </h2>
+        <p class="text-sm text-slate-300 mt-2 leading-relaxed">
+          Over 150+ small sourcing agencies have popped up on Google and Upwork in recent years. Understanding how agent fee structures actually work protects you from hidden factory kickbacks and locked supply chains.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
+        <!-- Col 1: Commission Agencies -->
+        <div class="rounded-3xl border border-slate-800 bg-slate-800/50 p-6">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-rose-400 block mb-1">
+            Traditional Model #1
+          </span>
+          <h3 class="text-lg font-bold text-white mb-2">5%–10% Commission Sourcing Agencies</h3>
+          <p class="text-xs text-slate-400 leading-relaxed mb-4">
+            Large one-stop agencies charge 5%–10% of your total order value on every purchase—meaning a $50,000 container costs you $2,500–$5,000 in agency fees every time you reorder.
+          </p>
+          <ul class="space-y-2 text-xs text-slate-300">
+            <li class="flex items-start gap-2"><span class="text-rose-400 font-bold">✕</span> <span><strong>Zero Supplier Ownership:</strong> They hide the factory's name, booth number, and WeChat so you can never buy direct.</span></li>
+            <li class="flex items-start gap-2"><span class="text-rose-400 font-bold">✕</span> <span><strong>The "Free Trial / Low Fee" Trap:</strong> Agencies advertising 0%–2% commission routinely collect 5%–15% undisclosed kickbacks from suppliers or pad shipping & molding quotes.</span></li>
+          </ul>
+        </div>
+
+        <!-- Col 2: Solo Freelancers -->
+        <div class="rounded-3xl border border-slate-800 bg-slate-800/50 p-6">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-amber-400 block mb-1">
+            Traditional Model #2
+          </span>
+          <h3 class="text-lg font-bold text-white mb-2">Solo Upwork / Street Translators (~$45/Day)</h3>
+          <p class="text-xs text-slate-400 leading-relaxed mb-4">
+            Solo interpreters walk with you inside Yiwu Market or search 1688 online, charging a daily or hourly flat rate.
+          </p>
+          <ul class="space-y-2 text-xs text-slate-300">
+            <li class="flex items-start gap-2"><span class="text-amber-400 font-bold">!</span> <span><strong>No Inspection Accountability:</strong> Street translators interpret basic prices at the booth, but do not verify AIC business licenses or perform AQL defect checks.</span></li>
+            <li class="flex items-start gap-2"><span class="text-amber-400 font-bold">!</span> <span><strong>Category Blindness:</strong> One solo freelancer cannot deeply know toys, hardware tooling, textiles, and electronics compliance simultaneously.</span></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: Sino Trade Link Hybrid Model -->
+        <div class="rounded-3xl border-2 border-emerald-500/60 bg-gradient-to-b from-slate-800 to-slate-900 p-6 shadow-xl shadow-emerald-500/10">
+          <span class="inline-block px-2.5 py-0.5 rounded-full bg-emerald-500 text-slate-950 text-[10px] font-black uppercase tracking-wider mb-2">
+            The Sino Trade Link Advantage
+          </span>
+          <h3 class="text-lg font-bold text-white mb-2">0% Commission Direct Data + Flat-Fee Ground Execution</h3>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">
+            We separate <strong class="text-white">Supplier Discovery</strong> from <strong class="text-white">On-Ground Verification</strong> so you own your factory relationships 100% while deploying our Yiwu field team only when needed:
+          </p>
+          <ul class="space-y-2 text-xs text-slate-200 mb-6">
+            <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold">✓</span> <span><strong>27,706 Verified Stalls (0% Markup):</strong> Unlock unmasked 13x/15x/18x mobile numbers & exact Gate/Floor/Booth coordinates via <a href="/category-packs" class="text-amber-300 underline">$29 Category Packs</a>.</span></li>
+            <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold">✓</span> <span><strong>$99 Physical Stall Audit:</strong> We walk to the exact booth, verify their business license, film 4K video, and confirm real factory pricing.</span></li>
+            <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold">✓</span> <span><strong>$149 Sample Consolidation Box:</strong> Collect samples from up to 5 stalls, inspect in our Yiwu office, and ship in 1 optimized DHL/FedEx box.</span></li>
+          </ul>
+          <div class="flex flex-wrap gap-2">
+            <a href="/concierge" class="flex-1 py-2.5 px-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs text-center transition-colors">
+              Book $99 Stall Audit &rarr;
+            </a>
+            <a href="/category-packs" class="flex-1 py-2.5 px-3 rounded-xl bg-slate-700 hover:bg-slate-600 text-white font-bold text-xs text-center transition-colors">
+              Get $29 Data Pack
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9-Step OEM & Private Label Manufacturing Roadmap -->
+  <section id="oem-roadmap" class="py-16 bg-slate-50 border-b border-slate-200 scroll-mt-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl mb-12">
+        <span class="text-xs font-bold uppercase tracking-wider text-blue-600 block mb-1">
+          Private Label & Custom Product Development
+        </span>
+        <h2 class="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
+          The 9-Step Roadmap to Manufacturing Custom Products in China
+        </h2>
+        <p class="text-sm text-slate-600 mt-2 leading-relaxed">
+          Most winning e-commerce and retail products don't start from scratch—they make smart material, functional, or packaging upgrades to proven items. Follow these 9 field-tested steps to go from concept to mass production without burning capital.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {oemSteps.map(item => (
+          <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="inline-flex items-center justify-center w-9 h-9 rounded-2xl bg-slate-900 text-amber-400 font-mono font-black text-sm">
+                  {item.step}
+                </span>
+                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">OEM Playbook</span>
+              </div>
+              <h3 class="text-base font-black text-slate-900 mb-1.5">{item.title}</h3>
+              <p class="text-xs font-semibold text-blue-600 mb-4">{item.summary}</p>
+              <ul class="space-y-2 text-xs text-slate-600 border-t border-slate-100 pt-4">
+                {item.details.map(d => (
+                  <li class="flex items-start gap-2">
+                    <span class="text-emerald-600 font-bold mt-0.5">•</span>
+                    <span class="leading-relaxed">{d}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 10-Point China Import & Verification FAQ (Native <details> Accordions per modern-web-guidance) -->
+  <section id="import-faq" class="py-16 bg-white scroll-mt-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-10">
+        <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 block mb-1">
+          Risk Mitigation & Due Diligence
+        </span>
+        <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+          Essential China Import & Supplier Verification Questions
+        </h2>
+        <p class="text-sm text-slate-600 mt-2">
+          Click any question below (or use your browser's Find-in-Page search) to review our field checklists.
+        </p>
+      </div>
+
+      <div class="space-y-3">
+        {importChecklist.map((item, idx) => (
+          <details
+            name="import-faq-accordion"
+            open={idx === 0}
+            class="group rounded-2xl border border-slate-200 bg-slate-50 open:bg-white open:border-blue-400 open:shadow-md transition-all"
+          >
+            <summary class="cursor-pointer list-none px-6 py-4 flex items-center justify-between gap-4 font-bold text-sm text-slate-900">
+              <span>{item.q}</span>
+              <span class="w-6 h-6 rounded-full bg-slate-200 group-open:bg-blue-600 group-open:text-white flex items-center justify-center text-xs font-black transition-colors shrink-0">
+                +
+              </span>
+            </summary>
+            <div class="px-6 pb-5 pt-1 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100">
+              {item.a}
+            </div>
+          </details>
+        ))}
+      </div>
+
+      <!-- Bottom Action Banner -->
+      <div class="mt-12 rounded-3xl bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 p-8 text-white flex flex-col md:flex-row items-center justify-between gap-6">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-amber-400 block mb-1">
+            Ready to Execute in Yiwu?
+          </span>
+          <h3 class="text-xl sm:text-2xl font-black text-white">
+            Start with Verified Stall Data or Dispatch Our Yiwu Team Today
+          </h3>
+          <p class="text-xs text-slate-300 mt-1 max-w-xl">
+            Search 27,706+ stalls for free, download a targeted $29 Niche Category CSV Pack, or book a $99 On-Demand Physical Stall Audit within 24–48 hours.
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-3 shrink-0">
+          <a href="/directory" class="px-4 py-2.5 rounded-xl bg-white text-slate-950 font-black text-xs hover:bg-slate-100 transition-colors">
+            Search 27,706 Stalls
+          </a>
+          <a href="/concierge" class="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs transition-colors">
+            Book Ground Audit ($99) &rarr;
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script is:inline>
+  (function () {
+    var lInput = document.getElementById('calc-l');
+    var wInput = document.getElementById('calc-w');
+    var hInput = document.getElementById('calc-h');
+    var wtInput = document.getElementById('calc-wt');
+    var ctnsInput = document.getElementById('calc-ctns');
+    var unitsInput = document.getElementById('calc-units');
+    var destSelect = document.getElementById('calc-dest');
+
+    var resCbm = document.getElementById('res-cbm');
+    var resActualWt = document.getElementById('res-actual-wt');
+    var resExpWt = document.getElementById('res-exp-wt');
+    var resExpNote = document.getElementById('res-exp-note');
+    var resAirWt = document.getElementById('res-air-wt');
+
+    var resCostExp = document.getElementById('res-cost-express');
+    var resUnitExp = document.getElementById('res-unit-express');
+    var resCostAfuc = document.getElementById('res-cost-afuc');
+    var resUnitAfuc = document.getElementById('res-unit-afuc');
+    var resCostSfuc = document.getElementById('res-cost-sfuc');
+    var resUnitSfuc = document.getElementById('res-unit-sfuc');
+    var resCostLcl = document.getElementById('res-cost-lcl');
+    var resUnitLcl = document.getElementById('res-unit-lcl');
+
+    var resRecBox = document.getElementById('res-recommendation');
+    var resRecText = document.getElementById('res-rec-text');
+
+    function recalc() {
+      if (!lInput || !wInput || !hInput || !wtInput || !ctnsInput || !unitsInput || !destSelect) return;
+      var l = Math.max(1, parseFloat(lInput.value) || 1);
+      var w = Math.max(1, parseFloat(wInput.value) || 1);
+      var h = Math.max(1, parseFloat(hInput.value) || 1);
+      var wtPerCtn = Math.max(0.1, parseFloat(wtInput.value) || 0.1);
+      var ctns = Math.max(1, parseInt(ctnsInput.value, 10) || 1);
+      var units = Math.max(1, parseInt(unitsInput.value, 10) || 1);
+      var dest = destSelect.value || 'west';
+
+      var totalVolCm3 = l * w * h * ctns;
+      var totalCbm = totalVolCm3 / 1000000;
+      var actualGrossKg = wtPerCtn * ctns;
+      var expVolKg = totalVolCm3 / 5000;
+      var airVolKg = totalVolCm3 / 6000;
+
+      var expBillableKg = Math.max(actualGrossKg, expVolKg);
+      var airBillableKg = Math.max(actualGrossKg, airVolKg);
+
+      resCbm.textContent = totalCbm.toFixed(2) + ' CBM';
+      resActualWt.textContent = Math.round(actualGrossKg) + ' kg';
+      resExpWt.textContent = Math.round(expBillableKg) + ' kg';
+      resExpNote.textContent = expVolKg > actualGrossKg ? 'Volumetric (÷ 5000)' : 'Actual Gross Wt';
+      resAirWt.textContent = Math.round(airBillableKg) + ' kg';
+
+      // 1. Express IE Estimate
+      var expRatePerKg = expBillableKg > 70 ? 6.25 : expBillableKg >= 21 ? 6.60 : 8.50;
+      var totalExpCost = Math.max(29, expBillableKg * expRatePerKg);
+
+      // 2. AFUC (Air + UPS Combined)
+      var afucBase = dest === 'west' ? 4.3 : dest === 'central' ? 4.5 : 4.9;
+      if (airBillableKg > 300) afucBase -= 0.4;
+      var totalAfucCost = Math.max(110, airBillableKg * afucBase);
+
+      // 3. SFUC (Sea + UPS Combined)
+      var sfucRate = dest === 'west' ? 1.5 : dest === 'central' ? 1.6 : 1.8;
+      var sfucChargeKg = Math.max(100, airBillableKg);
+      var totalSfucCost = sfucChargeKg * sfucRate;
+
+      // 4. Sea LCL All-In Reference
+      var lclRatePerCbm = 310;
+      if (dest === 'west') {
+        lclRatePerCbm = totalCbm >= 10 ? 180 : totalCbm >= 5 ? 240 : 310;
+      } else if (dest === 'central') {
+        lclRatePerCbm = totalCbm >= 10 ? 240 : totalCbm >= 5 ? 290 : 340;
+      } else {
+        lclRatePerCbm = totalCbm >= 10 ? 260 : totalCbm >= 5 ? 320 : 370;
+      }
+      var lclChargeCbm = Math.max(2, totalCbm);
+      var totalLclCost = lclChargeCbm * lclRatePerCbm;
+
+      resCostExp.textContent = '$' + Math.round(totalExpCost).toLocaleString();
+      resUnitExp.textContent = '$' + (totalExpCost / units).toFixed(2) + ' / pc';
+
+      resCostAfuc.textContent = '$' + Math.round(totalAfucCost).toLocaleString();
+      resUnitAfuc.textContent = '$' + (totalAfucCost / units).toFixed(2) + ' / pc';
+
+      resCostSfuc.textContent = '$' + Math.round(totalSfucCost).toLocaleString();
+      resUnitSfuc.textContent = '$' + (totalSfucCost / units).toFixed(2) + ' / pc';
+
+      resCostLcl.textContent = '$' + Math.round(totalLclCost).toLocaleString();
+      resUnitLcl.textContent = '$' + (totalLclCost / units).toFixed(2) + ' / pc';
+
+      var titleEl = resRecBox ? resRecBox.querySelector('strong') : null;
+      if (totalCbm >= 15) {
+        if (titleEl) titleEl.textContent = 'Recommended Mode: 20\' GP or 40\' HQ Full Container Load (FCL)';
+        resRecText.textContent = 'At ' + totalCbm.toFixed(1) + ' CBM, booking a dedicated 20\' GP container (28 CBM capacity) from Ningbo Port is cheaper and safer than LCL or per-kg DDP.';
+      } else if (totalCbm >= 3.5 && totalLclCost < totalSfucCost) {
+        if (titleEl) titleEl.textContent = 'Recommended Mode: Sea Freight LCL (CBM Volume Basis)';
+        resRecText.textContent = 'At ' + totalCbm.toFixed(2) + ' CBM, LCL sea freight gives you the lowest landed cost per unit ($' + (totalLclCost / units).toFixed(2) + '/pc).';
+      } else if (expBillableKg < 45) {
+        if (titleEl) titleEl.textContent = 'Recommended Mode: International Express (FedEx IP/IE) or $149 Sample Consolidation';
+        resRecText.textContent = 'For small shipments under 45 kg, Express courier is fastest and avoids minimum sea freight surcharges.';
+      } else {
+        if (titleEl) titleEl.textContent = 'Recommended Mode: Sea Freight + UPS Combined (SFUC Fast DDP)';
+        resRecText.textContent = 'SFUC gives you the best balance of speed (25–32 days) and low landed cost ($' + (totalSfucCost / units).toFixed(2) + '/pc) without port deconsolidation delays.';
+      }
+    }
+
+    var inputs = [lInput, wInput, hInput, wtInput, ctnsInput, unitsInput, destSelect];
+    for (var i = 0; i < inputs.length; i++) {
+      if (inputs[i]) {
+        inputs[i].addEventListener('input', recalc);
+        inputs[i].addEventListener('change', recalc);
+      }
+    }
+    recalc();
+  })();
+</script>

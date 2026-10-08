@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { WHOLESALE_MARKETS } from '../lib/markets';
+import { WHOLESALE_MARKETS, NICHE_MARKETS, SPECIALIZED_STREETS } from '../lib/markets';
 import { getFloorStats } from '../lib/data';
 
 const floorStats = await getFloorStats();
@@ -9,7 +9,7 @@ const tipsByDistrict: Record<string, string[]> = {
   'district-1': [
     "Enter through Gate 1 or Gate 2 for immediate access to plush toys and seasonal items.",
     "Floor 4 consists of expansive manufacturer showrooms with low sample MOQs and catalog viewing.",
-    "Most stalls close promptly at 17:00 (5:00 PM) - plan for morning visits (09:00 - 12:00) for unhurried factory boss meetings."
+    "Most stalls close promptly at 16:30–17:00 — plan for morning visits (09:00 - 12:00) for unhurried factory boss meetings."
   ],
   'district-2': [
     "Gate 21 & 22 are the closest to the Central Square and subway shuttle connection.",
@@ -32,29 +32,29 @@ const tipsByDistrict: Record<string, string[]> = {
     "Wide aisles make sample transport and wheeled luggage navigation much easier than older districts."
   ],
   'huangyuan': [
-    "Dedicated 8-story clothing complex located in downtown Yiwu (separate from Futian Trade City).",
-    "Floor 1 Denim & Jeans has direct manufacturing links to Guangzhou and Xintang denim factories.",
+    "Dedicated 8-story clothing complex located at No. 180 Jiangbin Middle Rd in downtown Xiu Hu (separate from Futian Trade City).",
+    "Floor 1 Denim & Jeans has direct manufacturing links to Guangzhou and Xintang denim factories; Floor 6 features Korean imported styles.",
     "Stalls have fitting mannequins and high-speed local tailors for immediate sample modification."
   ]
 };
 ---
 
 <Layout 
-  title="Futian Market Map & Floor Guide | Sino Trade Link"
-  description="Floor-by-floor navigation guide for Yiwu Futian International Trade City Districts 1–5 and Huangyuan Market. Booth counts, categories, and direct factory links."
+  title="Yiwu Market Map, 5 Niche Markets & 14 Stock Streets | Sino Trade Link"
+  description="Complete floor-by-floor navigation guide for Yiwu Futian International Trade City (Districts 1–5), 5 Niche Wholesale Markets, and 14 Specialized Stock-Lot Streets with Chinese taxi addresses."
   activePage="map"
 >
   <!-- Hero Section -->
   <section class="bg-slate-900 text-white py-14 border-b border-slate-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
       <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-300 text-xs font-bold mb-4">
-        <span>Physical Market Navigation</span>
+        <span>Physical Market Navigation • 6.4M m² Total Trade Area</span>
       </div>
       <h1 class="text-3xl sm:text-5xl font-black tracking-tight text-white max-w-4xl mx-auto">
-        Yiwu Wholesale Market <span class="bg-gradient-to-r from-blue-400 via-indigo-300 to-amber-300 bg-clip-text text-transparent">Floor-by-Floor Map</span>
+        Yiwu Wholesale Market <span class="bg-gradient-to-r from-blue-400 via-indigo-300 to-amber-300 bg-clip-text text-transparent">Floor Map & Street Directory</span>
       </h1>
-      <p class="mt-4 text-sm sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed">
-        With 5.5 million square meters and over 75,000 booths, navigating Yiwu Market blindly wastes days. Use our interactive floor directory to locate exact product zones and contact stalls directly.
+      <p class="mt-4 text-sm sm:text-base text-slate-300 max-w-3xl mx-auto leading-relaxed">
+        Spanning 6.4 million square meters, 75,000+ booths, 5 specialized niche complexes, and 14 surrounding stock-lot & raw-material streets, spending 3 minutes per booth in Yiwu would take over 3 months. Use our verified coordinates and Chinese taxi cards to navigate directly to the source.
       </p>
 
       <!-- Quick Market Jump Pills -->
@@ -67,13 +67,46 @@ const tipsByDistrict: Record<string, string[]> = {
             {m.name}
           </a>
         ))}
+        <a 
+          href="#niche-markets"
+          class="px-3.5 py-1.5 rounded-full bg-indigo-950/80 hover:bg-indigo-900 text-xs font-bold text-indigo-300 border border-indigo-700/60 transition-all shadow-sm"
+        >
+          + 4 Niche Markets (Machinery, Furniture, Timber)
+        </a>
+        <a 
+          href="#specialized-streets"
+          class="px-3.5 py-1.5 rounded-full bg-amber-950/80 hover:bg-amber-900 text-xs font-bold text-amber-300 border border-amber-700/60 transition-all shadow-sm"
+        >
+          + 14 Stock-Lot & Specialty Streets
+        </a>
+        <a 
+          href="#field-mechanics"
+          class="px-3.5 py-1.5 rounded-full bg-emerald-950/80 hover:bg-emerald-900 text-xs font-bold text-emerald-300 border border-emerald-700/60 transition-all shadow-sm"
+        >
+          Yiwu Buyer Field Rules
+        </a>
       </div>
     </div>
   </section>
 
-  <!-- Market District Guides -->
-  <section class="py-12 bg-slate-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+  <!-- Core Futian Market District Guides -->
+  <section class="py-12 bg-slate-50 border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+        <div>
+          <span class="text-[11px] font-bold uppercase tracking-wider text-blue-600 block">Primary Complex • Open Daily 09:00 – 16:30</span>
+          <h2 class="text-lg sm:text-xl font-black text-slate-900">Yiwu International Trade City (Futian Market • 义乌国际商贸城)</h2>
+          <p class="text-xs text-slate-600 mt-0.5">Main Taxi Address: <strong class="font-mono text-slate-900">No. 69, Chouzhou North Road, Yiwu (义乌市稠州北路69号)</strong></p>
+        </div>
+        <button 
+          type="button"
+          data-copy-text="义乌市稠州北路69号 (义乌国际商贸城)"
+          class="copy-taxi-btn shrink-0 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition-colors cursor-pointer flex items-center gap-2"
+        >
+          <span>🚕 Copy Chinese Address for Taxi</span>
+        </button>
+      </div>
+
       {WHOLESALE_MARKETS.map(m => {
         const distNum = m.id.replace('district-', '').replace('huangyuan', '6');
         const tips = tipsByDistrict[m.id] || [];
@@ -92,7 +125,14 @@ const tipsByDistrict: Record<string, string[]> = {
                   <h2 class="text-2xl sm:text-3xl font-black text-white">{m.name}</h2>
                   <p class="text-xs sm:text-sm text-white/90 mt-1 max-w-2xl">{m.description}</p>
                 </div>
-                <div class="flex items-center gap-2 shrink-0">
+                <div class="flex flex-wrap items-center gap-2 shrink-0">
+                  <button
+                    type="button"
+                    data-copy-text={`义乌${m.chineseName}`}
+                    class="copy-taxi-btn px-3.5 py-2 bg-black/25 hover:bg-black/40 text-white text-xs font-bold rounded-xl border border-white/20 transition-all cursor-pointer"
+                  >
+                    🚕 Taxi Card: {m.chineseName}
+                  </button>
                   <a 
                     href={`/directory?district=${distNum}`} 
                     class="px-4 py-2 bg-white/20 hover:bg-white/30 backdrop-blur text-white text-xs font-bold rounded-xl border border-white/30 transition-all shadow-sm"
@@ -197,4 +237,304 @@ const tipsByDistrict: Record<string, string[]> = {
       })}
     </div>
   </section>
+
+  <!-- 4 Additional Specialized Niche Wholesale Markets in Yiwu -->
+  <section id="niche-markets" class="py-16 bg-white border-b border-slate-200 scroll-mt-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl mb-10">
+        <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 block mb-1">
+          Beyond Futian & Huangyuan • Specialized Industrial Complexes
+        </span>
+        <h2 class="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
+          4 Specialized Niche Wholesale Markets in Yiwu
+        </h2>
+        <p class="text-sm text-slate-600 mt-2 leading-relaxed">
+          While Futian Districts 1–5 cover small commodities and Huangyuan covers garments, Yiwu operates four additional government-backed wholesale complexes dedicated to industrial machinery, commercial furniture, building materials, and raw timber. All are within a 15–20 minute drive of Futian.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {NICHE_MARKETS.map(nm => (
+          <div class="rounded-3xl border border-slate-200 bg-slate-50/70 p-6 sm:p-7 flex flex-col justify-between hover:border-indigo-400 transition-all shadow-sm">
+            <div>
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                <span class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-indigo-100 text-indigo-800 border border-indigo-200">
+                  {nm.scale}
+                </span>
+                <span class="text-xs font-mono font-bold text-slate-500">{nm.chineseName}</span>
+              </div>
+
+              <h3 class="text-xl font-black text-slate-900 mb-2">{nm.name}</h3>
+              <p class="text-xs text-slate-600 leading-relaxed mb-4">{nm.focus}</p>
+
+              <!-- Taxi Address Box -->
+              <div class="bg-white rounded-2xl border border-slate-200 p-3.5 mb-5 flex items-center justify-between gap-3">
+                <div class="text-xs">
+                  <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Taxi Destination Card</span>
+                  <span class="font-bold text-slate-900 block">{nm.chineseAddress}</span>
+                  <span class="text-[11px] text-slate-500">{nm.address}</span>
+                </div>
+                <button
+                  type="button"
+                  data-copy-text={`${nm.chineseName} (${nm.chineseAddress})`}
+                  class="copy-taxi-btn shrink-0 px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-[11px] cursor-pointer transition-colors"
+                >
+                  Copy Chinese
+                </button>
+              </div>
+
+              <!-- Floor / Zone Breakdown -->
+              <div class="space-y-2 mb-6">
+                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Floor & Zone Directory</span>
+                {nm.floors.map(fl => (
+                  <div class="flex items-start gap-2.5 text-xs bg-white rounded-xl p-2.5 border border-slate-200/70">
+                    <span class="px-2 py-0.5 rounded-md bg-slate-900 text-white font-mono font-bold text-[11px] shrink-0">
+                      {fl.level}
+                    </span>
+                    <span class="text-slate-700 leading-snug">{fl.items}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between gap-3 pt-4 border-t border-slate-200/80">
+              <a
+                href={`/concierge?service=audit&name=${encodeURIComponent(nm.name)}`}
+                class="text-xs font-bold text-indigo-600 hover:text-indigo-700"
+              >
+                Dispatch Agent to {nm.name} ($99) &rarr;
+              </a>
+              <a
+                href="/directory?district=7"
+                class="text-xs font-bold text-slate-600 hover:text-slate-900"
+              >
+                Search Directory &rarr;
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 14 Specialized Wholesale & Stock-Lot Streets -->
+  <section id="specialized-streets" class="py-16 bg-slate-900 text-white border-b border-slate-800 scroll-mt-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-10">
+        <div class="max-w-3xl">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-bold mb-3">
+            <span>Insider Street-Level Clusters • Up to 80% Off Factory Overruns</span>
+          </span>
+          <h2 class="text-2xl sm:text-4xl font-black text-white tracking-tight">
+            14 Specialized Wholesale & Stock-Lot Streets in Yiwu
+          </h2>
+          <p class="text-sm text-slate-300 mt-2 leading-relaxed">
+            Thousands of Yiwu's lowest-priced suppliers operate from street-level storefronts outside the main market complexes. These 14 specialized streets cluster <strong class="text-white">stock-lot liquidators</strong> (selling cancelled export runs and overproduction at up to 80% off factory cost), raw jewelry findings, and custom gift packaging mills.
+          </p>
+        </div>
+
+        <!-- Category Filter Pills -->
+        <div class="flex flex-wrap gap-1.5" id="street-filter-bar">
+          <button type="button" data-street-filter="all" class="street-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-500 text-slate-950 cursor-pointer transition-colors">
+            All 14 Streets
+          </button>
+          <button type="button" data-street-filter="Stock Lots (80% Off)" class="street-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 cursor-pointer transition-colors">
+            Stock Lots (80% Off)
+          </button>
+          <button type="button" data-street-filter="Raw Materials & Findings" class="street-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 cursor-pointer transition-colors">
+            Jewelry Findings
+          </button>
+          <button type="button" data-street-filter="Packaging & Gifts" class="street-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 cursor-pointer transition-colors">
+            Packaging & Gifts
+          </button>
+          <button type="button" data-street-filter="Apparel & Accessories" class="street-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 cursor-pointer transition-colors">
+            Apparel & Wigs
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="streets-grid">
+        {SPECIALIZED_STREETS.map(st => (
+          <div 
+            data-street-tag={st.tag}
+            class="street-card rounded-2xl border border-slate-800 bg-slate-800/60 p-5 flex flex-col justify-between hover:border-amber-500/50 transition-all"
+          >
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-3">
+                <span class="inline-flex items-center justify-center w-6 h-6 rounded-lg bg-slate-950 text-amber-400 font-mono font-black text-xs border border-slate-700">
+                  #{st.num}
+                </span>
+                <span class={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${
+                  st.tag === 'Stock Lots (80% Off)' 
+                    ? 'bg-rose-500/20 text-rose-300 border-rose-500/30' 
+                    : st.tag === 'Packaging & Gifts'
+                    ? 'bg-amber-500/20 text-amber-300 border-amber-500/30'
+                    : 'bg-blue-500/20 text-blue-300 border-blue-500/30'
+                }`}>
+                  {st.tag}
+                </span>
+              </div>
+
+              <h3 class="text-base font-bold text-white mb-0.5">{st.name}</h3>
+              <p class="text-xs font-mono text-amber-300/90 mb-3">{st.chineseName}</p>
+
+              <p class="text-xs text-slate-300 leading-relaxed mb-3">
+                <strong class="text-white">Core Products:</strong> {st.products}
+              </p>
+
+              <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-700/70 text-[11px] text-slate-400 leading-relaxed mb-4">
+                <strong class="text-emerald-400">Field Tip:</strong> {st.insiderTip}
+              </div>
+            </div>
+
+            <div class="pt-3 border-t border-slate-700/60 flex items-center justify-between gap-2">
+              <div class="text-[11px] text-slate-400 truncate" title={st.address}>
+                📍 {st.chineseAddress}
+              </div>
+              <button
+                type="button"
+                data-copy-text={`${st.chineseName} — ${st.chineseAddress}`}
+                class="copy-taxi-btn shrink-0 px-2.5 py-1.5 rounded-lg bg-slate-700 hover:bg-amber-500 hover:text-slate-950 text-white font-bold text-[11px] transition-colors cursor-pointer"
+              >
+                🚕 Copy Taxi
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- On-the-Ground Yiwu Buyer Mechanics & Field Rules -->
+  <section id="field-mechanics" class="py-16 bg-slate-50 scroll-mt-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-12">
+        <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 block mb-1">
+          Practical Local Insights
+        </span>
+        <h2 class="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
+          How Business Actually Works Inside Yiwu Market
+        </h2>
+        <p class="text-sm text-slate-600 mt-2">
+          Over 600,000 international buyers visit Yiwu annually and 21,000+ resident foreign merchants live in the city. Know these 4 ground rules before you negotiate, pay, or ship.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Card 1: Price Comparison & Language -->
+        <div class="bg-white rounded-3xl border border-slate-200 p-7 shadow-sm">
+          <div class="w-10 h-10 rounded-2xl bg-blue-100 text-blue-700 font-black flex items-center justify-center mb-4">
+            01
+          </div>
+          <h3 class="text-lg font-black text-slate-900 mb-2">
+            The "10-Booth Cluster" Rule & Translator Reality
+          </h3>
+          <p class="text-xs text-slate-600 leading-relaxed mb-4">
+            In Yiwu, identical product categories are clustered side-by-side on the same floor. Walking into 10–15 adjacent booths gives you the exact market floor price in under 30 minutes. Always photograph the booth doorplate (<strong class="text-slate-900">District + Gate + Floor + 5-digit Booth No.</strong>) or you will never find the stall again.
+          </p>
+          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-700 space-y-1.5">
+            <div><strong class="text-slate-900">Ready-Stock Buying:</strong> Stall keepers know basic English numbers and tap RMB prices into a hand calculator.</div>
+            <div><strong class="text-slate-900">OEM & Private Label:</strong> Casual day translators (~$45/day) only interpret conversation in the aisle—they take zero responsibility for business license checks, defects, or sample consolidation. For a flat <a href="/concierge" class="text-blue-600 font-bold underline">$99 Stall Audit</a>, our bilingual field engineers inspect the booth, verify licenses, and film a 4K walkthrough.</div>
+          </div>
+        </div>
+
+        <!-- Card 2: MOQs & Stock vs Custom -->
+        <div class="bg-white rounded-3xl border border-slate-200 p-7 shadow-sm">
+          <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-800 font-black flex items-center justify-center mb-4">
+            02
+          </div>
+          <h3 class="text-lg font-black text-slate-900 mb-2">
+            Buying Ready-Stock Cartons vs. Custom Packaging
+          </h3>
+          <p class="text-xs text-slate-600 leading-relaxed mb-4">
+            Roughly 70% of traditional Yiwu buyers (supermarkets, regional wholesalers, chain stores) purchase <strong class="text-slate-900">ready-made master cartons</strong> (e.g., 1 to 5 cartons per style) for rapid container mixing.
+          </p>
+          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-700 space-y-1.5">
+            <div><strong class="text-slate-900">The Customization Secret:</strong> Many individual stall keepers hesitate to print custom retail boxes for small orders because they focus on product assembly.</div>
+            <div><strong class="text-slate-900">How Smart Brands Solve It:</strong> Source the core product from a verified Futian factory stall, and pair it with packaging from <strong class="text-slate-900">Chouzhou North Packaging Street (#13)</strong> or District 3 printing booths—giving you retail-ready private label goods without massive factory MOQs.</div>
+          </div>
+        </div>
+
+        <!-- Card 3: Payment Mechanics -->
+        <div class="bg-white rounded-3xl border border-slate-200 p-7 shadow-sm">
+          <div class="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-800 font-black flex items-center justify-center mb-4">
+            03
+          </div>
+          <h3 class="text-lg font-black text-slate-900 mb-2">
+            How Payments Work: Cash RMB vs. T/T Wire Deposits
+          </h3>
+          <p class="text-xs text-slate-600 leading-relaxed mb-4">
+            Understanding how Yiwu stalls settle transactions prevents payment delays and protects your working capital:
+          </p>
+          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-700 space-y-1.5">
+            <div><strong class="text-slate-900">Small Sample & Stock Purchases (&lt; $500):</strong> Stalls require <strong class="text-slate-900">Cash RMB</strong>, Alipay, or WeChat Pay on the spot. (Foreign visitors exchanging currency in Yiwu predominantly use the Bank of China main branch hub at <span class="font-mono text-slate-900">No. 500 Chouzhou North Road • 稠州北路500号</span>).</div>
+            <div><strong class="text-slate-900">Bulk Wholesale Orders:</strong> Standard practice is a small upfront deposit (<strong class="text-slate-900">10%–30%</strong> or <strong class="text-slate-900">$150–$300</strong> per booth to lock production) via T/T bank transfer, with the remaining balance paid only after pre-shipment quality inspection.</div>
+          </div>
+        </div>
+
+        <!-- Card 4: Ports, Rail & Consolidation -->
+        <div class="bg-white rounded-3xl border border-slate-200 p-7 shadow-sm">
+          <div class="w-10 h-10 rounded-2xl bg-purple-100 text-purple-800 font-black flex items-center justify-center mb-4">
+            04
+          </div>
+          <h3 class="text-lg font-black text-slate-900 mb-2">
+            Ningbo Port, Yixinou Rail & Multi-Booth Consolidation
+          </h3>
+          <p class="text-xs text-slate-600 leading-relaxed mb-4">
+            Yiwu sits at the center of Zhejiang's industrial cluster—producing ~80% of the world's Christmas & festive goods—just 2 hours from <strong class="text-slate-900">Ningbo-Zhoushan Port</strong> and 3 hours from <strong class="text-slate-900">Shanghai Port</strong>.
+          </p>
+          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-700 space-y-1.5">
+            <div><strong class="text-slate-900">Yixinou China–Europe Railway (义新欧班列):</strong> Direct rail freight from Yiwu across Central Asia, Russia, and Europe to Madrid—cutting ocean transit time in half at less than 50% of air cargo cost.</div>
+            <div><strong class="text-slate-900">Warning on Blind Forwarder Loading:</strong> Never let stalls drop uninspected cartons at a freight forwarder warehouse without verification. Always run a pre-shipment check or check our <a href="/sourcing-guide" class="text-blue-600 font-bold underline">China Sourcing & Shipping Playbook &rarr;</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 </Layout>
+
+<script is:inline>
+  (function () {
+    // Copy Chinese Taxi Address Handler
+    var copyBtns = document.querySelectorAll('.copy-taxi-btn');
+    for (var i = 0; i < copyBtns.length; i++) {
+      copyBtns[i].addEventListener('click', function () {
+        var btn = this;
+        var text = btn.getAttribute('data-copy-text') || '';
+        var orig = btn.innerHTML;
+        if (navigator.clipboard && text) {
+          navigator.clipboard.writeText(text).then(function () {
+            btn.innerHTML = '✅ Copied Chinese Address!';
+            setTimeout(function () {
+              btn.innerHTML = orig;
+            }, 2000);
+          });
+        }
+      });
+    }
+
+    // Specialized Street Filter Handler
+    var filterBtns = document.querySelectorAll('.street-filter-btn');
+    var streetCards = document.querySelectorAll('.street-card');
+    for (var j = 0; j < filterBtns.length; j++) {
+      filterBtns[j].addEventListener('click', function () {
+        var activeTag = this.getAttribute('data-street-filter') || 'all';
+        for (var k = 0; k < filterBtns.length; k++) {
+          filterBtns[k].className = 'street-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 cursor-pointer transition-colors';
+        }
+        this.className = 'street-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-500 text-slate-950 cursor-pointer transition-colors';
+
+        for (var m = 0; m < streetCards.length; m++) {
+          var card = streetCards[m];
+          var cardTag = card.getAttribute('data-street-tag');
+          if (activeTag === 'all' || cardTag === activeTag) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        }
+      });
+    }
+  })();
+</script>
+

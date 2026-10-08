@@ -7,8 +7,9 @@ Sino Trade Link provides verified access to 27,337+ physical factory stalls and 
 ## Core Navigation & Directories
 
 - [Wholesale Market Directory](https://sinotradelink.com/directory): Search 27,000+ physical stalls, direct factories, and booth coordinates across all Yiwu districts.
-- [Market Floor Map](https://sinotradelink.com/market-map): Interactive district floor plan and physical navigation guide for Yiwu Futian Market.
-- [On-Demand Stall Inspection Concierge](https://sinotradelink.com/concierge): Professional bilingual agent ground service to visit booths, verify stock, and collect real samples.
+- [Market Floor Map & 14 Specialized Stock-Lot Streets](https://sinotradelink.com/market-map): Interactive district floor plan, 4 niche wholesale complexes (Furniture, Building Materials, Production Materials, Timber), and 14 specialized Yiwu stock-lot streets (Meihu & Wuai 80%-off factory overrun streets) with Chinese taxi addresses.
+- [China Sourcing, OEM & Freight Playbook](https://sinotradelink.com/sourcing-guide): Interactive CBM, volumetric weight (÷5000 vs ÷6000) & landed freight calculator, EXW/FOB/DDP formula breakdown, 7 shipping methods (Express, AFUC, SFUC, LCL, FCL), 9-step OEM & private label manufacturing roadmap, MOQ negotiation scripts, NNN & provisional patent IP protection, and pre-shipment QC checklists.
+- [On-Demand Stall Inspection Concierge](https://sinotradelink.com/concierge): Professional bilingual agent ground service to visit booths, verify stock, inspect material tolerances (plush GSM, plastic burrs, metal salt-spray specs), and consolidate samples into a single box ($99–$299 flat fee, 0% commission).
 - [Category Wholesaler Excel Packs](https://sinotradelink.com/category-packs): Download verified wholesale supplier lists and WeChat contacts in curated niche spreadsheets.
 - [Global Supplier Onboarding](https://sinotradelink.com/for-suppliers): Application portal for verified manufacturers and international trade suppliers to list on the platform.
 - [Public Suppliers API](https://sinotradelink.com/api/suppliers.json): JSON feed of verified market suppliers and stall locations.
@@ -20,13 +21,16 @@ Sino Trade Link provides verified access to 27,337+ physical factory stalls and 
 - [District 3 (Office, Stationery & Sports)](https://sinotradelink.com/directory?district=3): School supplies, stationery, sports goods, eyewear, and garment zippers.
 - [District 4 (Footwear, Socks & Daily Items)](https://sinotradelink.com/directory?district=4): Hosiery, daily necessities, shoes, gloves, scarves, and accessories.
 - [District 5 (Home Textiles & Auto Parts)](https://sinotradelink.com/directory?district=5): Curtains, bedding, fabrics, vehicle accessories, and imported goods.
-- [Huangyuan Market (Apparel & Denim)](https://sinotradelink.com/directory?district=6): Men's, women's, and children's wholesale garments and jeans.
+- [Huangyuan Market (Apparel & Denim)](https://sinotradelink.com/directory?district=60): Men's, women's, and children's wholesale garments and jeans.
 - [Production Materials Market](https://sinotradelink.com/directory?district=7): Raw materials, injection molding, packaging, and commercial supplies.
 
 ## Sitemaps & Feeds
 
 - [Main XML Sitemap](https://sinotradelink.com/sitemap.xml): Primary sitemap index for search engine discovery.
-- [Static Pages Sitemap](https://sinotradelink.com/sitemaps/pages.xml): Sitemap of core marketing and directory navigation pages.
-- [Suppliers Sitemap Batch 1](https://sinotradelink.com/sitemaps/suppliers-1.xml): XML sitemap for verified supplier stall profiles (Batch 1).
-- [Suppliers Sitemap Batch 2](https://sinotradelink.com/sitemaps/suppliers-2.xml): XML sitemap for verified supplier stall profiles (Batch 2).
-- [Suppliers Sitemap Batch 3](https://sinotradelink.com/sitemaps/suppliers-3.xml): XML sitemap for verified supplier stall profiles (Batch 3).
+- [Static Pages Sitemap](https://sinotradelink.com/sitemaps/pages.xml): Sitemap of core marketing, sourcing playbook, and directory navigation pages.
+- [Suppliers Sitemap Batch 1](https://sinotradelink.com/sitemaps/suppliers-1.xml): XML sitemap for verified supplier stall profiles (1–5,000).
+- [Suppliers Sitemap Batch 2](https://sinotradelink.com/sitemaps/suppliers-2.xml): XML sitemap for verified supplier stall profiles (5,001–10,000).
+- [Suppliers Sitemap Batch 3](https://sinotradelink.com/sitemaps/suppliers-3.xml): XML sitemap for verified supplier stall profiles (10,001–15,000).
+- [Suppliers Sitemap Batch 4](https://sinotradelink.com/sitemaps/suppliers-4.xml): XML sitemap for verified supplier stall profiles (15,001–20,000).
+- [Suppliers Sitemap Batch 5](https://sinotradelink.com/sitemaps/suppliers-5.xml): XML sitemap for verified supplier stall profiles (20,001–25,000).
+- [Suppliers Sitemap Batch 6](https://sinotradelink.com/sitemaps/suppliers-6.xml): XML sitemap for verified supplier stall profiles (25,001–27,706).
