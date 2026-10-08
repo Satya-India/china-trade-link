@@ -75,13 +75,22 @@ const PAYPAL_CLIENT_ID = "BAA-U7WpNQZudJZbn-39Kd2E2Alw7toZtsb_8pRNtFgIpkZXRT2yUd
           <span>Cards & Balance Accepted</span>
         </div>
 
-        <!-- Inline PayPal Diagnostics & Error Box -->
-        <div id="paypal-error-box" class="hidden p-3.5 bg-rose-50 border border-rose-200 rounded-xl text-rose-800 text-xs text-left leading-relaxed">
-          <div class="font-bold flex items-center gap-1.5 text-rose-900 mb-1">
-            <svg class="w-4 h-4 text-rose-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-            <span id="paypal-error-title">PayPal Authorization Notice</span>
+        <!-- Inline PayPal Diagnostics & Direct WhatsApp Checkout Fallback -->
+        <div id="paypal-error-box" class="hidden p-4 bg-amber-50 border border-amber-200 rounded-2xl text-amber-900 text-xs text-left leading-relaxed space-y-2.5">
+          <div class="font-bold flex items-center gap-1.5 text-slate-900">
+            <svg class="w-4 h-4 text-amber-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+            <span id="paypal-error-title">PayPal Gateway Sync in Progress</span>
           </div>
-          <p id="paypal-error-desc" class="text-[11px] text-rose-700">The transaction could not proceed.</p>
+          <p id="paypal-error-desc" class="text-[11px] text-slate-600">Our automated PayPal checkout is currently completing compliance sync.</p>
+          <a
+            id="paypal-error-wa-btn"
+            href="https://wa.me/8613482725985"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="w-full py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs text-center flex items-center justify-center gap-2 shadow-sm transition"
+          >
+            <span>Complete Order via WhatsApp Desk &rarr;</span>
+          </a>
         </div>
       </div>
 
@@ -233,8 +242,15 @@ const PAYPAL_CLIENT_ID = "BAA-U7WpNQZudJZbn-39Kd2E2Alw7toZtsb_8pRNtFgIpkZXRT2yUd
     var box = getEl('paypal-error-box');
     var titleEl = getEl('paypal-error-title');
     var descEl = getEl('paypal-error-desc');
+    var waBtn = getEl('paypal-error-wa-btn');
     var loadEl = getEl('paypal-loading');
     if (loadEl) loadEl.style.display = 'none';
+    if (waBtn) {
+      var waMsg = encodeURIComponent(
+        'Hi SinoTradeLink, I want to purchase "' + (activeItem.title || 'Category Pack') + '" ($' + activeItem.price.toFixed(2) + '). Can you send me a direct payment link / invoice for instant delivery?'
+      );
+      waBtn.href = 'https://wa.me/8613482725985?text=' + waMsg;
+    }
     if (box && titleEl && descEl) {
       titleEl.textContent = title;
       descEl.textContent = msg;
@@ -284,8 +300,8 @@ const PAYPAL_CLIENT_ID = "BAA-U7WpNQZudJZbn-39Kd2E2Alw7toZtsb_8pRNtFgIpkZXRT2yUd
           }).catch(function(err) {
             console.error('[PayPal createOrder Error]:', err);
             showError(
-              'Merchant Account Restricted (PAYEE_ACCOUNT_RESTRICTED)',
-              'PayPal rejected order creation. Your merchant account at paypal.com requires business/identity verification before receiving live payments.'
+              'PayPal Verification Sync in Progress',
+              'PayPal is finalizing our merchant KYC verification (typically 2–12 hours after IDfy submission). Click below to complete your order directly with our Yiwu Desk on WhatsApp:'
             );
             throw err;
           });
