@@ -5,6 +5,7 @@ import SourcingListDrawer from '../components/SourcingListDrawer.astro';
 import QuickSearchModal from '../components/QuickSearchModal.astro';
 import WhatsAppWidget from '../components/WhatsAppWidget.astro';
 import PayPalCheckoutModal from '../components/PayPalCheckoutModal.astro';
+import SampleAuditReportModal from '../components/SampleAuditReportModal.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -81,5 +82,6 @@ const resolvedCanonical = canonicalUrl || new URL(Astro.url.pathname, 'https://s
     <QuickSearchModal />
     <WhatsAppWidget />
     <PayPalCheckoutModal />
+    <SampleAuditReportModal />
   </body>
 </html>

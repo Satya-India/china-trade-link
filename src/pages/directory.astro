@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import SupplierCard from '../components/SupplierCard.astro';
 import ContactUnlockModal from '../components/ContactUnlockModal.astro';
 import { getSuppliersPaginated } from '../lib/data';
+import { CATEGORY_HUBS } from '../lib/categories';
 
 const url = new URL(Astro.request.url);
 const districtFilter = url.searchParams.get('district') || '';
@@ -238,13 +239,19 @@ const directoryJsonLd = {
             </p>
           </div>
         </div>
-        <div class="flex items-center gap-2 shrink-0 w-full sm:w-auto">
+        <div class="flex flex-wrap items-center gap-2 shrink-0 w-full sm:w-auto">
           <a
             href="/concierge"
             class="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs text-center transition shadow-sm whitespace-nowrap"
           >
             Book Stall Visit ($99) &rarr;
           </a>
+          <button
+            type="button"
+            class="open-sample-audit-btn px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 font-bold text-xs text-center transition whitespace-nowrap cursor-pointer"
+          >
+            Sample $99 Report
+          </button>
           <a
             href="https://wa.me/8613482725985?text=Hi%20SinoTradeLink%2C%20I%20am%20browsing%20the%20Yiwu%20Market%20directory%20and%20would%20like%20to%20discuss%20having%20your%20team%20visit%20stalls%20for%20me."
             target="_blank"
@@ -294,6 +301,33 @@ const directoryJsonLd = {
             Next Page &rarr;
           </button>
         )}
+      </div>
+
+      <!-- 24 Dedicated SEO Category Hubs Grid -->
+      <div class="mt-16 pt-12 border-t border-slate-200">
+        <div class="mb-6">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-blue-600 block mb-1">
+            Direct Category Landing Pages
+          </span>
+          <h2 class="text-xl font-black text-slate-900">
+            Browse Yiwu Wholesale Stalls by Specialized Sector (24 Hubs)
+          </h2>
+          <p class="text-xs text-slate-500 mt-0.5">
+            Each category hub includes verified stall lists, typical MOQs, master carton CBM specs, and field engineer QC checklists.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+          {CATEGORY_HUBS.map(hub => (
+            <a
+              href={`/category/${hub.slug}`}
+              class="p-3.5 rounded-2xl border border-slate-200 bg-white hover:bg-blue-50/60 hover:border-blue-300 transition-all flex flex-col justify-between group"
+            >
+              <span class="text-xs font-bold text-slate-800 group-hover:text-blue-600 line-clamp-1">{hub.shortName}</span>
+              <span class="text-[10px] text-slate-400 mt-1">{hub.districtLabel} &bull; {hub.floor}</span>
+            </a>
+          ))}
+        </div>
       </div>
     </div>
   </section>

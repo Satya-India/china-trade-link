@@ -1,0 +1,279 @@
+---
+/**
+ * Interactive Sample $99 Physical Stall Audit Report Modal
+ * Triggered anywhere via class `.open-sample-audit-btn`
+ * Pure vanilla JS inline script (zero TypeScript syntax).
+ */
+---
+
+<div
+  id="sample-audit-modal"
+  class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/80 backdrop-blur-sm p-3 sm:p-6 overflow-y-auto"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="sample-audit-modal-title"
+>
+  <div class="relative w-full max-w-4xl bg-white rounded-3xl border border-slate-200 shadow-2xl overflow-hidden my-auto max-h-[92vh] flex flex-col">
+    <!-- Top Header Bar -->
+    <div class="bg-slate-900 text-white px-6 py-4 flex items-center justify-between border-b border-slate-800 shrink-0">
+      <div class="flex items-center gap-3">
+        <span class="px-2.5 py-1 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[10px] font-black uppercase tracking-wider">
+          Sample Deliverable
+        </span>
+        <div>
+          <h3 id="sample-audit-modal-title" class="text-sm sm:text-base font-black text-white">
+            Sino Trade Link — Yiwu Physical Stall Audit Report (#STL-YW-0842)
+          </h3>
+          <p class="text-[11px] text-slate-400">
+            Completed in 28 Hours &bull; Field Engineer: Chen Wei (Bilingual QC Lead, Yiwu Office)
+          </p>
+        </div>
+      </div>
+
+      <button
+        type="button"
+        id="close-sample-audit-btn"
+        class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors cursor-pointer"
+        aria-label="Close sample report modal"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Scrollable Report Body -->
+    <div class="p-6 sm:p-8 overflow-y-auto space-y-6 bg-slate-50 text-slate-800">
+      <!-- Executive Verdict Banner -->
+      <div class="bg-white rounded-2xl border-2 border-emerald-500/40 p-5 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <span class="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-black uppercase">
+              Audit Verdict: APPROVED (Tier-1 Direct Factory)
+            </span>
+            <span class="text-xs font-mono text-slate-500">Score: 9.4 / 10</span>
+          </div>
+          <h4 class="text-base font-black text-slate-900">
+            Target Stall: Futian District 2, Floor 3, Gate 35, Booth #G3-18204
+          </h4>
+          <p class="text-xs text-slate-600 mt-0.5">
+            Registered Chinese Entity: <strong>Zhejiang Yongkang Huaxin Stainless Products Co., Ltd. (浙江永康华鑫不锈钢制品有限公司)</strong>
+          </p>
+        </div>
+        <div class="bg-emerald-50 border border-emerald-200 rounded-xl px-4 py-3 text-right shrink-0">
+          <span class="text-[10px] font-bold uppercase text-emerald-700 block">Negotiated Buyer Savings</span>
+          <span class="text-xl font-black text-emerald-700">$1,410 Saved</span>
+          <span class="text-[10px] text-emerald-600 block">On 3,000 pcs initial order (-19.1% vs initial quote)</span>
+        </div>
+      </div>
+
+      <!-- 4-Part Audit Breakdown Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <!-- 1. Business License & Entity Verification -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-[11px] font-black uppercase tracking-wider text-blue-600">
+              1. Business License (营业执照) Check
+            </span>
+            <span class="text-[10px] font-bold bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded border border-emerald-200">
+              Verified Original at Booth
+            </span>
+          </div>
+          <ul class="space-y-2.5 text-xs text-slate-600">
+            <li class="flex items-start justify-between gap-2 pb-2 border-b border-slate-100">
+              <span class="text-slate-500">Entity Classification:</span>
+              <strong class="text-slate-900 text-right">Licensed Manufacturer (生产加工)</strong>
+            </li>
+            <li class="flex items-start justify-between gap-2 pb-2 border-b border-slate-100">
+              <span class="text-slate-500">Registered Paid-In Capital:</span>
+              <strong class="text-slate-900 font-mono">¥2,000,000 RMB (~$280,000)</strong>
+            </li>
+            <li class="flex items-start justify-between gap-2 pb-2 border-b border-slate-100">
+              <span class="text-slate-500">Years in Yiwu Futian Market:</span>
+              <strong class="text-slate-900">9 Years (Lease Paid Through 2027)</strong>
+            </li>
+            <li class="flex items-start justify-between gap-2">
+              <span class="text-slate-500">Court Litigation / Bank Freeze:</span>
+              <strong class="text-emerald-700">0 Active Disputes (Passed)</strong>
+            </li>
+          </ul>
+        </div>
+
+        <!-- 2. Physical Sample Caliper & Weight Measurements -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-[11px] font-black uppercase tracking-wider text-purple-600">
+              2. Physical Caliper & Material Tests
+            </span>
+            <span class="text-[10px] font-bold bg-purple-50 text-purple-700 px-2 py-0.5 rounded border border-purple-200">
+              Measured on Digital Tools
+            </span>
+          </div>
+          <ul class="space-y-2.5 text-xs text-slate-600">
+            <li class="flex items-start justify-between gap-2 pb-2 border-b border-slate-100">
+              <span class="text-slate-500">Digital Scale Unit Weight:</span>
+              <strong class="text-slate-900 font-mono">342g actual (vs 340g spec — PASS)</strong>
+            </li>
+            <li class="flex items-start justify-between gap-2 pb-2 border-b border-slate-100">
+              <span class="text-slate-500">Vernier Caliper Wall Thickness:</span>
+              <strong class="text-slate-900 font-mono">0.62mm Inner / 0.80mm Outer</strong>
+            </li>
+            <li class="flex items-start justify-between gap-2 pb-2 border-b border-slate-100">
+              <span class="text-slate-500">Material Chemical / Grade Check:</span>
+              <strong class="text-emerald-700">Genuine SUS304 (Passed Reagent Test)</strong>
+            </li>
+            <li class="flex items-start justify-between gap-2">
+              <span class="text-slate-500">Surface & Seal Inspection:</span>
+              <strong class="text-slate-900">Zero burrs; passed 15-min inverted leak test</strong>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 3. Mandarin Price & MOQ Negotiation Table -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+          <span class="text-[11px] font-black uppercase tracking-wider text-amber-600">
+            3. On-Site Mandarin Price & MOQ Negotiation Log
+          </span>
+          <span class="text-[11px] text-slate-500">
+            Why our $99 audit pays for itself 14x over on the first order:
+          </span>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="bg-slate-100 text-slate-600 border-b border-slate-200">
+                <th class="py-2.5 px-3 font-bold">Term / Metric</th>
+                <th class="py-2.5 px-3 font-bold text-rose-700">Initial Foreigner Quote (Online)</th>
+                <th class="py-2.5 px-3 font-bold text-emerald-700">Our On-Site Mandarin Factory Quote</th>
+                <th class="py-2.5 px-3 font-bold">Net Impact for Buyer</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              <tr>
+                <td class="py-2.5 px-3 font-semibold text-slate-800">Unit Price (EXW Yiwu)</td>
+                <td class="py-2.5 px-3 font-mono text-rose-600">$2.45 / unit (¥17.60 RMB)</td>
+                <td class="py-2.5 px-3 font-mono font-bold text-emerald-700">$1.98 / unit (¥14.20 RMB)</td>
+                <td class="py-2.5 px-3 font-bold text-emerald-700">-$0.47 / unit (-19.1% off)</td>
+              </tr>
+              <tr>
+                <td class="py-2.5 px-3 font-semibold text-slate-800">Minimum Order Quantity (MOQ)</td>
+                <td class="py-2.5 px-3 font-mono text-rose-600">3,000 pcs per color</td>
+                <td class="py-2.5 px-3 font-mono font-bold text-emerald-700">500 pcs trial run (2 colors)</td>
+                <td class="py-2.5 px-3 font-bold text-slate-800">83% Lower Cash Commitment</td>
+              </tr>
+              <tr>
+                <td class="py-2.5 px-3 font-semibold text-slate-800">Custom Laser Logo + Color Box</td>
+                <td class="py-2.5 px-3 font-mono text-rose-600">+$0.25 / unit extra</td>
+                <td class="py-2.5 px-3 font-mono font-bold text-emerald-700">Included FREE at 1,000+ pcs</td>
+                <td class="py-2.5 px-3 font-bold text-emerald-700">Saves $250–$750 in packaging</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4. Included Media & Logistics Pack Spec -->
+      <div class="bg-slate-900 text-white rounded-2xl p-5 border border-slate-800">
+        <span class="text-[11px] font-black uppercase tracking-wider text-amber-400 block mb-3">
+          4. Media Folder & Master Carton Freight Specs Delivered to Your WhatsApp / Email
+        </span>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+          <div class="bg-slate-800/90 p-3 rounded-xl border border-slate-700">
+            <strong class="text-white block mb-0.5">4K Uncut Booth Video</strong>
+            <span class="text-slate-400 text-[11px]">3m 40s walkthrough of all shelves + manager handshake</span>
+          </div>
+          <div class="bg-slate-800/90 p-3 rounded-xl border border-slate-700">
+            <strong class="text-white block mb-0.5">18 Macro QC Photos</strong>
+            <span class="text-slate-400 text-[11px]">Caliper screen, scale reading, welds, and inner box</span>
+          </div>
+          <div class="bg-slate-800/90 p-3 rounded-xl border border-slate-700">
+            <strong class="text-white block mb-0.5">Verified Carton CBM</strong>
+            <span class="text-slate-400 text-[11px]">58×42×45cm = 0.1096 CBM (50 pcs/ctn, 17.8kg Gross)</span>
+          </div>
+          <div class="bg-slate-800/90 p-3 rounded-xl border border-slate-700">
+            <strong class="text-white block mb-0.5">Unmasked Boss WeChat</strong>
+            <span class="text-slate-400 text-[11px]">Direct factory owner mobile + stamped price sheet</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Sticky Action Bar -->
+    <div class="bg-white px-6 py-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 shrink-0">
+      <div class="text-xs text-slate-600">
+        Want this exact 4-point audit performed on <strong>any stall in Yiwu</strong> within 24–48 hours?
+      </div>
+      <div class="flex items-center gap-2.5 w-full sm:w-auto">
+        <button
+          type="button"
+          id="sample-audit-book-now-btn"
+          data-item-id="booth-audit"
+          data-item-title="On-Demand Physical Stall Audit"
+          data-item-price="99"
+          data-item-type="service"
+          class="paypal-trigger-btn flex-1 sm:flex-none px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs shadow-md transition-all cursor-pointer whitespace-nowrap"
+        >
+          Book $99 Stall Audit Now &rarr;
+        </button>
+        <a
+          href="https://wa.me/8613482725985?text=Hi%20SinoTradeLink%2C%20I%20just%20reviewed%20your%20Sample%20%2499%20Stall%20Audit%20Report%20(%23STL-YW-0842)%20and%20would%20like%20to%20book%20an%20on-ground%20stall%20audit%20in%20Yiwu."
+          target="_blank"
+          rel="noopener noreferrer"
+          class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition-all whitespace-nowrap"
+        >
+          WhatsApp Desk
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  (function () {
+    function openSampleAuditModal() {
+      var modal = document.getElementById('sample-audit-modal');
+      if (!modal) return;
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeSampleAuditModal() {
+      var modal = document.getElementById('sample-audit-modal');
+      if (!modal) return;
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+
+    document.addEventListener('click', function (e) {
+      var target = e.target;
+      if (!target || !target.closest) return;
+
+      var openBtn = target.closest('.open-sample-audit-btn');
+      if (openBtn) {
+        e.preventDefault();
+        openSampleAuditModal();
+        return;
+      }
+
+      if (target.closest('#close-sample-audit-btn') || target.id === 'sample-audit-modal') {
+        closeSampleAuditModal();
+        return;
+      }
+
+      if (target.closest('#sample-audit-book-now-btn')) {
+        closeSampleAuditModal();
+      }
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        closeSampleAuditModal();
+      }
+    });
+  })();
+</script>

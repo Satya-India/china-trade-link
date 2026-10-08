@@ -22,6 +22,20 @@ const defaultDetails = prefillBooth || prefillName ? `Booth: ${prefillBooth} (${
       <p class="mt-4 text-sm sm:text-base text-slate-400 leading-relaxed">
         Can't afford $3,000 for flights and hotels to visit China? Our bilingual on-the-ground team in Yiwu physically visits your target stalls within 24–48 hours to inspect inventory, negotiate, and collect physical samples.
       </p>
+      <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+        <button
+          type="button"
+          class="open-sample-audit-btn px-5 py-3 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs shadow-lg shadow-amber-500/20 transition-all cursor-pointer flex items-center gap-2"
+        >
+          <span>📄 Preview Sample $99 Audit Report (#STL-YW-0842)</span>
+        </button>
+        <a
+          href="#booking-form"
+          class="px-5 py-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 font-bold text-xs transition-all"
+        >
+          Book a Stall Visit &darr;
+        </a>
+      </div>
     </div>
   </section>
 
@@ -81,6 +95,12 @@ const defaultDetails = prefillBooth || prefillName ? `Booth: ${prefillBooth} (${
               >
                 <span>⚡ Instant PayPal Deposit (${svc.price})</span>
               </button>
+              <button
+                type="button"
+                class="open-sample-audit-btn w-full py-2 rounded-xl text-[11px] font-bold text-blue-600 hover:text-blue-700 hover:bg-blue-50 transition-colors cursor-pointer"
+              >
+                View Sample Deliverable Report &rarr;
+              </button>
             </div>
           </div>
         ))}
@@ -100,9 +120,17 @@ const defaultDetails = prefillBooth || prefillName ? `Booth: ${prefillBooth} (${
               Unlike casual $45/day street interpreters who only translate basic prices, our field team executes structured Pre-Production (PP) Sample and AIC Business License verification across every product category.
             </p>
           </div>
-          <a href="/sourcing-guide#oem-roadmap" class="text-xs font-bold text-blue-600 hover:text-blue-700 shrink-0">
-            Read Full 9-Step OEM Playbook &rarr;
-          </a>
+          <div class="flex items-center gap-3 shrink-0">
+            <button
+              type="button"
+              class="open-sample-audit-btn px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-colors cursor-pointer"
+            >
+              Open Sample Audit Report (#STL-YW-0842)
+            </button>
+            <a href="/sourcing-guide#oem-roadmap" class="text-xs font-bold text-blue-600 hover:text-blue-700">
+              9-Step OEM Playbook &rarr;
+            </a>
+          </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
