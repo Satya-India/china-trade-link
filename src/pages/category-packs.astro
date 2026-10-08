@@ -19,8 +19,102 @@ import { CATEGORY_PACKS } from '../lib/markets';
     </div>
   </section>
 
+  <!-- Annual Membership Tiers -->
+  <section class="py-16 bg-white border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="text-xs font-bold uppercase tracking-wider text-blue-600 block mb-1">Membership Plans</span>
+        <h2 class="text-3xl font-black text-slate-900 tracking-tight">Choose Your Access Level</h2>
+        <p class="text-sm text-slate-600 mt-2">From a one-time niche pack to full-platform membership with a dedicated Yiwu field rep.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        
+        <!-- Single Pack (anchor for page scroll) -->
+        <div class="rounded-3xl border border-slate-200 bg-slate-50 p-8 flex flex-col justify-between">
+          <div>
+            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-3">Single Niche</span>
+            <div class="mb-2">
+              <span class="text-4xl font-black text-slate-900">From $29</span>
+              <span class="text-xs text-slate-500 ml-2">one-time</span>
+            </div>
+            <p class="text-xs text-slate-600 mb-6 leading-relaxed">One market district. One product category. Instant CSV download with unmasked direct mobile numbers.</p>
+            <ul class="space-y-2.5 text-xs text-slate-700 mb-8">
+              <li class="flex items-center gap-2"><span class="text-emerald-600">&#10003;</span> 1 district CSV (600&#8211;2,200 stalls)</li>
+              <li class="flex items-center gap-2"><span class="text-emerald-600">&#10003;</span> 99.9% unmasked direct mobiles</li>
+              <li class="flex items-center gap-2"><span class="text-emerald-600">&#10003;</span> Exact booth coordinates</li>
+              <li class="flex items-center gap-2"><span class="text-emerald-600">&#10003;</span> Single-user license, lifetime access</li>
+              <li class="flex items-center gap-2"><span class="text-slate-300">&#8211;</span> <span class="text-slate-400">No ground services included</span></li>
+            </ul>
+          </div>
+          <a href="#packs-grid" class="w-full py-3 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs text-center transition-colors block">Browse Category Packs &#8595;</a>
+        </div>
+
+        <!-- Pro Annual -->
+        <div class="rounded-3xl border-2 border-blue-500 bg-white p-8 flex flex-col justify-between shadow-xl shadow-blue-500/10 relative">
+          <div class="absolute -top-4 left-1/2 -translate-x-1/2">
+            <span class="bg-blue-600 text-white text-[11px] font-black px-4 py-1.5 rounded-full shadow-md">RECOMMENDED</span>
+          </div>
+          <div>
+            <span class="text-xs font-bold text-blue-600 uppercase tracking-wider block mb-3 mt-2">Pro All-Access</span>
+            <div class="mb-1">
+              <span class="text-4xl font-black text-slate-900">$149</span>
+              <span class="text-xs text-slate-500 ml-2">/year</span>
+            </div>
+            <p class="text-xs text-emerald-600 font-semibold mb-1">Save $50 vs. buying all 6 packs separately</p>
+            <p class="text-xs text-slate-600 mb-6 leading-relaxed">Full platform access. All 6 district packs. Weekly new verified stall additions. Priority WhatsApp support.</p>
+            <ul class="space-y-2.5 text-xs text-slate-700 mb-8">
+              <li class="flex items-center gap-2"><span class="text-emerald-600">&#10003;</span> All 6 district CSVs (27,706+ total stalls)</li>
+              <li class="flex items-center gap-2"><span class="text-emerald-600">&#10003;</span> Weekly new verified stall additions</li>
+              <li class="flex items-center gap-2"><span class="text-emerald-600">&#10003;</span> CSV refresh download every 30 days</li>
+              <li class="flex items-center gap-2"><span class="text-emerald-600">&#10003;</span> Priority WhatsApp support (24hr response)</li>
+              <li class="flex items-center gap-2"><span class="text-emerald-600">&#10003;</span> Dead contact replacement guarantee</li>
+            </ul>
+          </div>
+          <button
+            type="button"
+            data-item-id="pro-annual"
+            data-item-title="Pro Annual Pass &#8211; All 6 District Packs (27,706+ Stalls)"
+            data-item-price="149"
+            data-item-type="pack"
+            class="paypal-trigger-btn w-full py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs text-center transition-all cursor-pointer flex items-center justify-center gap-2 shadow-md shadow-blue-600/20"
+          >Get Pro Access ($149/yr) &#8594;</button>
+          <span class="block text-center text-[10px] text-slate-400 mt-2">Renews annually &#183; Cancel anytime via PayPal</span>
+        </div>
+
+        <!-- Business Tier -->
+        <div class="rounded-3xl border border-amber-400 bg-gradient-to-b from-amber-50 to-white p-8 flex flex-col justify-between">
+          <div>
+            <span class="text-xs font-bold text-amber-700 uppercase tracking-wider block mb-3">Business</span>
+            <div class="mb-1">
+              <span class="text-4xl font-black text-slate-900">$399</span>
+              <span class="text-xs text-slate-500 ml-2">/year</span>
+            </div>
+            <p class="text-xs text-amber-700 font-semibold mb-1">4 stall audits alone = $396 value</p>
+            <p class="text-xs text-slate-600 mb-6 leading-relaxed">Everything in Pro, plus a dedicated Yiwu field rep, quarterly physical stall audits, and open-book order execution at 6% commission.</p>
+            <ul class="space-y-2.5 text-xs text-slate-700 mb-6">
+              <li class="flex items-center gap-2"><span class="text-emerald-600">&#10003;</span> Everything in Pro</li>
+              <li class="flex items-center gap-2"><span class="text-emerald-600">&#10003;</span> 1 Free $99 Stall Audit per quarter (4/yr)</li>
+              <li class="flex items-center gap-2"><span class="text-emerald-600">&#10003;</span> Dedicated bilingual Yiwu rep on WhatsApp</li>
+              <li class="flex items-center gap-2"><span class="text-emerald-600">&#10003;</span> Open-Book Order Execution at 6% commission</li>
+              <li class="flex items-center gap-2"><span class="text-emerald-600">&#10003;</span> Pre-shipment AQL 2.5 inspection on 1st order</li>
+            </ul>
+            <p class="text-[11px] text-amber-700 bg-amber-100 border border-amber-200 rounded-xl px-3 py-2 leading-relaxed">&#128161; Quarterly audits alone worth $396/yr. Pays for itself on your first order.</p>
+          </div>
+          <a
+            href="https://wa.me/8613482725985?text=Hi%20SinoTradeLink%2C%20I%27m%20interested%20in%20the%20Business%20Sourcing%20Tier%20(%24399%2Fyr).%20Can%20we%20talk%3F"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="w-full py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs text-center transition-all flex items-center justify-center gap-2 mt-4"
+          >Start on WhatsApp &#8594;</a>
+          <span class="block text-center text-[10px] text-slate-400 mt-2">Onboarded personally by our Yiwu team</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
   <!-- Packs Grid -->
-  <section class="py-16 bg-slate-50">
+  <section class="py-16 bg-slate-50" id="packs-grid">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {CATEGORY_PACKS.map(pack => (

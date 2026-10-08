@@ -106,6 +106,38 @@ const defaultDetails = prefillBooth || prefillName ? `Booth: ${prefillBooth} (${
         ))}
       </div>
 
+      <!-- Pre-Shipment Inspection Banner -->
+      <div class="mt-6 rounded-3xl border border-indigo-400 bg-gradient-to-r from-indigo-900 to-slate-900 text-white p-8 flex flex-col md:flex-row items-center justify-between gap-6 mb-6">
+        <div class="flex-1">
+          <span class="text-xs font-bold text-indigo-300 uppercase tracking-wider block mb-2">High-Value Order Protection</span>
+          <h3 class="text-xl font-black text-white mb-2">Pre-Shipment AQL 2.5 Carton Inspection &#8212; $149</h3>
+          <p class="text-sm text-slate-300 leading-relaxed mb-4">Before you release your 70% balance payment, our inspector visits the warehouse, randomly opens cartons per ISO 2859-1 AQL 2.5 standard, verifies quantity counts, photographs all carton labels, and issues a Pass/Fail defect rate certificate. Stops bad shipments before they leave China.</p>
+          <ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-xs text-slate-300">
+            <li class="flex items-center gap-2"><span class="text-indigo-300">&#10003;</span> Random carton opening per ISO 2859-1 AQL 2.5</li>
+            <li class="flex items-center gap-2"><span class="text-indigo-300">&#10003;</span> Pass/Fail defect rate certificate (PDF)</li>
+            <li class="flex items-center gap-2"><span class="text-indigo-300">&#10003;</span> Full photo evidence of all carton labels</li>
+            <li class="flex items-center gap-2"><span class="text-indigo-300">&#10003;</span> Quantity count verification report</li>
+            <li class="flex items-center gap-2"><span class="text-indigo-300">&#10003;</span> Recommendation: Release or hold shipment</li>
+            <li class="flex items-center gap-2"><span class="text-indigo-300">&#10003;</span> Turnaround: 1&#8211;2 days at port/warehouse</li>
+          </ul>
+        </div>
+        <div class="flex flex-col gap-3 shrink-0 w-full md:w-auto">
+          <button
+            type="button"
+            data-item-id="pre-shipment-inspection"
+            data-item-title="Pre-Shipment AQL 2.5 Carton Inspection"
+            data-item-price="149"
+            data-item-type="concierge"
+            class="paypal-trigger-btn px-8 py-3.5 rounded-2xl bg-indigo-500 hover:bg-indigo-400 text-white font-bold text-xs text-center transition-all cursor-pointer whitespace-nowrap flex items-center justify-center"
+          >Book Inspection ($149) &#8594;</button>
+          <a
+            href="https://wa.me/8613482725985?text=Hi%20SinoTradeLink%2C%20I%20need%20a%20Pre-Shipment%20AQL%202.5%20Inspection%20for%20my%20order.%20Can%20you%20help%3F"
+            target="_blank" rel="noopener noreferrer"
+            class="px-8 py-3 rounded-2xl bg-slate-700 hover:bg-slate-600 text-white border border-slate-600 font-bold text-xs text-center flex items-center justify-center gap-2 whitespace-nowrap"
+          >WhatsApp Inquiry &#8594;</a>
+        </div>
+      </div>
+
       <!-- Field Inspection Standards & Sample Consolidation Math -->
       <div class="mb-16 bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm">
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 pb-6 border-b border-slate-100">
@@ -174,6 +206,44 @@ const defaultDetails = prefillBooth || prefillName ? `Booth: ${prefillBooth} (${
               Shipping 5 separate 1 kg sample boxes via FedEx IP from 5 suppliers costs <strong>$31 × 5 = $155+</strong> in courier minimums alone. We collect from up to 5 stalls, unbox & inspect in our Yiwu office, repack to cut <strong>L×W×H ÷ 5000</strong> volumetric air space by up to 60%, and dispatch 1 consolidated box.
             </p>
           </div>
+        </div>
+      </div>
+
+      <!-- Open-Book vs Traditional Agent Comparison -->
+      <div class="mb-16 bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm">
+        <div class="text-center mb-8">
+          <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 block mb-1">Why Business Tier Pays For Itself</span>
+          <h3 class="text-2xl font-black text-slate-900">Traditional &#8216;Free&#8217; Agent vs. Sino Trade Link Open-Book Model</h3>
+          <p class="text-sm text-slate-500 mt-2 max-w-2xl mx-auto">Most Yiwu agents claim to work for free. They don&#8217;t. They earn 10&#8211;20% kickbacks from factories &#8212; baked invisibly into the unit price you pay.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="rounded-2xl border border-red-200 bg-red-50/60 p-6">
+            <h4 class="text-base font-black text-red-900 mb-4">&#10060; Traditional &#8216;Free&#8217; Yiwu Agent</h4>
+            <ul class="space-y-3 text-sm text-red-800">
+              <li class="flex items-start gap-2.5"><span class="text-red-500 font-bold shrink-0">&#10007;</span> Claims to work for free &#8212; earns 10&#8211;20% hidden kickback from the factory</li>
+              <li class="flex items-start gap-2.5"><span class="text-red-500 font-bold shrink-0">&#10007;</span> Shows you a &#8220;best price&#8221; &#8212; already inflated before you see it</li>
+              <li class="flex items-start gap-2.5"><span class="text-red-500 font-bold shrink-0">&#10007;</span> No paper trail &#8212; you can&#8217;t verify actual factory price vs. what you paid</li>
+              <li class="flex items-start gap-2.5"><span class="text-red-500 font-bold shrink-0">&#10007;</span> Financially incentivized to push their affiliated factories</li>
+              <li class="flex items-start gap-2.5"><span class="text-red-500 font-bold shrink-0">&#10007;</span> Typically disappears after commission is collected</li>
+            </ul>
+          </div>
+          <div class="rounded-2xl border border-emerald-300 bg-emerald-50/60 p-6">
+            <h4 class="text-base font-black text-emerald-900 mb-4">&#9989; Sino Trade Link Business Tier ($399/yr)</h4>
+            <ul class="space-y-3 text-sm text-emerald-800">
+              <li class="flex items-start gap-2.5"><span class="text-emerald-600 font-bold shrink-0">&#10003;</span> 6% transparent commission &#8212; stated in writing before work begins</li>
+              <li class="flex items-start gap-2.5"><span class="text-emerald-600 font-bold shrink-0">&#10003;</span> You receive raw RMB factory receipt + our invoice as two separate line items</li>
+              <li class="flex items-start gap-2.5"><span class="text-emerald-600 font-bold shrink-0">&#10003;</span> Open-Book Mandate: if we negotiate &#165;23/unit, you pay &#165;23 + 6% &#8212; nothing else</li>
+              <li class="flex items-start gap-2.5"><span class="text-emerald-600 font-bold shrink-0">&#10003;</span> No factory affiliations &#8212; we contact your shortlisted stalls from our 27,706 database</li>
+              <li class="flex items-start gap-2.5"><span class="text-emerald-600 font-bold shrink-0">&#10003;</span> All negotiation communication logged and shared with you on WhatsApp</li>
+            </ul>
+          </div>
+        </div>
+        <div class="mt-6 text-center">
+          <a
+            href="https://wa.me/8613482725985?text=Hi%20SinoTradeLink%2C%20I%20want%20to%20start%20open-book%20sourcing%20with%20the%20Business%20Tier.%20How%20does%20it%20work%3F"
+            target="_blank" rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm transition-colors shadow-md shadow-emerald-600/20"
+          >Start Open-Book Sourcing on WhatsApp &#8594;</a>
         </div>
       </div>
 
