@@ -36,11 +36,36 @@
     <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
       <!-- Col 1: Brand Info -->
       <div class="space-y-4 md:col-span-1">
-        <div class="flex items-center gap-2">
-          <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white font-extrabold text-xs tracking-wider">
-            STL
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl overflow-hidden shadow-md shrink-0">
+            <svg viewBox="0 0 48 48" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="48" height="48" rx="12" fill="url(#footCrestBg)"/>
+              <path d="M24 5L39.5 10.8V23.2C39.5 33.2 32.7 41 24 43.5C15.3 41 8.5 33.2 8.5 23.2V10.8L24 5Z" fill="#0F172A" stroke="url(#footCrestRim)" stroke-width="2.8" stroke-linejoin="round"/>
+              <path d="M30 16H19C16.8 16 15 17.8 15 20C15 22.2 16.8 24 19 24H29C31.2 24 33 25.8 33 28C33 30.2 31.2 32 29 32H18" stroke="url(#footSRibbonGrad)" stroke-width="4.2" stroke-linecap="round"/>
+              <path d="M27.5 12.8L31.2 16L27.5 19.2" stroke="#38BDF8" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M20.5 28.8L16.8 32L20.5 35.2" stroke="#FBBF24" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <defs>
+                <linearGradient id="footCrestBg" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#1E293B"/>
+                  <stop offset="1" stop-color="#0F172A"/>
+                </linearGradient>
+                <linearGradient id="footCrestRim" x1="8.5" y1="5" x2="39.5" y2="43.5" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#38BDF8"/>
+                  <stop offset="0.5" stop-color="#10B981"/>
+                  <stop offset="1" stop-color="#F59E0B"/>
+                </linearGradient>
+                <linearGradient id="footSRibbonGrad" x1="15" y1="16" x2="33" y2="32" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#FFFFFF"/>
+                  <stop offset="0.48" stop-color="#38BDF8"/>
+                  <stop offset="0.52" stop-color="#FBBF24"/>
+                  <stop offset="1" stop-color="#F59E0B"/>
+                </linearGradient>
+              </defs>
+            </svg>
           </div>
-          <span class="text-base font-bold text-white tracking-tight">Sino Trade Link</span>
+          <span class="text-base font-black text-white tracking-tight">
+            Sino<span class="text-blue-400">Trade</span><span class="text-emerald-400">Link</span>
+          </span>
         </div>
         <p class="text-xs text-slate-400 leading-relaxed">
           The premier independent B2B China wholesale markets directory & sourcing intelligence network. Providing verified booth directories, 99.9% unmasked direct mobile numbers, and on-demand ground inspection services across China.
