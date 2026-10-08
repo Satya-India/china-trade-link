@@ -292,12 +292,22 @@ const featuredSuppliers = await getFeaturedSuppliers(8);
               </div>
             </div>
 
-            <a 
-              href="/concierge" 
-              class="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs text-center transition-colors block"
-            >
-              Book Service (${svc.price}) &rarr;
-            </a>
+            <div class="space-y-2">
+              <a 
+                href={`/concierge?service=${svc.id}`} 
+                class="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs text-center transition-colors block"
+              >
+                Book Service (${svc.price}) &rarr;
+              </a>
+              <a
+                href={`https://wa.me/8613482725985?text=${encodeURIComponent(`Hi SinoTradeLink, I want to inquire about your ${svc.title} ($${svc.price}). Can you help me inspect suppliers in Yiwu?`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="w-full py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 font-bold text-[11px] text-center transition-colors flex items-center justify-center gap-1.5"
+              >
+                <span>WhatsApp Liaison</span>
+              </a>
+            </div>
           </div>
         ))}
       </div>

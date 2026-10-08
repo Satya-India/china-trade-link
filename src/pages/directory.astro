@@ -157,6 +157,43 @@ const districts = [
         </div>
       </div>
 
+      <!-- On-Ground Concierge Callout Banner -->
+      <div class="mb-6 p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-slate-900 to-slate-950 border border-slate-800 text-white flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
+        <div class="flex items-center gap-3.5">
+          <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0 border border-amber-500/30">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          </div>
+          <div>
+            <div class="text-xs font-bold text-white flex items-center gap-2">
+              <span>Need Physical Stall Audits or Sample Consolidations in Yiwu?</span>
+              <span class="bg-amber-500 text-slate-950 text-[10px] font-black uppercase px-2 py-0.5 rounded-full">Boots On Ground</span>
+            </div>
+            <p class="text-[11px] text-slate-400 mt-0.5">
+              Our bilingual field agents physically walk to any stall in Futian Market, inspect goods in 4K, and collect samples for $99.
+            </p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 shrink-0 w-full sm:w-auto">
+          <a
+            href="/concierge"
+            class="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs text-center transition shadow-sm whitespace-nowrap"
+          >
+            Book Stall Visit ($99) &rarr;
+          </a>
+          <a
+            href="https://wa.me/8613482725985?text=Hi%20SinoTradeLink%2C%20I%20am%20browsing%20the%20Yiwu%20Market%20directory%20and%20would%20like%20to%20discuss%20having%20your%20team%20visit%20stalls%20for%20me."
+            target="_blank"
+            rel="noopener noreferrer"
+            class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 font-bold text-xs text-center flex items-center justify-center gap-1.5 transition whitespace-nowrap"
+          >
+            <span>WhatsApp Liaison</span>
+          </a>
+        </div>
+      </div>
+
       <!-- Suppliers Grid Container -->
       <div id="dir-cards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {currentSuppliers.map(s => (

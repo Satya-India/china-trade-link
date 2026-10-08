@@ -121,6 +121,36 @@ const PAYPAL_CLIENT_ID = "BAA-U7WpNQZudJZbn-39Kd2E2Alw7toZtsb_8pRNtFgIpkZXRT2yUd
           </span>
         </div>
 
+        <!-- High-Ticket Service Bridge Offer for Pack Buyers -->
+        <div id="success-service-upsell" class="mt-4 p-4 rounded-2xl bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200/90 text-left space-y-2.5">
+          <div class="flex items-center gap-2 text-[10px] font-bold text-amber-800 uppercase tracking-wider">
+            <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+            <span>Recommended Next Step For Serious Importers</span>
+          </div>
+          <h5 class="text-xs font-bold text-slate-900 leading-snug">
+            Need our Yiwu team to visit your chosen stalls & test real samples?
+          </h5>
+          <p class="text-[11px] text-slate-600 leading-relaxed">
+            Don't wire funds blindly to unverified factories. Our bilingual ground agents walk straight to your target booths in Futian, test product quality, verify business licenses, and shoot live 4K video.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-2 pt-1">
+            <a
+              href="/concierge"
+              class="flex-1 py-2.5 px-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs text-center shadow-sm transition"
+            >
+              Book Stall Audit ($99) &rarr;
+            </a>
+            <a
+              href="https://wa.me/8613482725985?text=Hi%20SinoTradeLink%2C%20I%20just%20downloaded%20a%20Category%20Pack%20and%20want%20to%20discuss%20having%20your%20team%20visit%20stalls%20in%20Yiwu."
+              target="_blank"
+              rel="noopener noreferrer"
+              class="py-2.5 px-3 rounded-xl bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 font-bold text-xs text-center flex items-center justify-center gap-1.5 transition"
+            >
+              <span>WhatsApp Liaison</span>
+            </a>
+          </div>
+        </div>
+
         <!-- Concierge specific note -->
         <div id="success-concierge-note" class="hidden p-3 rounded-xl bg-blue-50 border border-blue-200 text-xs text-blue-900 text-left">
           <strong>Next Steps:</strong> Our bilingual ground staff in Yiwu has been notified via Telegram. We will message your email and WhatsApp to coordinate stall coordinates and inspection specs.
@@ -303,6 +333,7 @@ const PAYPAL_CLIENT_ID = "BAA-U7WpNQZudJZbn-39Kd2E2Alw7toZtsb_8pRNtFgIpkZXRT2yUd
             var successDownloadBtn = getEl('success-download-btn');
             var successDownloadContainer = getEl('success-download-container');
             var successConciergeNote = getEl('success-concierge-note');
+            var successServiceUpsell = getEl('success-service-upsell');
 
             if (activeItem.type === 'pack') {
               if (successDownloadBtn) {
@@ -310,9 +341,11 @@ const PAYPAL_CLIENT_ID = "BAA-U7WpNQZudJZbn-39Kd2E2Alw7toZtsb_8pRNtFgIpkZXRT2yUd
                 successDownloadBtn.href = url;
               }
               if (successDownloadContainer) successDownloadContainer.classList.remove('hidden');
+              if (successServiceUpsell) successServiceUpsell.classList.remove('hidden');
               if (successConciergeNote) successConciergeNote.classList.add('hidden');
             } else {
               if (successDownloadContainer) successDownloadContainer.classList.add('hidden');
+              if (successServiceUpsell) successServiceUpsell.classList.add('hidden');
               if (successConciergeNote) successConciergeNote.classList.remove('hidden');
             }
 
@@ -379,6 +412,8 @@ const PAYPAL_CLIENT_ID = "BAA-U7WpNQZudJZbn-39Kd2E2Alw7toZtsb_8pRNtFgIpkZXRT2yUd
 
     if (paymentState) paymentState.classList.remove('hidden');
     if (successState) successState.classList.add('hidden');
+    var successServiceUpsell = getEl('success-service-upsell');
+    if (successServiceUpsell) successServiceUpsell.classList.add('hidden');
     hideError();
     if (loadingEl) {
       loadingEl.style.display = 'flex';
