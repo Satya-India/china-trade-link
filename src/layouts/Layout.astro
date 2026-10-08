@@ -10,14 +10,24 @@ import '../styles/global.css';
 interface Props {
   title?: string;
   description?: string;
+  keywords?: string;
+  canonicalUrl?: string;
+  ogType?: string;
   activePage?: string;
+  jsonLd?: Record<string, any> | Record<string, any>[];
 }
 
 const {
   title = "Sino Trade Link | Verified China Wholesale Markets Directory & Direct Factory Intelligence",
-  description = "Access 20,000+ verified offline suppliers from Yiwu Futian Wholesale Market with 99.9% unmasked direct mobile numbers, exact booth coordinates, and on-demand inspection.",
-  activePage = 'home'
+  description = "Access 27,706+ verified offline suppliers from Yiwu Futian Wholesale Market with 99.9% unmasked direct mobile numbers, exact booth coordinates, and on-demand inspection.",
+  keywords = "Yiwu wholesale market directory, Yiwu Futian market stalls, China direct factory contacts, Yiwu booth numbers, Yiwu sourcing agent alternative, China wholesale suppliers WeChat phone numbers",
+  canonicalUrl,
+  ogType = "website",
+  activePage = 'home',
+  jsonLd
 } = Astro.props;
+
+const resolvedCanonical = canonicalUrl || new URL(Astro.url.pathname, 'https://sinotradelink.com').toString();
 ---
 
 <!doctype html>
@@ -30,18 +40,28 @@ const {
 
     <title>{title}</title>
     <meta name="description" content={description} />
+    {keywords && <meta name="keywords" content={keywords} />}
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <link rel="canonical" href={resolvedCanonical} />
     <link rel="prefetch" href="/search-index.json" as="fetch" crossorigin="anonymous" />
 
     <!-- OpenGraph Metadata -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={resolvedCanonical} />
     <meta property="og:site_name" content="Sino Trade Link" />
+    <meta property="og:locale" content="en_US" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
+
+    {jsonLd && (
+      <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    )}
+    <slot name="head" />
 
     <!-- Fonts: Inter / System Font with Chinese Fallbacks -->
     <style>

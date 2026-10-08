@@ -1,8 +1,8 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import ContactUnlockModal from '../../components/ContactUnlockModal.astro';
-import { getAllSuppliers, getSupplierById, type Supplier } from '../../lib/data';
-
+import SupplierCard from '../../components/SupplierCard.astro';
+import { getSupplierById, getRelatedSuppliers, type Supplier } from '../../lib/data';
 
 interface Props {
   supplier?: Supplier;
@@ -16,6 +16,8 @@ if (!supplier) {
   return Astro.redirect('/directory');
 }
 
+const relatedSuppliers = await getRelatedSuppliers(supplier, 6);
+
 const rawPhone = supplier.unmasked_direct_phone || '';
 let maskedPhone = '+86-***-****-****';
 if (rawPhone.length >= 11) {
@@ -25,64 +27,277 @@ if (rawPhone.length >= 11) {
   }
 }
 
-const sampleProducts = supplier.sample_products ? supplier.sample_products.split(' | ') : [];
+const sampleProducts = supplier.sample_products
+  ? supplier.sample_products.split(' | ').map(p => p.trim()).filter(Boolean)
+  : [];
+
+// Extract clean, concise product keywords (strip price tags like (¥4500), split on colons/commas)
+const extractedKeywords = Array.from(
+  new Set(
+    sampleProducts
+      .flatMap(raw => {
+        const withoutPrice = raw.replace(/\s*\([¥￥$]\s*[\d.,]+\)\s*$/g, '').trim();
+        const afterColon = withoutPrice.includes(':') ? withoutPrice.split(':').slice(1).join(':').trim() : withoutPrice;
+        return afterColon.split(/[,，/、;；]/).map(s => s.trim());
+      })
+      .filter(k => k.length >= 3 && k.length <= 48)
+  )
+).slice(0, 12);
 
 const districtNameMap: Record<string, string> = {
   '1': 'District 1 (Toys, Plush, Jewelry & Crafts)',
-  '2': 'District 2 (Hardware, Tools & Kitchenware)',
-  '3': 'District 3 (Stationery, Office & Sports)',
-  '4': 'District 4 (Footwear, Socks & Daily Necessities)',
+  '2': 'District 2 (Hardware, Tools, Bags & Kitchenware)',
+  '3': 'District 3 (Stationery, Office, Cosmetics & Sports)',
+  '4': 'District 4 (Footwear, Socks, Hats & Daily Necessities)',
   '5': 'District 5 (Home Textiles, Bedding & Auto Parts)',
-  '6': 'Huangyuan Garment Market (Apparel & Jeans)'
+  '6': 'Huangyuan Garment Market (Apparel & Jeans)',
+  '7': 'Production Materials Market (Machinery, Raw Materials & Lighting)',
+  '60': 'District 6 Expansion (Smart Hardware & Electronics)'
+};
+
+const districtKeywordsMap: Record<string, string[]> = {
+  '1': ['Yiwu toys wholesale', 'plush toys factory China', 'Yiwu artificial flowers', 'fashion jewelry manufacturer Yiwu', 'festive crafts wholesale'],
+  '2': ['Yiwu hardware tools factory', 'kitchenware wholesale China', 'luggage bags manufacturer Yiwu', 'locks electrical tools supplier'],
+  '3': ['Yiwu stationery wholesale', 'office school supplies China', 'sports equipment factory Yiwu', 'cosmetics beauty accessories wholesale'],
+  '4': ['Yiwu socks hosiery factory', 'daily necessities wholesale China', 'footwear shoes supplier Yiwu', 'hats belts underwear manufacturer'],
+  '5': ['Yiwu home textiles factory', 'bedding curtains wholesale China', 'auto parts car accessories Yiwu', 'imported goods wholesale'],
+  '6': ['Huangyuan garment market Yiwu', 'wholesale clothing jeans China', 'apparel sportswear manufacturer Yiwu'],
+  '7': ['Yiwu production materials market', 'industrial machinery raw materials China', 'commercial lighting leather wholesale Yiwu'],
+  '60': ['Yiwu District 6 wholesale', 'smart hardware electronics supplier China']
 };
 
 const districtName = districtNameMap[supplier.district] || `District ${supplier.district || '1'}`;
+const fallbackKeywords = districtKeywordsMap[supplier.district] || districtKeywordsMap['1'];
 
 const supplierName = supplier.clean_name || supplier.name;
+const isDirectFactory = supplier.is_direct_factory === 'Yes';
+const supplierTypeLabel = isDirectFactory ? 'Verified Direct Factory' : 'Verified Wholesale Stall';
+const boothLabel = supplier.booth_no ? `Booth ${supplier.booth_no}` : `District ${supplier.district}`;
+
+// Concise product snippet for <title> (kept under 55 chars so Booth & Brand never truncate in SERPs)
+const rawTitleKeywords = extractedKeywords.length > 0
+  ? extractedKeywords.slice(0, 3).join(', ')
+  : (supplier.chinese_official_category || supplierTypeLabel);
+const titleKeywordsSnippet = rawTitleKeywords.length > 55
+  ? `${rawTitleKeywords.slice(0, 52).trim()}...`
+  : rawTitleKeywords;
+
+const seoTitle = `${supplierName} — ${titleKeywordsSnippet} (Yiwu ${boothLabel}, District ${supplier.district}) | Sino Trade Link`;
+
+const topProductsSnippet = extractedKeywords.length > 0
+  ? extractedKeywords.slice(0, 6).join(', ')
+  : (sampleProducts.slice(0, 2).join(', ') || supplier.chinese_official_category || districtName);
+
+const seoDescription = `${supplierName}${supplier.company_name && supplier.company_name !== supplierName ? ` (${supplier.company_name})` : ''} is a ${isDirectFactory ? 'direct manufacturing factory' : 'verified wholesale supplier'} at Yiwu International Trade City ${districtName}, Floor ${supplier.floor || '1'}, Gate ${supplier.gate || 'Direct'}, ${boothLabel}. Wholesale products: ${topProductsSnippet}. Unlock direct +86 mobile (${maskedPhone}), WeChat ID, or book a $99 on-ground Yiwu stall audit.`;
+
+// Build rich keyword list for <meta name="keywords"> and on-page tag cloud
+const productKeywordVariations = extractedKeywords.slice(0, 8).flatMap(p => [
+  p,
+  `${p} wholesale China`,
+  `${p} Yiwu factory`
+]);
+
+const seoKeywords = [
+  supplierName,
+  supplier.company_name && supplier.company_name !== supplierName ? supplier.company_name : '',
+  supplier.booth_no ? `Yiwu Booth ${supplier.booth_no}` : '',
+  `Yiwu District ${supplier.district} Floor ${supplier.floor || '1'}`,
+  ...productKeywordVariations,
+  supplier.chinese_official_category || '',
+  ...fallbackKeywords,
+  isDirectFactory ? 'Yiwu direct factory OEM manufacturer' : 'Yiwu Futian wholesale market supplier',
+  'Yiwu stall phone number WeChat'
+].filter(Boolean).join(', ');
+
+const canonicalUrl = `https://sinotradelink.com/supplier/${supplier.shop_id}`;
+
 const whatsappPrefillMsg = encodeURIComponent(
   `Hi SinoTradeLink, I am reviewing supplier "${supplierName}" (Booth ${supplier.booth_no || 'N/A'}, ${districtName}). Can your on-ground team visit this stall for inspection/pricing?`
 );
 const whatsappSupplierUrl = `https://wa.me/8613482725985?text=${whatsappPrefillMsg}`;
+
+// Multi-entity Schema.org JSON-LD (@graph: WholesaleStore + BreadcrumbList + FAQPage)
+const supplierJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WholesaleStore",
+      "@id": `${canonicalUrl}#store`,
+      "name": supplierName,
+      "legalName": supplier.company_name || supplierName,
+      "url": canonicalUrl,
+      "description": seoDescription,
+      "telephone": maskedPhone,
+      "priceRange": "$$",
+      "department": districtName,
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": supplier.full_location || `Yiwu International Trade City, District ${supplier.district}, Floor ${supplier.floor || '1'}, Gate ${supplier.gate || 'Direct'}, Booth ${supplier.booth_no || ''}`,
+        "addressLocality": "Yiwu, Jinhua",
+        "addressRegion": "Zhejiang",
+        "postalCode": "322000",
+        "addressCountry": "CN"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 29.3269,
+        "longitude": 120.1058
+      },
+      "knowsAbout": sampleProducts.length > 0 ? sampleProducts : fallbackKeywords,
+      ...(sampleProducts.length > 0 ? {
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": `${supplierName} Wholesale Product Catalog`,
+          "itemListElement": sampleProducts.map((prod, idx) => ({
+            "@type": "Offer",
+            "position": idx + 1,
+            "itemOffered": {
+              "@type": "Product",
+              "name": prod,
+              "category": supplier.chinese_official_category || districtName,
+              "brand": {
+                "@type": "Brand",
+                "name": supplierName
+              }
+            }
+          }))
+        }
+      } : {})
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": `${canonicalUrl}#breadcrumb`,
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://sinotradelink.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Yiwu Wholesale Directory",
+          "item": "https://sinotradelink.com/directory"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": districtName,
+          "item": `https://sinotradelink.com/directory?district=${supplier.district}`
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": `${supplierName} (${boothLabel})`,
+          "item": canonicalUrl
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": `${canonicalUrl}#faq`,
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": `Where is ${supplierName} located inside Yiwu Wholesale Market?`,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": `${supplierName} operates a physical wholesale stall in ${districtName}, Floor ${supplier.floor || '1'}, Gate ${supplier.gate || 'Direct'}${supplier.street ? `, Street ${supplier.street}` : ''}, Booth ${supplier.booth_no || 'N/A'} (${supplier.full_location || 'Yiwu International Trade City, Zhejiang, China'}).`
+          }
+        },
+        {
+          "@type": "Question",
+          "name": `Is ${supplierName} (Booth ${supplier.booth_no || 'N/A'}) a direct factory or trading company?`,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": isDirectFactory
+              ? `Yes, ${supplierName} (${supplier.company_name || supplierName}) is classified as a Verified Direct Factory showroom in Yiwu Futian Market${supplier.years_in_futian ? ` with ${supplier.years_in_futian}+ years of market history` : ''}. Buyers can book a $99 physical stall audit or $299 factory license verification through Sino Trade Link.`
+              : `${supplierName} is a verified wholesale market distributor located at Booth ${supplier.booth_no || 'N/A'} in ${districtName}. Our on-ground Yiwu field engineers can visit this stall for $99 to verify their factory source, real-time stock, and EXW/FOB wholesale pricing.`
+          }
+        },
+        {
+          "@type": "Question",
+          "name": `What wholesale products does ${supplierName} supply?`,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": sampleProducts.length > 0
+              ? `${supplierName} specializes in wholesale ${sampleProducts.join(', ')}${supplier.chinese_official_category ? ` under official market category ${supplier.chinese_official_category}` : ''}.`
+              : `${supplierName} supplies wholesale merchandise in ${districtName}${supplier.chinese_official_category ? ` (${supplier.chinese_official_category})` : ''}.`
+          }
+        },
+        {
+          "@type": "Question",
+          "name": `How do I contact ${supplierName} directly on WeChat or phone?`,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": `You can unlock the unmasked Chinese mobile phone number (${maskedPhone}) and WeChat ID for ${supplier.contact_person || 'the Stall Manager'} at ${supplierName} directly on this page, or instruct Sino Trade Link's Yiwu ground desk (+86 134 8272 5985) to visit Booth ${supplier.booth_no || 'N/A'} on your behalf.`
+          }
+        }
+      ]
+    }
+  ]
+};
 ---
 
 <Layout 
-  title={`${supplier.clean_name || supplier.name} - Yiwu Market Booth ${supplier.booth_no || ''} | Sino Trade Link`}
-  description={`Direct contact number, WeChat ID, and physical stall coordinates for ${supplier.clean_name || supplier.name} in Yiwu Futian Wholesale Market. Verified offline supplier.`}
+  title={seoTitle}
+  description={seoDescription}
+  keywords={seoKeywords}
+  canonicalUrl={canonicalUrl}
+  jsonLd={supplierJsonLd}
   activePage="directory"
 >
   <!-- Breadcrumbs & Header -->
   <section class="bg-slate-900 text-white py-8 border-b border-slate-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center gap-2 text-xs text-slate-400 mb-3">
+      <nav aria-label="Breadcrumb" class="flex items-center flex-wrap gap-2 text-xs text-slate-400 mb-3">
         <a href="/" class="hover:text-white">Home</a>
         <span>/</span>
         <a href="/directory" class="hover:text-white">Directory</a>
         <span>/</span>
         <a href={`/directory?district=${supplier.district}`} class="hover:text-white">{districtName}</a>
         <span>/</span>
-        <span class="text-slate-200 truncate">{supplier.clean_name || supplier.name}</span>
-      </div>
+        <span class="text-slate-200 truncate">{supplierName} ({boothLabel})</span>
+      </nav>
 
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div class="flex items-center gap-2 mb-2">
-            <span class="bg-blue-600/30 text-blue-300 text-xs font-bold px-2.5 py-1 rounded-md border border-blue-500/40">
+          <div class="flex items-center flex-wrap gap-2 mb-2.5">
+            <a 
+              href={`/directory?district=${supplier.district}`}
+              class="bg-blue-600/30 hover:bg-blue-600/40 text-blue-300 text-xs font-bold px-2.5 py-1 rounded-md border border-blue-500/40 transition-colors"
+            >
               {districtName}
-            </span>
+            </a>
             {supplier.booth_no && (
               <span class="bg-slate-800 text-slate-200 text-xs font-mono font-bold px-2.5 py-1 rounded-md border border-slate-700">
                 Booth {supplier.booth_no}
               </span>
             )}
+            {isDirectFactory && (
+              <span class="bg-emerald-500/20 text-emerald-300 text-xs font-bold px-2.5 py-1 rounded-md border border-emerald-500/40 flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                Verified Direct Factory
+              </span>
+            )}
+            {supplier.years_in_futian > 0 && (
+              <span class="bg-purple-500/20 text-purple-300 text-xs font-bold px-2.5 py-1 rounded-md border border-purple-500/40">
+                {supplier.years_in_futian}+ Yrs in Futian
+              </span>
+            )}
           </div>
           <h1 class="text-2xl sm:text-3xl font-black text-white">
-            {supplier.clean_name || supplier.name}
+            {supplierName}
           </h1>
-          {supplier.company_name && supplier.company_name !== supplier.clean_name && (
-            <p class="text-xs sm:text-sm text-slate-400 mt-0.5">
-              Official Registered Name: {supplier.company_name}
+          {supplier.company_name && supplier.company_name !== supplierName && (
+            <p class="text-xs sm:text-sm text-slate-400 mt-1">
+              Official Registered Chinese Entity: <strong class="text-slate-200">{supplier.company_name}</strong>
             </p>
           )}
+          <p class="text-xs text-slate-400 mt-1">
+            Yiwu International Trade City &bull; Floor {supplier.floor || '1'} &bull; Gate {supplier.gate || 'Direct'} &bull; {boothLabel} &bull; Direct Line: <span class="font-mono text-amber-300">{maskedPhone}</span>
+          </p>
         </div>
 
         <!-- Quick Unlock & Ground Liaison Triggers -->
@@ -102,7 +317,7 @@ const whatsappSupplierUrl = `https://wa.me/8613482725985?text=${whatsappPrefillM
           <button 
             type="button"
             data-unlock-id={supplier.shop_id}
-            data-supplier-name={supplier.clean_name || supplier.name}
+            data-supplier-name={supplierName}
             data-contact-person={supplier.contact_person || 'Stall Manager'}
             data-masked-phone={maskedPhone}
             data-district={districtName}
@@ -112,7 +327,7 @@ const whatsappSupplierUrl = `https://wa.me/8613482725985?text=${whatsappPrefillM
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />
             </svg>
-            <span>Reveal Mobile & WhatsApp</span>
+            <span>Reveal Mobile & WeChat</span>
           </button>
         </div>
       </div>
@@ -154,44 +369,151 @@ const whatsappSupplierUrl = `https://wa.me/8613482725985?text=${whatsappPrefillM
               </div>
             </div>
 
-            {supplier.full_location && (
-              <div class="text-xs text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-100">
-                <strong class="text-slate-700">Full Stall Address:</strong> {supplier.full_location}
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              {supplier.full_location && (
+                <div class="text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-100">
+                  <strong class="text-slate-700 block mb-0.5">Full Stall Coordinates:</strong>
+                  <span>{supplier.full_location}</span>
+                </div>
+              )}
+              <div class="text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-100">
+                <strong class="text-slate-700 block mb-0.5">Supplier Classification & Credit:</strong>
+                <span>{supplierTypeLabel} &bull; Market Score: {supplier.market_credit_score || 'Verified'}</span>
               </div>
-            )}
+            </div>
           </div>
 
-          <!-- Product Samples -->
-          {sampleProducts.length > 0 && (
-            <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
-              <h2 class="text-base font-bold text-slate-900 mb-4 flex items-center gap-2">
-                <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                </svg>
-                Wholesale Product Catalog Samples
-              </h2>
-              <div class="space-y-2">
-                {sampleProducts.map(p => (
-                  <div class="p-3 rounded-xl bg-slate-50 border border-slate-100 text-xs font-medium text-slate-800 flex items-center justify-between">
-                    <span>{p}</span>
-                    <span class="text-[10px] uppercase font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100">
-                      Wholesale Tier
-                    </span>
-                  </div>
+          <!-- Product Samples & Searchable Keyword Cloud -->
+          <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
+            <h2 class="text-base font-bold text-slate-900 mb-2 flex items-center gap-2">
+              <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+              </svg>
+              Wholesale Product Catalog & Sourcing Keywords
+            </h2>
+            <p class="text-xs text-slate-500 mb-4">
+              Verified product lines and wholesale categories supplied by <strong>{supplierName}</strong> at {boothLabel}:
+            </p>
+
+            {sampleProducts.length > 0 ? (
+              <div class="space-y-2 mb-5">
+                {sampleProducts.map((p, idx) => {
+                  const searchKw = extractedKeywords[idx] || extractedKeywords[0] || p.replace(/\s*\([¥￥$]\s*[\d.,]+\)\s*$/g, '').slice(0, 32).trim();
+                  return (
+                    <div class="p-3 rounded-xl bg-slate-50 border border-slate-100 text-xs font-medium text-slate-800 flex items-center justify-between gap-2">
+                      <span class="font-semibold text-slate-900">{p}</span>
+                      <div class="flex items-center gap-2 shrink-0">
+                        <a 
+                          href={`/directory?q=${encodeURIComponent(searchKw)}`}
+                          class="text-[10px] font-bold text-blue-600 hover:underline"
+                        >
+                          Compare Stalls &rarr;
+                        </a>
+                        <span class="text-[10px] uppercase font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100">
+                          EXW / FOB Wholesale
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div class="p-4 rounded-xl bg-slate-50 border border-slate-100 text-xs text-slate-600 mb-5">
+                <strong>{supplierName}</strong> operates an active wholesale showroom in <strong>{districtName}</strong> ({boothLabel}). Unlock their direct WeChat ID or request a $99 physical stall walkthrough to receive their latest PDF catalog and carton packing list.
+              </div>
+            )}
+
+            <!-- Clickable SEO Keyword Tag Cloud -->
+            <div class="pt-4 border-t border-slate-100">
+              <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-2">
+                Related Yiwu Wholesale Search Tags:
+              </span>
+              <div class="flex flex-wrap gap-1.5">
+                {extractedKeywords.map(kw => (
+                  <a 
+                    href={`/directory?q=${encodeURIComponent(kw)}`}
+                    class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-blue-700 text-[11px] font-medium border border-slate-200/80 transition-colors"
+                  >
+                    {kw} Wholesale
+                  </a>
+                ))}
+                {supplier.chinese_official_category && (
+                  <a 
+                    href={`/directory?q=${encodeURIComponent(supplier.chinese_official_category)}`}
+                    class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-blue-700 text-[11px] font-medium border border-slate-200/80 transition-colors"
+                  >
+                    {supplier.chinese_official_category}
+                  </a>
+                )}
+                {fallbackKeywords.map(kw => (
+                  <a 
+                    href={`/directory?district=${supplier.district}`}
+                    class="px-2.5 py-1 rounded-lg bg-slate-50 hover:bg-blue-50 text-slate-600 hover:text-blue-700 text-[11px] border border-slate-200/60 transition-colors"
+                  >
+                    {kw}
+                  </a>
                 ))}
               </div>
             </div>
-          )}
+          </div>
 
-          <!-- Category Classification -->
-          {supplier.chinese_official_category && (
-            <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
-              <h3 class="text-xs uppercase font-bold text-slate-400 mb-2">Market Industry Classification:</h3>
-              <p class="text-sm font-semibold text-slate-800 font-mono">
-                {supplier.chinese_official_category}
+          <!-- Wholesale Sourcing & Factory Intelligence Summary (Rich SEO Content) -->
+          <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
+            <h2 class="text-base font-bold text-slate-900 mb-3">
+              How to Source Directly from {supplierName} ({boothLabel})
+            </h2>
+            <div class="space-y-3 text-xs text-slate-600 leading-relaxed">
+              <p>
+                <strong>1. Direct Stall Communication (Zero Agent Markup):</strong> Unlike traditional Yiwu trading companies that add a <span class="text-slate-900 font-semibold">5%–10% commission</span> on top of booth prices, Sino Trade Link connects you directly with <strong>{supplier.contact_person || 'the Stall Manager'}</strong> at <strong>{supplierName}</strong> ({supplier.company_name || districtName}). Once unlocked, add their Chinese mobile number (<span class="font-mono">{maskedPhone}</span>) directly on <strong>WeChat</strong> to request live showroom videos, carton CBM dimensions, and factory-gate <code>EXW</code> or <code>FOB Ningbo</code> quotes.
+              </p>
+              <p>
+                <strong>2. On-Ground Physical Stall Audit ($99 Flat Fee):</strong> Before wiring a 30% T/T deposit to {boothLabel}, you can dispatch a bilingual Sino Trade Link field engineer to walk directly to <strong>Floor {supplier.floor || '1'}, Gate {supplier.gate || 'Direct'}, {boothLabel}</strong>. We shoot unedited 4K video of their physical samples, verify material tolerances and GSM/weight specs, and confirm their registered Chinese business license (<code>营业执照</code>).
+              </p>
+              <p>
+                <strong>3. Freight, CBM & Sample Consolidation:</strong> Ordering samples from multiple stalls in {districtName}? Use our <a href="/concierge" class="text-blue-600 font-bold hover:underline">$149 Sample Consolidation Box</a> to combine samples from up to 20 booths into one master DHL/FedEx carton, or calculate your exact sea/air landed cost per unit using our <a href="/sourcing-guide#freight-calculator" class="text-blue-600 font-bold hover:underline">Interactive CBM & Volumetric Freight Calculator</a>.
               </p>
             </div>
-          )}
+          </div>
+
+          <!-- Stall-Specific Frequently Asked Questions -->
+          <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
+            <h2 class="text-base font-bold text-slate-900 mb-4">
+              Frequently Asked Questions About {supplierName}
+            </h2>
+            <div class="space-y-2.5">
+              <details name="stall-faq-accordion" class="group rounded-2xl border border-slate-200 bg-slate-50/60 p-4" open>
+                <summary class="font-bold text-xs text-slate-900 cursor-pointer list-none flex items-center justify-between gap-3">
+                  <span>Where is {supplierName} located inside Yiwu Wholesale Market?</span>
+                  <span class="text-blue-600 font-black group-open:rotate-45 transition-transform">+</span>
+                </summary>
+                <p class="text-xs text-slate-600 mt-2.5 leading-relaxed">
+                  <strong>{supplierName}</strong> operates a physical showroom in <strong>{districtName}</strong>, located at <strong>Floor {supplier.floor || '1'}, Gate {supplier.gate || 'Direct'}{supplier.street ? `, Street ${supplier.street}` : ''}, Booth {supplier.booth_no || 'N/A'}</strong> ({supplier.full_location || 'Yiwu International Trade City, Zhejiang, China'}). You can view the full building layout on our <a href="/market-map" class="text-blue-600 font-semibold hover:underline">Interactive Yiwu Market Floor Map</a>.
+                </p>
+              </details>
+
+              <details name="stall-faq-accordion" class="group rounded-2xl border border-slate-200 bg-slate-50/60 p-4">
+                <summary class="font-bold text-xs text-slate-900 cursor-pointer list-none flex items-center justify-between gap-3">
+                  <span>Is {supplierName} a direct manufacturer or a wholesale trading booth?</span>
+                  <span class="text-blue-600 font-black group-open:rotate-45 transition-transform">+</span>
+                </summary>
+                <p class="text-xs text-slate-600 mt-2.5 leading-relaxed">
+                  {isDirectFactory
+                    ? `Yes — ${supplierName} (${supplier.company_name || supplierName}) is listed as a Verified Direct Factory showroom in Yiwu Futian Market. For OEM custom molds or bulk orders over $5,000, we recommend booking our $99 Physical Stall Audit or $299 Comprehensive Factory License Verification.`
+                    : `${supplierName} is a verified wholesale market stall at ${boothLabel} in ${districtName}. Our bilingual Yiwu ground team can visit this booth for a flat $99 fee to inspect their physical stock, verify whether they hold direct factory tooling, and negotiate Tier-1 EXW pricing.`}
+                </p>
+              </details>
+
+              <details name="stall-faq-accordion" class="group rounded-2xl border border-slate-200 bg-slate-50/60 p-4">
+                <summary class="font-bold text-xs text-slate-900 cursor-pointer list-none flex items-center justify-between gap-3">
+                  <span>What is the typical MOQ and lead time when ordering from {boothLabel}?</span>
+                  <span class="text-blue-600 font-black group-open:rotate-45 transition-transform">+</span>
+                </summary>
+                <p class="text-xs text-slate-600 mt-2.5 leading-relaxed">
+                  For ready-stock wholesale items in {districtName}, stalls typically accept minimum orders of <strong>1 to 5 master cartons</strong> (with 3–7 day delivery to Yiwu consolidation warehouses or Ningbo Port). For custom private-label packaging or OEM production runs, see our <a href="/sourcing-guide#oem-manufacturing" class="text-blue-600 font-semibold hover:underline">MOQ Negotiation Scripts & OEM Playbook</a>.
+                </p>
+              </details>
+            </div>
+          </div>
         </div>
 
         <!-- Sidebar / Contact Unlock & Inspection Box (Right col) -->
@@ -207,7 +529,7 @@ const whatsappSupplierUrl = `https://wa.me/8613482725985?text=${whatsappPrefillM
 
             <div class="space-y-3 mb-6">
               <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200">
-                <span class="text-[10px] uppercase font-bold text-slate-400 block">Direct Mobile Line:</span>
+                <span class="text-[10px] uppercase font-bold text-slate-400 block">Direct Mobile & WeChat Line:</span>
                 <span class="font-mono text-base font-bold text-slate-600 block mt-0.5">
                   {maskedPhone}
                 </span>
@@ -217,7 +539,7 @@ const whatsappSupplierUrl = `https://wa.me/8613482725985?text=${whatsappPrefillM
             <button 
               type="button"
               data-unlock-id={supplier.shop_id}
-              data-supplier-name={supplier.clean_name || supplier.name}
+              data-supplier-name={supplierName}
               data-contact-person={supplier.contact_person || 'Stall Manager'}
               data-masked-phone={maskedPhone}
               data-district={districtName}
@@ -249,12 +571,12 @@ const whatsappSupplierUrl = `https://wa.me/8613482725985?text=${whatsappPrefillM
               Request MOQ & FOB Price Quote
             </h3>
             <p class="text-xs text-slate-600 mb-4 leading-relaxed">
-              Submit volume inquiries directly to Booth {supplier.booth_no || ''}. Our on-site Yiwu liaison team coordinates the quotation directly with the factory.
+              Submit volume inquiries directly to {boothLabel}. Our on-site Yiwu liaison team coordinates the quotation directly with the factory.
             </p>
             <button 
               type="button"
               data-unlock-id={supplier.shop_id}
-              data-supplier-name={supplier.clean_name || supplier.name}
+              data-supplier-name={supplierName}
               data-contact-person={supplier.contact_person || 'Stall Manager'}
               data-masked-phone={maskedPhone}
               data-district={districtName}
@@ -274,11 +596,11 @@ const whatsappSupplierUrl = `https://wa.me/8613482725985?text=${whatsappPrefillM
               Have Us Visit This Stall For You ($99)
             </h3>
             <p class="text-xs text-slate-400 mb-4 leading-relaxed">
-              Our bilingual field staff walks to Booth {supplier.booth_no || ''}, inspects their real samples, shoots 4K video, and verifies their wholesale pricing.
+              Our bilingual field staff walks to {boothLabel}, inspects their real samples, shoots 4K video, and verifies their wholesale pricing.
             </p>
             <div class="space-y-2">
               <a 
-                href={`/concierge?booth=${encodeURIComponent(supplier.booth_no || '')}&name=${encodeURIComponent(supplier.clean_name || supplier.name)}`}
+                href={`/concierge?booth=${encodeURIComponent(supplier.booth_no || '')}&name=${encodeURIComponent(supplierName)}`}
                 class="block w-full py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold rounded-xl text-center shadow transition-colors"
               >
                 Book Stall Audit ($99) &rarr;
@@ -295,6 +617,35 @@ const whatsappSupplierUrl = `https://wa.me/8613482725985?text=${whatsappPrefillM
           </div>
         </div>
       </div>
+
+      <!-- Related / Neighboring Stalls in the Same District (Internal SEO Link Mesh) -->
+      {relatedSuppliers.length > 0 && (
+        <div class="mt-14 pt-10 border-t border-slate-200">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+            <div>
+              <span class="text-[11px] font-bold uppercase tracking-wider text-blue-600 block mb-1">
+                Compare Neighboring Booths (10-Booth Cluster Rule)
+              </span>
+              <h2 class="text-xl font-black text-slate-900">
+                More Verified Wholesale Stalls in {districtName}
+              </h2>
+            </div>
+            <a 
+              href={`/directory?district=${supplier.district}`}
+              class="text-xs font-bold text-blue-600 hover:text-blue-500 flex items-center gap-1 shrink-0"
+            >
+              <span>Browse All District {supplier.district} Stalls</span>
+              <span>&rarr;</span>
+            </a>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {relatedSuppliers.map(rel => (
+              <SupplierCard supplier={rel} />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   </section>
 

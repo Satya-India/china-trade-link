@@ -151,6 +151,37 @@ export async function getSupplierById(id: string, db?: any): Promise<Supplier | 
 }
 
 /**
+ * Fetch neighboring/related verified suppliers in the same district for internal SEO linking
+ */
+export async function getRelatedSuppliers(supplier: Supplier, limit = 6, db?: any): Promise<Supplier[]> {
+  const activeDb = db || (await getD1Database());
+  if (activeDb) {
+    try {
+      const { results } = await activeDb.prepare(`
+        SELECT * FROM suppliers
+        WHERE district = ? AND shop_id != ? AND sample_products IS NOT NULL AND sample_products != ''
+        ORDER BY
+          CASE WHEN floor = ? THEN 2 ELSE 1 END DESC,
+          CASE WHEN is_direct_factory = 'Yes' THEN 2 ELSE 1 END DESC,
+          shop_id ASC
+        LIMIT ?
+      `).bind(String(supplier.district || '1'), String(supplier.shop_id), String(supplier.floor || '1'), limit).all();
+
+      if (results && results.length > 0) {
+        return results as Supplier[];
+      }
+    } catch (err) {
+      console.error('[D1 Error] getRelatedSuppliers failed:', err);
+    }
+  }
+
+  const all = getAllSuppliers();
+  return all
+    .filter(s => String(s.district) === String(supplier.district) && String(s.shop_id) !== String(supplier.shop_id))
+    .slice(0, limit);
+}
+
+/**
  * Fetch live market directory statistics from Cloudflare D1
  */
 export async function getStats(db?: any): Promise<MarketStats> {

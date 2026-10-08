@@ -35,15 +35,77 @@ const districts = [
   { id: '7', name: 'Production Materials (Machinery & Plastics)' },
   { id: '60', name: 'District 6 Expansion (Smart Tech & Hardware)' }
 ];
+
+const activeDistrictObj = districts.find(d => d.id === districtFilter);
+const activeDistrictName = activeDistrictObj && districtFilter ? activeDistrictObj.name : 'All Yiwu Wholesale Market Districts';
+
+const pageTitleParts: string[] = [];
+if (searchQuery) {
+  pageTitleParts.push(`"${searchQuery.toUpperCase()}" Wholesale Suppliers & Factories`);
+} else if (districtFilter && activeDistrictObj) {
+  pageTitleParts.push(`Yiwu ${activeDistrictObj.name} Stalls & Factories`);
+} else if (factoryFilter) {
+  pageTitleParts.push(`Verified Yiwu Direct Factories Directory (10,141+ Manufacturers)`);
+} else {
+  pageTitleParts.push(`Yiwu Wholesale Market Directory — 27,706 Verified Stalls & Direct Factories`);
+}
+if (currentPage > 1) {
+  pageTitleParts.push(`Page ${currentPage}`);
+}
+const seoTitle = `${pageTitleParts.join(' - ')} | Sino Trade Link`;
+
+const seoDescription = `Browse ${totalItems.toLocaleString()} verified wholesale market stalls${searchQuery ? ` for "${searchQuery}"` : ''} in ${activeDistrictName}. Unlock direct Chinese mobile numbers (+86), WeChat IDs, exact Gate/Floor/Booth coordinates, and book $99 on-ground Yiwu stall audits.`;
+
+const seoKeywords = [
+  searchQuery ? `${searchQuery} wholesale China, ${searchQuery} Yiwu factory, ${searchQuery} manufacturer Yiwu` : '',
+  districtFilter ? `Yiwu District ${districtFilter} suppliers, ${activeDistrictName} wholesale booths` : '',
+  'Yiwu Futian market directory',
+  'Yiwu wholesale market booth numbers',
+  'direct Chinese factory phone numbers',
+  'Yiwu WeChat wholesale suppliers',
+  'Yiwu toys hardware jewelry stationery textiles wholesale'
+].filter(Boolean).join(', ');
+
+const canonicalParams = new URLSearchParams();
+if (districtFilter) canonicalParams.set('district', districtFilter);
+if (searchQuery) canonicalParams.set('q', searchQuery);
+if (factoryFilter) canonicalParams.set('factory', 'true');
+if (currentPage > 1) canonicalParams.set('page', String(currentPage));
+const directoryCanonicalUrl = `https://sinotradelink.com/directory${canonicalParams.toString() ? `?${canonicalParams.toString()}` : ''}`;
+
+const directoryJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": seoTitle,
+  "description": seoDescription,
+  "url": directoryCanonicalUrl,
+  "mainEntity": {
+    "@type": "ItemList",
+    "numberOfItems": totalItems,
+    "itemListElement": currentSuppliers.slice(0, 12).map((s, idx) => ({
+      "@type": "ListItem",
+      "position": idx + 1,
+      "url": `https://sinotradelink.com/supplier/${s.shop_id}`,
+      "name": `${s.clean_name || s.name} (Booth ${s.booth_no || 'N/A'})`
+    }))
+  }
+};
 ---
 
-<Layout title="Market Stalls Directory | Sino Trade Link" activePage="directory">
+<Layout 
+  title={seoTitle}
+  description={seoDescription}
+  keywords={seoKeywords}
+  canonicalUrl={directoryCanonicalUrl}
+  jsonLd={directoryJsonLd}
+  activePage="directory"
+>
   <!-- Directory Header & Controls -->
   <section class="bg-slate-900 text-white py-10 border-b border-slate-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="max-w-3xl">
         <h1 class="text-2xl sm:text-3xl font-black text-white tracking-tight">
-          Yiwu Wholesale Market Stalls Directory
+          {districtFilter && activeDistrictObj ? `Yiwu ${activeDistrictObj.name} Directory` : 'Yiwu Wholesale Market Stalls Directory'}
         </h1>
         <p class="text-xs sm:text-sm text-slate-400 mt-1">
           Search physical stalls, booths, direct factory managers, and unmasked Chinese mobile numbers.
@@ -447,22 +509,30 @@ const districts = [
             </div>
           </div>
 
-          <!-- Action Button Triggering Unlock Modal -->
-          <button 
-            type="button"
-            data-unlock-id="${s.i}"
-            data-supplier-name="${escapeHtml(s.n)}"
-            data-contact-person="${escapeHtml(s.cp || 'Stall Manager')}"
-            data-masked-phone="${escapeHtml(maskedPhone)}"
-            data-district="${escapeHtml(distLabel)}"
-            data-booth="${escapeHtml(s.b || '')}"
-            class="unlock-contact-btn w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-xs shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 cursor-pointer"
-          >
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />
-            </svg>
-            <span>Click to Reveal Direct Phone & WeChat</span>
-          </button>
+          <!-- Action Buttons: Unlock + Profile Link -->
+          <div class="flex items-center gap-2">
+            <button 
+              type="button"
+              data-unlock-id="${s.i}"
+              data-supplier-name="${escapeHtml(s.n)}"
+              data-contact-person="${escapeHtml(s.cp || 'Stall Manager')}"
+              data-masked-phone="${escapeHtml(maskedPhone)}"
+              data-district="${escapeHtml(distLabel)}"
+              data-booth="${escapeHtml(s.b || '')}"
+              class="unlock-contact-btn flex-1 py-2.5 px-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-xs shadow-sm hover:shadow transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+            >
+              <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />
+              </svg>
+              <span class="truncate">Reveal Phone & WeChat</span>
+            </button>
+            <a 
+              href="/supplier/${s.i}"
+              class="py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition-colors shrink-0"
+            >
+              Stall Info &rarr;
+            </a>
+          </div>
         </div>
       </div>
     `;

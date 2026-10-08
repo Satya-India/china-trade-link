@@ -11,6 +11,7 @@ export const GET: APIRoute = async () => {
     { loc: 'https://sinotradelink.com/concierge', priority: '0.8', changefreq: 'weekly' },
     { loc: 'https://sinotradelink.com/sourcing-guide', priority: '0.9', changefreq: 'weekly' },
     { loc: 'https://sinotradelink.com/for-suppliers', priority: '0.8', changefreq: 'weekly' },
+    { loc: 'https://sinotradelink.com/directory?factory=true', priority: '0.85', changefreq: 'weekly' },
     { loc: 'https://sinotradelink.com/directory?district=1', priority: '0.85', changefreq: 'weekly' },
     { loc: 'https://sinotradelink.com/directory?district=2', priority: '0.85', changefreq: 'weekly' },
     { loc: 'https://sinotradelink.com/directory?district=3', priority: '0.85', changefreq: 'weekly' },
@@ -18,6 +19,19 @@ export const GET: APIRoute = async () => {
     { loc: 'https://sinotradelink.com/directory?district=5', priority: '0.85', changefreq: 'weekly' },
     { loc: 'https://sinotradelink.com/directory?district=6', priority: '0.85', changefreq: 'weekly' },
     { loc: 'https://sinotradelink.com/directory?district=7', priority: '0.85', changefreq: 'weekly' },
+    { loc: 'https://sinotradelink.com/directory?district=60', priority: '0.85', changefreq: 'weekly' },
+    { loc: 'https://sinotradelink.com/directory?q=toy', priority: '0.8', changefreq: 'weekly' },
+    { loc: 'https://sinotradelink.com/directory?q=jewelry', priority: '0.8', changefreq: 'weekly' },
+    { loc: 'https://sinotradelink.com/directory?q=hardware', priority: '0.8', changefreq: 'weekly' },
+    { loc: 'https://sinotradelink.com/directory?q=kitchen', priority: '0.8', changefreq: 'weekly' },
+    { loc: 'https://sinotradelink.com/directory?q=stationery', priority: '0.8', changefreq: 'weekly' },
+    { loc: 'https://sinotradelink.com/directory?q=socks', priority: '0.8', changefreq: 'weekly' },
+    { loc: 'https://sinotradelink.com/directory?q=textile', priority: '0.8', changefreq: 'weekly' },
+    { loc: 'https://sinotradelink.com/directory?q=auto', priority: '0.8', changefreq: 'weekly' },
+    { loc: 'https://sinotradelink.com/directory?q=clothing', priority: '0.8', changefreq: 'weekly' },
+    { loc: 'https://sinotradelink.com/directory?q=bags', priority: '0.8', changefreq: 'weekly' },
+    { loc: 'https://sinotradelink.com/directory?q=cosmetics', priority: '0.8', changefreq: 'weekly' },
+    { loc: 'https://sinotradelink.com/directory?q=shoes', priority: '0.8', changefreq: 'weekly' },
   ];
 
   const xmlEntries = staticUrls.map(u => `  <url>
