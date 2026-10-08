@@ -9,7 +9,7 @@ export const GET: APIRoute = async ({ params }) => {
     return new Response('Invalid sitemap page', { status: 404 });
   }
 
-  const pageSize = 10000;
+  const pageSize = 5000;
   const offset = (pageNum - 1) * pageSize;
   const today = new Date().toISOString().split('T')[0];
 

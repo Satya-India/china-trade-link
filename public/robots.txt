@@ -31,3 +31,11 @@ Allow: /
 
 # XML Sitemaps
 Sitemap: https://sinotradelink.com/sitemap.xml
+Sitemap: https://sinotradelink.com/sitemaps/pages.xml
+Sitemap: https://sinotradelink.com/sitemaps/suppliers-1.xml
+Sitemap: https://sinotradelink.com/sitemaps/suppliers-2.xml
+Sitemap: https://sinotradelink.com/sitemaps/suppliers-3.xml
+Sitemap: https://sinotradelink.com/sitemaps/suppliers-4.xml
+Sitemap: https://sinotradelink.com/sitemaps/suppliers-5.xml
+Sitemap: https://sinotradelink.com/sitemaps/suppliers-6.xml
+

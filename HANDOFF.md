@@ -72,6 +72,11 @@ Sino Trade Link has been architected as an **Outcome-Driven Sourcing & On-Ground
   - `https://sinotradelink.com/sitemaps/suppliers-5.xml` (20,001–25,000)
   - `https://sinotradelink.com/sitemaps/suppliers-6.xml` (25,001–27,706)
 - **Crawler Directives:** Configured in `public/robots.txt` and `public/llms.txt`.
+- **Bing Webmaster API & IndexNow Bulk Indexing:**
+  - **Bing Webmaster API Key:** `0c309bcdd14f41388e4c7cd825b7f437`
+  - **Bing Verification Tag (`msvalidate.01`):** `D323FDCD8670F30E79A66452C4D9A7FA` (in `src/layouts/Layout.astro`)
+  - **IndexNow Verification File:** `https://sinotradelink.com/0c309bcdd14f41388e4c7cd825b7f437.txt` (`public/0c309bcdd14f41388e4c7cd825b7f437.txt`)
+  - **Automated Sync Script:** `npm run seo:bing` (`node scripts/bing-seo-sync.mjs`) — registers all 8 XML sitemaps via `SubmitFeed`, pushes priority URLs via `SubmitUrlBatch`, and bulk-pushes all `27,734` URLs in 3 batches (`9,500` + `9,500` + `8,734`) via Bing IndexNow (`HTTP 200 OK`).
 
 ---
 

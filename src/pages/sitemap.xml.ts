@@ -3,8 +3,8 @@ import { getStats } from '../lib/data';
 
 export const GET: APIRoute = async () => {
   const stats = await getStats();
-  const total = stats.totalSuppliers || 27337;
-  const pageSize = 10000;
+  const total = stats.totalSuppliers || 27706;
+  const pageSize = 5000;
   const pageCount = Math.ceil(total / pageSize);
 
   const supplierSitemaps: string[] = [];
