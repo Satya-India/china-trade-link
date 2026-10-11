@@ -3,9 +3,12 @@ import { getD1Database, getAllSuppliers } from '../../lib/data';
 
 const DISTRICT_MAP: Record<string, string> = {
   'toys-plush-jewelry': '1',
+  'toys-crafts': '1',
   'hardware-kitchen': '2',
   'stationery-sports': '3',
+  'stationery-office': '3',
   'footwear-socks-daily': '4',
+  'daily-footwear': '4',
   'home-textiles-auto': '5',
   'garments-apparel': '6'
 };
@@ -38,16 +41,18 @@ export const GET: APIRoute = async ({ url }) => {
   const payerName = order?.payer_name || 'Verified Customer';
   const payerEmail = order?.payer_email || 'customer@sinotradelink.com';
   const targetDistrict = DISTRICT_MAP[itemId] || '';
+  const isFullProPass = itemId === 'pro-annual';
 
   let suppliers: any[] = [];
 
   if (db) {
     try {
       if (targetDistrict) {
-        const { results } = await db.prepare("SELECT * FROM suppliers WHERE district = ? ORDER BY shop_id ASC LIMIT 3000").bind(targetDistrict).all();
+        const { results } = await db.prepare("SELECT * FROM suppliers WHERE district = ? ORDER BY shop_id ASC LIMIT 5000").bind(targetDistrict).all();
         suppliers = results || [];
       } else {
-        const { results } = await db.prepare("SELECT * FROM suppliers ORDER BY shop_id ASC LIMIT 5000").all();
+        const limit = isFullProPass ? 30000 : 5000;
+        const { results } = await db.prepare(`SELECT * FROM suppliers ORDER BY shop_id ASC LIMIT ${limit}`).all();
         suppliers = results || [];
       }
     } catch (err) {
