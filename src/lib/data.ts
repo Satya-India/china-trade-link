@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { translateChineseCategory, getMatchingChineseCategoryTerms } from './i18n';
 
 export interface Supplier {
   name: string;
@@ -16,6 +17,7 @@ export interface Supplier {
   years_in_futian: number;
   market_credit_score: string;
   chinese_official_category: string;
+  english_category?: string;
   trust_badges: string;
   sample_products: string;
   full_location: string;
@@ -57,7 +59,24 @@ export async function getD1Database(): Promise<any> {
   return undefined;
 }
 
+function enrichSupplierCategory(supplier: Supplier): Supplier {
+  const rawCat = supplier.chinese_official_category || '';
+  if (!rawCat) {
+    return { ...supplier, english_category: '' };
+  }
+  const englishCat = translateChineseCategory(rawCat, 'en', false);
+  const formattedCat = translateChineseCategory(rawCat, 'en', true);
+  return {
+    ...supplier,
+    english_category: englishCat,
+    chinese_official_category: formattedCat || rawCat
+  };
+}
+
 function convertIndexItem(item: any): Supplier {
+  const rawCat = item.c || '';
+  const englishCat = rawCat ? translateChineseCategory(rawCat, 'en', false) : '';
+  const formattedCat = rawCat ? translateChineseCategory(rawCat, 'en', true) : '';
   return {
     shop_id: String(item.i),
     name: item.n,
@@ -75,7 +94,8 @@ function convertIndexItem(item: any): Supplier {
     unmasked_direct_phone: item.p || '',
     international_mobile: item.p ? (item.p.startsWith('+86') ? item.p : `+86-${item.p}`) : '',
     sample_products: item.pr || '',
-    chinese_official_category: item.c || '',
+    chinese_official_category: formattedCat,
+    english_category: englishCat,
     full_location: `District ${item.d}, Floor ${item.fl}, Gate ${item.g}, Street ${item.st}, Booth ${item.b}`,
     delivery_address: `Yiwu International Trade City District ${item.d}, Booth ${item.b}`,
     chinagoods_url: `https://en.chinagoods.com/shop/${item.i}.html`,
@@ -118,7 +138,7 @@ export function getAllSuppliers(): Supplier[] {
       if (filePath.endsWith('search-index.json')) {
         cachedSuppliers = (parsed as any[]).map(convertIndexItem);
       } else {
-        cachedSuppliers = parsed as Supplier[];
+        cachedSuppliers = (parsed as Supplier[]).map(enrichSupplierCategory);
       }
       lastLoadTime = now;
       return cachedSuppliers;
@@ -139,7 +159,7 @@ export async function getSupplierById(id: string, db?: any): Promise<Supplier | 
     try {
       const row = await activeDb.prepare("SELECT * FROM suppliers WHERE shop_id = ? LIMIT 1").bind(String(id)).first();
       if (row) {
-        return row as Supplier;
+        return enrichSupplierCategory(row as Supplier);
       }
     } catch (err) {
       console.error('[D1 Error] getSupplierById failed:', err);
@@ -168,7 +188,7 @@ export async function getRelatedSuppliers(supplier: Supplier, limit = 6, db?: an
       `).bind(String(supplier.district || '1'), String(supplier.shop_id), String(supplier.floor || '1'), limit).all();
 
       if (results && results.length > 0) {
-        return results as Supplier[];
+        return (results as Supplier[]).map(enrichSupplierCategory);
       }
     } catch (err) {
       console.error('[D1 Error] getRelatedSuppliers failed:', err);
@@ -257,7 +277,7 @@ export async function getFeaturedSuppliers(count = 8, db?: any): Promise<Supplie
       `).bind(count).all();
 
       if (results && results.length > 0) {
-        return results as Supplier[];
+        return (results as Supplier[]).map(enrichSupplierCategory);
       }
     } catch (err) {
       console.error('[D1 Error] getFeaturedSuppliers failed:', err);
@@ -303,8 +323,20 @@ export async function getSuppliersPaginated(options: {
       }
       if (options.query) {
         const term = `%${options.query}%`;
-        conditions.push("(clean_name LIKE ? OR company_name LIKE ? OR booth_no LIKE ? OR chinese_official_category LIKE ? OR sample_products LIKE ?)");
+        const zhCategoryTerms = getMatchingChineseCategoryTerms(options.query);
+        const subConditions = [
+          "clean_name LIKE ?",
+          "company_name LIKE ?",
+          "booth_no LIKE ?",
+          "chinese_official_category LIKE ?",
+          "sample_products LIKE ?"
+        ];
         params.push(term, term, term, term, term);
+        for (const zhTerm of zhCategoryTerms) {
+          subConditions.push("chinese_official_category LIKE ?");
+          params.push(`%${zhTerm}%`);
+        }
+        conditions.push(`(${subConditions.join(" OR ")})`);
       }
 
       const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
@@ -317,7 +349,7 @@ export async function getSuppliersPaginated(options: {
       const { results } = await activeDb.prepare(dataQuery).bind(...params, pageSize, offset).all();
 
       return {
-        suppliers: (results || []) as Supplier[],
+        suppliers: ((results || []) as Supplier[]).map(enrichSupplierCategory),
         total,
         page,
         pageSize,
@@ -336,10 +368,22 @@ export async function getSuppliersPaginated(options: {
     all = all.filter(s => s.is_direct_factory === 'Yes');
   }
   if (options.query) {
-    const q = options.query.toLowerCase();
+    const q = options.query.trim().toLowerCase();
+    const zhCategoryTerms = getMatchingChineseCategoryTerms(q);
+    const escaped = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const shortWordRegex = q.length <= 3 ? new RegExp(`\\b${escaped}s?\\b`, 'i') : null;
     all = all.filter(s => {
-      const text = `${s.name} ${s.clean_name} ${s.booth_no} ${s.sample_products}`.toLowerCase();
-      return text.includes(q);
+      const baseText = `${s.name} ${s.clean_name} ${s.company_name || ''} ${s.booth_no} ${s.sample_products}`.toLowerCase();
+      if (shortWordRegex) {
+        if (shortWordRegex.test(baseText) || shortWordRegex.test(s.english_category || '')) return true;
+      } else {
+        const fullText = `${baseText} ${s.english_category || ''} ${s.chinese_official_category || ''}`.toLowerCase();
+        if (fullText.includes(q)) return true;
+      }
+      if (zhCategoryTerms.length > 0 && s.chinese_official_category) {
+        return zhCategoryTerms.some(zh => s.chinese_official_category.includes(zh));
+      }
+      return false;
     });
   }
 

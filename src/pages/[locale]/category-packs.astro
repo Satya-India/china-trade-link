@@ -1,0 +1,219 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { CATEGORY_PACKS } from '../../lib/markets';
+import { isValidLocale, t } from '../../lib/i18n';
+
+const { locale } = Astro.params;
+if (!isValidLocale(locale) || locale === 'en') {
+  return Astro.redirect('/category-packs');
+}
+
+const ui = t(locale);
+const canonicalUrl = `https://sinotradelink.com/${locale}/category-packs`;
+---
+
+<Layout
+  title={ui.seo.packsTitle}
+  description={ui.seo.packsDesc}
+  keywords={ui.seo.homeKeywords}
+  canonicalUrl={canonicalUrl}
+  activePage="packs"
+  locale={locale}
+>
+  <!-- Header Hero -->
+  <section class="bg-gradient-to-b from-slate-900 to-slate-950 text-white py-16 border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center max-w-3xl">
+      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-500/10 text-amber-300 border border-amber-500/20 mb-4">
+        <span>Excel &amp; CSV</span>
+      </span>
+      <h1 class="text-3xl sm:text-5xl font-black text-white tracking-tight">
+        {ui.seo.packsTitle}
+      </h1>
+      <p class="mt-4 text-sm sm:text-base text-slate-400 leading-relaxed">
+        {ui.seo.packsDesc}
+      </p>
+    </div>
+  </section>
+
+  <!-- Annual Membership Tiers -->
+  <section class="py-16 bg-white border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="text-xs font-bold uppercase tracking-wider text-blue-600 block mb-1">{ui.membership.badge}</span>
+        <h2 class="text-3xl font-black text-slate-900 tracking-tight">{ui.membership.title}</h2>
+        <p class="text-sm text-slate-600 mt-2">{ui.membership.subtitle}</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        
+        <!-- Single Pack -->
+        <div class="rounded-3xl border border-slate-200 bg-slate-50 p-8 flex flex-col justify-between">
+          <div>
+            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-3">{ui.membership.singleLabel}</span>
+            <div class="mb-2">
+              <span class="text-4xl font-black text-slate-900">{ui.membership.singlePrice}</span>
+            </div>
+            <p class="text-xs text-slate-600 mb-6 leading-relaxed">{ui.membership.singleDesc}</p>
+            <ul class="space-y-2.5 text-xs text-slate-700 mb-8">
+              <li class="flex items-center gap-2"><span class="text-emerald-600">&#10003;</span> 1 district CSV (600&#8211;2,200 stalls)</li>
+              <li class="flex items-center gap-2"><span class="text-emerald-600">&#10003;</span> 99.9% unmasked direct mobiles</li>
+              <li class="flex items-center gap-2"><span class="text-emerald-600">&#10003;</span> Exact booth coordinates</li>
+            </ul>
+          </div>
+          <a href="#packs-grid" class="w-full py-3 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs text-center transition-colors block">{ui.membership.singleCta}</a>
+        </div>
+
+        <!-- Pro Annual -->
+        <div class="rounded-3xl border-2 border-blue-500 bg-white p-8 flex flex-col justify-between shadow-xl shadow-blue-500/10 relative">
+          <div class="absolute -top-4 left-1/2 -translate-x-1/2">
+            <span class="bg-blue-600 text-white text-[11px] font-black px-4 py-1.5 rounded-full shadow-md">{ui.membership.proBadge}</span>
+          </div>
+          <div>
+            <span class="text-xs font-bold text-blue-600 uppercase tracking-wider block mb-3 mt-2">{ui.membership.proLabel}</span>
+            <div class="mb-1">
+              <span class="text-4xl font-black text-slate-900">{ui.membership.proPrice}</span>
+              <span class="text-xs text-slate-500 ml-2">/yr</span>
+            </div>
+            <p class="text-xs text-emerald-600 font-semibold mb-1">{ui.membership.proSave}</p>
+            <p class="text-xs text-slate-600 mb-6 leading-relaxed">{ui.membership.proDesc}</p>
+            <ul class="space-y-2.5 text-xs text-slate-700 mb-8">
+              <li class="flex items-center gap-2"><span class="text-emerald-600">&#10003;</span> All 6 district CSVs (27,706+ total stalls)</li>
+              <li class="flex items-center gap-2"><span class="text-emerald-600">&#10003;</span> Weekly new verified stall additions</li>
+              <li class="flex items-center gap-2"><span class="text-emerald-600">&#10003;</span> Dead contact replacement guarantee</li>
+            </ul>
+          </div>
+          <button
+            type="button"
+            data-item-id="pro-annual"
+            data-item-title="Pro Annual Pass &#8211; All 6 District Packs (27,706+ Stalls)"
+            data-item-price="149"
+            data-item-type="pack"
+            class="paypal-trigger-btn w-full py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs text-center transition-all cursor-pointer flex items-center justify-center gap-2 shadow-md shadow-blue-600/20"
+          >{ui.membership.proCta}</button>
+        </div>
+
+        <!-- Business Tier -->
+        <div class="rounded-3xl border border-amber-400 bg-gradient-to-b from-amber-50 to-white p-8 flex flex-col justify-between">
+          <div>
+            <span class="text-xs font-bold text-amber-700 uppercase tracking-wider block mb-3">{ui.membership.bizLabel}</span>
+            <div class="mb-1">
+              <span class="text-4xl font-black text-slate-900">{ui.membership.bizPrice}</span>
+              <span class="text-xs text-slate-500 ml-2">/yr</span>
+            </div>
+            <p class="text-xs text-amber-700 font-semibold mb-1">{ui.membership.bizSave}</p>
+            <p class="text-xs text-slate-600 mb-6 leading-relaxed">{ui.membership.bizDesc}</p>
+            <ul class="space-y-2.5 text-xs text-slate-700 mb-6">
+              <li class="flex items-center gap-2"><span class="text-emerald-600">&#10003;</span> 1 Free $99 Stall Audit per quarter (4/yr)</li>
+              <li class="flex items-center gap-2"><span class="text-emerald-600">&#10003;</span> Dedicated bilingual Yiwu rep on WhatsApp</li>
+              <li class="flex items-center gap-2"><span class="text-emerald-600">&#10003;</span> Open-Book Order Execution at 6% commission</li>
+            </ul>
+            <p class="text-[11px] text-amber-700 bg-amber-100 border border-amber-200 rounded-xl px-3 py-2 leading-relaxed">{ui.membership.openBookNote}</p>
+          </div>
+          <a
+            href="https://wa.me/8613482725985?text=Hi%20SinoTradeLink%2C%20I%27m%20interested%20in%20the%20Business%20Sourcing%20Tier%20(%24399%2Fyr).%20Can%20we%20talk%3F"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="w-full py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs text-center transition-all flex items-center justify-center gap-2 mt-4"
+          >{ui.membership.bizCta}</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Packs Grid -->
+  <section class="py-16 bg-slate-50" id="packs-grid">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {CATEGORY_PACKS.map(pack => (
+          <div class={`rounded-3xl border p-8 flex flex-col justify-between transition-all hover:shadow-xl ${pack.popular ? 'bg-white border-amber-400 shadow-lg shadow-amber-500/5 ring-2 ring-amber-400/20' : 'bg-white border-slate-200 shadow-sm'}`}>
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="text-xs font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-lg border border-blue-100">
+                  {pack.district}
+                </span>
+                {pack.popular && (
+                  <span class="bg-amber-500 text-slate-950 text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full">
+                    {ui.membership.proBadge}
+                  </span>
+                )}
+              </div>
+
+              <h2 class="text-xl font-black text-slate-900 mb-2">
+                {pack.title}
+              </h2>
+
+              <p class="text-xs text-slate-600 leading-relaxed mb-6">
+                {pack.description}
+              </p>
+
+              <!-- Price Row -->
+              <div class="flex items-baseline gap-2 mb-6 pb-6 border-b border-slate-100">
+                <span class="text-4xl font-black text-slate-900">${pack.price}</span>
+                <span class="text-base text-slate-400 line-through">${pack.originalPrice}</span>
+                <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100 ml-auto">
+                  {pack.supplierCount}
+                </span>
+              </div>
+
+              <!-- Included Features -->
+              <ul class="space-y-3 text-xs text-slate-700 mb-8">
+                {pack.features.map(f => (
+                  <li class="flex items-start gap-2.5">
+                    <svg class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span>{f}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <!-- Instant Checkout Button -->
+            <div>
+              <button 
+                type="button"
+                data-item-id={pack.id}
+                data-item-title={pack.title}
+                data-item-price={pack.price}
+                data-item-type="pack"
+                class={`paypal-trigger-btn w-full py-3.5 rounded-2xl font-bold text-xs text-center transition-all cursor-pointer flex items-center justify-center gap-2 ${pack.popular ? 'bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-md shadow-amber-500/20' : 'bg-blue-600 hover:bg-blue-500 text-white shadow-md shadow-blue-600/20'}`}
+              >
+                <span>CSV / Excel (${pack.price}) &rarr;</span>
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- High-Ticket Service Bridge Offer -->
+      <div class="mt-16 bg-gradient-to-br from-slate-900 to-slate-950 rounded-3xl border border-slate-800 p-8 sm:p-10 max-w-4xl mx-auto shadow-xl text-white">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+          <div class="space-y-3 text-left max-w-xl">
+            <h3 class="text-xl sm:text-2xl font-black text-white">
+              {ui.seo.conciergeTitle}
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">
+              {ui.seo.conciergeDesc}
+            </p>
+          </div>
+          <div class="flex flex-col sm:flex-row md:flex-col gap-3 w-full md:w-auto shrink-0">
+            <a 
+              href={`/${locale}/concierge`} 
+              class="px-6 py-3.5 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs text-center shadow-md transition-all whitespace-nowrap"
+            >
+              {ui.supplier.auditBtn}
+            </a>
+            <a 
+              href="https://wa.me/8613482725985?text=Hi%20SinoTradeLink%2C%20I%20am%20looking%20at%20your%20Category%20Packs%20and%20want%20to%20discuss%20having%20your%20team%20do%20stall%20inspections%20or%20sample%20pickup." 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="px-6 py-3.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 font-bold text-xs text-center flex items-center justify-center gap-2 transition-all whitespace-nowrap"
+            >
+              <span>{ui.supplier.whatsappBtn}</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

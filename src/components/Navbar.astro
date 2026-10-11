@@ -1,22 +1,49 @@
 ---
+import { getLocaleConfig, SUPPORTED_LOCALES, t } from '../lib/i18n';
+
 interface Props {
   activePage?: string;
+  locale?: string;
 }
 
-const { activePage = 'home' } = Astro.props;
+const { activePage = 'home', locale = 'en' } = Astro.props;
+const currentLocale = getLocaleConfig(locale);
+const ui = t(currentLocale.code);
+const localePrefix = currentLocale.code !== 'en' ? `/${currentLocale.code}` : '';
+const homeHref = localePrefix || '/';
+
+const rawCleanPath = Astro.url.pathname.replace(/^\/(es|pt|fr|de|ar|ru|it)(\/|$)/, '/') || '/';
+const cleanPath = rawCleanPath.length > 1 && rawCleanPath.endsWith('/') ? rawCleanPath.slice(0, -1) : rawCleanPath;
+const supportsLocaleRoute =
+  cleanPath === '/' ||
+  cleanPath === '/countries' ||
+  cleanPath === '/directory' ||
+  cleanPath === '/category-packs' ||
+  cleanPath === '/concierge' ||
+  cleanPath.startsWith('/country/');
+
+function getSwitchUrl(targetCode: string): string {
+  if (!supportsLocaleRoute) {
+    return targetCode === 'en' ? cleanPath : `/${targetCode}`;
+  }
+  if (targetCode === 'en') {
+    return cleanPath;
+  }
+  return cleanPath === '/' ? `/${targetCode}` : `/${targetCode}${cleanPath}`;
+}
 ---
 
 <header class="sticky top-0 z-50 bg-slate-900/95 backdrop-blur-md border-b border-slate-800 text-white">
   <!-- Top ticker banner -->
   <div class="bg-gradient-to-r from-blue-600 via-indigo-600 to-amber-600 text-white text-xs py-1.5 px-4 font-medium text-center flex items-center justify-center gap-2">
     <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-    <span><strong>Live Intelligence:</strong> 10,000+ Verified Offline Suppliers from Yiwu Futian & Huangyuan Wholesale Markets with Direct Unmasked Mobiles</span>
+    <span><strong>Live Intelligence:</strong> 27,706+ Verified Offline Suppliers from Yiwu Futian &amp; Huangyuan Wholesale Markets with Direct Unmasked Mobiles</span>
   </div>
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-16">
       <!-- Brand Logo (Option C: The Armored Trade Crest) -->
-      <a href="/" class="flex items-center gap-3 group">
+      <a href={homeHref} class="flex items-center gap-3 group shrink-0">
         <div class="w-10 h-10 rounded-xl overflow-hidden shadow-lg shadow-blue-500/20 group-hover:scale-105 transition-transform shrink-0">
           <svg viewBox="0 0 48 48" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect width="48" height="48" rx="12" fill="url(#navCrestBg)"/>
@@ -54,78 +81,159 @@ const { activePage = 'home' } = Astro.props;
       </a>
 
       <!-- Desktop Navigation -->
-      <nav class="hidden md:flex items-center gap-1">
+      <nav class="hidden lg:flex items-center gap-1">
         <a 
-          href="/" 
-          class={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${activePage === 'home' ? 'text-white bg-slate-800' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}`}
+          href={`${localePrefix}/directory`} 
+          class={`px-2.5 py-2 rounded-lg text-xs font-semibold transition-colors ${activePage === 'directory' ? 'text-white bg-slate-800' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}`}
         >
-          Overview
-        </a>
-        <a 
-          href="/directory" 
-          class={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${activePage === 'directory' ? 'text-white bg-slate-800' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}`}
-        >
-          Market Directory
+          {ui.nav.directory}
         </a>
         <a 
           href="/market-map" 
-          class={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${activePage === 'map' ? 'text-white bg-slate-800' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}`}
+          class={`px-2.5 py-2 rounded-lg text-xs font-semibold transition-colors ${activePage === 'map' ? 'text-white bg-slate-800' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}`}
         >
-          Market Map & Floors
+          {ui.nav.marketMap}
         </a>
         <a 
-          href="/category-packs" 
-          class={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1.5 ${activePage === 'packs' ? 'text-white bg-slate-800' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}`}
+          href={`${localePrefix}/category-packs`} 
+          class={`px-2.5 py-2 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${activePage === 'packs' ? 'text-white bg-slate-800' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}`}
         >
-          <span>Category Packs</span>
+          <span>{ui.nav.categoryPacks}</span>
           <span class="bg-amber-500/20 text-amber-300 text-[10px] font-bold px-1.5 py-0.5 rounded border border-amber-500/30">$29+</span>
         </a>
         <a 
-          href="/concierge" 
-          class={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1.5 ${activePage === 'concierge' ? 'text-white bg-slate-800' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}`}
+          href={`${localePrefix}/concierge`} 
+          class={`px-2.5 py-2 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${activePage === 'concierge' ? 'text-white bg-slate-800' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}`}
         >
-          <span>On-Demand Concierge</span>
-          <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-1.5 py-0.5 rounded border border-emerald-500/30">Local Audit</span>
+          <span>{ui.nav.concierge}</span>
+          <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-1.5 py-0.5 rounded border border-emerald-500/30">$99</span>
         </a>
         <a 
           href="/sourcing-guide" 
-          class={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1.5 ${activePage === 'guide' ? 'text-white bg-slate-800' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}`}
+          class={`px-2.5 py-2 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${activePage === 'guide' ? 'text-white bg-slate-800' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}`}
         >
-          <span>Sourcing & Freight Guide</span>
+          <span>{ui.nav.sourcingGuide}</span>
         </a>
         <a 
-          href="/countries" 
-          class={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1.5 ${activePage === 'countries' ? 'text-white bg-slate-800' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}`}
+          href={`${localePrefix}/countries`} 
+          class={`px-2.5 py-2 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${activePage === 'countries' ? 'text-white bg-slate-800' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}`}
         >
-          <span>100 Country Corridors</span>
-        </a>
-        <a 
-          href="/for-suppliers" 
-          class={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1.5 ${activePage === 'suppliers' ? 'text-white bg-slate-800' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}`}
-        >
-          <span>List Your Business</span>
+          <span>{ui.nav.countries}</span>
         </a>
       </nav>
 
-      <!-- Right Action CTA -->
-      <div class="flex items-center gap-3">
+      <!-- Right Action CTA & Global Language Switcher -->
+      <div class="flex items-center gap-2 sm:gap-2.5">
+        <!-- Global 8-Language Switcher Dropdown -->
+        <div class="relative" id="lang-switcher-container">
+          <button
+            type="button"
+            id="lang-switcher-btn"
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="inline-flex items-center gap-1.5 px-2.5 py-2 rounded-xl text-xs font-bold text-slate-200 hover:text-white bg-slate-800/90 hover:bg-slate-800 border border-slate-700 transition-colors cursor-pointer"
+            title="Switch Language / Cambiar Idioma / Mudar Idioma"
+          >
+            <span>{currentLocale.flag}</span>
+            <span class="uppercase">{currentLocale.code}</span>
+            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+
+          <div
+            id="lang-switcher-menu"
+            class="hidden absolute right-0 mt-2 w-64 rounded-2xl bg-slate-900 border border-slate-700 shadow-2xl py-2 z-50 divide-y divide-slate-800"
+          >
+            <div class="px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+              🌐 Select Global Language (8)
+            </div>
+            <div class="py-1 max-h-80 overflow-y-auto">
+              {SUPPORTED_LOCALES.map((loc) => {
+                const isCurrent = loc.code === currentLocale.code;
+                return (
+                  <a
+                    href={getSwitchUrl(loc.code)}
+                    class={`flex items-center justify-between px-3.5 py-2 text-xs transition-colors ${
+                      isCurrent
+                        ? 'bg-blue-600/20 text-blue-300 font-bold'
+                        : 'text-slate-200 hover:bg-slate-800 hover:text-white'
+                    }`}
+                  >
+                    <div class="flex items-center gap-2.5">
+                      <span class="text-base leading-none">{loc.flag}</span>
+                      <div>
+                        <span class="block font-bold leading-tight">{loc.nativeName}</span>
+                        <span class="block text-[10px] text-slate-400">{loc.regionLabel}</span>
+                      </div>
+                    </div>
+                    <span class="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">
+                      {loc.code}
+                    </span>
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
         <button 
           type="button"
-          class="open-search-modal-btn hidden sm:inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-800 transition-colors border border-slate-700 cursor-pointer"
+          class="open-search-modal-btn hidden sm:inline-flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-800 transition-colors border border-slate-700 cursor-pointer"
         >
           <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
-          <span>Search Stalls</span>
+          <span class="hidden xl:inline">{ui.nav.browseStalls}</span>
           <kbd class="font-mono text-[10px] text-slate-400 bg-slate-900 px-1.5 py-0.5 rounded border border-slate-700">⌘K</kbd>
         </button>
+
         <a 
-          href="/category-packs" 
-          class="inline-flex items-center justify-center px-4 py-2 rounded-lg text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white shadow-md shadow-blue-600/30 transition-all hover:shadow-lg"
+          href={`${localePrefix}/category-packs`} 
+          class="inline-flex items-center justify-center px-3.5 py-2 rounded-xl text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white shadow-md shadow-blue-600/30 transition-all hover:shadow-lg whitespace-nowrap"
         >
-          Download Directory Pack
+          {ui.nav.categoryPacks}
         </a>
       </div>
     </div>
+
+    <!-- Mobile Quick Links Bar -->
+    <div class="flex lg:hidden items-center gap-1.5 overflow-x-auto py-2 border-t border-slate-800/80 text-[11px] font-semibold no-scrollbar">
+      <a href={`${localePrefix}/directory`} class="px-2.5 py-1 rounded-lg bg-slate-800/80 text-slate-200 whitespace-nowrap shrink-0">{ui.nav.directory}</a>
+      <a href={`${localePrefix}/countries`} class="px-2.5 py-1 rounded-lg bg-slate-800/80 text-slate-200 whitespace-nowrap shrink-0">🌍 {ui.nav.countries}</a>
+      <a href={`${localePrefix}/category-packs`} class="px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/30 whitespace-nowrap shrink-0">{ui.nav.categoryPacks}</a>
+      <a href={`${localePrefix}/concierge`} class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 whitespace-nowrap shrink-0">{ui.nav.concierge}</a>
+      <a href="/sourcing-guide" class="px-2.5 py-1 rounded-lg bg-slate-800/80 text-slate-200 whitespace-nowrap shrink-0">{ui.nav.sourcingGuide}</a>
+      <a href="/market-map" class="px-2.5 py-1 rounded-lg bg-slate-800/80 text-slate-200 whitespace-nowrap shrink-0">{ui.nav.marketMap}</a>
+    </div>
   </div>
+
+  <script is:inline>
+    (function () {
+      var btn = document.getElementById('lang-switcher-btn');
+      var menu = document.getElementById('lang-switcher-menu');
+      var container = document.getElementById('lang-switcher-container');
+
+      if (!btn || !menu || !container) return;
+
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var isHidden = menu.classList.contains('hidden');
+        if (isHidden) {
+          menu.classList.remove('hidden');
+          btn.setAttribute('aria-expanded', 'true');
+        } else {
+          menu.classList.add('hidden');
+          btn.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      document.addEventListener('click', function (e) {
+        if (!container.contains(e.target)) {
+          menu.classList.add('hidden');
+          btn.setAttribute('aria-expanded', 'false');
+        }
+      });
+    })();
+  </script>
 </header>

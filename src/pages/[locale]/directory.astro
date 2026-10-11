@@ -1,0 +1,247 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SupplierCard from '../../components/SupplierCard.astro';
+import ContactUnlockModal from '../../components/ContactUnlockModal.astro';
+import { getSuppliersPaginated } from '../../lib/data';
+import { CATEGORY_HUBS } from '../../lib/categories';
+import { isValidLocale, getLocaleConfig, t } from '../../lib/i18n';
+
+const { locale } = Astro.params;
+if (!isValidLocale(locale) || locale === 'en') {
+  return Astro.redirect('/directory');
+}
+
+const localeConfig = getLocaleConfig(locale);
+const ui = t(locale);
+
+const url = new URL(Astro.request.url);
+const districtFilter = url.searchParams.get('district') || '';
+const searchQuery = (url.searchParams.get('q') || '').trim().toLowerCase();
+const factoryFilter = url.searchParams.get('factory') === 'true';
+const pageParam = parseInt(url.searchParams.get('page') || '1', 10);
+const currentPage = isNaN(pageParam) || pageParam < 1 ? 1 : pageParam;
+const pageSize = 24;
+
+const {
+  suppliers: currentSuppliers,
+  total: totalItems,
+  totalPages
+} = await getSuppliersPaginated({
+  district: districtFilter,
+  query: searchQuery,
+  isFactory: factoryFilter,
+  page: currentPage,
+  pageSize
+});
+
+const districts = [
+  { id: '', name: `${ui.supplier.districtLabel} (1–5 & Huangyuan)` },
+  { id: '1', name: `${ui.supplier.districtLabel} 1 (Toys, Jewelry & Crafts)` },
+  { id: '2', name: `${ui.supplier.districtLabel} 2 (Hardware, Tools & Kitchen)` },
+  { id: '3', name: `${ui.supplier.districtLabel} 3 (Stationery & Sports)` },
+  { id: '4', name: `${ui.supplier.districtLabel} 4 (Footwear & Daily Items)` },
+  { id: '5', name: `${ui.supplier.districtLabel} 5 (Home Textiles & Auto Parts)` },
+  { id: '6', name: `Huangyuan Market (Garments & Jeans)` },
+  { id: '7', name: `Production Materials (Machinery & Plastics)` },
+  { id: '60', name: `${ui.supplier.districtLabel} 6 Expansion (Smart Tech & Hardware)` }
+];
+
+const canonicalParams = new URLSearchParams();
+if (districtFilter) canonicalParams.set('district', districtFilter);
+if (searchQuery) canonicalParams.set('q', searchQuery);
+if (factoryFilter) canonicalParams.set('factory', 'true');
+if (currentPage > 1) canonicalParams.set('page', String(currentPage));
+const directoryCanonicalUrl = `https://sinotradelink.com/${locale}/directory${canonicalParams.toString() ? `?${canonicalParams.toString()}` : ''}`;
+
+const directoryJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": ui.seo.directoryTitle,
+  "description": ui.seo.directoryDesc,
+  "inLanguage": localeConfig.hreflang,
+  "url": directoryCanonicalUrl,
+  "mainEntity": {
+    "@type": "ItemList",
+    "numberOfItems": totalItems,
+    "itemListElement": currentSuppliers.slice(0, 12).map((s, idx) => ({
+      "@type": "ListItem",
+      "position": idx + 1,
+      "url": `https://sinotradelink.com/supplier/${s.shop_id}`,
+      "name": `${s.clean_name || s.name} (${ui.supplier.boothLabel} ${s.booth_no || 'N/A'})`
+    }))
+  }
+};
+---
+
+<Layout 
+  title={ui.seo.directoryTitle}
+  description={ui.seo.directoryDesc}
+  keywords={ui.seo.homeKeywords}
+  canonicalUrl={directoryCanonicalUrl}
+  jsonLd={directoryJsonLd}
+  activePage="directory"
+  locale={locale}
+>
+  <!-- Directory Header & Controls -->
+  <section class="bg-slate-900 text-white py-10 border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl">
+        <h1 class="text-2xl sm:text-3xl font-black text-white tracking-tight">
+          {ui.seo.directoryTitle}
+        </h1>
+        <p class="text-xs sm:text-sm text-slate-400 mt-1">
+          {ui.seo.directoryDesc}
+        </p>
+      </div>
+
+      <!-- Search & Filter Controls Form -->
+      <form id="dir-filter-form" method="GET" action={`/${locale}/directory`} class="mt-6 space-y-4">
+        <div class="grid grid-cols-1 sm:grid-cols-12 gap-3">
+          <div class="sm:col-span-6 relative">
+            <input 
+              type="text" 
+              name="q" 
+              id="dir-search-input"
+              value={searchQuery}
+              placeholder={ui.hero.searchPlaceholder}
+              class="w-full pl-4 pr-10 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder:text-slate-500 text-xs sm:text-sm focus:outline-none focus:border-blue-500"
+              autocomplete="off"
+            />
+          </div>
+
+          <div class="sm:col-span-4">
+            <select 
+              name="district" 
+              id="dir-district-select"
+              class="w-full px-3 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs sm:text-sm focus:outline-none focus:border-blue-500"
+            >
+              {districts.map(d => (
+                <option value={d.id} selected={districtFilter === d.id}>
+                  {d.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div class="sm:col-span-2">
+            <button 
+              type="submit" 
+              class="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs sm:text-sm rounded-xl transition-colors shadow-sm"
+            >
+              {ui.hero.searchBtn}
+            </button>
+          </div>
+        </div>
+
+        <div class="flex items-center flex-wrap gap-4 text-xs pt-1">
+          <label class="flex items-center gap-2 cursor-pointer select-none text-slate-300 hover:text-white">
+            <input 
+              type="checkbox" 
+              name="factory" 
+              id="dir-factory-check"
+              value="true" 
+              checked={factoryFilter}
+              class="rounded border-slate-700 bg-slate-800 text-blue-600 focus:ring-0"
+            />
+            <span class="font-medium">{ui.supplier.directFactoryBadge}</span>
+          </label>
+
+          <a href={`/${locale}/directory`} id="dir-reset-link" class="text-blue-400 hover:text-blue-300 font-semibold underline ml-auto">
+            Reset
+          </a>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- Results Content Area -->
+  <section class="py-10 bg-slate-50 min-h-screen">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Results Status Bar -->
+      <div class="flex items-center justify-between pb-6 border-b border-slate-200 mb-6 text-xs text-slate-600">
+        <div id="dir-status-text">
+          <strong class="text-slate-900">{totalItems > 0 ? 1 : 0}–{Math.min(pageSize, totalItems)}</strong> / <strong class="text-slate-900">{totalItems.toLocaleString()}</strong> ({ui.hero.statStalls})
+        </div>
+        <div class="hidden sm:flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          <span>99.9% {ui.hero.statPhones}</span>
+        </div>
+      </div>
+
+      <!-- On-Ground Concierge Callout Banner -->
+      <div class="mb-6 p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-slate-900 to-slate-950 border border-slate-800 text-white flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
+        <div>
+          <div class="text-xs font-bold text-white flex items-center gap-2">
+            <span>{ui.seo.conciergeTitle}</span>
+          </div>
+          <p class="text-[11px] text-slate-400 mt-0.5">
+            {ui.seo.conciergeDesc}
+          </p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2 shrink-0 w-full sm:w-auto">
+          <a
+            href={`/${locale}/concierge`}
+            class="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs text-center transition shadow-sm whitespace-nowrap"
+          >
+            {ui.supplier.auditBtn}
+          </a>
+          <a
+            href="https://wa.me/8613482725985"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 font-bold text-xs text-center flex items-center justify-center gap-1.5 transition whitespace-nowrap"
+          >
+            <span>{ui.supplier.whatsappBtn}</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Suppliers Grid Container -->
+      <div id="dir-cards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {currentSuppliers.map(s => (
+          <SupplierCard supplier={s} locale={locale} />
+        ))}
+      </div>
+
+      <!-- Pagination Navigation Container -->
+      <div id="dir-pagination" class="mt-12 flex items-center justify-center gap-2">
+        {currentPage > 1 && (
+          <a
+            href={`/${locale}/directory?page=${currentPage - 1}${districtFilter ? `&district=${districtFilter}` : ''}${searchQuery ? `&q=${encodeURIComponent(searchQuery)}` : ''}${factoryFilter ? '&factory=true' : ''}`}
+            class="px-4 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 text-xs font-bold hover:bg-slate-100 transition-colors"
+          >
+            &larr; {currentPage - 1}
+          </a>
+        )}
+        <span class="px-4 py-2 text-xs font-medium text-slate-600 bg-slate-100 rounded-xl">
+          {currentPage} / {totalPages}
+        </span>
+        {currentPage < totalPages && (
+          <a
+            href={`/${locale}/directory?page=${currentPage + 1}${districtFilter ? `&district=${districtFilter}` : ''}${searchQuery ? `&q=${encodeURIComponent(searchQuery)}` : ''}${factoryFilter ? '&factory=true' : ''}`}
+            class="px-4 py-2 rounded-xl bg-blue-600 text-white text-xs font-bold hover:bg-blue-500 transition-colors shadow-sm"
+          >
+            {currentPage + 1} &rarr;
+          </a>
+        )}
+      </div>
+
+      <!-- 24 Dedicated SEO Category Hubs Grid -->
+      <div class="mt-16 pt-12 border-t border-slate-200">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+          {CATEGORY_HUBS.map(hub => (
+            <a
+              href={`/category/${hub.slug}`}
+              class="p-3.5 rounded-2xl border border-slate-200 bg-white hover:bg-blue-50/60 hover:border-blue-300 transition-all flex flex-col justify-between group"
+            >
+              <span class="text-xs font-bold text-slate-800 group-hover:text-blue-600 line-clamp-1">{hub.shortName}</span>
+              <span class="text-[10px] text-slate-400 mt-1">{hub.districtLabel} &bull; {hub.floor}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <ContactUnlockModal />
+</Layout>

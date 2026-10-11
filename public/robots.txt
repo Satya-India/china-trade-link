@@ -33,6 +33,7 @@ Allow: /
 Sitemap: https://sinotradelink.com/sitemap.xml
 Sitemap: https://sinotradelink.com/sitemaps/pages.xml
 Sitemap: https://sinotradelink.com/sitemaps/countries.xml
+Sitemap: https://sinotradelink.com/sitemaps/i18n.xml
 Sitemap: https://sinotradelink.com/sitemaps/suppliers-1.xml
 Sitemap: https://sinotradelink.com/sitemaps/suppliers-2.xml
 Sitemap: https://sinotradelink.com/sitemaps/suppliers-3.xml

@@ -6,6 +6,7 @@ import QuickSearchModal from '../components/QuickSearchModal.astro';
 import WhatsAppWidget from '../components/WhatsAppWidget.astro';
 import PayPalCheckoutModal from '../components/PayPalCheckoutModal.astro';
 import SampleAuditReportModal from '../components/SampleAuditReportModal.astro';
+import { getLocaleConfig, SUPPORTED_LOCALES } from '../lib/i18n';
 import '../styles/global.css';
 
 interface Props {
@@ -15,6 +16,7 @@ interface Props {
   canonicalUrl?: string;
   ogType?: string;
   activePage?: string;
+  locale?: string;
   jsonLd?: Record<string, any> | Record<string, any>[];
 }
 
@@ -25,14 +27,36 @@ const {
   canonicalUrl,
   ogType = "website",
   activePage = 'home',
+  locale,
   jsonLd
 } = Astro.props;
+
+const currentLocale = getLocaleConfig(locale);
+const rawCleanPath = Astro.url.pathname.replace(/^\/(es|pt|fr|de|ar|ru|it)(\/|$)/, '/') || '/';
+const cleanPath = rawCleanPath.length > 1 && rawCleanPath.endsWith('/') ? rawCleanPath.slice(0, -1) : rawCleanPath;
+
+const supportsLocaleAlternates =
+  cleanPath === '/' ||
+  cleanPath === '/countries' ||
+  cleanPath === '/directory' ||
+  cleanPath === '/category-packs' ||
+  cleanPath === '/concierge' ||
+  cleanPath.startsWith('/country/');
+
+function buildAlternateUrl(locCode: string): string {
+  if (locCode === 'en') {
+    return `https://sinotradelink.com${cleanPath}`;
+  }
+  return cleanPath === '/'
+    ? `https://sinotradelink.com/${locCode}`
+    : `https://sinotradelink.com/${locCode}${cleanPath}`;
+}
 
 const resolvedCanonical = canonicalUrl || new URL(Astro.url.pathname, 'https://sinotradelink.com').toString();
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={currentLocale.hreflang} dir={currentLocale.dir}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -45,6 +69,12 @@ const resolvedCanonical = canonicalUrl || new URL(Astro.url.pathname, 'https://s
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <meta name="msvalidate.01" content="D323FDCD8670F30E79A66452C4D9A7FA" />
     <link rel="canonical" href={resolvedCanonical} />
+    {supportsLocaleAlternates && SUPPORTED_LOCALES.map((loc) => (
+      <link rel="alternate" hreflang={loc.hreflang} href={buildAlternateUrl(loc.code)} />
+    ))}
+    {supportsLocaleAlternates && (
+      <link rel="alternate" hreflang="x-default" href={`https://sinotradelink.com${cleanPath}`} />
+    )}
     <link rel="prefetch" href="/search-index.json" as="fetch" crossorigin="anonymous" />
 
     <!-- OpenGraph Metadata -->
@@ -53,7 +83,7 @@ const resolvedCanonical = canonicalUrl || new URL(Astro.url.pathname, 'https://s
     <meta property="og:type" content={ogType} />
     <meta property="og:url" content={resolvedCanonical} />
     <meta property="og:site_name" content="Sino Trade Link" />
-    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale" content={currentLocale.hreflang.replace('-', '_')} />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -73,7 +103,7 @@ const resolvedCanonical = canonicalUrl || new URL(Astro.url.pathname, 'https://s
     </style>
   </head>
   <body class="min-h-screen flex flex-col bg-slate-50 text-slate-900 selection:bg-blue-600 selection:text-white">
-    <Navbar activePage={activePage} />
+    <Navbar activePage={activePage} locale={currentLocale.code} />
     <main class="flex-grow">
       <slot />
     </main>
