@@ -594,65 +594,6 @@ const homeJsonLd = {
     </div>
   </section>
 
-  <!-- Global Yiwu-to-Port Sourcing Corridors (100 Countries) -->
-  <section class="py-16 bg-white border-b border-slate-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
-        <div>
-          <span class="text-xs font-bold uppercase tracking-wider text-blue-600 block mb-1">
-            {ui.countriesSection.badge}
-          </span>
-          <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-            {ui.countriesSection.title}
-          </h2>
-          <p class="text-sm text-slate-600 mt-1 max-w-3xl">
-            {ui.countriesSection.subtitle}
-          </p>
-        </div>
-        <a
-          href={`/${locale}/countries`}
-          class="inline-flex items-center justify-center px-5 py-3 rounded-xl bg-slate-900 hover:bg-blue-600 text-white font-bold text-xs transition-colors shrink-0 shadow-sm"
-        >
-          {ui.countriesSection.viewAllCta}
-        </a>
-      </div>
-
-      <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2.5">
-        {[
-          { slug: 'usa', name: 'USA', flag: '🇺🇸', port: 'LA / NY' },
-          { slug: 'india', name: 'India', flag: '🇮🇳', port: 'Nhava Sheva' },
-          { slug: 'uae', name: 'UAE', flag: '🇦🇪', port: 'Jebel Ali' },
-          { slug: 'saudi-arabia', name: 'Saudi Arabia', flag: '🇸🇦', port: 'Jeddah / Dammam' },
-          { slug: 'uk', name: 'UK', flag: '🇬🇧', port: 'Felixstowe' },
-          { slug: 'germany', name: 'Germany', flag: '🇩🇪', port: 'Hamburg' },
-          { slug: 'brazil', name: 'Brazil', flag: '🇧🇷', port: 'Santos' },
-          { slug: 'mexico', name: 'Mexico', flag: '🇲🇽', port: 'Manzanillo' },
-          { slug: 'nigeria', name: 'Nigeria', flag: '🇳🇬', port: 'Apapa / Lekki' },
-          { slug: 'south-africa', name: 'South Africa', flag: '🇿🇦', port: 'Durban' },
-          { slug: 'egypt', name: 'Egypt', flag: '🇪🇬', port: 'Alexandria' },
-          { slug: 'kenya', name: 'Kenya', flag: '🇰🇪', port: 'Mombasa' },
-          { slug: 'australia', name: 'Australia', flag: '🇦🇺', port: 'Sydney / Melb' },
-          { slug: 'canada', name: 'Canada', flag: '🇨🇦', port: 'Vancouver' },
-          { slug: 'spain', name: 'Spain', flag: '🇪🇸', port: 'Valencia' },
-          { slug: 'france', name: 'France', flag: '🇫🇷', port: 'Le Havre' },
-        ].map((item) => (
-          <a
-            href={`/${locale}/country/${item.slug}`}
-            class="p-3 rounded-2xl bg-slate-50 hover:bg-blue-50/70 border border-slate-200 hover:border-blue-300 transition-all group flex flex-col justify-between"
-          >
-            <div class="flex items-center gap-2">
-              <span class="text-lg leading-none">{item.flag}</span>
-              <span class="text-xs font-bold text-slate-900 group-hover:text-blue-600 truncate">{item.name}</span>
-            </div>
-            <span class="text-[10px] text-slate-400 font-medium mt-1.5 block truncate">
-              {ui.countriesSection.portsLabel} {item.port}
-            </span>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
-
   <!-- Global Contact Unlock Modal Dialog -->
   <ContactUnlockModal />
 </Layout>

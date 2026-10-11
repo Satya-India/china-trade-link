@@ -1,4 +1,6 @@
 ---
+const localeMatch = Astro.url.pathname.match(/^\/(es|pt|fr|de|ar|ru|it)(\/|$)/);
+const localePrefix = localeMatch ? `/${localeMatch[1]}` : '';
 ---
 
 <footer class="bg-slate-950 text-slate-400 border-t border-slate-800 text-sm">
@@ -20,16 +22,10 @@
       </div>
       <div class="flex items-center gap-2.5 shrink-0">
         <a 
-          href="/concierge" 
+          href={`${localePrefix}/concierge`} 
           class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold transition-colors"
         >
           Explore Ground Concierge &rarr;
-        </a>
-        <a 
-          href="/countries" 
-          class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-xs font-bold border border-slate-700 hover:border-slate-600 transition-colors"
-        >
-          100 Country Corridors &rarr;
         </a>
       </div>
     </div>
@@ -82,12 +78,12 @@
       <div>
         <h5 class="text-white font-semibold text-xs uppercase tracking-wider mb-3">Market Districts</h5>
         <ul class="space-y-2 text-xs">
-          <li><a href="/directory?district=1" class="hover:text-white transition-colors">District 1: Toys, Plush & Jewelry (9,000 stalls)</a></li>
-          <li><a href="/directory?district=2" class="hover:text-white transition-colors">District 2: Hardware & Kitchenware (10,000 stalls)</a></li>
-          <li><a href="/directory?district=3" class="hover:text-white transition-colors">District 3: Stationery & Sports (7,000 stalls)</a></li>
-          <li><a href="/directory?district=4" class="hover:text-white transition-colors">District 4: Footwear, Socks & Daily (16,000 stalls)</a></li>
-          <li><a href="/directory?district=5" class="hover:text-white transition-colors">District 5: Home Textiles & Auto (7,000 stalls)</a></li>
-          <li><a href="/directory?district=6" class="hover:text-white transition-colors">Huangyuan: Wholesale Garments & Jeans</a></li>
+          <li><a href={`${localePrefix}/directory?district=1`} class="hover:text-white transition-colors">District 1: Toys, Plush & Jewelry (9,000 stalls)</a></li>
+          <li><a href={`${localePrefix}/directory?district=2`} class="hover:text-white transition-colors">District 2: Hardware & Kitchenware (10,000 stalls)</a></li>
+          <li><a href={`${localePrefix}/directory?district=3`} class="hover:text-white transition-colors">District 3: Stationery & Sports (7,000 stalls)</a></li>
+          <li><a href={`${localePrefix}/directory?district=4`} class="hover:text-white transition-colors">District 4: Footwear, Socks & Daily (16,000 stalls)</a></li>
+          <li><a href={`${localePrefix}/directory?district=5`} class="hover:text-white transition-colors">District 5: Home Textiles & Auto (7,000 stalls)</a></li>
+          <li><a href={`${localePrefix}/directory?district=6`} class="hover:text-white transition-colors">Huangyuan: Wholesale Garments & Jeans</a></li>
         </ul>
       </div>
 
@@ -95,14 +91,13 @@
       <div>
         <h5 class="text-white font-semibold text-xs uppercase tracking-wider mb-3">Directory Solutions</h5>
         <ul class="space-y-2 text-xs">
-          <li><a href="/category-packs#toys" class="hover:text-white transition-colors">Toys & Festival Crafts Pack ($29)</a></li>
-          <li><a href="/category-packs#hardware" class="hover:text-white transition-colors">Tools & Kitchenware Pack ($39)</a></li>
-          <li><a href="/category-packs#footwear" class="hover:text-white transition-colors">Socks, Footwear & Daily Pack ($49)</a></li>
-          <li><a href="/category-packs#textiles" class="hover:text-white transition-colors">Home Textiles & Bedding Pack ($29)</a></li>
-          <li><a href="/concierge" class="hover:text-white transition-colors">On-Demand Physical Stall Audit ($99)</a></li>
-          <li><a href="/concierge#sample" class="hover:text-white transition-colors">Stall Sample Pickup & Parcel Dispatch ($149)</a></li>
+          <li><a href={`${localePrefix}/category-packs#toys`} class="hover:text-white transition-colors">Toys & Festival Crafts Pack ($29)</a></li>
+          <li><a href={`${localePrefix}/category-packs#hardware`} class="hover:text-white transition-colors">Tools & Kitchenware Pack ($39)</a></li>
+          <li><a href={`${localePrefix}/category-packs#footwear`} class="hover:text-white transition-colors">Socks, Footwear & Daily Pack ($49)</a></li>
+          <li><a href={`${localePrefix}/category-packs#textiles`} class="hover:text-white transition-colors">Home Textiles & Bedding Pack ($29)</a></li>
+          <li><a href={`${localePrefix}/concierge`} class="hover:text-white transition-colors">On-Demand Physical Stall Audit ($99)</a></li>
+          <li><a href={`${localePrefix}/concierge#sample`} class="hover:text-white transition-colors">Stall Sample Pickup & Parcel Dispatch ($149)</a></li>
           <li><a href="/sourcing-guide" class="text-blue-400 hover:text-blue-300 font-semibold transition-colors">China Sourcing, OEM & Shipping Guide &rarr;</a></li>
-          <li><a href="/countries" class="text-emerald-400 hover:text-emerald-300 font-semibold transition-colors">100 Country Corridors (Yiwu-to-Port Hubs) &rarr;</a></li>
           <li><a href="/market-map#specialized-streets" class="hover:text-white transition-colors">14 Yiwu Stock-Lot & Specialty Streets</a></li>
           <li class="pt-1"><a href="/for-suppliers" class="text-amber-400 hover:text-amber-300 font-semibold transition-colors">List Your Business / Factory &rarr;</a></li>
         </ul>
@@ -120,7 +115,7 @@
       </div>
     </div>
 
-    <!-- Bottom Copyright -->
+    <!-- Bottom Copyright & Discrete SEO Corridors -->
     <div class="mt-8 pt-8 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400">
       <p>&copy; 2026 Sino Trade Link (sinotradelink.com). All rights reserved. Strictly independent from trading brokerages.</p>
       <div class="flex items-center gap-4 mt-2 sm:mt-0">
@@ -128,6 +123,31 @@
         <span>•</span>
         <span>Offline Markets Intelligence</span>
       </div>
+    </div>
+
+    <!-- Discrete Small-Font SEO Corridor Index -->
+    <div class="mt-4 pt-3 border-t border-slate-900/60 text-[10px] text-slate-600 leading-relaxed flex flex-wrap items-center gap-x-2 gap-y-1">
+      <a href={`${localePrefix}/countries`} class="hover:text-slate-400 transition-colors">Global Trade Corridors:</a>
+      <a href={`${localePrefix}/country/usa`} class="hover:text-slate-400 transition-colors">USA</a><span>·</span>
+      <a href={`${localePrefix}/country/canada`} class="hover:text-slate-400 transition-colors">Canada</a><span>·</span>
+      <a href={`${localePrefix}/country/brazil`} class="hover:text-slate-400 transition-colors">Brazil</a><span>·</span>
+      <a href={`${localePrefix}/country/mexico`} class="hover:text-slate-400 transition-colors">Mexico</a><span>·</span>
+      <a href={`${localePrefix}/country/uk`} class="hover:text-slate-400 transition-colors">UK</a><span>·</span>
+      <a href={`${localePrefix}/country/germany`} class="hover:text-slate-400 transition-colors">Germany</a><span>·</span>
+      <a href={`${localePrefix}/country/france`} class="hover:text-slate-400 transition-colors">France</a><span>·</span>
+      <a href={`${localePrefix}/country/spain`} class="hover:text-slate-400 transition-colors">Spain</a><span>·</span>
+      <a href={`${localePrefix}/country/italy`} class="hover:text-slate-400 transition-colors">Italy</a><span>·</span>
+      <a href={`${localePrefix}/country/netherlands`} class="hover:text-slate-400 transition-colors">Netherlands</a><span>·</span>
+      <a href={`${localePrefix}/country/poland`} class="hover:text-slate-400 transition-colors">Poland</a><span>·</span>
+      <a href={`${localePrefix}/country/uae`} class="hover:text-slate-400 transition-colors">UAE</a><span>·</span>
+      <a href={`${localePrefix}/country/saudi-arabia`} class="hover:text-slate-400 transition-colors">Saudi Arabia</a><span>·</span>
+      <a href={`${localePrefix}/country/india`} class="hover:text-slate-400 transition-colors">India</a><span>·</span>
+      <a href={`${localePrefix}/country/australia`} class="hover:text-slate-400 transition-colors">Australia</a><span>·</span>
+      <a href={`${localePrefix}/country/south-africa`} class="hover:text-slate-400 transition-colors">South Africa</a><span>·</span>
+      <a href={`${localePrefix}/country/nigeria`} class="hover:text-slate-400 transition-colors">Nigeria</a><span>·</span>
+      <a href={`${localePrefix}/country/egypt`} class="hover:text-slate-400 transition-colors">Egypt</a><span>·</span>
+      <a href={`${localePrefix}/country/kenya`} class="hover:text-slate-400 transition-colors">Kenya</a><span>·</span>
+      <a href={`${localePrefix}/countries`} class="hover:text-slate-400 transition-colors">All 100 Countries</a>
     </div>
   </div>
 </footer>

@@ -84,41 +84,35 @@ function getSwitchUrl(targetCode: string): string {
       <nav class="hidden lg:flex items-center gap-1">
         <a 
           href={`${localePrefix}/directory`} 
-          class={`px-2.5 py-2 rounded-lg text-xs font-semibold transition-colors ${activePage === 'directory' ? 'text-white bg-slate-800' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}`}
+          class={`px-2.5 py-2 rounded-lg text-xs font-semibold transition-colors whitespace-nowrap ${activePage === 'directory' ? 'text-white bg-slate-800' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}`}
         >
           {ui.nav.directory}
         </a>
         <a 
           href="/market-map" 
-          class={`px-2.5 py-2 rounded-lg text-xs font-semibold transition-colors ${activePage === 'map' ? 'text-white bg-slate-800' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}`}
+          class={`px-2.5 py-2 rounded-lg text-xs font-semibold transition-colors whitespace-nowrap ${activePage === 'map' ? 'text-white bg-slate-800' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}`}
         >
           {ui.nav.marketMap}
         </a>
         <a 
           href={`${localePrefix}/category-packs`} 
-          class={`px-2.5 py-2 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${activePage === 'packs' ? 'text-white bg-slate-800' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}`}
+          class={`px-2.5 py-2 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 whitespace-nowrap ${activePage === 'packs' ? 'text-white bg-slate-800' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}`}
         >
           <span>{ui.nav.categoryPacks}</span>
           <span class="bg-amber-500/20 text-amber-300 text-[10px] font-bold px-1.5 py-0.5 rounded border border-amber-500/30">$29+</span>
         </a>
         <a 
           href={`${localePrefix}/concierge`} 
-          class={`px-2.5 py-2 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${activePage === 'concierge' ? 'text-white bg-slate-800' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}`}
+          class={`px-2.5 py-2 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 whitespace-nowrap ${activePage === 'concierge' ? 'text-white bg-slate-800' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}`}
         >
           <span>{ui.nav.concierge}</span>
           <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-1.5 py-0.5 rounded border border-emerald-500/30">$99</span>
         </a>
         <a 
           href="/sourcing-guide" 
-          class={`px-2.5 py-2 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${activePage === 'guide' ? 'text-white bg-slate-800' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}`}
+          class={`px-2.5 py-2 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 whitespace-nowrap ${activePage === 'guide' ? 'text-white bg-slate-800' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}`}
         >
           <span>{ui.nav.sourcingGuide}</span>
-        </a>
-        <a 
-          href={`${localePrefix}/countries`} 
-          class={`px-2.5 py-2 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${activePage === 'countries' ? 'text-white bg-slate-800' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}`}
-        >
-          <span>{ui.nav.countries}</span>
         </a>
       </nav>
 
@@ -200,7 +194,6 @@ function getSwitchUrl(targetCode: string): string {
     <!-- Mobile Quick Links Bar -->
     <div class="flex lg:hidden items-center gap-1.5 overflow-x-auto py-2 border-t border-slate-800/80 text-[11px] font-semibold no-scrollbar">
       <a href={`${localePrefix}/directory`} class="px-2.5 py-1 rounded-lg bg-slate-800/80 text-slate-200 whitespace-nowrap shrink-0">{ui.nav.directory}</a>
-      <a href={`${localePrefix}/countries`} class="px-2.5 py-1 rounded-lg bg-slate-800/80 text-slate-200 whitespace-nowrap shrink-0">🌍 {ui.nav.countries}</a>
       <a href={`${localePrefix}/category-packs`} class="px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/30 whitespace-nowrap shrink-0">{ui.nav.categoryPacks}</a>
       <a href={`${localePrefix}/concierge`} class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 whitespace-nowrap shrink-0">{ui.nav.concierge}</a>
       <a href="/sourcing-guide" class="px-2.5 py-1 rounded-lg bg-slate-800/80 text-slate-200 whitespace-nowrap shrink-0">{ui.nav.sourcingGuide}</a>
