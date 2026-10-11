@@ -11,6 +11,7 @@ export const GET: APIRoute = async () => {
     { loc: 'https://sinotradelink.com/category-packs', priority: '0.85', changefreq: 'weekly' },
     { loc: 'https://sinotradelink.com/concierge', priority: '0.85', changefreq: 'weekly' },
     { loc: 'https://sinotradelink.com/sourcing-guide', priority: '0.9', changefreq: 'weekly' },
+    { loc: 'https://sinotradelink.com/countries', priority: '0.9', changefreq: 'weekly' },
     { loc: 'https://sinotradelink.com/for-suppliers', priority: '0.8', changefreq: 'weekly' },
     // All 24 Dedicated Programmatic Category Hubs (/category/[slug])
     ...CATEGORY_HUBS.map(hub => ({

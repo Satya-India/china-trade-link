@@ -21,6 +21,10 @@ export const GET: APIRoute = async () => {
     <loc>https://sinotradelink.com/sitemaps/pages.xml</loc>
     <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
   </sitemap>
+  <sitemap>
+    <loc>https://sinotradelink.com/sitemaps/countries.xml</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+  </sitemap>
 ${supplierSitemaps.join('\n')}
 </sitemapindex>`;
 

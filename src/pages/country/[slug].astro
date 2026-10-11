@@ -1,0 +1,792 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SupplierCard from '../../components/SupplierCard.astro';
+import ContactUnlockModal from '../../components/ContactUnlockModal.astro';
+import { CATEGORY_HUBS } from '../../lib/categories';
+import { CATEGORY_PACKS } from '../../lib/markets';
+import { COUNTRIES, COUNTRY_REGIONS, resolveCountryCorridorRoute, getSmartCountrySeoMeta } from '../../lib/countries';
+import { getSuppliersPaginated } from '../../lib/data';
+
+const { slug } = Astro.params;
+const route = slug ? resolveCountryCorridorRoute(slug) : null;
+
+if (!route) {
+  return Astro.redirect('/countries');
+}
+
+const { country, category } = route;
+const isCategoryMode = route.type === 'country-category' && category !== null;
+
+let result;
+if (isCategoryMode && category) {
+  result = await getSuppliersPaginated({
+    district: category.district,
+    query: category.searchQuery,
+    page: 1,
+    pageSize: 20
+  });
+
+  if (result.suppliers.length < 6) {
+    const districtFallback = await getSuppliersPaginated({
+      district: category.district,
+      isFactory: true,
+      page: 1,
+      pageSize: 20
+    });
+    const existingIds = new Set(result.suppliers.map(s => s.shop_id));
+    for (const s of districtFallback.suppliers) {
+      if (!existingIds.has(s.shop_id) && result.suppliers.length < 20) {
+        result.suppliers.push(s);
+        existingIds.add(s.shop_id);
+      }
+    }
+    result.total = Math.max(result.total, districtFallback.total);
+  }
+} else {
+  result = await getSuppliersPaginated({
+    isFactory: true,
+    page: 1,
+    pageSize: 16
+  });
+}
+
+const matchingPack = isCategoryMode && category
+  ? (CATEGORY_PACKS.find(p => p.id === category.packId) || CATEGORY_PACKS[0])
+  : null;
+
+const canonicalUrl = `https://sinotradelink.com/country/${route.slug}`;
+const smartSeo = getSmartCountrySeoMeta(country, category);
+
+const seoTitle = smartSeo.seoTitle;
+const seoDescription = smartSeo.seoDescription;
+const seoKeywords = smartSeo.seoKeywords;
+
+const whatsappText = isCategoryMode && category
+  ? `Hi SinoTradeLink, I am an importer in ${country.name} (${country.code}) sourcing "${category.shortName}" from Yiwu (${category.districtLabel}, ${category.floor}). Can your team help with stall contacts, $99 audit, or shipping to ${country.ports}?`
+  : `Hi SinoTradeLink, I am an importer in ${country.name} (${country.code}) looking to source directly from Yiwu Market stalls and ship to ${country.ports}. Can your Yiwu desk assist?`;
+
+const whatsappUrl = `https://wa.me/8613482725985?text=${encodeURIComponent(whatsappText)}`;
+
+const regionInfo = COUNTRY_REGIONS.find(r => r.id === country.region);
+const regionalPeers = COUNTRIES.filter(c => c.region === country.region && c.slug !== country.slug);
+const globalFlagships = COUNTRIES.filter(c =>
+  ['usa', 'canada', 'brazil', 'mexico', 'colombia', 'argentina', 'chile', 'uk', 'germany', 'france', 'spain', 'italy', 'netherlands', 'poland', 'uae', 'india'].includes(c.slug) &&
+  c.slug !== country.slug &&
+  c.region !== country.region
+).slice(0, 10);
+
+const breadcrumbItems = [
+  {
+    "@type": "ListItem",
+    "position": 1,
+    "name": "Home",
+    "item": "https://sinotradelink.com/"
+  },
+  {
+    "@type": "ListItem",
+    "position": 2,
+    "name": "100 Country Corridors",
+    "item": "https://sinotradelink.com/countries"
+  },
+  {
+    "@type": "ListItem",
+    "position": 3,
+    "name": `${country.flag} ${country.name}`,
+    "item": `https://sinotradelink.com/country/${country.slug}`
+  }
+];
+
+if (isCategoryMode && category) {
+  breadcrumbItems.push({
+    "@type": "ListItem",
+    "position": 4,
+    "name": category.shortName,
+    "item": canonicalUrl
+  });
+}
+
+const baseFaqQuestions = isCategoryMode && category
+  ? [
+      {
+        "@type": "Question",
+        "name": `Where do ${country.name} importers source ${category.shortName} in Yiwu Market?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": `${country.name} buyers source ${category.shortName} directly from ${category.districtLabel}, ${category.floor} (${category.gateGuide}, Chinese classification: ${category.chineseCategory}). Typical stall MOQ is ${category.typicalMoq} with an average master carton volume of ${category.avgMasterCartonCbm}.`
+        }
+      },
+      {
+        "@type": "Question",
+        "name": `How long does sea and air shipping take from Yiwu/Ningbo to ${country.name}?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": `Ocean freight (LCL consolidation, 20'GP, and 40'HQ containers) from Ningbo-Zhoushan Port to ${country.ports} takes ${country.seaTransitDays}. Express air courier and Air DDP shipments take ${country.airTransitDays}.`
+        }
+      },
+      {
+        "@type": "Question",
+        "name": `What customs and product compliance is required for importing ${category.shortName} into ${country.name}?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": `Shipments entering ${country.name} (${country.currency}) require ${country.customsCompliance}. During a $99 physical stall audit, Sino Trade Link's Yiwu engineers verify factory certificates and inspect: ${category.qcChecklist.join('; ')}.`
+        }
+      },
+      {
+        "@type": "Question",
+        "name": `How can ${country.name} buyers avoid 15–30% Yiwu trading agent commissions?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": `${country.corridorAdvantage} Importers unlock unmasked +86 booth mobile numbers ($29 pack or $149/yr Pro Pass), order $99 physical stall audits or $149 5-booth sample boxes, and execute full containers at a transparent 6% open-book commission.`
+        }
+      }
+    ]
+  : [
+      {
+        "@type": "Question",
+        "name": `How long does shipping take from Yiwu (Ningbo Port) to ${country.name}?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": `Direct ocean freight (LCL shared cube, 20'GP, or 40'HQ FCL) trucked from Yiwu warehouses to Ningbo-Zhoushan Port reaches ${country.ports} in ${country.seaTransitDays}. Air freight and DHL/FedEx sample parcels arrive in ${country.airTransitDays}.`
+        }
+      },
+      {
+        "@type": "Question",
+        "name": `What customs compliance and certifications are needed to import from Yiwu to ${country.name}?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": `Imports into ${country.name} require ${country.customsCompliance}. Our bilingual Yiwu field engineers verify supplier export documentation, HS codes, and physical product labeling during our $99 on-site stall audit and $149 AQL 2.5 pre-shipment inspection.`
+        }
+      },
+      {
+        "@type": "Question",
+        "name": `What are the top wholesale categories imported from Yiwu to ${country.name}?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": `High-demand Yiwu categories for ${country.name} buyers include: ${country.buyerFocus}. ${country.marketSummary}`
+        }
+      },
+      {
+        "@type": "Question",
+        "name": `How does Sino Trade Link's 6% Open-Book Sourcing work for ${country.name} importers?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": `${country.corridorAdvantage} Instead of paying hidden 15–25% factory kickbacks to traditional 'free' Yiwu agents, ${country.name} buyers access 27,706 unmasked booth contacts directly and use our Business Sourcing Tier ($399/yr) for raw RMB factory receipts plus a flat 6% open-book commission.`
+        }
+      }
+    ];
+
+const faqQuestions = [
+  ...baseFaqQuestions,
+  ...smartSeo.extraFaqs.map(f => ({
+    "@type": "Question",
+    "name": f.name,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": f.text
+    }
+  }))
+];
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage",
+      "@id": `${canonicalUrl}#collection`,
+      "name": seoTitle,
+      "description": seoDescription,
+      "url": canonicalUrl,
+      "mainEntity": {
+        "@type": "ItemList",
+        "numberOfItems": result.total,
+        "itemListElement": result.suppliers.slice(0, 12).map((s, idx) => ({
+          "@type": "ListItem",
+          "position": idx + 1,
+          "url": `https://sinotradelink.com/supplier/${s.shop_id}`,
+          "name": `${s.clean_name || s.name} (Booth ${s.booth_no || 'N/A'})`
+        }))
+      }
+    },
+    {
+      "@type": "Service",
+      "@id": `${canonicalUrl}#service`,
+      "name": isCategoryMode && category
+        ? `Yiwu ${category.shortName} Direct Sourcing & Stall Inspection for ${country.name}`
+        : `Yiwu Wholesale Direct Sourcing, Stall Audit & Container Consolidation to ${country.name}`,
+      "serviceType": "B2B Wholesale Sourcing, Factory Verification & Freight Consolidation",
+      "provider": {
+        "@type": "Organization",
+        "name": "Sino Trade Link",
+        "url": "https://sinotradelink.com",
+        "telephone": "+86-134-8272-5985"
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": country.name,
+        "identifier": country.code
+      },
+      "offers": [
+        { "@type": "Offer", "name": "Direct Category CSV Directory Pack", "price": "29.00", "priceCurrency": "USD" },
+        { "@type": "Offer", "name": "On-Demand Physical Stall Audit (4K Video)", "price": "99.00", "priceCurrency": "USD" },
+        { "@type": "Offer", "name": "5-Booth Sample Consolidation & Express Dispatch", "price": "149.00", "priceCurrency": "USD" },
+        { "@type": "Offer", "name": "Pro All-Access Annual Pass (27,706+ Stalls)", "price": "149.00", "priceCurrency": "USD" }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": `${canonicalUrl}#breadcrumb`,
+      "itemListElement": breadcrumbItems
+    },
+    {
+      "@type": "FAQPage",
+      "@id": `${canonicalUrl}#faq`,
+      "mainEntity": faqQuestions
+    }
+  ]
+};
+---
+
+<Layout
+  title={seoTitle}
+  description={seoDescription}
+  keywords={seoKeywords}
+  canonicalUrl={canonicalUrl}
+  jsonLd={pageJsonLd}
+  activePage="countries"
+>
+  <Fragment slot="head">
+    <meta name="geo.region" content={smartSeo.geoRegionCode} />
+    <meta name="geo.placename" content={country.name} />
+  </Fragment>
+
+  <!-- Regional & Multilingual Search Intent Strip -->
+  <div class="bg-slate-950 border-b border-slate-800 py-2.5 px-4 sm:px-6 lg:px-8 text-[11px] text-slate-300">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+      <span class="font-medium text-emerald-400">{smartSeo.nativeSearchBanner}</span>
+      <span class="text-slate-400 shrink-0 font-mono">ISO: {country.code} · Currency: {country.currency}</span>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="bg-slate-900 text-white py-12 border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Breadcrumbs -->
+      <nav aria-label="Breadcrumb" class="flex items-center flex-wrap gap-2 text-xs text-slate-400 mb-5">
+        <a href="/" class="hover:text-white transition-colors">Home</a>
+        <span>/</span>
+        <a href="/countries" class="hover:text-white transition-colors">100 Country Corridors</a>
+        <span>/</span>
+        {isCategoryMode && category ? (
+          <>
+            <a href={`/country/${country.slug}`} class="hover:text-white transition-colors">
+              {country.flag} {country.name}
+            </a>
+            <span>/</span>
+            <span class="text-slate-200 font-semibold">{category.shortName}</span>
+          </>
+        ) : (
+          <span class="text-slate-200 font-semibold">{country.flag} {country.name}</span>
+        )}
+      </nav>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div class="lg:col-span-8">
+          <!-- Badges -->
+          <div class="flex flex-wrap items-center gap-2 mb-3">
+            <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30 text-xs font-bold">
+              {country.flag} Yiwu &rarr; {country.name} ({country.code} &bull; {country.currency})
+            </span>
+            {isCategoryMode && category ? (
+              <>
+                <span class="px-3 py-1 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30 text-xs font-bold">
+                  {category.districtLabel} &bull; {category.floor}
+                </span>
+                <span class="px-3 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700 text-xs font-mono">
+                  {category.chineseCategory}
+                </span>
+              </>
+            ) : (
+              <span class="px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-xs font-bold">
+                27,706 Verified Stalls &bull; 99.9% Direct +86 Mobiles
+              </span>
+            )}
+          </div>
+
+          <!-- Headline -->
+          {isCategoryMode && category ? (
+            <h1 class="text-2xl sm:text-4xl font-black text-white tracking-tight leading-tight">
+              Yiwu {category.shortName} Wholesale Suppliers for {country.name} ({country.flag})
+            </h1>
+          ) : (
+            <h1 class="text-2xl sm:text-4xl font-black text-white tracking-tight leading-tight">
+              Import Direct from Yiwu Wholesale Market to {country.name} ({country.flag})
+            </h1>
+          )}
+
+          <!-- Subhead -->
+          <p class="mt-3 text-sm sm:text-base text-slate-300 leading-relaxed max-w-3xl">
+            {isCategoryMode && category ? (
+              <>
+                Source <strong class="text-white">{category.shortName}</strong> directly from verified factory booths in <strong class="text-white">{category.districtLabel} ({category.floor}, {category.gateGuide})</strong> with consolidated ocean &amp; air delivery to <strong class="text-blue-300">{country.ports}</strong>. {category.description}
+              </>
+            ) : (
+              <>
+                {country.marketSummary} {country.corridorAdvantage}
+              </>
+            )}
+          </p>
+
+          <!-- 4-Column Corridor Intelligence Strip -->
+          <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
+            <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-3.5">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">1. Destination Ports</span>
+              <span class="text-xs font-bold text-white mt-1 block">{country.ports}</span>
+              <span class="text-[10px] text-slate-400 mt-0.5 block">Direct FCL &amp; Multi-Stall LCL</span>
+            </div>
+
+            <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-3.5">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">2. Ningbo Sea Transit</span>
+              <span class="text-xs font-bold text-blue-300 mt-1 block">{country.seaTransitDays}</span>
+              <span class="text-[10px] text-slate-400 mt-0.5 block">LCL / 20'GP / 40'HQ</span>
+            </div>
+
+            <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-3.5">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">3. Express &amp; Air DDP</span>
+              <span class="text-xs font-bold text-emerald-300 mt-1 block">{country.airTransitDays}</span>
+              <span class="text-[10px] text-slate-400 mt-0.5 block">$149 5-Booth Sample Box available</span>
+            </div>
+
+            <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-3.5">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">4. Local Customs &amp; Compliance</span>
+              <span class="text-xs font-bold text-amber-300 mt-1 block">{country.customsCompliance}</span>
+              <span class="text-[10px] text-slate-400 mt-0.5 block">Verified during $99 Stall Audit</span>
+            </div>
+          </div>
+
+          {isCategoryMode && category ? (
+            <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div class="bg-slate-800/50 border border-slate-700/60 rounded-xl p-3">
+                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Typical Stall MOQ ({category.shortName}):</span>
+                <span class="text-xs font-bold text-white mt-0.5 block">{category.typicalMoq}</span>
+              </div>
+              <div class="bg-slate-800/50 border border-slate-700/60 rounded-xl p-3">
+                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Avg. Master Carton CBM:</span>
+                <span class="text-xs font-bold text-amber-300 mt-0.5 block">{category.avgMasterCartonCbm}</span>
+              </div>
+            </div>
+          ) : (
+            <div class="mt-3 bg-slate-800/50 border border-slate-700/60 rounded-xl p-3">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Top Yiwu Buyer Focus in {country.name}:</span>
+              <span class="text-xs font-bold text-slate-200 mt-0.5 block">{country.buyerFocus}</span>
+            </div>
+          )}
+        </div>
+
+        <!-- Right Conversion Card (Hero CTAs) -->
+        <div class="lg:col-span-4 bg-slate-950/90 border border-slate-800 rounded-3xl p-6 shadow-xl">
+          {isCategoryMode && category && matchingPack ? (
+            <>
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-[10px] font-black uppercase tracking-wider text-amber-400">
+                  {country.flag} {country.name} Category Pack
+                </span>
+                <span class="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+                  {matchingPack.supplierCount}
+                </span>
+              </div>
+              <h2 class="text-base font-black text-white mb-1">
+                {matchingPack.title}
+              </h2>
+              <p class="text-xs text-slate-400 mb-4 leading-relaxed">
+                Download the complete Excel directory of unmasked +86 mobile numbers, WeChat IDs, and booth coordinates for {category.districtLabel} suppliers exporting to {country.name}.
+              </p>
+
+              <div class="flex items-baseline gap-2 mb-4">
+                <span class="text-3xl font-black text-white">${matchingPack.price}</span>
+                <span class="text-sm text-slate-500 line-through">${matchingPack.originalPrice}</span>
+                <span class="text-[11px] text-slate-400 ml-auto">Instant CSV / Excel</span>
+              </div>
+
+              <div class="space-y-2.5">
+                <button
+                  type="button"
+                  data-item-id={matchingPack.id}
+                  data-item-title={matchingPack.title}
+                  data-item-price={matchingPack.price}
+                  data-item-type="pack"
+                  class="paypal-trigger-btn w-full py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs shadow-md transition-all cursor-pointer"
+                >
+                  Unlock {category.shortName} Pack (${matchingPack.price}) &rarr;
+                </button>
+
+                <button
+                  type="button"
+                  class="open-sample-audit-btn w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-xs transition-all cursor-pointer flex items-center justify-center gap-1.5"
+                >
+                  <span>Preview Sample $99 Audit Report (#STL-YW-0842)</span>
+                </button>
+
+                <a
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="w-full py-2.5 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 font-bold text-xs transition-all flex items-center justify-center gap-1.5"
+                >
+                  <span>WhatsApp Yiwu Desk for {country.name} Importers</span>
+                </a>
+              </div>
+            </>
+          ) : (
+            <>
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-[10px] font-black uppercase tracking-wider text-amber-400">
+                  {country.flag} {country.name} All-Access Pass
+                </span>
+                <span class="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+                  27,706 Stalls
+                </span>
+              </div>
+              <h2 class="text-base font-black text-white mb-1">
+                Pro All-Access Yiwu Directory Pass (All 6 Districts)
+              </h2>
+              <p class="text-xs text-slate-400 mb-4 leading-relaxed">
+                Unlock all 27,706 verified Yiwu Futian &amp; Huangyuan factory stalls with unmasked +86 mobile numbers, WeChat IDs, and weekly updates for {country.name} importers.
+              </p>
+
+              <div class="flex items-baseline gap-2 mb-4">
+                <span class="text-3xl font-black text-white">$149</span>
+                <span class="text-sm text-slate-500 line-through">$234</span>
+                <span class="text-[11px] text-slate-400 ml-auto">All 6 District CSVs</span>
+              </div>
+
+              <div class="space-y-2.5">
+                <button
+                  type="button"
+                  data-item-id="pro-annual"
+                  data-item-title="Pro All-Access Annual Pass (All 27,706+ Verified Stalls)"
+                  data-item-price="149"
+                  data-item-type="pack"
+                  class="paypal-trigger-btn w-full py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs shadow-md transition-all cursor-pointer"
+                >
+                  Unlock All 27,706 Yiwu Stalls ($149/yr) &rarr;
+                </button>
+
+                <button
+                  type="button"
+                  class="open-sample-audit-btn w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-xs transition-all cursor-pointer flex items-center justify-center gap-1.5"
+                >
+                  <span>Preview Sample $99 Audit Report (#STL-YW-0842)</span>
+                </button>
+
+                <a
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="w-full py-2.5 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 font-bold text-xs transition-all flex items-center justify-center gap-1.5"
+                >
+                  <span>WhatsApp Yiwu Desk for {country.name} Importers</span>
+                </a>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 24 Yiwu Product Category Corridors for Country Section -->
+  <section class="py-10 bg-white border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
+        <div>
+          <span class="text-[11px] font-bold uppercase tracking-wider text-blue-600 block mb-1">
+            {country.flag} 24 Dedicated Category Trade Lanes
+          </span>
+          <h2 class="text-xl sm:text-2xl font-black text-slate-900">
+            24 Yiwu Product Category Corridors for {country.name}
+          </h2>
+          <p class="text-xs text-slate-500 mt-0.5">
+            Select a specialized Yiwu Futian Market category below to view verified booths, typical MOQs, and {country.customsCompliance} QC checklists for {country.name}.
+          </p>
+        </div>
+        {isCategoryMode && (
+          <a
+            href={`/country/${country.slug}`}
+            class="text-xs font-bold text-blue-600 hover:text-blue-700 shrink-0"
+          >
+            &larr; Back to {country.flag} {country.name} Main Hub
+          </a>
+        )}
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+        {CATEGORY_HUBS.map((cat) => {
+          const isActive = isCategoryMode && category && category.slug === cat.slug;
+          return (
+            <a
+              href={`/country/${country.slug}-${cat.slug}`}
+              class={`p-3.5 rounded-2xl border text-xs transition-all flex flex-col justify-between ${
+                isActive
+                  ? 'bg-blue-600 text-white border-blue-600 font-bold shadow-sm'
+                  : 'bg-slate-50 hover:bg-blue-50/60 text-slate-800 border-slate-200 hover:border-blue-300'
+              }`}
+            >
+              <div class="flex items-center justify-between gap-2">
+                <span class="font-bold line-clamp-1">{cat.shortName}</span>
+                <span class="text-xs shrink-0">{country.flag}</span>
+              </div>
+              <span class={`text-[10px] mt-1 ${isActive ? 'text-blue-100' : 'text-slate-400'}`}>
+                {cat.districtLabel} &bull; {cat.floor}
+              </span>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <!-- Verified Yiwu Factory Stalls Exporting to Country -->
+  <section class="py-12 bg-slate-50 border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+        <div>
+          <h2 class="text-xl sm:text-2xl font-black text-slate-900">
+            {isCategoryMode && category
+              ? `Verified Yiwu ${category.shortName} Factory Stalls Exporting to ${country.name}`
+              : `Verified Yiwu Factory Stalls Exporting to ${country.name} (${country.flag})`}
+          </h2>
+          <p class="text-xs text-slate-500 mt-0.5">
+            {isCategoryMode && category
+              ? `Showing verified stalls in ${category.districtLabel} (${category.floor}) ready for LCL/FCL shipment to ${country.ports}.`
+              : `Showing verified direct manufacturers across Yiwu Futian Market Districts 1–5 ready for export to ${country.ports}.`}
+          </p>
+        </div>
+
+        <a
+          href={isCategoryMode && category
+            ? `/directory?district=${category.district}&q=${encodeURIComponent(category.searchQuery)}`
+            : `/directory?factory=1`}
+          class="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-sm transition-colors self-start sm:self-auto"
+        >
+          Search All {result.total.toLocaleString()} Stalls in Live Directory &rarr;
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {result.suppliers.map((s) => (
+          <SupplierCard supplier={s} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Country Logistics, Customs & Open-Book Execution Playbook Section -->
+  <section class="py-14 bg-white border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl mb-10">
+        <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 block mb-1">
+          {country.flag} {country.name} Direct Sourcing Playbook
+        </span>
+        <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+          How {country.name} Importers Source Direct from Yiwu in 3 Steps
+        </h2>
+        <p class="text-sm text-slate-600 mt-2 leading-relaxed">
+          {country.corridorAdvantage}
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Step 1 -->
+        <div class="rounded-3xl border border-slate-200 bg-slate-50 p-6 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="px-3 py-1 rounded-full bg-blue-600 text-white text-xs font-black">
+                STEP 1 · Direct Access
+              </span>
+              <span class="text-xs font-bold text-slate-500">$29 Pack / $149 Pro</span>
+            </div>
+            <h3 class="text-base font-black text-slate-900 mb-2">
+              Unlock Unmasked Yiwu Booth &amp; WeChat Contacts
+            </h3>
+            <p class="text-xs text-slate-600 leading-relaxed mb-4">
+              Skip Alibaba middlemen and local {country.name} wholesale importers. Access verified Yiwu Futian Market stall numbers, direct +86 mobile lines, and factory WeChat IDs to request raw ex-works RMB pricing directly from the booth owner.
+            </p>
+          </div>
+          <a
+            href="/category-packs"
+            class="text-xs font-bold text-blue-600 hover:text-blue-700 inline-flex items-center gap-1"
+          >
+            Compare Niche Packs &amp; $149 Pro Pass &rarr;
+          </a>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="rounded-3xl border border-blue-200 bg-blue-50/40 p-6 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="px-3 py-1 rounded-full bg-emerald-600 text-white text-xs font-black">
+                STEP 2 · Ground Verification
+              </span>
+              <span class="text-xs font-bold text-emerald-700">$99 Audit / $149 Samples</span>
+            </div>
+            <h3 class="text-base font-black text-slate-900 mb-2">
+              $99 On-Site Stall Audit or $149 Sample Box to {country.name}
+            </h3>
+            <p class="text-xs text-slate-600 leading-relaxed mb-4">
+              Before wiring a 30% deposit from {country.name} ({country.currency}), our bilingual Yiwu field engineers visit the physical booth to shoot 4K video walkthroughs, verify business licenses, or collect samples from up to 5 stalls into one DHL/FedEx box ({country.airTransitDays} transit).
+            </p>
+          </div>
+          <div class="flex flex-wrap items-center gap-3">
+            <a
+              href="/concierge"
+              class="text-xs font-bold text-emerald-700 hover:text-emerald-800 inline-flex items-center gap-1"
+            >
+              Book $99 Audit / $149 Sample Box &rarr;
+            </a>
+            <button
+              type="button"
+              class="open-sample-audit-btn text-xs font-bold text-slate-700 underline cursor-pointer"
+            >
+              View Sample Report
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="rounded-3xl border border-slate-200 bg-slate-50 p-6 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="px-3 py-1 rounded-full bg-amber-500 text-slate-950 text-xs font-black">
+                STEP 3 · Open-Book Execution
+              </span>
+              <span class="text-xs font-bold text-slate-500">6% Commission + AQL 2.5</span>
+            </div>
+            <h3 class="text-base font-black text-slate-900 mb-2">
+              6% Open-Book Container Consolidation to {country.ports}
+            </h3>
+            <p class="text-xs text-slate-600 leading-relaxed mb-4">
+              Upgrade to our <strong>$399/yr Business Sourcing Tier</strong> for multi-stall warehouse consolidation, raw RMB factory receipts + separate 6% invoice, <strong>$149 Pre-Shipment AQL 2.5 Carton Inspection</strong> before releasing the 70% balance, and full <strong>{country.customsCompliance}</strong> documentation routed from Ningbo to <strong>{country.ports}</strong> ({country.seaTransitDays}).
+            </p>
+          </div>
+          <a
+            href={whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-xs font-bold text-blue-600 hover:text-blue-700 inline-flex items-center gap-1"
+          >
+            Start Open-Book Execution on WhatsApp &rarr;
+          </a>
+        </div>
+      </div>
+
+      {isCategoryMode && category && (
+        <div class="mt-8 bg-slate-900 text-white rounded-3xl p-6 sm:p-8 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div class="space-y-2 max-w-3xl">
+            <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-black uppercase">
+              {category.shortName} QC Checklist for {country.name} ({country.customsCompliance})
+            </span>
+            <h3 class="text-lg font-black text-white">
+              What Our Yiwu Engineers Inspect Before Shipping {category.shortName} to {country.ports}
+            </h3>
+            <ul class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2">
+              {category.qcChecklist.map((item, idx) => (
+                <li class="bg-slate-800/90 p-3.5 rounded-2xl border border-slate-700 text-xs text-slate-200 leading-relaxed flex items-start gap-2">
+                  <span class="w-5 h-5 rounded-full bg-amber-500 text-slate-950 font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5">
+                    {idx + 1}
+                  </span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div class="shrink-0">
+            <a
+              href="/concierge?service=stall-audit"
+              class="inline-block px-5 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs transition-all"
+            >
+              Book $99 Stall Audit &rarr;
+            </a>
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="py-12 bg-slate-50 border-b border-slate-200">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-8">
+        <span class="text-xs font-bold uppercase tracking-wider text-blue-600 block mb-1">
+          Corridor Intelligence FAQ
+        </span>
+        <h2 class="text-xl sm:text-2xl font-black text-slate-900">
+          Frequently Asked Questions: Yiwu to {country.name} ({country.flag})
+        </h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {faqQuestions.map((q) => (
+          <div class="bg-white rounded-2xl border border-slate-200 p-5">
+            <h3 class="text-sm font-black text-slate-900 mb-2">{q.name}</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">{q.acceptedAnswer.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Internal Link Mesh: Regional Peers & Global Flagships -->
+  <section class="py-12 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+      <div>
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <span class="text-[11px] font-bold uppercase tracking-wider text-blue-600 block">
+              Regional Trade Corridors ({regionInfo ? regionInfo.name : country.region})
+            </span>
+            <h2 class="text-lg font-black text-slate-900">
+              Other Yiwu Import Corridors in {regionInfo ? regionInfo.name : 'This Region'}
+            </h2>
+          </div>
+          <a href="/countries" class="text-xs font-bold text-blue-600 hover:underline">
+            View All 100 Countries &rarr;
+          </a>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          {regionalPeers.map((peer) => (
+            <a
+              href={isCategoryMode && category ? `/country/${peer.slug}-${category.slug}` : `/country/${peer.slug}`}
+              class="px-3 py-2 rounded-xl bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-300 text-xs font-semibold text-slate-800 hover:text-blue-700 transition-colors inline-flex items-center gap-1.5"
+            >
+              <span>{peer.flag}</span>
+              <span>{peer.name}</span>
+              {isCategoryMode && category && (
+                <span class="text-[10px] text-slate-400">({category.shortName})</span>
+              )}
+            </a>
+          ))}
+        </div>
+      </div>
+
+      {globalFlagships.length > 0 && (
+        <div class="pt-6 border-t border-slate-200">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-3">
+            Major Global Yiwu Consolidation Hubs
+          </span>
+          <div class="flex flex-wrap gap-2">
+            {globalFlagships.map((hub) => (
+              <a
+                href={`/country/${hub.slug}`}
+                class="px-3 py-1.5 rounded-lg bg-white hover:bg-slate-100 border border-slate-200 text-xs font-medium text-slate-600 hover:text-slate-900 transition-colors inline-flex items-center gap-1.5"
+              >
+                <span>{hub.flag}</span>
+                <span>Yiwu to {hub.name}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <ContactUnlockModal />
+</Layout>

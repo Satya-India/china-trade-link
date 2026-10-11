@@ -1,0 +1,366 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { COUNTRIES, COUNTRY_REGIONS } from '../lib/countries';
+
+const seoTitle = "100-Country Yiwu Wholesale Sourcing & Import Corridors | Sino Trade Link";
+const seoDescription = "Source directly from 27,706 verified Yiwu Futian Market factory stalls to 100 countries worldwide. Explore port transit times from Ningbo, local customs compliance, $99 on-ground stall audits, $149 sample consolidation, and 6% open-book container execution.";
+const seoKeywords = [
+  "Yiwu wholesale sourcing by country",
+  "import from Yiwu market to USA UK India UAE Brazil",
+  "Yiwu to global ports shipping transit times",
+  "China direct factory contacts 100 countries",
+  "Yiwu open-book sourcing agent alternative",
+  "Ningbo port LCL FCL container freight corridors"
+].join(", ");
+const canonicalUrl = "https://sinotradelink.com/countries";
+
+const countriesJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage",
+      "@id": `${canonicalUrl}#collection`,
+      "name": seoTitle,
+      "description": seoDescription,
+      "url": canonicalUrl,
+      "mainEntity": {
+        "@type": "ItemList",
+        "numberOfItems": COUNTRIES.length,
+        "itemListElement": COUNTRIES.map((c, idx) => ({
+          "@type": "ListItem",
+          "position": idx + 1,
+          "url": `https://sinotradelink.com/country/${c.slug}`,
+          "name": `Import from Yiwu Wholesale Market to ${c.name} (${c.ports})`
+        }))
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": `${canonicalUrl}#breadcrumb`,
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://sinotradelink.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "100 Country Import Corridors",
+          "item": canonicalUrl
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout
+  title={seoTitle}
+  description={seoDescription}
+  keywords={seoKeywords}
+  canonicalUrl={canonicalUrl}
+  jsonLd={countriesJsonLd}
+  activePage="countries"
+>
+  <!-- Hero Section -->
+  <section class="relative bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 text-white py-14 sm:py-20 border-b border-slate-800 overflow-hidden">
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900/30 via-transparent to-transparent"></div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <!-- Breadcrumb -->
+      <nav aria-label="Breadcrumb" class="flex items-center justify-center gap-2 text-xs text-slate-400 mb-5">
+        <a href="/" class="hover:text-white transition-colors">Home</a>
+        <span>/</span>
+        <span class="text-slate-200 font-semibold">100 Global Import Corridors</span>
+      </nav>
+
+      <!-- Badge -->
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/15 border border-blue-500/30 text-blue-300 text-xs font-bold mb-6">
+        <span>🌍 100 Global Import Corridors · 2,400 Category Trade Lanes · 27,706 Verified Stalls</span>
+      </div>
+
+      <!-- Headline -->
+      <h1 class="text-3xl sm:text-5xl font-black tracking-tight text-white max-w-4xl mx-auto leading-tight">
+        Source Direct from Yiwu Factory Stalls to Your Country's Port
+      </h1>
+
+      <!-- Subhead -->
+      <p class="mt-4 text-sm sm:text-lg text-slate-300 max-w-3xl mx-auto leading-relaxed">
+        Importers across <strong class="text-white font-semibold">100 countries</strong> bypass local wholesale middlemen and 15–30% trading company markups by combining our <strong class="text-white font-semibold">27,706 unmasked Yiwu booth contacts</strong> with on-ground <strong class="text-emerald-400 font-semibold">$99 physical stall audits</strong>, <strong class="text-amber-300 font-semibold">$149 5-booth sample consolidation</strong>, and <strong class="text-blue-300 font-semibold">6% open-book container execution</strong> directly to their destination port.
+      </p>
+
+      <!-- Instant Search Input -->
+      <div class="mt-8 max-w-2xl mx-auto">
+        <div class="relative flex items-center bg-slate-900/90 border border-slate-700 rounded-2xl p-2 shadow-2xl focus-within:border-blue-500 transition-colors">
+          <div class="pl-3 pr-2 text-slate-400">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+          <input
+            id="country-search"
+            type="text"
+            placeholder="Filter by country name, ISO code, port (e.g. Jebel Ali, Santos, Felixstowe), or certification..."
+            class="w-full py-2.5 px-2 text-sm text-white placeholder:text-slate-400 bg-transparent focus:outline-none"
+          />
+          <span id="country-count-badge" class="hidden sm:inline-block px-3 py-1.5 rounded-xl bg-slate-800 text-slate-300 text-xs font-bold shrink-0">
+            {COUNTRIES.length} Corridors
+          </span>
+        </div>
+      </div>
+
+      <!-- Region Filter Pills -->
+      <div class="mt-6 flex items-center justify-center flex-wrap gap-2 max-w-5xl mx-auto" id="region-filter-bar">
+        <button
+          type="button"
+          data-region-pill="all"
+          class="region-pill px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer bg-blue-600 text-white shadow-md shadow-blue-600/20"
+        >
+          🌐 All 100 Countries
+        </button>
+        {COUNTRY_REGIONS.map((reg) => (
+          <button
+            type="button"
+            data-region-pill={reg.id}
+            class="region-pill px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer bg-slate-800/80 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700"
+          >
+            <span>{reg.flag} {reg.name}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 100-Country Grid Section -->
+  <section class="py-12 bg-slate-50 border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Empty Search State -->
+      <div id="no-country-results" class="hidden bg-white rounded-3xl border border-slate-200 p-12 text-center my-6">
+        <p class="text-lg font-black text-slate-900 mb-2">No matching country corridor found</p>
+        <p class="text-xs text-slate-500 mb-4">Try searching by country name, destination port, or customs certification.</p>
+        <button
+          type="button"
+          id="reset-country-filters"
+          class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold cursor-pointer"
+        >
+          Show All 100 Countries
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="country-cards-grid">
+        {COUNTRIES.map((c) => (
+          <article
+            data-country-card
+            data-region={c.region}
+            data-search={`${c.name} ${c.code} ${c.ports} ${c.customsCompliance} ${c.currency}`.toLowerCase()}
+            class="bg-white rounded-3xl border border-slate-200/90 hover:border-blue-400 p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
+          >
+            <div>
+              <!-- Header: Flag + Name + Code/Currency Badge -->
+              <div class="flex items-start justify-between gap-3 mb-4">
+                <a href={`/country/${c.slug}`} class="flex items-center gap-3 group">
+                  <span class="text-3xl leading-none select-none">{c.flag}</span>
+                  <div>
+                    <h2 class="text-lg font-black text-slate-900 group-hover:text-blue-600 transition-colors leading-tight">
+                      {c.name}
+                    </h2>
+                    <span class="text-[11px] font-semibold text-slate-400 block mt-0.5">
+                      Yiwu &rarr; {c.name} Corridor
+                    </span>
+                  </div>
+                </a>
+                <span class="px-2.5 py-1 rounded-lg bg-slate-100 border border-slate-200 text-[10px] font-mono font-bold text-slate-700 shrink-0">
+                  {c.code} &bull; {c.currency}
+                </span>
+              </div>
+
+              <!-- Logistics & Customs Specs -->
+              <div class="space-y-2.5 text-xs bg-slate-50 rounded-2xl p-3.5 border border-slate-200/70 mb-4">
+                <div class="flex items-start justify-between gap-2">
+                  <span class="text-slate-400 font-bold uppercase text-[10px] shrink-0">Ports:</span>
+                  <span class="text-slate-800 font-semibold text-right">{c.ports}</span>
+                </div>
+                <div class="flex items-center justify-between gap-2 border-t border-slate-200/60 pt-2">
+                  <span class="text-slate-400 font-bold uppercase text-[10px]">Ningbo Sea:</span>
+                  <span class="text-blue-700 font-bold">{c.seaTransitDays}</span>
+                </div>
+                <div class="flex items-center justify-between gap-2 border-t border-slate-200/60 pt-2">
+                  <span class="text-slate-400 font-bold uppercase text-[10px]">Air / Express:</span>
+                  <span class="text-emerald-700 font-bold">{c.airTransitDays}</span>
+                </div>
+                <div class="flex items-start justify-between gap-2 border-t border-slate-200/60 pt-2">
+                  <span class="text-slate-400 font-bold uppercase text-[10px] shrink-0">Compliance:</span>
+                  <span class="px-2 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-200/80 text-[10px] font-bold text-right">
+                    {c.customsCompliance}
+                  </span>
+                </div>
+              </div>
+
+              <!-- Quick Category Corridor Links -->
+              <div class="mb-5">
+                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-2">
+                  Popular {c.name} Category Lanes:
+                </span>
+                <div class="flex flex-wrap gap-1.5">
+                  <a
+                    href={`/country/${c.slug}-plush-toys-stuffed-animals`}
+                    class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-blue-700 text-[11px] font-semibold transition-colors"
+                  >
+                    🧸 Plush & Toys
+                  </a>
+                  <a
+                    href={`/country/${c.slug}-hardware-hand-power-tools`}
+                    class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-blue-700 text-[11px] font-semibold transition-colors"
+                  >
+                    🔧 Hardware & Tools
+                  </a>
+                  <a
+                    href={`/country/${c.slug}-fashion-jewelry-ornaments`}
+                    class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-blue-700 text-[11px] font-semibold transition-colors"
+                  >
+                    💎 Fashion Jewelry
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Main CTA Button -->
+            <a
+              href={`/country/${c.slug}`}
+              class="w-full py-3 px-4 rounded-xl bg-slate-900 hover:bg-blue-600 text-white font-bold text-xs text-center transition-colors block shadow-sm"
+            >
+              Open {c.name} Sourcing Hub &rarr;
+            </a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Bottom Monetization Banner -->
+  <section class="py-16 bg-slate-950 text-white border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="bg-gradient-to-br from-slate-900 via-slate-900 to-blue-950/60 border border-slate-800 rounded-3xl p-8 sm:p-12 shadow-2xl">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <div class="lg:col-span-7 space-y-3">
+            <span class="inline-block px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold">
+              Direct Factory Contacts + On-Ground Execution
+            </span>
+            <h2 class="text-2xl sm:text-3xl font-black text-white tracking-tight">
+              Ready to Import Direct from Yiwu Without Middlemen?
+            </h2>
+            <p class="text-sm text-slate-300 leading-relaxed max-w-2xl">
+              Download all <strong class="text-white">27,706 verified Yiwu stalls</strong> with unmasked +86 mobile numbers and WeChat IDs, dispatch our bilingual engineers for a <strong class="text-emerald-400">$99 Physical Stall Audit</strong>, or consolidate multi-booth containers at a transparent <strong class="text-blue-300">6% open-book commission</strong>.
+            </p>
+          </div>
+
+          <div class="lg:col-span-5 flex flex-col sm:flex-row lg:flex-col gap-3">
+            <button
+              type="button"
+              data-item-id="pro-annual"
+              data-item-title="Pro All-Access Annual Pass (All 27,706+ Verified Stalls)"
+              data-item-price="149"
+              data-item-type="pack"
+              class="paypal-trigger-btn w-full py-3.5 px-5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs shadow-lg shadow-amber-500/20 transition-all cursor-pointer text-center"
+            >
+              Get Pro All-Access Pass ($149/yr — All 6 Districts) &rarr;
+            </button>
+
+            <a
+              href="/concierge"
+              class="w-full py-3 px-5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs text-center transition-all shadow-sm"
+            >
+              Book $99 On-Site Stall Audit or $149 Sample Box &rarr;
+            </a>
+
+            <a
+              href="https://wa.me/8613482725985?text=Hi%20SinoTradeLink%2C%20I%20am%20exploring%20your%20100-country%20Yiwu%20sourcing%20corridors%20and%20need%20assistance%20with%20suppliers%20and%20shipping."
+              target="_blank"
+              rel="noopener noreferrer"
+              class="w-full py-3 px-5 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 font-bold text-xs text-center transition-all"
+            >
+              WhatsApp Yiwu Ground Liaison (+86 134 8272 5985)
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script is:inline>
+    (function () {
+      var searchInput = document.getElementById('country-search');
+      var regionPills = document.querySelectorAll('[data-region-pill]');
+      var cards = document.querySelectorAll('[data-country-card]');
+      var countBadge = document.getElementById('country-count-badge');
+      var emptyBox = document.getElementById('no-country-results');
+      var resetBtn = document.getElementById('reset-country-filters');
+      var activeRegion = 'all';
+
+      function filterCountries() {
+        var query = searchInput ? searchInput.value.trim().toLowerCase() : '';
+        var visibleCount = 0;
+
+        for (var i = 0; i < cards.length; i++) {
+          var card = cards[i];
+          var cardRegion = card.getAttribute('data-region') || '';
+          var cardSearch = card.getAttribute('data-search') || '';
+          var matchesRegion = activeRegion === 'all' || cardRegion === activeRegion;
+          var matchesQuery = !query || cardSearch.indexOf(query) !== -1;
+
+          if (matchesRegion && matchesQuery) {
+            card.classList.remove('hidden');
+            visibleCount++;
+          } else {
+            card.classList.add('hidden');
+          }
+        }
+
+        if (countBadge) {
+          countBadge.textContent = visibleCount + (visibleCount === 1 ? ' Corridor' : ' Corridors');
+        }
+        if (emptyBox) {
+          if (visibleCount === 0) {
+            emptyBox.classList.remove('hidden');
+          } else {
+            emptyBox.classList.add('hidden');
+          }
+        }
+      }
+
+      function updatePillStyles() {
+        for (var i = 0; i < regionPills.length; i++) {
+          var pill = regionPills[i];
+          var reg = pill.getAttribute('data-region-pill');
+          if (reg === activeRegion) {
+            pill.className = 'region-pill px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer bg-blue-600 text-white shadow-md shadow-blue-600/20';
+          } else {
+            pill.className = 'region-pill px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer bg-slate-800/80 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700';
+          }
+        }
+      }
+
+      if (searchInput) {
+        searchInput.addEventListener('input', filterCountries);
+      }
+
+      for (var j = 0; j < regionPills.length; j++) {
+        regionPills[j].addEventListener('click', function () {
+          activeRegion = this.getAttribute('data-region-pill') || 'all';
+          updatePillStyles();
+          filterCountries();
+        });
+      }
+
+      if (resetBtn) {
+        resetBtn.addEventListener('click', function () {
+          activeRegion = 'all';
+          if (searchInput) searchInput.value = '';
+          updatePillStyles();
+          filterCountries();
+        });
+      }
+    })();
+  </script>
+</Layout>

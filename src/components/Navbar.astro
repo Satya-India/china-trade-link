@@ -94,6 +94,12 @@ const { activePage = 'home' } = Astro.props;
           <span>Sourcing & Freight Guide</span>
         </a>
         <a 
+          href="/countries" 
+          class={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1.5 ${activePage === 'countries' ? 'text-white bg-slate-800' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}`}
+        >
+          <span>100 Country Corridors</span>
+        </a>
+        <a 
           href="/for-suppliers" 
           class={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1.5 ${activePage === 'suppliers' ? 'text-white bg-slate-800' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}`}
         >

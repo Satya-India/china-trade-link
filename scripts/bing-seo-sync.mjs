@@ -17,6 +17,7 @@ const KEY_LOCATION = `https://${HOST}/${API_KEY}.txt`;
 const SITEMAP_FEEDS = [
   'https://sinotradelink.com/sitemap.xml',
   'https://sinotradelink.com/sitemaps/pages.xml',
+  'https://sinotradelink.com/sitemaps/countries.xml',
   'https://sinotradelink.com/sitemaps/suppliers-1.xml',
   'https://sinotradelink.com/sitemaps/suppliers-2.xml',
   'https://sinotradelink.com/sitemaps/suppliers-3.xml',
@@ -60,7 +61,7 @@ async function main() {
   console.log('  Sino Trade Link — Bing Webmaster API & IndexNow SEO Sync');
   console.log('================================================================\n');
 
-  // Step 1: Submit all 8 XML Sitemaps via Bing Webmaster API (SubmitFeed)
+  // Step 1: Submit all 9 XML Sitemaps via Bing Webmaster API (SubmitFeed)
   console.log('1. Submitting all XML Sitemaps to Bing Webmaster API (SubmitFeed)...');
   for (const feedUrl of SITEMAP_FEEDS) {
     const res = await bingApiPost('SubmitFeed', {
@@ -79,10 +80,13 @@ async function main() {
     console.log(`      • ${f.Url} (Submitted: ${f.Submitted || 'Yes'})`);
   }
 
-  // Step 3: Collect all URLs from pages.xml and suppliers-1..6.xml
+  // Step 3: Collect all URLs from pages.xml, countries.xml and suppliers-1..6.xml
   console.log('\n3. Fetching all live URLs from sitemaps...');
   const pageUrls = await extractUrlsFromSitemap('https://sinotradelink.com/sitemaps/pages.xml');
   console.log(`   -> Core & Category Hub URLs (pages.xml): ${pageUrls.length}`);
+
+  const countryUrls = await extractUrlsFromSitemap('https://sinotradelink.com/sitemaps/countries.xml');
+  console.log(`   -> 100-Country & Corridor URLs (countries.xml): ${countryUrls.length}`);
 
   let allSupplierUrls = [];
   for (let i = 1; i <= 6; i++) {
@@ -92,7 +96,7 @@ async function main() {
     allSupplierUrls.push(...urls);
   }
 
-  const allUrls = Array.from(new Set([...pageUrls, ...allSupplierUrls]));
+  const allUrls = Array.from(new Set([...pageUrls, ...countryUrls, ...allSupplierUrls]));
   console.log(`   -> Total Unique URLs ready for indexing: ${allUrls.length.toLocaleString()}`);
 
   // Step 4: Check Bing Webmaster Direct URL Quota & Submit Priority Batch (SubmitUrlBatch)
