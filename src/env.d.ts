@@ -14,6 +14,10 @@ type Runtime = {
 
 declare namespace App {
   interface Locals {
+    cfContext?: {
+      waitUntil: (promise: Promise<any>) => void;
+      passThroughOnException: () => void;
+    };
     runtime?: Runtime;
   }
 }

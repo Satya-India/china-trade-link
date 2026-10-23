@@ -1,5 +1,12 @@
 import { defineMiddleware } from 'astro:middleware';
 
+function dispatchWaitUntil(context: any, promise: Promise<any>) {
+  const cfCtx = context.locals?.cfContext || context.locals?.runtime?.ctx || context.locals?.runtime;
+  if (cfCtx && typeof cfCtx.waitUntil === 'function') {
+    cfCtx.waitUntil(promise);
+  }
+}
+
 export const onRequest = defineMiddleware(async (context, next) => {
   const url = new URL(context.request.url);
 
@@ -13,7 +20,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
   const pathname = url.pathname;
 
   // 2. Sensitive / Private / Mutation routes - NEVER cache
-  const isGet = method === 'GET';
+  const isSafeMethod = method === 'GET' || method === 'HEAD';
   const isPrivateOrAdmin =
     pathname.startsWith('/admin') ||
     pathname.startsWith('/api/admin') ||
@@ -22,7 +29,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
     pathname.startsWith('/api/inquiry') ||
     pathname.startsWith('/api/payment');
 
-  if (!isGet || isPrivateOrAdmin) {
+  if (!isSafeMethod || isPrivateOrAdmin) {
     const res = await next();
     // Enforce strict no-cache on private admin/checkout responses
     if (!res.headers.has('Cache-Control')) {
@@ -46,14 +53,9 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return next();
   }
 
-  // 4. Check Cloudflare Edge Cache API (caches.default) for Public GET requests
+  // 4. Check Cloudflare Edge Cache API (caches.default) using canonical URL string key
   const cache = typeof globalThis !== 'undefined' && 'caches' in globalThis ? (globalThis as any).caches?.default : null;
-  const cacheKey = new Request(url.toString(), {
-    method: 'GET',
-    headers: {
-      'Accept-Encoding': context.request.headers.get('Accept-Encoding') || ''
-    }
-  });
+  const cacheKey = url.toString();
 
   if (cache) {
     try {
@@ -61,7 +63,8 @@ export const onRequest = defineMiddleware(async (context, next) => {
       if (cachedResponse) {
         const hitHeaders = new Headers(cachedResponse.headers);
         hitHeaders.set('X-Cache-Status', 'HIT');
-        return new Response(cachedResponse.body, {
+        const body = method === 'HEAD' ? null : cachedResponse.body;
+        return new Response(body, {
           status: cachedResponse.status,
           statusText: cachedResponse.statusText,
           headers: hitHeaders
@@ -93,9 +96,10 @@ export const onRequest = defineMiddleware(async (context, next) => {
       cacheControl = 'public, max-age=300, s-maxage=3600, stale-while-revalidate=86400';
     }
 
-    // Respect explicit Cache-Control already set by specific endpoints (e.g., sitemaps)
-    const finalCacheControl = response.headers.has('Cache-Control')
-      ? response.headers.get('Cache-Control')!
+    // Keep existing header only if it was already explicitly set to a public cache
+    const existingCC = response.headers.get('Cache-Control') || '';
+    const finalCacheControl = (existingCC.startsWith('public') && !existingCC.includes('max-age=0'))
+      ? existingCC
       : cacheControl;
 
     let modifiedResponse: Response;
@@ -115,14 +119,12 @@ export const onRequest = defineMiddleware(async (context, next) => {
     }
 
     // Save to Cloudflare Edge Cache in background
-    if (cache) {
+    if (cache && method === 'GET') {
       const toCache = modifiedResponse.clone();
       const putPromise = cache.put(cacheKey, toCache).catch((err: any) => {
         console.warn('[Cache API Put Warn]:', err?.message || err);
       });
-      if (context.locals.runtime?.waitUntil) {
-        context.locals.runtime.waitUntil(putPromise);
-      }
+      dispatchWaitUntil(context, putPromise);
     }
 
     return modifiedResponse;
@@ -143,11 +145,9 @@ export const onRequest = defineMiddleware(async (context, next) => {
       });
     }
 
-    if (cache) {
+    if (cache && method === 'GET') {
       const put404 = cache.put(cacheKey, modified404.clone()).catch(() => {});
-      if (context.locals.runtime?.waitUntil) {
-        context.locals.runtime.waitUntil(put404);
-      }
+      dispatchWaitUntil(context, put404);
     }
 
     return modified404;
