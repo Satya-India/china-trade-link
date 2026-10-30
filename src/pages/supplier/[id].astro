@@ -297,6 +297,7 @@ const supplierJsonLd = {
             {translatedCategory && (
               <a
                 href={`/directory?q=${encodeURIComponent(translatedCategoryLeaf || translatedCategory)}`}
+                rel="nofollow"
                 class="bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-200 text-xs font-semibold px-2.5 py-1 rounded-md border border-indigo-400/30 transition-colors"
               >
                 {translatedCategory}
@@ -421,6 +422,7 @@ const supplierJsonLd = {
                       <div class="flex items-center gap-2 shrink-0">
                         <a 
                           href={`/directory?q=${encodeURIComponent(searchKw)}`}
+                          rel="nofollow"
                           class="text-[10px] font-bold text-blue-600 hover:underline"
                         >
                           Compare Stalls &rarr;
@@ -448,6 +450,7 @@ const supplierJsonLd = {
                 {extractedKeywords.map(kw => (
                   <a 
                     href={`/directory?q=${encodeURIComponent(kw)}`}
+                    rel="nofollow"
                     class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-blue-700 text-[11px] font-medium border border-slate-200/80 transition-colors"
                   >
                     {kw} Wholesale
@@ -456,6 +459,7 @@ const supplierJsonLd = {
                 {translatedCategory && (
                   <a 
                     href={`/directory?q=${encodeURIComponent(translatedCategoryLeaf || translatedCategory)}`}
+                    rel="nofollow"
                     class="px-2.5 py-1 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-[11px] font-semibold border border-indigo-200/80 transition-colors"
                   >
                     {translatedCategory}
@@ -464,6 +468,7 @@ const supplierJsonLd = {
                 {fallbackKeywords.map(kw => (
                   <a 
                     href={`/directory?district=${supplier.district}`}
+                    rel="nofollow"
                     class="px-2.5 py-1 rounded-lg bg-slate-50 hover:bg-blue-50 text-slate-600 hover:text-blue-700 text-[11px] border border-slate-200/60 transition-colors"
                   >
                     {kw}

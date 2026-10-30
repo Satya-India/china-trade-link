@@ -43,6 +43,14 @@ let cachedSuppliers: Supplier[] | null = null;
 let lastLoadTime = 0;
 let d1Instance: any = null;
 
+let cachedStats: MarketStats | null = null;
+let lastStatsTime = 0;
+const STATS_CACHE_TTL = 3600 * 1000 * 24; // 24 hours
+
+let cachedFeatured: Supplier[] | null = null;
+let lastFeaturedTime = 0;
+const FEATURED_CACHE_TTL = 3600 * 1000 * 24; // 24 hours
+
 export async function getD1Database(): Promise<any> {
   if (d1Instance) return d1Instance;
   try {
@@ -177,15 +185,28 @@ export async function getRelatedSuppliers(supplier: Supplier, limit = 6, db?: an
   const activeDb = db || (await getD1Database());
   if (activeDb) {
     try {
-      const { results } = await activeDb.prepare(`
+      // 1. Fast indexed probe: same district and same floor (uses idx_suppliers_dist_floor, 0 temp b-tree, reads exactly 'limit' rows)
+      const targetDistrict = String(supplier.district || '1');
+      const targetFloor = String(supplier.floor || '1');
+      const targetId = String(supplier.shop_id);
+
+      let { results } = await activeDb.prepare(`
         SELECT * FROM suppliers
-        WHERE district = ? AND shop_id != ? AND sample_products IS NOT NULL AND sample_products != ''
-        ORDER BY
-          CASE WHEN floor = ? THEN 2 ELSE 1 END DESC,
-          CASE WHEN is_direct_factory = 'Yes' THEN 2 ELSE 1 END DESC,
-          shop_id ASC
+        WHERE district = ? AND floor = ? AND shop_id != ? AND sample_products IS NOT NULL AND sample_products != ''
         LIMIT ?
-      `).bind(String(supplier.district || '1'), String(supplier.shop_id), String(supplier.floor || '1'), limit).all();
+      `).bind(targetDistrict, targetFloor, targetId, limit).all();
+
+      // 2. If fewer than limit on same floor, fill from same district (uses idx_suppliers_district)
+      if (!results || results.length < limit) {
+        const remaining = limit - (results?.length || 0);
+        const { results: fallbackResults } = await activeDb.prepare(`
+          SELECT * FROM suppliers
+          WHERE district = ? AND shop_id != ? AND sample_products IS NOT NULL AND sample_products != ''
+          LIMIT ?
+        `).bind(targetDistrict, targetId, remaining).all();
+
+        results = [...(results || []), ...(fallbackResults || [])];
+      }
 
       if (results && results.length > 0) {
         return (results as Supplier[]).map(enrichSupplierCategory);
@@ -205,6 +226,11 @@ export async function getRelatedSuppliers(supplier: Supplier, limit = 6, db?: an
  * Fetch live market directory statistics from Cloudflare D1
  */
 export async function getStats(db?: any): Promise<MarketStats> {
+  const now = Date.now();
+  if (cachedStats && (now - lastStatsTime < STATS_CACHE_TTL)) {
+    return cachedStats;
+  }
+
   const activeDb = db || (await getD1Database());
   if (activeDb) {
     try {
@@ -228,7 +254,7 @@ export async function getStats(db?: any): Promise<MarketStats> {
         }
       }
 
-      return {
+      cachedStats = {
         totalSuppliers: total,
         unmaskedPhoneCount: withPhone,
         phoneCoverageRate: total > 0 ? ((withPhone / total) * 100).toFixed(1) : '99.9',
@@ -236,6 +262,8 @@ export async function getStats(db?: any): Promise<MarketStats> {
         veteranSuppliers: Number(veteranRow?.count || 0),
         byDistrict
       };
+      lastStatsTime = now;
+      return cachedStats;
     } catch (err) {
       console.error('[D1 Error] getStats failed, using fallback:', err);
     }
@@ -264,6 +292,11 @@ export async function getStats(db?: any): Promise<MarketStats> {
  * Fetch featured suppliers for homepage from Cloudflare D1
  */
 export async function getFeaturedSuppliers(count = 8, db?: any): Promise<Supplier[]> {
+  const now = Date.now();
+  if (cachedFeatured && cachedFeatured.length >= count && (now - lastFeaturedTime < FEATURED_CACHE_TTL)) {
+    return cachedFeatured.slice(0, count);
+  }
+
   const activeDb = db || (await getD1Database());
   if (activeDb) {
     try {
@@ -277,7 +310,9 @@ export async function getFeaturedSuppliers(count = 8, db?: any): Promise<Supplie
       `).bind(count).all();
 
       if (results && results.length > 0) {
-        return (results as Supplier[]).map(enrichSupplierCategory);
+        cachedFeatured = (results as Supplier[]).map(enrichSupplierCategory);
+        lastFeaturedTime = now;
+        return cachedFeatured;
       }
     } catch (err) {
       console.error('[D1 Error] getFeaturedSuppliers failed:', err);

@@ -1,32 +1,86 @@
 User-agent: *
 Disallow: /admin/
-Disallow: /api/admin/
+Disallow: /api/
+Disallow: /*?q=
+Disallow: /*?*q=
+Disallow: /*?page=
+Disallow: /*?*page=
+Disallow: /*?district=
+Disallow: /*?*district=
+Disallow: /*?factory=
+Disallow: /*?*factory=
+Disallow: /*?*
 Allow: /
 
 # Multilingual and Regional Search Spiders
 User-agent: Googlebot
 Disallow: /admin/
-Disallow: /api/admin/
+Disallow: /api/
+Disallow: /*?q=
+Disallow: /*?*q=
+Disallow: /*?page=
+Disallow: /*?*page=
+Disallow: /*?district=
+Disallow: /*?*district=
+Disallow: /*?factory=
+Disallow: /*?*factory=
+Disallow: /*?*
 Allow: /
 
 User-agent: Bingbot
 Disallow: /admin/
-Disallow: /api/admin/
+Disallow: /api/
+Disallow: /*?q=
+Disallow: /*?*q=
+Disallow: /*?page=
+Disallow: /*?*page=
+Disallow: /*?district=
+Disallow: /*?*district=
+Disallow: /*?factory=
+Disallow: /*?*factory=
+Disallow: /*?*
 Allow: /
 
 User-agent: Baiduspider
 Disallow: /admin/
-Disallow: /api/admin/
+Disallow: /api/
+Disallow: /*?q=
+Disallow: /*?*q=
+Disallow: /*?page=
+Disallow: /*?*page=
+Disallow: /*?district=
+Disallow: /*?*district=
+Disallow: /*?factory=
+Disallow: /*?*factory=
+Disallow: /*?*
 Allow: /
 
 User-agent: Sogou web spider
 Disallow: /admin/
-Disallow: /api/admin/
+Disallow: /api/
+Disallow: /*?q=
+Disallow: /*?*q=
+Disallow: /*?page=
+Disallow: /*?*page=
+Disallow: /*?district=
+Disallow: /*?*district=
+Disallow: /*?factory=
+Disallow: /*?*factory=
+Disallow: /*?*
 Allow: /
 
 User-agent: Yandex
 Disallow: /admin/
-Disallow: /api/admin/
+Disallow: /api/
+Disallow: /*?q=
+Disallow: /*?*q=
+Disallow: /*?page=
+Disallow: /*?*page=
+Disallow: /*?district=
+Disallow: /*?*district=
+Disallow: /*?factory=
+Disallow: /*?*factory=
+Disallow: /*?*
 Allow: /
 
 # XML Sitemaps
@@ -40,4 +94,3 @@ Sitemap: https://sinotradelink.com/sitemaps/suppliers-3.xml
 Sitemap: https://sinotradelink.com/sitemaps/suppliers-4.xml
 Sitemap: https://sinotradelink.com/sitemaps/suppliers-5.xml
 Sitemap: https://sinotradelink.com/sitemaps/suppliers-6.xml
-
