@@ -41,14 +41,14 @@ if (result.suppliers.length < 6) {
 const canonicalUrl = `https://sinotradelink.com/category/${category.slug}`;
 
 const seoTitle = `${category.title} (${category.districtLabel}, ${category.floor}) | Sino Trade Link`;
-const seoDescription = `${category.description} Browse ${result.total.toLocaleString()}+ verified stalls at ${category.districtLabel} (${category.floor}, ${category.gateGuide}), unlock direct +86 mobile & WeChat IDs, or book a $99 physical stall audit.`;
+const seoDescription = `${category.description} Browse ${result.total.toLocaleString()}+ verified stalls at ${category.districtLabel} (${category.floor}, ${category.gateGuide}), request direct RMB factory quotes through our China team, or book a $99 physical stall audit.`;
 const seoKeywords = [
   ...category.seoKeywords,
   category.chineseCategory,
   `Yiwu ${category.shortName} wholesale`,
-  `Yiwu ${category.shortName} factory`,
+  `China ${category.shortName} factory`,
   `${category.districtLabel} ${category.floor} booths`,
-  'Yiwu direct factory WeChat numbers'
+  'China direct factory sourcing quote'
 ].join(', ');
 
 const whatsappCategoryUrl = `https://wa.me/8613482725985?text=${encodeURIComponent(
@@ -292,7 +292,7 @@ const categoryJsonLd = {
             Verified {category.shortName} Stalls & Direct Factories
           </h2>
           <p class="text-xs text-slate-500 mt-0.5">
-            Showing top verified booths in {category.districtLabel} ({category.floor}). Click any stall to unlock direct +86 mobile & WeChat.
+            Showing top verified booths in {category.districtLabel} ({category.floor}). Click any stall to request a managed factory quote or sample consolidation.
           </p>
         </div>
 

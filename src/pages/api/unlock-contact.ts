@@ -2,8 +2,6 @@ import type { APIRoute } from 'astro';
 import { getD1Database, getSupplierById } from '../../lib/data';
 import { dispatchInquiryAlerts } from '../../lib/notifications';
 
-const DAILY_UNLOCK_LIMIT = 5;
-
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
     let body: any;
@@ -21,11 +19,12 @@ export const POST: APIRoute = async ({ request, locals }) => {
       buyer_name,
       buyer_email,
       buyer_country,
-      buyer_phone
+      buyer_phone,
+      message
     } = body || {};
 
     if (!shop_id || typeof shop_id !== 'string' || shop_id.trim().length === 0) {
-      return new Response(JSON.stringify({ success: false, error: 'Missing stall identifier.' }), {
+      return new Response(JSON.stringify({ success: false, error: 'Missing supplier identifier.' }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' }
       });
@@ -51,49 +50,21 @@ export const POST: APIRoute = async ({ request, locals }) => {
     const cleanEmail = buyer_email.trim().toLowerCase();
     const cleanCountry = (buyer_country && typeof buyer_country === 'string') ? buyer_country.trim() : 'Global';
     const cleanPhone = (buyer_phone && typeof buyer_phone === 'string') ? buyer_phone.trim() : '';
+    const cleanNotes = (message && typeof message === 'string') ? message.trim() : '';
 
-    const clientIp = request.headers.get('cf-connecting-ip') || 
-                     request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 
+    const clientIp = request.headers.get('cf-connecting-ip') ||
+                     request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
                      '127.0.0.1';
 
     const db = await getD1Database();
-    let recentCount = 0;
 
-    // Rate Limiting Enforcement (D1 Database check over past 24 hours)
-    if (db) {
-      try {
-        const countRow = await db.prepare(`
-          SELECT COUNT(*) as count FROM inquiries
-          WHERE (LOWER(buyer_email) = ? OR message LIKE ?)
-            AND status = 'UNLOCKED'
-            AND created_at >= datetime('now', '-24 hours')
-        `).bind(cleanEmail, `%[IP: ${clientIp}]%`).first();
-
-        recentCount = Number(countRow?.count || 0);
-
-        if (recentCount >= DAILY_UNLOCK_LIMIT) {
-          return new Response(JSON.stringify({
-            success: false,
-            error: `Daily limit reached (${DAILY_UNLOCK_LIMIT}/${DAILY_UNLOCK_LIMIT}). To prevent automated harvesting, individual visitor accounts are limited to ${DAILY_UNLOCK_LIMIT} free self-unlocks per 24 hours. Message our Yiwu Desk directly on WhatsApp (+86 134 8272 5985) or submit an Alibaba.com product link for instant free sourcing assistance.`,
-            limitReached: true,
-            reveals_left: 0
-          }), {
-            status: 429,
-            headers: { 'Content-Type': 'application/json' }
-          });
-        }
-      } catch (rateErr) {
-        console.error('[D1 RateLimit Check Error]:', rateErr);
-      }
-    }
-
-    // Retrieve unmasked supplier contact details from D1
+    // Retrieve supplier details internally for coordinator follow-up (never returned publicly)
     let supplier: any = null;
     if (db) {
       try {
         supplier = await db.prepare(`
           SELECT shop_id, name, clean_name, contact_person, booth_no, district, floor, gate,
-                 unmasked_direct_phone, international_mobile, all_wechats
+                 unmasked_direct_phone
           FROM suppliers 
           WHERE shop_id = ? 
           LIMIT 1
@@ -103,7 +74,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
       }
     }
 
-    // Fallback to local data helper if DB query yielded null
     if (!supplier) {
       supplier = await getSupplierById(cleanShopId, db);
     }
@@ -115,56 +85,52 @@ export const POST: APIRoute = async ({ request, locals }) => {
       });
     }
 
-    const supplierName = supplier.clean_name || supplier.name || 'Verified Stall';
-    const unmaskedPhone = supplier.unmasked_direct_phone || '';
-    const intlPhone = supplier.international_mobile || (unmaskedPhone.startsWith('+86') ? unmaskedPhone : `+86-${unmaskedPhone}`);
-    const wechat = supplier.all_wechats || unmaskedPhone;
+    const supplierName = supplier.clean_name || supplier.name || 'Verified Supplier';
+    const internalPhone = supplier.unmasked_direct_phone || '';
 
-    // Record the unlock lead event in D1
-    const unlockId = crypto.randomUUID();
+    // Record the quote inquiry event in D1
+    const inquiryId = crypto.randomUUID();
     const messageNotes = [
-      `[Contact Unlock] Direct line revealed for Booth ${supplier.booth_no || 'N/A'} (${supplierName}).`,
-      `[IP: ${clientIp}]`,
-      cleanPhone ? `[Buyer Phone: ${cleanPhone}]` : null
+      cleanNotes || `Direct factory price & MOQ quote request for ${supplierName} (Booth ${supplier.booth_no || 'N/A'}).`,
+      supplier.booth_no ? `[Target Booth: ${supplier.booth_no}]` : null,
+      `[Service: Factory Quote Request]`,
+      cleanPhone ? `[Contact Phone/WA: ${cleanPhone}]` : null,
+      `[IP: ${clientIp}]`
     ].filter(Boolean).join('\n');
 
     if (db) {
       try {
         await db.prepare(`
           INSERT INTO inquiries (id, shop_id, buyer_name, buyer_email, buyer_country, message, status, created_at)
-          VALUES (?, ?, ?, ?, ?, ?, 'UNLOCKED', CURRENT_TIMESTAMP)
-        `).bind(unlockId, cleanShopId, cleanName, cleanEmail, cleanCountry, messageNotes).run();
+          VALUES (?, ?, ?, ?, ?, ?, 'PENDING', CURRENT_TIMESTAMP)
+        `).bind(inquiryId, cleanShopId, cleanName, cleanEmail, cleanCountry, messageNotes).run();
       } catch (logErr) {
         console.error('[D1 Lead Insert Error]:', logErr);
       }
     }
 
-    // Dispatch real-time lead notification (Telegram / Email / Webhook)
+    // Dispatch internal admin notification (Telegram / Email / Webhook)
     dispatchInquiryAlerts({
-      inquiryId: unlockId,
+      inquiryId,
       buyerName: cleanName,
       buyerEmail: cleanEmail,
       buyerPhone: cleanPhone || undefined,
       buyerCountry: cleanCountry,
       targetBooth: supplier.booth_no || undefined,
-      serviceType: 'Contact Unlock (Direct Mobile & WeChat)',
-      message: `Buyer unlocked direct stall contact for ${supplierName} (Booth ${supplier.booth_no || 'N/A'}, District ${supplier.district || '1'}). Unmasked line: ${unmaskedPhone}`,
+      serviceType: 'Factory Quote Request (Direct Desk)',
+      message: `${cleanNotes ? `Buyer notes: ${cleanNotes}\n` : ''}Requested quote for ${supplierName} (Booth ${supplier.booth_no || 'N/A'}, District ${supplier.district || '1'}). Internal supplier ref: ${internalPhone}`,
       shopId: cleanShopId
-    }, locals).catch(err => console.error('[Unlock Notification Dispatch Error]:', err));
-
-    const revealsLeft = Math.max(0, DAILY_UNLOCK_LIMIT - (recentCount + 1));
+    }, locals).catch(err => console.error('[Quote Notification Dispatch Error]:', err));
 
     return new Response(JSON.stringify({
       success: true,
+      inquiry_id: inquiryId,
       shop_id: cleanShopId,
       supplier_name: supplierName,
-      contact_person: supplier.contact_person || 'Stall Manager',
+      contact_person: supplier.contact_person || 'Factory Manager',
       booth_no: supplier.booth_no || '',
       district: supplier.district || '',
-      phone: unmaskedPhone,
-      intl_phone: intlPhone,
-      wechat: wechat,
-      reveals_left: revealsLeft
+      status: 'QUOTE_REQUESTED'
     }), {
       status: 200,
       headers: {
@@ -177,7 +143,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
     console.error('[API Error] /api/unlock-contact failed:', err);
     return new Response(JSON.stringify({
       success: false,
-      error: 'An unexpected error occurred while revealing contact details.'
+      error: 'An unexpected error occurred while submitting your quote request.'
     }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }

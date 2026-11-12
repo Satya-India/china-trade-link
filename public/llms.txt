@@ -2,7 +2,7 @@
 
 > Verified B2B directory and offline sourcing intelligence platform for China's physical wholesale markets.
 
-Sino Trade Link provides verified access to 27,337+ physical factory stalls and wholesale distributors operating inside Yiwu International Trade City (Futian Market Districts 1–5), Huangyuan Garment Market, and the International Production Materials Market in Zhejiang, China. Features physical booth coordinates, verified direct factory statuses, and unmasked stall lines with gated lead verification.
+Sino Trade Link provides free-to-browse access to 27,706+ verified physical factory stalls and wholesale distributors operating inside Yiwu International Trade City (Futian Market Districts 1–5), Huangyuan Garment Market, and the International Production Materials Market in Zhejiang, alongside China-wide factory procurement across Shenzhen, Guangzhou, Dongguan, Ningbo, Foshan, and industrial hubs nationwide. Features physical booth coordinates, verified factory statuses, Alibaba.com direct factory quoting, and managed desk RFQ routing.
 
 ## Core Navigation & Directories
 
@@ -10,7 +10,7 @@ Sino Trade Link provides verified access to 27,337+ physical factory stalls and 
 - [Market Floor Map & 14 Specialized Stock-Lot Streets](https://sinotradelink.com/market-map): Interactive district floor plan, 4 niche wholesale complexes (Furniture, Building Materials, Production Materials, Timber), and 14 specialized Yiwu stock-lot streets (Meihu & Wuai 80%-off factory overrun streets) with Chinese taxi addresses.
 - [China Sourcing, OEM & Freight Playbook](https://sinotradelink.com/sourcing-guide): Interactive CBM, volumetric weight (÷5000 vs ÷6000) & landed freight calculator, EXW/FOB/DDP formula breakdown, 7 shipping methods (Express, AFUC, SFUC, LCL, FCL), 9-step OEM & private label manufacturing roadmap, MOQ negotiation scripts, NNN & provisional patent IP protection, and pre-shipment QC checklists.
 - [On-Demand Stall Inspection Concierge](https://sinotradelink.com/concierge): Professional bilingual agent ground service to visit booths, verify stock, inspect material tolerances (plush GSM, plastic burrs, metal salt-spray specs), and consolidate samples into a single box ($99–$299 flat fee, 0% commission).
-- [Alibaba.com Dropshipping & Direct Factory Agent](https://sinotradelink.com/dropshipping): Free quote service to source any Alibaba.com product link directly from Yiwu factories with 1-piece dropshipping, blind white-label packaging, and zero monthly subscriptions.
+- [Alibaba.com Dropshipping & Direct Factory Agent](https://sinotradelink.com/dropshipping): Free quote service to source any Alibaba.com product link directly from factories anywhere in China (Yiwu, Shenzhen, Guangzhou, Ningbo & nationwide) with 1-piece dropshipping, blind white-label packaging, and zero monthly subscriptions.
 - [Global Supplier Onboarding](https://sinotradelink.com/for-suppliers): Application portal for verified manufacturers and international trade suppliers to list on the platform.
 - [Public Suppliers API](https://sinotradelink.com/api/suppliers.json): JSON feed of verified market suppliers and stall locations.
 

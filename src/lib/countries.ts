@@ -1161,7 +1161,7 @@ export const COUNTRIES: CountryCorridor[] = [
     airTransitDays: '4–6 Days Express / 8–12 Days Air Cargo',
     customsCompliance: 'COSEC BESC Waiver, ASN Conformity Verification & GAINDE ORBUS Single Window',
     buyerFocus: 'Sandaga, Petersen & Touba wholesale merchants, hardware importers, and Sahel transit traders',
-    marketSummary: 'Senegal’s trading diaspora has deep roots in Yiwu—access 27,706 unmasked booth numbers and consolidate containers straight to Dakar.',
+    marketSummary: 'Senegal’s trading diaspora has deep roots in Yiwu—browse 27,706+ verified booth profiles and consolidate containers straight to Dakar.',
     corridorAdvantage: 'BESC electronic waiver and ASN conformity preparation in Yiwu with high-cube container loading to Port of Dakar.'
   },
   {
@@ -1795,7 +1795,7 @@ export function getSmartCountrySeoMeta(
     nativeTerms = [
       `import from Yiwu to ${country.name}`,
       `Yiwu wholesale market suppliers for ${country.name}`,
-      `direct China factory WeChat mobile numbers ${country.name}`,
+      `direct China factory sourcing quotes ${country.name}`,
       `LCL FCL container shipping Ningbo to ${country.ports}`,
       `${country.customsCompliance} inspection Yiwu`
     ];
@@ -1807,7 +1807,7 @@ export function getSmartCountrySeoMeta(
     : `Import from Yiwu China to ${country.name} (${country.flag}) — 27,706 Verified Factory Stalls, Direct Contacts & Shipping to ${country.ports.split(',')[0]} | Sino Trade Link`;
 
   const seoDescription = category
-    ? `Source ${category.shortName} directly from Yiwu ${catLocation} for ${country.name} (${country.ports}, ${country.seaTransitDays} sea transit). Verify ${country.customsCompliance} compliance, access free +86 factory phones, quote Alibaba links, or book a $99 stall audit.`
+    ? `Source ${category.shortName} directly from Yiwu ${catLocation} & factories across China for ${country.name} (${country.ports}, ${country.seaTransitDays} sea transit). Verify ${country.customsCompliance} compliance, request managed factory quotes, quote Alibaba links, or book a $99 stall audit.`
     : `Bypass 15–30% trading markups when importing from Yiwu to ${country.name} (${country.ports}). Browse 27,706 verified stalls, verify ${country.customsCompliance} with a $99 physical booth audit, and ship LCL/FCL at 6% open-book commission.`;
 
   const baseKeywords = category

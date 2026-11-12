@@ -54,7 +54,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
   }
 
   // 4. Check Cloudflare Edge Cache API (caches.default) using deploy-versioned URL string key
-  const EDGE_CACHE_VERSION = '20261112-dropship-v2';
+  const EDGE_CACHE_VERSION = '20261112-chinawide-v3';
   const cache = typeof globalThis !== 'undefined' && 'caches' in globalThis ? (globalThis as any).caches?.default : null;
   const cacheKey = `${url.origin}${url.pathname}${url.search ? `${url.search}&` : '?'}__cf_ver=${EDGE_CACHE_VERSION}`;
 

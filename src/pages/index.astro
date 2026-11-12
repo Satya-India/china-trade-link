@@ -10,7 +10,11 @@ const stats = await getStats();
 const featuredSuppliers = await getFeaturedSuppliers(8);
 ---
 
-<Layout title="Sino Trade Link | 20,000+ Verified China Wholesale Market Suppliers & Direct Contacts" activePage="home">
+<Layout
+  title="Sino Trade Link | Alibaba.com Dropshipping & China-Wide Direct Factory Sourcing"
+  description="Source directly from factories anywhere in China (Yiwu, Shenzhen, Guangzhou, Ningbo & beyond). Paste any Alibaba.com product link or browse 27,706+ verified stalls free and request managed factory quotes."
+  activePage="home"
+>
   <!-- Hero Section -->
   <section class="relative bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 text-white pt-16 pb-24 overflow-hidden border-b border-slate-800">
     <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900/30 via-transparent to-transparent"></div>
@@ -19,16 +23,16 @@ const featuredSuppliers = await getFeaturedSuppliers(8);
       <!-- Badge -->
       <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-300 text-xs font-bold mb-6">
         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-        <span>🇨🇳 27,706 Verified Stalls · 99.9% Direct Mobiles · No Agents · No Kickbacks</span>
+        <span>🇨🇳 China-Wide Factory Sourcing · Yiwu, Shenzhen, Guangzhou &amp; Nationwide · Zero Middleman Markups</span>
       </div>
 
       <!-- Main Headline -->
       <h1 class="text-4xl sm:text-6xl font-black tracking-tight text-white max-w-4xl mx-auto leading-tight sm:leading-none">
-        Source Directly from <span class="bg-gradient-to-r from-blue-400 via-indigo-300 to-amber-300 bg-clip-text text-transparent">Physical Factory Stalls</span> in China.
+        Source Directly from <span class="bg-gradient-to-r from-blue-400 via-indigo-300 to-amber-300 bg-clip-text text-transparent">Factories Anywhere</span> in China.
       </h1>
 
       <p class="mt-6 text-base sm:text-xl text-slate-300 max-w-2xl mx-auto font-normal leading-relaxed">
-        Bypass trading agents and 30% trading markups. Access <strong class="text-white font-semibold">{stats.totalSuppliers.toLocaleString()}+ verified stalls</strong> across Yiwu Futian & Huangyuan Wholesale Markets with real, unmasked Chinese mobile numbers.
+        We procure across <strong class="text-white font-semibold">Yiwu, Shenzhen, Guangzhou, Ningbo &amp; factory belts nationwide</strong> — not only Yiwu market. Paste any Alibaba.com link or browse <strong class="text-white font-semibold">{stats.totalSuppliers.toLocaleString()}+ verified stalls</strong> free and request direct factory quotes through our team.
       </p>
 
       <!-- Search Bar -->
@@ -82,24 +86,24 @@ const featuredSuppliers = await getFeaturedSuppliers(8);
 
       <!-- On-Ground Trust Bar -->
       <div class="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-slate-400">
-        <span class="flex items-center gap-1.5"><span class="text-emerald-400">📍</span> Yiwu Futian Market, Zhejiang, China</span>
+        <span class="flex items-center gap-1.5"><span class="text-emerald-400">📍</span> Yiwu, Shenzhen, Guangzhou &amp; Nationwide</span>
         <span class="hidden sm:block text-slate-700">|</span>
-        <span class="flex items-center gap-1.5"><span class="text-blue-400">📞</span> On-Ground Team: +86 134 8272 5985</span>
+        <span class="flex items-center gap-1.5"><span class="text-blue-400">💬</span> Direct Sourcing Desk via WhatsApp</span>
         <span class="hidden sm:block text-slate-700">|</span>
-        <span class="flex items-center gap-1.5"><span class="text-amber-400">✅</span> B2B commercial stall signboard data</span>
+        <span class="flex items-center gap-1.5"><span class="text-amber-400">✅</span> Vetted China Factory &amp; Stall Network</span>
         <span class="hidden sm:block text-slate-700">|</span>
-        <span class="flex items-center gap-1.5"><span class="text-emerald-400">🔁</span> Dead Contact Replacement Guarantee</span>
+        <span class="flex items-center gap-1.5"><span class="text-emerald-400">🛡️</span> Managed Outreach — We Contact Suppliers For You</span>
       </div>
 
       <!-- Live Metric Badges Grid -->
       <div class="mt-14 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
         <div class="bg-slate-800/60 backdrop-blur border border-slate-700/60 rounded-2xl p-4 text-center">
           <div class="text-2xl sm:text-3xl font-black text-white">{stats.totalSuppliers.toLocaleString()}+</div>
-          <div class="text-xs text-slate-400 font-medium mt-1">Verified Stalls Ingested</div>
+          <div class="text-xs text-slate-400 font-medium mt-1">Verified Stalls Indexed</div>
         </div>
         <div class="bg-slate-800/60 backdrop-blur border border-slate-700/60 rounded-2xl p-4 text-center">
-          <div class="text-2xl sm:text-3xl font-black text-emerald-400">{stats.phoneCoverageRate}%</div>
-          <div class="text-xs text-slate-400 font-medium mt-1">Unmasked Direct Mobiles</div>
+          <div class="text-2xl sm:text-3xl font-black text-emerald-400">100% China</div>
+          <div class="text-xs text-slate-400 font-medium mt-1">All Industrial Belts Covered</div>
         </div>
         <div class="bg-slate-800/60 backdrop-blur border border-slate-700/60 rounded-2xl p-4 text-center">
           <div class="text-2xl sm:text-3xl font-black text-amber-400">{stats.directFactories.toLocaleString()}</div>
@@ -118,13 +122,13 @@ const featuredSuppliers = await getFeaturedSuppliers(8);
     <AlibabaDropshipBox locale="en" headingId="home-alibaba-box-heading" />
   </div>
 
-  <!-- Amazon vs Yiwu Price Comparison Section -->
+  <!-- Alibaba.com vs Direct China Factory Price Comparison Section -->
   <section class="py-16 bg-slate-900 text-white border-b border-slate-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center max-w-2xl mx-auto mb-10">
-        <span class="text-xs font-bold uppercase tracking-wider text-amber-400 block mb-1">Real Price Intelligence</span>
-        <h2 class="text-3xl font-black text-white tracking-tight">Same Product. Fraction of the Price.</h2>
-        <p class="text-sm text-slate-400 mt-2">Real prices from Amazon vs. what verified Yiwu Futian stalls actually charge — before any middleman margin.</p>
+        <span class="text-xs font-bold uppercase tracking-wider text-amber-400 block mb-1">Alibaba.com vs. China Factory Direct</span>
+        <h2 class="text-3xl font-black text-white tracking-tight">Alibaba.com Price vs. Our Direct Factory Price</h2>
+        <p class="text-sm text-slate-400 mt-2">Typical public Alibaba.com trader listings vs. direct RMB factory rates we procure across Yiwu, Shenzhen, Guangzhou, Ningbo &amp; all Chinese manufacturing hubs.</p>
       </div>
 
       <div class="overflow-x-auto rounded-2xl border border-slate-700 shadow-xl">
@@ -132,67 +136,68 @@ const featuredSuppliers = await getFeaturedSuppliers(8);
           <thead>
             <tr class="bg-slate-800 text-slate-400 text-[11px] uppercase tracking-wider">
               <th class="text-left px-5 py-3.5 font-bold">Product</th>
-              <th class="text-left px-4 py-3.5 font-bold">District & Floor</th>
-              <th class="text-right px-4 py-3.5 font-bold text-red-400">Amazon Price</th>
-              <th class="text-right px-4 py-3.5 font-bold text-emerald-400">Yiwu Booth</th>
-              <th class="text-right px-4 py-3.5 font-bold">MOQ</th>
+              <th class="text-left px-4 py-3.5 font-bold">China Sourcing Hub</th>
+              <th class="text-right px-4 py-3.5 font-bold text-red-400">Alibaba.com Price</th>
+              <th class="text-right px-4 py-3.5 font-bold text-emerald-400">Our Direct Price</th>
+              <th class="text-right px-4 py-3.5 font-bold">Dropship / MOQ</th>
               <th class="text-right px-5 py-3.5 font-bold text-amber-400">Saving</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-slate-800">
             <tr class="bg-slate-900 hover:bg-slate-800/80 transition-colors">
-              <td class="px-5 py-4 font-medium text-white"><a href="/directory?q=phone+case" rel="nofollow" class="hover:text-blue-400 transition-colors">Silicone Phone Cases (12-pack)</a></td>
-              <td class="px-4 py-4 text-slate-400"><a href="/directory?district=2" rel="nofollow" class="hover:text-blue-400 transition-colors">Dist 2 · Floor 3</a></td>
-              <td class="px-4 py-4 text-right text-red-400 font-mono">$2.08/unit</td>
-              <td class="px-4 py-4 text-right text-emerald-400 font-mono font-bold">$0.38/unit</td>
-              <td class="px-4 py-4 text-right text-slate-400">120 pcs</td>
-              <td class="px-5 py-4 text-right font-black text-amber-400">−82%</td>
+              <td class="px-5 py-4 font-medium text-white"><a href="/directory?q=phone+case" rel="nofollow" class="hover:text-blue-400 transition-colors">MagSafe Silicone Phone Case</a></td>
+              <td class="px-4 py-4 text-slate-400"><a href="/dropshipping" class="hover:text-blue-400 transition-colors">Shenzhen · Electronics Belt</a></td>
+              <td class="px-4 py-4 text-right text-red-400 font-mono">$1.85/unit</td>
+              <td class="px-4 py-4 text-right text-emerald-400 font-mono font-bold">$0.92/unit</td>
+              <td class="px-4 py-4 text-right text-slate-400">From 1 pc · Bulk 100+</td>
+              <td class="px-5 py-4 text-right font-black text-amber-400">−50%</td>
             </tr>
             <tr class="bg-slate-900/80 hover:bg-slate-800/80 transition-colors">
-              <td class="px-5 py-4 font-medium text-white"><a href="/directory?q=insulated+mug" rel="nofollow" class="hover:text-blue-400 transition-colors">Stainless 304 Insulated Mugs</a></td>
-              <td class="px-4 py-4 text-slate-400"><a href="/directory?district=2" rel="nofollow" class="hover:text-blue-400 transition-colors">Dist 2 · Floor 3</a></td>
-              <td class="px-4 py-4 text-right text-red-400 font-mono">$18.99/unit</td>
-              <td class="px-4 py-4 text-right text-emerald-400 font-mono font-bold">$2.10/unit</td>
-              <td class="px-4 py-4 text-right text-slate-400">50 pcs</td>
-              <td class="px-5 py-4 text-right font-black text-amber-400">−89%</td>
+              <td class="px-5 py-4 font-medium text-white"><a href="/directory?q=insulated+mug" rel="nofollow" class="hover:text-blue-400 transition-colors">Stainless 304 Insulated Tumbler</a></td>
+              <td class="px-4 py-4 text-slate-400"><a href="/directory?district=2" rel="nofollow" class="hover:text-blue-400 transition-colors">Yongkang / Yiwu · Dist 2</a></td>
+              <td class="px-4 py-4 text-right text-red-400 font-mono">$4.90/unit</td>
+              <td class="px-4 py-4 text-right text-emerald-400 font-mono font-bold">$2.45/unit</td>
+              <td class="px-4 py-4 text-right text-slate-400">From 1 pc · Bulk 50+</td>
+              <td class="px-5 py-4 text-right font-black text-amber-400">−50%</td>
             </tr>
             <tr class="bg-slate-900 hover:bg-slate-800/80 transition-colors">
-              <td class="px-5 py-4 font-medium text-white"><a href="/directory?q=LED+string+lights" rel="nofollow" class="hover:text-blue-400 transition-colors">LED String Lights 10m</a></td>
-              <td class="px-4 py-4 text-slate-400"><a href="/directory?district=1" rel="nofollow" class="hover:text-blue-400 transition-colors">Dist 1 · Floor 4</a></td>
-              <td class="px-4 py-4 text-right text-red-400 font-mono">$15.99/unit</td>
-              <td class="px-4 py-4 text-right text-emerald-400 font-mono font-bold">$1.65/unit</td>
-              <td class="px-4 py-4 text-right text-slate-400">100 pcs</td>
-              <td class="px-5 py-4 text-right font-black text-amber-400">−90%</td>
+              <td class="px-5 py-4 font-medium text-white"><a href="/directory?q=LED+lamp" rel="nofollow" class="hover:text-blue-400 transition-colors">Rechargeable LED Desk Lamp</a></td>
+              <td class="px-4 py-4 text-slate-400"><a href="/dropshipping" class="hover:text-blue-400 transition-colors">Zhongshan · Lighting Belt</a></td>
+              <td class="px-4 py-4 text-right text-red-400 font-mono">$5.60/unit</td>
+              <td class="px-4 py-4 text-right text-emerald-400 font-mono font-bold">$2.95/unit</td>
+              <td class="px-4 py-4 text-right text-slate-400">From 1 pc · Bulk 50+</td>
+              <td class="px-5 py-4 text-right font-black text-amber-400">−47%</td>
             </tr>
             <tr class="bg-slate-900/80 hover:bg-slate-800/80 transition-colors">
-              <td class="px-5 py-4 font-medium text-white"><a href="/directory?q=plush+bear" rel="nofollow" class="hover:text-blue-400 transition-colors">Plush Stuffed Bear 30cm</a></td>
-              <td class="px-4 py-4 text-slate-400"><a href="/directory?district=1" rel="nofollow" class="hover:text-blue-400 transition-colors">Dist 1 · Floor 1</a></td>
-              <td class="px-4 py-4 text-right text-red-400 font-mono">$19.99/unit</td>
-              <td class="px-4 py-4 text-right text-emerald-400 font-mono font-bold">$2.40/unit</td>
-              <td class="px-4 py-4 text-right text-slate-400">100 pcs</td>
-              <td class="px-5 py-4 text-right font-black text-amber-400">−88%</td>
+              <td class="px-5 py-4 font-medium text-white"><a href="/directory?q=plush+bear" rel="nofollow" class="hover:text-blue-400 transition-colors">Plush Stuffed Toy 30cm</a></td>
+              <td class="px-4 py-4 text-slate-400"><a href="/directory?district=1" rel="nofollow" class="hover:text-blue-400 transition-colors">Yangzhou / Yiwu · Dist 1</a></td>
+              <td class="px-4 py-4 text-right text-red-400 font-mono">$4.40/unit</td>
+              <td class="px-4 py-4 text-right text-emerald-400 font-mono font-bold">$2.25/unit</td>
+              <td class="px-4 py-4 text-right text-slate-400">From 1 pc · Bulk 100+</td>
+              <td class="px-5 py-4 text-right font-black text-amber-400">−49%</td>
             </tr>
             <tr class="bg-slate-900 hover:bg-slate-800/80 transition-colors">
-              <td class="px-5 py-4 font-medium text-white"><a href="/directory?q=gel+pen" rel="nofollow" class="hover:text-blue-400 transition-colors">Gel Pen Set 36-pack</a></td>
-              <td class="px-4 py-4 text-slate-400"><a href="/directory?district=3" rel="nofollow" class="hover:text-blue-400 transition-colors">Dist 3 · Floor 1</a></td>
-              <td class="px-4 py-4 text-right text-red-400 font-mono">$0.42/unit</td>
-              <td class="px-4 py-4 text-right text-emerald-400 font-mono font-bold">$0.06/unit</td>
-              <td class="px-4 py-4 text-right text-slate-400">500 pcs</td>
-              <td class="px-5 py-4 text-right font-black text-amber-400">−86%</td>
+              <td class="px-5 py-4 font-medium text-white"><a href="/directory?q=kitchen" rel="nofollow" class="hover:text-blue-400 transition-colors">Silicone Kitchen Utensil Set</a></td>
+              <td class="px-4 py-4 text-slate-400"><a href="/dropshipping" class="hover:text-blue-400 transition-colors">Ningbo / Yangjiang Hub</a></td>
+              <td class="px-4 py-4 text-right text-red-400 font-mono">$6.80/set</td>
+              <td class="px-4 py-4 text-right text-emerald-400 font-mono font-bold">$3.60/set</td>
+              <td class="px-4 py-4 text-right text-slate-400">From 1 pc · Bulk 100+</td>
+              <td class="px-5 py-4 text-right font-black text-amber-400">−47%</td>
             </tr>
             <tr class="bg-slate-900/80 hover:bg-slate-800/80 transition-colors">
-              <td class="px-5 py-4 font-medium text-white"><a href="/directory?q=socks" rel="nofollow" class="hover:text-blue-400 transition-colors">Custom Linen Socks</a></td>
-              <td class="px-4 py-4 text-slate-400"><a href="/directory?district=4" rel="nofollow" class="hover:text-blue-400 transition-colors">Dist 4 · Floor 1</a></td>
-              <td class="px-4 py-4 text-right text-red-400 font-mono">$8.99/pair</td>
-              <td class="px-4 py-4 text-right text-emerald-400 font-mono font-bold">$0.62/unit</td>
-              <td class="px-4 py-4 text-right text-slate-400">200 pcs</td>
-              <td class="px-5 py-4 text-right font-black text-amber-400">−93%</td>
+              <td class="px-5 py-4 font-medium text-white"><a href="/directory?q=socks" rel="nofollow" class="hover:text-blue-400 transition-colors">Custom Athletic &amp; Linen Socks</a></td>
+              <td class="px-4 py-4 text-slate-400"><a href="/directory?district=4" rel="nofollow" class="hover:text-blue-400 transition-colors">Zhuji / Yiwu · Dist 4</a></td>
+              <td class="px-4 py-4 text-right text-red-400 font-mono">$1.45/pair</td>
+              <td class="px-4 py-4 text-right text-emerald-400 font-mono font-bold">$0.62/pair</td>
+              <td class="px-4 py-4 text-right text-slate-400">From 1 pc · Bulk 200+</td>
+              <td class="px-5 py-4 text-right font-black text-amber-400">−57%</td>
             </tr>
           </tbody>
         </table>
       </div>
-      <p class="text-xs text-slate-500 mt-4 text-center">* Ex-works prices from stall. Add shipping (~$1.50–$3.50/kg via sea freight) for landed cost. Prices vary by order volume.</p>
-      <div class="text-center mt-8">
+      <p class="text-xs text-slate-500 mt-4 text-center">* Sample direct China factory EXW pricing across Yiwu, Shenzhen, Guangzhou &amp; Ningbo hubs compared against public Alibaba.com trader listings. 1-piece dropshipping &amp; bulk test orders available.</p>
+      <div class="text-center mt-8 flex flex-wrap items-center justify-center gap-3">
+        <a href="#alibaba-dropship-box" class="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-sm transition-colors shadow-md shadow-emerald-500/20">Paste Alibaba.com Link For Exact Quote →</a>
         <a href="/directory" class="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm transition-colors shadow-md shadow-blue-600/20">Browse 27,706+ Verified Stalls →</a>
       </div>
     </div>
@@ -366,7 +371,7 @@ const featuredSuppliers = await getFeaturedSuppliers(8);
             Top Direct Factories & Veteran Suppliers
           </h2>
           <p class="text-sm text-slate-600 mt-1 max-w-xl">
-            Every stall profile features 100% genuine unmasked Chinese mobile numbers, physical stall street addresses, and verified booth numbers.
+            Browse verified stall locations, product catalogs, and booth numbers — then request a direct factory quote or sample consolidation from our team.
           </p>
         </div>
         <a 
@@ -394,8 +399,8 @@ const featuredSuppliers = await getFeaturedSuppliers(8);
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
         <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-          <h3 class="text-sm font-black text-slate-900 mb-3">"How do I know phone numbers are real and not VoIP proxies?"</h3>
-          <p class="text-xs text-slate-600 leading-relaxed">Our 27,706 records come from physical stall signboards photographed on-site at Yiwu Futian Market. Every number is cross-referenced with the market's official booth registration card. Inactive or VoIP numbers found during use are replaced free under our Dead Contact Guarantee — notify us and we replace within 48 hours.</p>
+          <h3 class="text-sm font-black text-slate-900 mb-3">"Do you source only from Yiwu market, and why do I contact Sino Trade Link instead of supplier numbers?"</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">We procure anywhere across China — Shenzhen (electronics), Guangzhou/Foshan (apparel, beauty, furniture), Ningbo/Yongkang (hardware &amp; homeware), Shantou (toys), and Yiwu markets. Supplier numbers stay private with our bilingual desk so we protect your buyer identity, negotiate real RMB factory prices, verify business licenses, and prevent trader markups.</p>
         </div>
         <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
           <h3 class="text-sm font-black text-slate-900 mb-3">"Can I paste an Alibaba.com link even if I only need 1 piece or low MOQ?"</h3>
@@ -415,8 +420,8 @@ const featuredSuppliers = await getFeaturedSuppliers(8);
         </div>
       </div>
       <div class="bg-blue-600 rounded-2xl p-6 sm:p-8 text-white text-center max-w-3xl mx-auto">
-        <p class="text-sm sm:text-base font-medium leading-relaxed">Our business model is built on <strong>repeat buyers</strong>. A buyer who trusts us completes a $5,000 first order and returns for a $50,000 second. Misleading you once would cost us 10× in lifetime value. That's why we publish our fees, our model, and our WhatsApp number openly.</p>
-        <a href="https://wa.me/8613482725985" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 mt-4 px-5 py-2.5 rounded-xl bg-white text-blue-700 font-bold text-sm hover:bg-blue-50 transition-colors">Talk to Our Yiwu Team on WhatsApp →</a>
+        <p class="text-sm sm:text-base font-medium leading-relaxed">Our business model is built on <strong>repeat buyers</strong>. A buyer who trusts us completes a $5,000 first order and returns for a $50,000 second. Misleading you once would cost us 10× in lifetime value. That's why we publish our fees openly and route every factory inquiry straight through our dedicated WhatsApp sourcing desk.</p>
+        <a href="https://wa.me/8613482725985" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 mt-4 px-5 py-2.5 rounded-xl bg-white text-blue-700 font-bold text-sm hover:bg-blue-50 transition-colors">Talk to Our China Sourcing Team on WhatsApp →</a>
       </div>
     </div>
   </section>
@@ -432,7 +437,7 @@ const featuredSuppliers = await getFeaturedSuppliers(8);
           Why Dropshippers &amp; Brands Switch From Buying Blind on Alibaba
         </h2>
         <p class="text-sm text-slate-400 mt-2">
-          Browse Alibaba.com for product discovery, then let our Yiwu fulfillment team negotiate directly with physical factories, check every parcel, and ship fast worldwide.
+          Browse Alibaba.com for product discovery, then let our China-wide sourcing team negotiate directly with factories in Yiwu, Shenzhen, Guangzhou, Ningbo &amp; nationwide, inspect every parcel, and ship fast worldwide.
         </p>
       </div>
 
@@ -480,11 +485,11 @@ const featuredSuppliers = await getFeaturedSuppliers(8);
             <ul class="space-y-2 text-xs text-slate-300 border-t border-slate-700/60 pt-4 mb-6">
               <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> DDP air lines (no surprise import bills)</li>
               <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Smooth scale-up to Ningbo LCL / FCL sea</li>
-              <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Direct WhatsApp desk (+86 134 8272 5985)</li>
+              <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Direct WhatsApp sourcing desk (24h response)</li>
             </ul>
           </div>
-          <a href="https://wa.me/8613482725985?text=Hi%20SinoTradeLink%2C%20I%20want%20to%20quote%20fast%20dropshipping%20from%20Yiwu." target="_blank" rel="noopener noreferrer" class="w-full py-3 rounded-xl font-bold text-xs text-center bg-amber-500 hover:bg-amber-400 text-slate-950 transition-all">
-            Chat With Yiwu Desk &rarr;
+          <a href="https://wa.me/8613482725985?text=Hi%20SinoTradeLink%2C%20I%20want%20to%20quote%20fast%20dropshipping%20from%20China." target="_blank" rel="noopener noreferrer" class="w-full py-3 rounded-xl font-bold text-xs text-center bg-amber-500 hover:bg-amber-400 text-slate-950 transition-all">
+            Chat With China Sourcing Desk &rarr;
           </a>
         </div>
       </div>

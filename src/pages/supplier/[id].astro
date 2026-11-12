@@ -26,15 +26,6 @@ const translatedCategoryLeaf = translatedCategory
 
 const relatedSuppliers = await getRelatedSuppliers(supplier, 6);
 
-const rawPhone = supplier.unmasked_direct_phone || '';
-let maskedPhone = '+86-***-****-****';
-if (rawPhone.length >= 11) {
-  const digits = rawPhone.replace(/\D/g, '');
-  if (digits.length >= 11) {
-    maskedPhone = `+86-${digits.slice(0, 3)}-***-${digits.slice(-4)}`;
-  }
-}
-
 const sampleProducts = supplier.sample_products
   ? supplier.sample_products.split(' | ').map(p => p.trim()).filter(Boolean)
   : [];
@@ -96,7 +87,7 @@ const topProductsSnippet = extractedKeywords.length > 0
   ? extractedKeywords.slice(0, 6).join(', ')
   : (sampleProducts.slice(0, 2).join(', ') || translatedCategory || districtName);
 
-const seoDescription = `${supplierName}${supplier.company_name && supplier.company_name !== supplierName ? ` (${supplier.company_name})` : ''} is a ${isDirectFactory ? 'direct manufacturing factory' : 'verified wholesale supplier'} at Yiwu International Trade City ${districtName}, Floor ${supplier.floor || '1'}, Gate ${supplier.gate || 'Direct'}, ${boothLabel}. Wholesale products: ${topProductsSnippet}. Unlock direct +86 mobile (${maskedPhone}), WeChat ID, or book a $99 on-ground Yiwu stall audit.`;
+const seoDescription = `${supplierName}${supplier.company_name && supplier.company_name !== supplierName ? ` (${supplier.company_name})` : ''} is a ${isDirectFactory ? 'direct manufacturing factory' : 'verified wholesale supplier'} at Yiwu International Trade City ${districtName}, Floor ${supplier.floor || '1'}, Gate ${supplier.gate || 'Direct'}, ${boothLabel}. Wholesale products: ${topProductsSnippet}. Request direct RMB factory pricing, 1-piece dropshipping, or an on-ground stall audit via Sino Trade Link.`;
 
 // Build rich keyword list for <meta name="keywords"> and on-page tag cloud
 const productKeywordVariations = extractedKeywords.slice(0, 8).flatMap(p => [
@@ -114,7 +105,7 @@ const seoKeywords = [
   translatedCategory,
   ...fallbackKeywords,
   isDirectFactory ? 'Yiwu direct factory OEM manufacturer' : 'Yiwu Futian wholesale market supplier',
-  'Yiwu stall phone number WeChat'
+  'China direct factory sourcing quote'
 ].filter(Boolean).join(', ');
 
 const canonicalUrl = `https://sinotradelink.com/supplier/${supplier.shop_id}`;
@@ -135,7 +126,6 @@ const supplierJsonLd = {
       "legalName": supplier.company_name || supplierName,
       "url": canonicalUrl,
       "description": seoDescription,
-      "telephone": maskedPhone,
       "priceRange": "$$",
       "department": districtName,
       "address": {
@@ -236,10 +226,10 @@ const supplierJsonLd = {
         },
         {
           "@type": "Question",
-          "name": `How do I contact ${supplierName} directly on WeChat or phone?`,
+          "name": `How do I request a factory quote or place an order with ${supplierName}?`,
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": `You can unlock the unmasked Chinese mobile phone number (${maskedPhone}) and WeChat ID for ${supplier.contact_person || 'the Stall Manager'} at ${supplierName} directly on this page, or instruct Sino Trade Link's Yiwu ground desk (+86 134 8272 5985) to visit Booth ${supplier.booth_no || 'N/A'} on your behalf.`
+            "text": `Submit a quote request on this page or message Sino Trade Link's bilingual China sourcing desk on WhatsApp. Our on-ground team contacts ${supplier.contact_person || 'the Stall Manager'} at Booth ${supplier.booth_no || 'N/A'} to negotiate direct RMB pricing, arrange 1-piece dropshipping, or conduct an on-site audit across Yiwu or partner factories anywhere in China.`
           }
         }
       ]
@@ -313,7 +303,7 @@ const supplierJsonLd = {
             </p>
           )}
           <p class="text-xs text-slate-400 mt-1">
-            Yiwu International Trade City &bull; Floor {supplier.floor || '1'} &bull; Gate {supplier.gate || 'Direct'} &bull; {boothLabel} &bull; Direct Line: <span class="font-mono text-amber-300">{maskedPhone}</span>
+            Yiwu International Trade City &bull; Floor {supplier.floor || '1'} &bull; Gate {supplier.gate || 'Direct'} &bull; {boothLabel} &bull; <span class="text-emerald-300 font-semibold">Factory Quote via SinoTradeLink</span>
           </p>
         </div>
 
@@ -336,15 +326,14 @@ const supplierJsonLd = {
             data-unlock-id={supplier.shop_id}
             data-supplier-name={supplierName}
             data-contact-person={supplier.contact_person || 'Stall Manager'}
-            data-masked-phone={maskedPhone}
             data-district={districtName}
             data-booth={supplier.booth_no}
             class="unlock-contact-btn px-5 py-3 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-md transition-all flex items-center gap-2 cursor-pointer"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
             </svg>
-            <span>Reveal Mobile & WeChat</span>
+            <span>Request Factory Quote</span>
           </button>
         </div>
       </div>
@@ -437,7 +426,7 @@ const supplierJsonLd = {
               </div>
             ) : (
               <div class="p-4 rounded-xl bg-slate-50 border border-slate-100 text-xs text-slate-600 mb-5">
-                <strong>{supplierName}</strong> operates an active wholesale showroom in <strong>{districtName}</strong> ({boothLabel}){translatedCategory ? ` specializing in ${translatedCategory}` : ''}. Unlock their direct WeChat ID or request a $99 physical stall walkthrough to receive their latest PDF catalog and carton packing list.
+                <strong>{supplierName}</strong> operates an active wholesale showroom in <strong>{districtName}</strong> ({boothLabel}){translatedCategory ? ` specializing in ${translatedCategory}` : ''}. Request a direct factory quote or a $99 physical stall walkthrough to receive their latest PDF catalog and carton packing list.
               </div>
             )}
 
@@ -485,7 +474,7 @@ const supplierJsonLd = {
             </h2>
             <div class="space-y-3 text-xs text-slate-600 leading-relaxed">
               <p>
-                <strong>1. Direct Stall Communication (Zero Agent Markup):</strong> Unlike traditional Yiwu trading companies that add a <span class="text-slate-900 font-semibold">5%–10% commission</span> on top of booth prices, Sino Trade Link connects you directly with <strong>{supplier.contact_person || 'the Stall Manager'}</strong> at <strong>{supplierName}</strong> ({supplier.company_name || districtName}). Once unlocked, add their Chinese mobile number (<span class="font-mono">{maskedPhone}</span>) directly on <strong>WeChat</strong> to request live showroom videos, carton CBM dimensions, and factory-gate <code>EXW</code> or <code>FOB Ningbo</code> quotes.
+                <strong>1. Managed Factory Negotiation (Zero Markup):</strong> Unlike traditional Yiwu trading companies that add a <span class="text-slate-900 font-semibold">5%–10% hidden commission</span> on top of factory prices, our bilingual China sourcing team contacts <strong>{supplier.contact_person || 'the Stall Manager'}</strong> at <strong>{supplierName}</strong> directly on your behalf — or matches your target product across partner factories anywhere in China (Yiwu, Shenzhen, Guangzhou, Ningbo) — to secure genuine RMB <code>EXW</code> or <code>FOB</code> rates and live showroom videos.
               </p>
               <p>
                 <strong>2. On-Ground Physical Stall Audit ($99 Flat Fee):</strong> Before wiring a 30% T/T deposit to {boothLabel}, you can dispatch a bilingual Sino Trade Link field engineer to walk directly to <strong>Floor {supplier.floor || '1'}, Gate {supplier.gate || 'Direct'}, {boothLabel}</strong>. We shoot unedited 4K video of their physical samples, verify material tolerances and GSM/weight specs, and confirm their registered Chinese business license (<code>营业执照</code>).
@@ -542,7 +531,7 @@ const supplierJsonLd = {
           <!-- Contact Card -->
           <div class="bg-white rounded-3xl border border-blue-200 p-6 shadow-md">
             <span class="text-[10px] uppercase font-bold text-blue-600 tracking-wider block mb-1">
-              Verified Direct Contact
+              Managed Factory Sourcing Desk
             </span>
             <h3 class="text-lg font-bold text-slate-900 mb-3">
               {supplier.contact_person || 'Stall Manager'}
@@ -550,9 +539,12 @@ const supplierJsonLd = {
 
             <div class="space-y-3 mb-6">
               <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200">
-                <span class="text-[10px] uppercase font-bold text-slate-400 block">Direct Mobile & WeChat Line:</span>
-                <span class="font-mono text-base font-bold text-slate-600 block mt-0.5">
-                  {maskedPhone}
+                <span class="text-[10px] uppercase font-bold text-slate-400 block">Direct Outreach &amp; Verification:</span>
+                <span class="text-xs font-bold text-blue-700 block mt-0.5">
+                  Contact via Sino Trade Link Desk
+                </span>
+                <span class="text-[11px] text-slate-500 block mt-1">
+                  Supplier numbers stay private — our bilingual staff quotes &amp; negotiates RMB factory cost for you.
                 </span>
               </div>
             </div>
@@ -562,12 +554,11 @@ const supplierJsonLd = {
               data-unlock-id={supplier.shop_id}
               data-supplier-name={supplierName}
               data-contact-person={supplier.contact_person || 'Stall Manager'}
-              data-masked-phone={maskedPhone}
               data-district={districtName}
               data-booth={supplier.booth_no}
               class="unlock-contact-btn w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
-              <span>Click to Reveal Contact & WeChat</span>
+              <span>Request Factory Quote</span>
             </button>
 
             <a
@@ -599,7 +590,6 @@ const supplierJsonLd = {
               data-unlock-id={supplier.shop_id}
               data-supplier-name={supplierName}
               data-contact-person={supplier.contact_person || 'Stall Manager'}
-              data-masked-phone={maskedPhone}
               data-district={districtName}
               data-booth={supplier.booth_no}
               class="unlock-contact-btn w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl text-center shadow-sm transition-colors cursor-pointer"

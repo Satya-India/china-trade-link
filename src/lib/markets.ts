@@ -132,13 +132,13 @@ export const CATEGORY_PACKS = [
     supplierCount: "1,500+ Verified Stalls",
     originalPrice: 49,
     price: 29,
-    description: "Direct contact numbers, WeChat IDs, and exact booth coordinates for plush toys, RC electronics, educational toys, and holiday festival crafts.",
+    description: "Verified booth coordinates and product specialties for plush toys, RC electronics, educational toys, and holiday festival crafts — backed by managed factory quotes.",
     features: [
-      "100% Unmasked Direct Mobile Numbers",
+      "100% Verified Active Market Stalls",
       "Exact Stall Coordinates (Floor, Gate, Booth No)",
       "Direct Manufacturing Plants Tagged",
-      "Instant CSV & Excel Spreadsheet Download",
-      "Dynamic Watermarked Single-User License"
+      "Managed Factory Quote Desk Support",
+      "Unified China-Wide Fulfillment Ready"
     ],
     popular: true
   },
@@ -185,9 +185,9 @@ export const CATEGORY_PACKS = [
     description: "The massive District 4 directory: socks, hosiery, slippers, sandals, belts, towels, gloves, and daily household plastic goods.",
     features: [
       "Largest Dataset in China Wholesale",
-      "99.9% Direct Mobile Phone Coverage",
+      "99.9% Verified Stall Ownership Records",
       "OEM / Private Label Factory Flags",
-      "Direct WhatsApp Link Format"
+      "Direct Managed Quote & WhatsApp Desk"
     ],
     popular: true
   },
@@ -218,8 +218,8 @@ export const CATEGORY_PACKS = [
     features: [
       "Direct Stall Keepers & Factory Agents",
       "Floor-by-Floor Apparel Classification",
-      "Direct WeChat ID & Phone Number",
-      "Instant Digital Delivery"
+      "Verified Booth Coordinates & Managed Quotes",
+      "China-Wide Sample & Bulk Dispatch"
     ],
     popular: false
   }

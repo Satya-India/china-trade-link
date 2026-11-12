@@ -23,8 +23,7 @@ export const GET: APIRoute = async ({ locals, url }) => {
     gate: s.gate,
     booth_no: s.booth_no,
     is_factory: s.is_direct_factory === 'Yes',
-    sample_products: s.sample_products,
-    masked_phone: s.unmasked_direct_phone ? `+86-${s.unmasked_direct_phone.slice(0, 3)}-***-${s.unmasked_direct_phone.slice(-4)}` : ''
+    sample_products: s.sample_products
   }));
 
   return new Response(JSON.stringify({

@@ -200,9 +200,9 @@
           <div class="text-xs text-slate-500 flex items-center gap-3">
             <span>${item.district}</span>
             <span>•</span>
-            <span>Contact: <strong class="text-slate-700">${item.contactPerson || 'Stall Manager'}</strong></span>
+            <span>Contact: <strong class="text-slate-700">${item.contactPerson || 'Factory Manager'}</strong></span>
             <span>•</span>
-            <span class="font-mono text-slate-700">${item.phone || 'Direct Mobile Verified'}</span>
+            <span class="font-medium text-emerald-700">Quote via SinoTradeLink Desk</span>
           </div>
         </div>
         <button 
@@ -234,16 +234,16 @@
     const list = getShortlist();
     if (list.length === 0) return;
 
-    const headers = ['Supplier Name', 'District', 'Booth Number', 'Contact Person', 'Direct Phone', 'WhatsApp Link'];
+    const headers = ['Supplier Name', 'District', 'Booth Number', 'Contact Person', 'Supplier Profile URL', 'Request Quote via WhatsApp'];
     const rows = list.map(item => {
-      const digits = (item.phone || '').replace(/\D/g, '');
-      const waLink = digits.length >= 11 ? `https://wa.me/${digits.startsWith('86') ? digits : '86' + digits}` : `https://sinotradelink.com/supplier/${item.id}`;
+      const profileUrl = `https://sinotradelink.com/supplier/${item.id}`;
+      const waLink = `https://wa.me/8613482725985?text=${encodeURIComponent(`Hi SinoTradeLink, I want a factory quote for ${item.name} (Booth ${item.booth || 'N/A'})`)}`;
       return [
         `"${(item.name || '').replace(/"/g, '""')}"`,
         `"${(item.district || '').replace(/"/g, '""')}"`,
         `"${(item.booth || '').replace(/"/g, '""')}"`,
         `"${(item.contactPerson || '').replace(/"/g, '""')}"`,
-        `"${(item.phone || '').replace(/"/g, '""')}"`,
+        `"${profileUrl}"`,
         `"${waLink}"`
       ].join(',');
     });
