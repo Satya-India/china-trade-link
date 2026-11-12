@@ -3,7 +3,6 @@ import Layout from '../../layouts/Layout.astro';
 import SupplierCard from '../../components/SupplierCard.astro';
 import ContactUnlockModal from '../../components/ContactUnlockModal.astro';
 import { CATEGORY_HUBS } from '../../lib/categories';
-import { CATEGORY_PACKS } from '../../lib/markets';
 import { COUNTRIES, COUNTRY_REGIONS, resolveCountryCorridorRoute, getSmartCountrySeoMeta } from '../../lib/countries';
 import { getSuppliersPaginated } from '../../lib/data';
 
@@ -49,10 +48,6 @@ if (isCategoryMode && category) {
     pageSize: 16
   });
 }
-
-const matchingPack = isCategoryMode && category
-  ? (CATEGORY_PACKS.find(p => p.id === category.packId) || CATEGORY_PACKS[0])
-  : null;
 
 const canonicalUrl = `https://sinotradelink.com/country/${route.slug}`;
 const smartSeo = getSmartCountrySeoMeta(country, category);
@@ -136,7 +131,7 @@ const baseFaqQuestions = isCategoryMode && category
         "name": `How can ${country.name} buyers avoid 15–30% Yiwu trading agent commissions?`,
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": `${country.corridorAdvantage} Importers unlock unmasked +86 booth mobile numbers ($29 pack or $149/yr Pro Pass), order $99 physical stall audits or $149 5-booth sample boxes, and execute full containers at a transparent 6% open-book commission.`
+          "text": `${country.corridorAdvantage} Importers browse unmasked +86 booth mobile numbers 100% free, paste any Alibaba.com product link for direct factory 1-piece dropshipping or low-MOQ quotes, order $99 physical stall audits or $149 5-booth sample boxes, and execute full containers at a transparent 6% open-book commission.`
         }
       }
     ]
@@ -170,7 +165,7 @@ const baseFaqQuestions = isCategoryMode && category
         "name": `How does Sino Trade Link's 6% Open-Book Sourcing work for ${country.name} importers?`,
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": `${country.corridorAdvantage} Instead of paying hidden 15–25% factory kickbacks to traditional 'free' Yiwu agents, ${country.name} buyers access 27,706 unmasked booth contacts directly and use our Business Sourcing Tier ($399/yr) for raw RMB factory receipts plus a flat 6% open-book commission.`
+          "text": `${country.corridorAdvantage} Instead of paying hidden 15–25% factory kickbacks to traditional 'free' Yiwu agents, ${country.name} buyers access 27,706 unmasked booth contacts directly and work with our zero-subscription Open-Book Direct Execution team for raw RMB factory receipts plus a transparent fee.`
         }
       }
     ];
@@ -226,10 +221,9 @@ const pageJsonLd = {
         "identifier": country.code
       },
       "offers": [
-        { "@type": "Offer", "name": "Direct Category CSV Directory Pack", "price": "29.00", "priceCurrency": "USD" },
+        { "@type": "Offer", "name": "Alibaba.com Link Direct Sourcing & Dropshipping Quote", "price": "0.00", "priceCurrency": "USD" },
         { "@type": "Offer", "name": "On-Demand Physical Stall Audit (4K Video)", "price": "99.00", "priceCurrency": "USD" },
-        { "@type": "Offer", "name": "5-Booth Sample Consolidation & Express Dispatch", "price": "149.00", "priceCurrency": "USD" },
-        { "@type": "Offer", "name": "Pro All-Access Annual Pass (27,706+ Stalls)", "price": "149.00", "priceCurrency": "USD" }
+        { "@type": "Offer", "name": "5-Booth Sample Consolidation & Express Dispatch", "price": "149.00", "priceCurrency": "USD" }
       ]
     },
     {
@@ -384,46 +378,41 @@ const pageJsonLd = {
 
         <!-- Right Conversion Card (Hero CTAs) -->
         <div class="lg:col-span-4 bg-slate-950/90 border border-slate-800 rounded-3xl p-6 shadow-xl">
-          {isCategoryMode && category && matchingPack ? (
+          {isCategoryMode && category ? (
             <>
               <div class="flex items-center justify-between mb-2">
-                <span class="text-[10px] font-black uppercase tracking-wider text-amber-400">
-                  {country.flag} {country.name} Category Pack
+                <span class="text-[10px] font-black uppercase tracking-wider text-emerald-400">
+                  {country.flag} {country.name} Direct Sourcing
                 </span>
                 <span class="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-                  {matchingPack.supplierCount}
+                  {result.total.toLocaleString()}+ Stalls
                 </span>
               </div>
               <h2 class="text-base font-black text-white mb-1">
-                {matchingPack.title}
+                Source {category.shortName} Direct for {country.name}
               </h2>
               <p class="text-xs text-slate-400 mb-4 leading-relaxed">
-                Download the complete Excel directory of unmasked +86 mobile numbers, WeChat IDs, and booth coordinates for {category.districtLabel} suppliers exporting to {country.name}.
+                Browse verified booths in {category.districtLabel} free, or paste an Alibaba.com {category.shortName} link for 1-piece dropshipping &amp; factory quotes to {country.ports}.
               </p>
 
               <div class="flex items-baseline gap-2 mb-4">
-                <span class="text-3xl font-black text-white">${matchingPack.price}</span>
-                <span class="text-sm text-slate-500 line-through">${matchingPack.originalPrice}</span>
-                <span class="text-[11px] text-slate-400 ml-auto">Instant CSV / Excel</span>
+                <span class="text-3xl font-black text-emerald-400">$0</span>
+                <span class="text-xs font-semibold text-slate-300">Monthly Fee · Pay Per Approved Order</span>
               </div>
 
               <div class="space-y-2.5">
-                <button
-                  type="button"
-                  data-item-id={matchingPack.id}
-                  data-item-title={matchingPack.title}
-                  data-item-price={matchingPack.price}
-                  data-item-type="pack"
-                  class="paypal-trigger-btn w-full py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs shadow-md transition-all cursor-pointer"
+                <a
+                  href="/dropshipping"
+                  class="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs shadow-md transition-all text-center block"
                 >
-                  Unlock {category.shortName} Pack (${matchingPack.price}) &rarr;
-                </button>
+                  Paste Alibaba Link for Free Quote &rarr;
+                </a>
 
                 <button
                   type="button"
                   class="open-sample-audit-btn w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-xs transition-all cursor-pointer flex items-center justify-center gap-1.5"
                 >
-                  <span>Preview Sample $99 Audit Report (#STL-YW-0842)</span>
+                  <span>Preview Sample Audit Report (#STL-YW-0842)</span>
                 </button>
 
                 <a
@@ -439,43 +428,38 @@ const pageJsonLd = {
           ) : (
             <>
               <div class="flex items-center justify-between mb-2">
-                <span class="text-[10px] font-black uppercase tracking-wider text-amber-400">
-                  {country.flag} {country.name} All-Access Pass
+                <span class="text-[10px] font-black uppercase tracking-wider text-emerald-400">
+                  {country.flag} {country.name} Direct Access
                 </span>
                 <span class="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
                   27,706 Stalls
                 </span>
               </div>
               <h2 class="text-base font-black text-white mb-1">
-                Pro All-Access Yiwu Directory Pass (All 6 Districts)
+                Free Yiwu Directory &amp; Alibaba Link Agent
               </h2>
               <p class="text-xs text-slate-400 mb-4 leading-relaxed">
-                Unlock all 27,706 verified Yiwu Futian &amp; Huangyuan factory stalls with unmasked +86 mobile numbers, WeChat IDs, and weekly updates for {country.name} importers.
+                Browse 27,706 verified stalls free or paste any Alibaba.com product link for factory-direct 1-piece dropshipping &amp; consolidation to {country.ports}.
               </p>
 
               <div class="flex items-baseline gap-2 mb-4">
-                <span class="text-3xl font-black text-white">$149</span>
-                <span class="text-sm text-slate-500 line-through">$234</span>
-                <span class="text-[11px] text-slate-400 ml-auto">All 6 District CSVs</span>
+                <span class="text-3xl font-black text-emerald-400">$0</span>
+                <span class="text-xs font-semibold text-slate-300">Upfront Subscription · Pay Only On Order</span>
               </div>
 
               <div class="space-y-2.5">
-                <button
-                  type="button"
-                  data-item-id="pro-annual"
-                  data-item-title="Pro All-Access Annual Pass (All 27,706+ Verified Stalls)"
-                  data-item-price="149"
-                  data-item-type="pack"
-                  class="paypal-trigger-btn w-full py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs shadow-md transition-all cursor-pointer"
+                <a
+                  href="/dropshipping"
+                  class="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs shadow-md transition-all text-center block"
                 >
-                  Unlock All 27,706 Yiwu Stalls ($149/yr) &rarr;
-                </button>
+                  Paste Alibaba.com Link (Free Quote) &rarr;
+                </a>
 
                 <button
                   type="button"
                   class="open-sample-audit-btn w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-xs transition-all cursor-pointer flex items-center justify-center gap-1.5"
                 >
-                  <span>Preview Sample $99 Audit Report (#STL-YW-0842)</span>
+                  <span>Preview Sample Audit Report (#STL-YW-0842)</span>
                 </button>
 
                 <a
@@ -603,20 +587,20 @@ const pageJsonLd = {
               <span class="px-3 py-1 rounded-full bg-blue-600 text-white text-xs font-black">
                 STEP 1 · Direct Access
               </span>
-              <span class="text-xs font-bold text-slate-500">$29 Pack / $149 Pro</span>
+              <span class="text-xs font-bold text-emerald-700">100% Free Access</span>
             </div>
             <h3 class="text-base font-black text-slate-900 mb-2">
-              Unlock Unmasked Yiwu Booth &amp; WeChat Contacts
+              Browse Verified Stalls or Paste Alibaba.com Links
             </h3>
             <p class="text-xs text-slate-600 leading-relaxed mb-4">
-              Skip Alibaba middlemen and local {country.name} wholesale importers. Access verified Yiwu Futian Market stall numbers, direct +86 mobile lines, and factory WeChat IDs to request raw ex-works RMB pricing directly from the booth owner.
+              Skip Alibaba trading markups and local {country.name} importers. Browse verified Yiwu Futian Market booths free, or paste any Alibaba.com link on WhatsApp for real RMB factory quotes from 1 piece.
             </p>
           </div>
           <a
-            href="/category-packs"
+            href="/dropshipping"
             class="text-xs font-bold text-blue-600 hover:text-blue-700 inline-flex items-center gap-1"
           >
-            Compare Niche Packs &amp; $149 Pro Pass &rarr;
+            Paste Alibaba.com Link (Free Quote) &rarr;
           </a>
         </div>
 
@@ -665,7 +649,7 @@ const pageJsonLd = {
               6% Open-Book Container Consolidation to {country.ports}
             </h3>
             <p class="text-xs text-slate-600 leading-relaxed mb-4">
-              Upgrade to our <strong>$399/yr Business Sourcing Tier</strong> for multi-stall warehouse consolidation, raw RMB factory receipts + separate 6% invoice, <strong>$149 Pre-Shipment AQL 2.5 Carton Inspection</strong> before releasing the 70% balance, and full <strong>{country.customsCompliance}</strong> documentation routed from Ningbo to <strong>{country.ports}</strong> ({country.seaTransitDays}).
+              Work with our zero-subscription <strong>Open-Book Direct Execution</strong> team for 1-piece dropshipping or multi-stall warehouse consolidation, raw RMB factory receipts + transparent fee invoice, optional <strong>$149 Pre-Shipment AQL 2.5 Carton Inspection</strong>, and full <strong>{country.customsCompliance}</strong> documentation routed from Ningbo to <strong>{country.ports}</strong> ({country.seaTransitDays}).
             </p>
           </div>
           <a

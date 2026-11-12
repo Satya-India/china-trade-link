@@ -254,16 +254,12 @@ const countriesJsonLd = {
           </div>
 
           <div class="lg:col-span-5 flex flex-col sm:flex-row lg:flex-col gap-3">
-            <button
-              type="button"
-              data-item-id="pro-annual"
-              data-item-title="Pro All-Access Annual Pass (All 27,706+ Verified Stalls)"
-              data-item-price="149"
-              data-item-type="pack"
-              class="paypal-trigger-btn w-full py-3.5 px-5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs shadow-lg shadow-amber-500/20 transition-all cursor-pointer text-center"
+            <a
+              href={`/${locale}/dropshipping`}
+              class="w-full py-3.5 px-5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs shadow-lg shadow-emerald-500/20 transition-all text-center"
             >
-              {ui.membership.proCta}
-            </button>
+              {ui.membership.singleCta}
+            </a>
 
             <a
               href={`/${locale}/concierge`}

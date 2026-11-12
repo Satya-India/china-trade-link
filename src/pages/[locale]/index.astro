@@ -2,8 +2,9 @@
 import Layout from '../../layouts/Layout.astro';
 import SupplierCard from '../../components/SupplierCard.astro';
 import ContactUnlockModal from '../../components/ContactUnlockModal.astro';
+import AlibabaDropshipBox from '../../components/AlibabaDropshipBox.astro';
 import { getStats, getFeaturedSuppliers } from '../../lib/data';
-import { WHOLESALE_MARKETS, CATEGORY_PACKS, CONCIERGE_SERVICES } from '../../lib/markets';
+import { WHOLESALE_MARKETS, CONCIERGE_SERVICES } from '../../lib/markets';
 import { isValidLocale, getLocaleConfig, t } from '../../lib/i18n';
 
 const { locale } = Astro.params;
@@ -105,6 +106,20 @@ const homeJsonLd = {
           <span>•</span>
           <a href={`/${locale}/directory?q=textile`} rel="nofollow" class="hover:text-white underline decoration-slate-600">🛏️ Textiles</a>
         </div>
+        <div class="mt-5 flex flex-wrap items-center justify-center gap-3">
+          <a
+            href="#alibaba-dropship-box"
+            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs shadow-lg shadow-emerald-500/20 transition-all"
+          >
+            <span>&#128230; {ui.membership.singleCta}</span>
+          </a>
+          <a
+            href={`/${locale}/dropshipping`}
+            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-700 font-bold text-xs transition-all"
+          >
+            {ui.nav.categoryPacks} &rarr;
+          </a>
+        </div>
       </div>
 
       <!-- On-Ground Trust Bar -->
@@ -139,6 +154,11 @@ const homeJsonLd = {
       </div>
     </div>
   </section>
+
+  <!-- Alibaba.com Dropshipping & Direct Factory Quote Box -->
+  <div class="bg-slate-950 border-b border-slate-800">
+    <AlibabaDropshipBox locale={locale} headingId={`home-alibaba-box-${locale}`} />
+  </div>
 
   <!-- Amazon vs Yiwu Price Comparison Section -->
   <section class="py-16 bg-slate-900 text-white border-b border-slate-800">
@@ -283,84 +303,65 @@ const homeJsonLd = {
     </div>
   </section>
 
-  <!-- Membership Tiers -->
+  <!-- Zero-Upfront Fulfillment & Sourcing Models -->
   <section class="py-16 bg-white border-b border-slate-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center max-w-2xl mx-auto mb-12">
-        <span class="text-xs font-bold uppercase tracking-wider text-blue-600 block mb-1">{ui.membership.badge}</span>
+        <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 block mb-1">{ui.membership.badge}</span>
         <h2 class="text-3xl font-black text-slate-900 tracking-tight">{ui.membership.title}</h2>
         <p class="text-sm text-slate-600 mt-2">{ui.membership.subtitle}</p>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
         
-        <!-- Single Pack -->
+        <!-- 1-Piece Dropshipping -->
         <div class="rounded-3xl border border-slate-200 bg-slate-50 p-8 flex flex-col justify-between">
           <div>
-            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-3">{ui.membership.singleLabel}</span>
+            <span class="text-xs font-bold text-amber-600 uppercase tracking-wider block mb-3">{ui.membership.singleLabel}</span>
             <div class="mb-2">
               <span class="text-4xl font-black text-slate-900">{ui.membership.singlePrice}</span>
             </div>
             <p class="text-xs text-slate-600 mb-6 leading-relaxed">{ui.membership.singleDesc}</p>
-            <ul class="space-y-2.5 text-xs text-slate-700 mb-8">
-              <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> 1 district CSV (600–2,200 stalls)</li>
-              <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> 99.9% unmasked direct +86 mobile numbers</li>
-              <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> Exact booth coordinates &amp; street navigation</li>
-            </ul>
           </div>
-          <a href={`/${locale}/category-packs`} class="w-full py-3 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs text-center transition-colors block">{ui.membership.singleCta}</a>
+          <a href={`/${locale}/dropshipping`} class="w-full py-3 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs text-center transition-colors block">{ui.membership.singleCta}</a>
         </div>
 
-        <!-- Pro Annual -->
-        <div class="rounded-3xl border-2 border-blue-500 bg-white p-8 flex flex-col justify-between shadow-xl shadow-blue-500/10 relative">
+        <!-- Alibaba Link -> Factory Direct -->
+        <div class="rounded-3xl border-2 border-emerald-500 bg-white p-8 flex flex-col justify-between shadow-xl shadow-emerald-500/10 relative">
           <div class="absolute -top-4 left-1/2 -translate-x-1/2">
-            <span class="bg-blue-600 text-white text-[11px] font-black px-4 py-1.5 rounded-full shadow-md">{ui.membership.proBadge}</span>
+            <span class="bg-emerald-600 text-white text-[11px] font-black px-4 py-1.5 rounded-full shadow-md">{ui.membership.proBadge}</span>
           </div>
           <div>
-            <span class="text-xs font-bold text-blue-600 uppercase tracking-wider block mb-3 mt-2">{ui.membership.proLabel}</span>
+            <span class="text-xs font-bold text-emerald-700 uppercase tracking-wider block mb-3 mt-2">{ui.membership.proLabel}</span>
             <div class="mb-1">
               <span class="text-4xl font-black text-slate-900">{ui.membership.proPrice}</span>
-              <span class="text-xs text-slate-500 ml-2">/yr</span>
             </div>
-            <p class="text-xs text-emerald-600 font-semibold mb-1">{ui.membership.proSave}</p>
+            <p class="text-xs text-emerald-600 font-semibold mb-3">{ui.membership.proSave}</p>
             <p class="text-xs text-slate-600 mb-6 leading-relaxed">{ui.membership.proDesc}</p>
-            <ul class="space-y-2.5 text-xs text-slate-700 mb-8">
-              <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> All 6 district CSVs (27,706+ total stalls)</li>
-              <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> Weekly new verified stall additions</li>
-              <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> Dead contact replacement guarantee</li>
-            </ul>
-          </div>
-          <button
-            type="button"
-            data-item-id="pro-annual"
-            data-item-title="Pro Annual Pass – All 6 District Packs (27,706+ Stalls)"
-            data-item-price="149"
-            data-item-type="pack"
-            class="paypal-trigger-btn w-full py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs text-center transition-all cursor-pointer flex items-center justify-center gap-2 shadow-md shadow-blue-600/20"
-          >{ui.membership.proCta}</button>
-        </div>
-
-        <!-- Business Tier -->
-        <div class="rounded-3xl border border-amber-400 bg-gradient-to-b from-amber-50 to-white p-8 flex flex-col justify-between">
-          <div>
-            <span class="text-xs font-bold text-amber-700 uppercase tracking-wider block mb-3">{ui.membership.bizLabel}</span>
-            <div class="mb-1">
-              <span class="text-4xl font-black text-slate-900">{ui.membership.bizPrice}</span>
-              <span class="text-xs text-slate-500 ml-2">/yr</span>
-            </div>
-            <p class="text-xs text-amber-700 font-semibold mb-1">{ui.membership.bizSave}</p>
-            <p class="text-xs text-slate-600 mb-6 leading-relaxed">{ui.membership.bizDesc}</p>
-            <ul class="space-y-2.5 text-xs text-slate-700 mb-6">
-              <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> 1 Free $99 Stall Audit per quarter (4/yr)</li>
-              <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> Dedicated bilingual Yiwu rep on WhatsApp</li>
-              <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> Open-Book Order Execution at 6% commission</li>
-            </ul>
-            <p class="text-[11px] text-amber-700 bg-amber-100 border border-amber-200 rounded-xl px-3 py-2 leading-relaxed">{ui.membership.openBookNote}</p>
           </div>
           <a
-            href="https://wa.me/8613482725985?text=Hi%20SinoTradeLink%2C%20I%27m%20interested%20in%20the%20Business%20Sourcing%20Tier%20(%24399%2Fyr).%20Can%20we%20talk%3F"
+            href="https://wa.me/8613482725985?text=Hi%20SinoTradeLink%2C%20I%20want%20a%20free%20factory-direct%20and%20dropshipping%20quote%20for%20an%20Alibaba.com%20product%20link."
             target="_blank"
             rel="noopener noreferrer"
-            class="w-full py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs text-center transition-all flex items-center justify-center gap-2 mt-4"
+            class="w-full py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs text-center transition-all flex items-center justify-center gap-2 shadow-md shadow-emerald-600/20"
+          >{ui.membership.proCta}</a>
+        </div>
+
+        <!-- Open-Book Wholesale -->
+        <div class="rounded-3xl border border-indigo-300 bg-gradient-to-b from-indigo-50/70 to-white p-8 flex flex-col justify-between">
+          <div>
+            <span class="text-xs font-bold text-indigo-700 uppercase tracking-wider block mb-3">{ui.membership.bizLabel}</span>
+            <div class="mb-1">
+              <span class="text-4xl font-black text-slate-900">{ui.membership.bizPrice}</span>
+            </div>
+            <p class="text-xs text-indigo-700 font-semibold mb-3">{ui.membership.bizSave}</p>
+            <p class="text-xs text-slate-600 mb-6 leading-relaxed">{ui.membership.bizDesc}</p>
+            <p class="text-[11px] text-indigo-800 bg-indigo-100/70 border border-indigo-200 rounded-xl px-3 py-2 leading-relaxed">{ui.membership.openBookNote}</p>
+          </div>
+          <a
+            href="https://wa.me/8613482725985?text=Hi%20SinoTradeLink%2C%20I%20want%20to%20start%20open-book%20direct%20sourcing%20from%20Yiwu."
+            target="_blank"
+            rel="noopener noreferrer"
+            class="w-full py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs text-center transition-all flex items-center justify-center gap-2 mt-4"
           >{ui.membership.bizCta}</a>
         </div>
 
@@ -432,12 +433,12 @@ const homeJsonLd = {
     </div>
   </section>
 
-  <!-- Category Packs Showcase Section ($29–$49) -->
+  <!-- Alibaba.com Dropshipping & Fulfillment Highlights -->
   <section class="py-16 bg-slate-900 text-white border-b border-slate-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center max-w-2xl mx-auto mb-12">
-        <span class="text-xs font-bold uppercase tracking-wider text-amber-400 block mb-1">
-          Excel &amp; CSV
+        <span class="text-xs font-bold uppercase tracking-wider text-emerald-400 block mb-1">
+          Alibaba.com &rarr; {ui.membership.proPrice}
         </span>
         <h2 class="text-3xl font-black text-white tracking-tight">
           {ui.nav.categoryPacks}
@@ -448,44 +449,41 @@ const homeJsonLd = {
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {CATEGORY_PACKS.slice(0, 3).map(pack => (
-          <div class={`rounded-2xl border p-6 flex flex-col justify-between ${pack.popular ? 'bg-gradient-to-b from-slate-800 to-slate-900 border-amber-500/50 shadow-xl shadow-amber-500/10' : 'bg-slate-800/60 border-slate-700'}`}>
-            <div>
-              {pack.popular && (
-                <span class="inline-block bg-amber-500 text-slate-950 text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full mb-3">
-                  {ui.membership.proBadge}
-                </span>
-              )}
-              <span class="text-xs font-bold text-blue-400 block">{pack.district}</span>
-              <h3 class="text-lg font-bold text-white mt-1 mb-2">{pack.title}</h3>
-              <p class="text-xs text-slate-400 leading-relaxed mb-4">{pack.description}</p>
-
-              <div class="flex items-baseline gap-2 mb-6">
-                <span class="text-3xl font-black text-white">${pack.price}</span>
-                <span class="text-sm text-slate-500 line-through">${pack.originalPrice}</span>
-                <span class="text-xs text-emerald-400 font-semibold ml-auto">{pack.supplierCount}</span>
-              </div>
-
-              <ul class="space-y-2 text-xs text-slate-300 border-t border-slate-700/60 pt-4 mb-6">
-                {pack.features.map(f => (
-                  <li class="flex items-center gap-2">
-                    <svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span>{f}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <a 
-              href={`/${locale}/category-packs`} 
-              class={`w-full py-3 rounded-xl font-bold text-xs text-center transition-all ${pack.popular ? 'bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-lg shadow-amber-500/20' : 'bg-blue-600 hover:bg-blue-500 text-white'}`}
-            >
-              {ui.nav.categoryPacks} (${pack.price}) &rarr;
-            </a>
+        <div class="rounded-2xl border p-6 flex flex-col justify-between bg-slate-800/60 border-slate-700">
+          <div>
+            <span class="text-xs font-bold text-amber-400 block">{ui.membership.singleLabel}</span>
+            <h3 class="text-lg font-bold text-white mt-1 mb-2">{ui.membership.singlePrice}</h3>
+            <p class="text-xs text-slate-400 leading-relaxed mb-6">{ui.membership.singleDesc}</p>
           </div>
-        ))}
+          <a href={`/${locale}/dropshipping`} class="w-full py-3 rounded-xl font-bold text-xs text-center transition-all bg-blue-600 hover:bg-blue-500 text-white">
+            {ui.membership.singleCta}
+          </a>
+        </div>
+
+        <div class="rounded-2xl border p-6 flex flex-col justify-between bg-gradient-to-b from-slate-800 to-slate-900 border-emerald-500/50 shadow-xl shadow-emerald-500/10">
+          <div>
+            <span class="inline-block bg-emerald-500 text-slate-950 text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full mb-3">
+              {ui.membership.proBadge}
+            </span>
+            <span class="text-xs font-bold text-emerald-400 block">{ui.membership.proLabel}</span>
+            <h3 class="text-lg font-bold text-white mt-1 mb-2">{ui.membership.proPrice}</h3>
+            <p class="text-xs text-slate-400 leading-relaxed mb-6">{ui.membership.proDesc}</p>
+          </div>
+          <a href={`/${locale}/dropshipping#branding`} class="w-full py-3 rounded-xl font-bold text-xs text-center transition-all bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-lg shadow-emerald-500/20">
+            {ui.membership.proCta}
+          </a>
+        </div>
+
+        <div class="rounded-2xl border p-6 flex flex-col justify-between bg-slate-800/60 border-slate-700">
+          <div>
+            <span class="text-xs font-bold text-blue-400 block">{ui.membership.bizLabel}</span>
+            <h3 class="text-lg font-bold text-white mt-1 mb-2">{ui.membership.bizPrice}</h3>
+            <p class="text-xs text-slate-400 leading-relaxed mb-6">{ui.membership.bizDesc}</p>
+          </div>
+          <a href={`/${locale}/dropshipping`} class="w-full py-3 rounded-xl font-bold text-xs text-center transition-all bg-amber-500 hover:bg-amber-400 text-slate-950">
+            {ui.membership.bizCta}
+          </a>
+        </div>
       </div>
     </div>
   </section>

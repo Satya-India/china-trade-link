@@ -74,7 +74,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
         if (recentCount >= DAILY_UNLOCK_LIMIT) {
           return new Response(JSON.stringify({
             success: false,
-            error: `Daily limit reached (${DAILY_UNLOCK_LIMIT}/${DAILY_UNLOCK_LIMIT}). To prevent automated harvesting, individual visitor accounts are limited to ${DAILY_UNLOCK_LIMIT} contact unlocks per 24 hours. To access bulk verified contacts, check our Category Excel Packs or contact our concierge desk.`,
+            error: `Daily limit reached (${DAILY_UNLOCK_LIMIT}/${DAILY_UNLOCK_LIMIT}). To prevent automated harvesting, individual visitor accounts are limited to ${DAILY_UNLOCK_LIMIT} free self-unlocks per 24 hours. Message our Yiwu Desk directly on WhatsApp (+86 134 8272 5985) or submit an Alibaba.com product link for instant free sourcing assistance.`,
             limitReached: true,
             reveals_left: 0
           }), {

@@ -2,14 +2,15 @@
 
 > Verified B2B directory and offline sourcing intelligence platform for China's physical wholesale markets.
 
-Sino Trade Link provides verified access to 27,337+ physical factory stalls and wholesale distributors operating inside Yiwu International Trade City (Futian Market Districts 1–5), Huangyuan Garment Market, and the International Production Materials Market in Zhejiang, China. Features physical booth coordinates, verified direct factory statuses, and unmasked stall lines with gated lead verification.
+Sino Trade Link provides 100% free-to-browse verified access to 27,706+ physical factory stalls and wholesale distributors operating inside Yiwu International Trade City (Futian Market Districts 1–5), Huangyuan Garment Market, and the International Production Materials Market in Zhejiang, China, plus free Alibaba.com product-link factory sourcing & 1-piece white-label dropshipping with zero monthly subscriptions.
 
 ## Core Navigation & Directories
 
-- [Wholesale Market Directory](https://sinotradelink.com/directory): Search 27,000+ physical stalls, direct factories, and booth coordinates across all Yiwu districts.
+- [Wholesale Market Directory](https://sinotradelink.com/directory): Search 27,706+ physical stalls, direct factories, and booth coordinates across all Yiwu districts free of charge.
+- [Alibaba.com Dropshipping & Direct Factory Agent](https://sinotradelink.com/dropshipping): Paste any Alibaba.com product URL or send a screenshot on WhatsApp (+86 134 8272 5985) for direct factory pricing, 1-piece blind dropshipping, and low-MOQ consolidation with zero subscriptions.
 - [Market Floor Map](https://sinotradelink.com/market-map): Interactive district floor plan and physical navigation guide for Yiwu Futian Market.
-- [On-Demand Stall Inspection Concierge](https://sinotradelink.com/concierge): Professional bilingual agent ground service to visit booths, verify stock, and collect real samples.
-- [Category Wholesaler Excel Packs](https://sinotradelink.com/category-packs): Download verified wholesale supplier lists and WeChat contacts in curated niche spreadsheets.
+- [On-Demand Stall Inspection Concierge](https://sinotradelink.com/concierge): Professional bilingual agent ground service to visit booths, verify stock, and collect real samples ($99–$299 flat fee, zero commission markups).
+- [100-Country Sourcing Corridors](https://sinotradelink.com/countries): Landed customs compliance and Ningbo sea/air freight schedules for 100 global import markets.
 - [Global Supplier Onboarding](https://sinotradelink.com/for-suppliers): Application portal for verified manufacturers and international trade suppliers to list on the platform.
 - [Public Suppliers API](https://sinotradelink.com/api/suppliers.json): JSON feed of verified market suppliers and stall locations.
 
@@ -47,7 +48,12 @@ Sino Trade Link provides verified access to 27,337+ physical factory stalls and 
 ## Sitemaps & Feeds
 
 - [Main XML Sitemap](https://sinotradelink.com/sitemap.xml): Primary sitemap index for search engine discovery.
-- [Static Pages Sitemap](https://sinotradelink.com/sitemaps/pages.xml): Sitemap of core marketing and directory navigation pages.
-- [Suppliers Sitemap Batch 1](https://sinotradelink.com/sitemaps/suppliers-1.xml): XML sitemap for verified supplier stall profiles (Batch 1).
-- [Suppliers Sitemap Batch 2](https://sinotradelink.com/sitemaps/suppliers-2.xml): XML sitemap for verified supplier stall profiles (Batch 2).
-- [Suppliers Sitemap Batch 3](https://sinotradelink.com/sitemaps/suppliers-3.xml): XML sitemap for verified supplier stall profiles (Batch 3).
+- [Static Pages & Categories Sitemap](https://sinotradelink.com/sitemaps/pages.xml): Sitemap of core marketing, Alibaba dropshipping, sourcing playbook, and 24 category hub pages.
+- [100-Country Corridors Sitemap](https://sinotradelink.com/sitemaps/countries.xml): 2,501 dedicated country & country-category corridor URLs.
+- [Multilingual Localized Sitemap](https://sinotradelink.com/sitemaps/i18n.xml): 735 localized pages across es, pt, fr, de, ar, ru, and it.
+- [Suppliers Sitemap Batch 1](https://sinotradelink.com/sitemaps/suppliers-1.xml): XML sitemap for verified supplier stall profiles (1–5,000).
+- [Suppliers Sitemap Batch 2](https://sinotradelink.com/sitemaps/suppliers-2.xml): XML sitemap for verified supplier stall profiles (5,001–10,000).
+- [Suppliers Sitemap Batch 3](https://sinotradelink.com/sitemaps/suppliers-3.xml): XML sitemap for verified supplier stall profiles (10,001–15,000).
+- [Suppliers Sitemap Batch 4](https://sinotradelink.com/sitemaps/suppliers-4.xml): XML sitemap for verified supplier stall profiles (15,001–20,000).
+- [Suppliers Sitemap Batch 5](https://sinotradelink.com/sitemaps/suppliers-5.xml): XML sitemap for verified supplier stall profiles (20,001–25,000).
+- [Suppliers Sitemap Batch 6](https://sinotradelink.com/sitemaps/suppliers-6.xml): XML sitemap for verified supplier stall profiles (25,001–27,706).

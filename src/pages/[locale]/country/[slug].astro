@@ -3,7 +3,6 @@ import Layout from '../../../layouts/Layout.astro';
 import SupplierCard from '../../../components/SupplierCard.astro';
 import ContactUnlockModal from '../../../components/ContactUnlockModal.astro';
 import { CATEGORY_HUBS } from '../../../lib/categories';
-import { CATEGORY_PACKS } from '../../../lib/markets';
 import { COUNTRIES, COUNTRY_REGIONS, resolveCountryCorridorRoute, getSmartCountrySeoMeta } from '../../../lib/countries';
 import { getSuppliersPaginated } from '../../../lib/data';
 import { isValidLocale, getLocaleConfig, t } from '../../../lib/i18n';
@@ -55,10 +54,6 @@ if (isCategoryMode && category) {
     pageSize: 16
   });
 }
-
-const matchingPack = isCategoryMode && category
-  ? (CATEGORY_PACKS.find(p => p.id === category.packId) || CATEGORY_PACKS[0])
-  : null;
 
 const canonicalUrl = `https://sinotradelink.com/${locale}/country/${route.slug}`;
 const smartSeo = getSmartCountrySeoMeta(country, category);
@@ -159,9 +154,8 @@ const pageJsonLd = {
         "identifier": country.code
       },
       "offers": [
-        { "@type": "Offer", "name": ui.nav.categoryPacks, "price": "29.00", "priceCurrency": "USD" },
-        { "@type": "Offer", "name": ui.nav.concierge, "price": "99.00", "priceCurrency": "USD" },
-        { "@type": "Offer", "name": ui.membership.proLabel, "price": "149.00", "priceCurrency": "USD" }
+        { "@type": "Offer", "name": ui.nav.categoryPacks, "price": "0.00", "priceCurrency": "USD" },
+        { "@type": "Offer", "name": ui.nav.concierge, "price": "99.00", "priceCurrency": "USD" }
       ]
     },
     {
@@ -280,111 +274,50 @@ const pageJsonLd = {
 
         <!-- Right Conversion Card (Hero CTAs) -->
         <div class="lg:col-span-4 bg-slate-950/90 border border-slate-800 rounded-3xl p-6 shadow-xl">
-          {isCategoryMode && category && matchingPack ? (
-            <>
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-[10px] font-black uppercase tracking-wider text-amber-400">
-                  {country.flag} {country.name}
-                </span>
-                <span class="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-                  {matchingPack.supplierCount}
-                </span>
-              </div>
-              <h2 class="text-base font-black text-white mb-1">
-                {matchingPack.title}
-              </h2>
-              <p class="text-xs text-slate-400 mb-4 leading-relaxed">
-                {ui.membership.singleDesc}
-              </p>
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[10px] font-black uppercase tracking-wider text-emerald-400">
+              {country.flag} {country.name} — {ui.membership.proBadge}
+            </span>
+            <span class="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+              {isCategoryMode && category ? `${result.total.toLocaleString()}+` : '27,706+'}
+            </span>
+          </div>
+          <h2 class="text-base font-black text-white mb-1">
+            {isCategoryMode && category ? `${category.shortName} · ${ui.nav.categoryPacks}` : ui.membership.proLabel}
+          </h2>
+          <p class="text-xs text-slate-400 mb-4 leading-relaxed">
+            {isCategoryMode && category ? ui.membership.singleDesc : ui.membership.proDesc}
+          </p>
 
-              <div class="flex items-baseline gap-2 mb-4">
-                <span class="text-3xl font-black text-white">${matchingPack.price}</span>
-                <span class="text-sm text-slate-500 line-through">${matchingPack.originalPrice}</span>
-                <span class="text-[11px] text-slate-400 ml-auto">CSV / Excel</span>
-              </div>
+          <div class="flex items-baseline gap-2 mb-4">
+            <span class="text-3xl font-black text-emerald-400">{ui.membership.proPrice}</span>
+            <span class="text-[11px] text-slate-300 ml-auto">{ui.membership.singlePrice}</span>
+          </div>
 
-              <div class="space-y-2.5">
-                <button
-                  type="button"
-                  data-item-id={matchingPack.id}
-                  data-item-title={matchingPack.title}
-                  data-item-price={matchingPack.price}
-                  data-item-type="pack"
-                  class="paypal-trigger-btn w-full py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs shadow-md transition-all cursor-pointer"
-                >
-                  {category.shortName} (${matchingPack.price}) &rarr;
-                </button>
+          <div class="space-y-2.5">
+            <a
+              href={`/${locale}/dropshipping`}
+              class="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs shadow-md transition-all text-center block"
+            >
+              {ui.membership.singleCta}
+            </a>
 
-                <a
-                  href={`/${locale}/concierge?service=audit`}
-                  class="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-xs transition-all flex items-center justify-center gap-1.5"
-                >
-                  <span>{ui.supplier.auditBtn}</span>
-                </a>
+            <a
+              href={`/${locale}/concierge?service=audit`}
+              class="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-xs transition-all flex items-center justify-center gap-1.5"
+            >
+              <span>{ui.supplier.auditBtn}</span>
+            </a>
 
-                <a
-                  href={whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="w-full py-2.5 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 font-bold text-xs transition-all flex items-center justify-center gap-1.5"
-                >
-                  <span>{ui.supplier.whatsappBtn} ({country.name})</span>
-                </a>
-              </div>
-            </>
-          ) : (
-            <>
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-[10px] font-black uppercase tracking-wider text-amber-400">
-                  {country.flag} {country.name} — {ui.membership.proBadge}
-                </span>
-                <span class="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-                  27,706+
-                </span>
-              </div>
-              <h2 class="text-base font-black text-white mb-1">
-                {ui.membership.proLabel}
-              </h2>
-              <p class="text-xs text-slate-400 mb-4 leading-relaxed">
-                {ui.membership.proDesc}
-              </p>
-
-              <div class="flex items-baseline gap-2 mb-4">
-                <span class="text-3xl font-black text-white">{ui.membership.proPrice}</span>
-                <span class="text-sm text-slate-500 line-through">$234</span>
-                <span class="text-[11px] text-slate-400 ml-auto">6 CSVs</span>
-              </div>
-
-              <div class="space-y-2.5">
-                <button
-                  type="button"
-                  data-item-id="pro-annual"
-                  data-item-title="Pro All-Access Annual Pass (All 27,706+ Verified Stalls)"
-                  data-item-price="149"
-                  data-item-type="pack"
-                  class="paypal-trigger-btn w-full py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs shadow-md transition-all cursor-pointer"
-                >
-                  {ui.membership.proCta}
-                </button>
-
-                <a
-                  href={`/${locale}/concierge?service=audit`}
-                  class="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-xs transition-all flex items-center justify-center gap-1.5"
-                >
-                  <span>{ui.supplier.auditBtn}</span>
-                </a>
-
-                <a
-                  href={whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="w-full py-2.5 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 font-bold text-xs transition-all flex items-center justify-center gap-1.5"
-                >
-                  <span>{ui.supplier.whatsappBtn} ({country.name})</span>
-                </a>
-              </div>
-            </>
-          )}
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="w-full py-2.5 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 font-bold text-xs transition-all flex items-center justify-center gap-1.5"
+            >
+              <span>{ui.supplier.whatsappBtn} ({country.name})</span>
+            </a>
+          </div>
         </div>
       </div>
     </div>

@@ -18,7 +18,7 @@ const supportsLocaleRoute =
   cleanPath === '/' ||
   cleanPath === '/countries' ||
   cleanPath === '/directory' ||
-  cleanPath === '/category-packs' ||
+  cleanPath === '/dropshipping' ||
   cleanPath === '/concierge' ||
   cleanPath.startsWith('/country/');
 
@@ -95,18 +95,17 @@ function getSwitchUrl(targetCode: string): string {
           {ui.nav.marketMap}
         </a>
         <a 
-          href={`${localePrefix}/category-packs`} 
-          class={`px-2.5 py-2 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 whitespace-nowrap ${activePage === 'packs' ? 'text-white bg-slate-800' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}`}
+          href={`${localePrefix}/dropshipping`} 
+          class={`px-2.5 py-2 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 whitespace-nowrap ${activePage === 'dropshipping' || activePage === 'packs' ? 'text-white bg-slate-800' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}`}
         >
           <span>{ui.nav.categoryPacks}</span>
-          <span class="bg-amber-500/20 text-amber-300 text-[10px] font-bold px-1.5 py-0.5 rounded border border-amber-500/30">$29+</span>
+          <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-1.5 py-0.5 rounded border border-emerald-500/30">FREE</span>
         </a>
         <a 
           href={`${localePrefix}/concierge`} 
           class={`px-2.5 py-2 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 whitespace-nowrap ${activePage === 'concierge' ? 'text-white bg-slate-800' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}`}
         >
           <span>{ui.nav.concierge}</span>
-          <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-1.5 py-0.5 rounded border border-emerald-500/30">$99</span>
         </a>
         <a 
           href="/sourcing-guide" 
@@ -183,8 +182,8 @@ function getSwitchUrl(targetCode: string): string {
         </button>
 
         <a 
-          href={`${localePrefix}/category-packs`} 
-          class="inline-flex items-center justify-center px-3.5 py-2 rounded-xl text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white shadow-md shadow-blue-600/30 transition-all hover:shadow-lg whitespace-nowrap"
+          href={`${localePrefix}/dropshipping`} 
+          class="inline-flex items-center justify-center px-3.5 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white shadow-md shadow-emerald-600/30 transition-all hover:shadow-lg whitespace-nowrap"
         >
           {ui.nav.categoryPacks}
         </a>
@@ -194,7 +193,7 @@ function getSwitchUrl(targetCode: string): string {
     <!-- Mobile Quick Links Bar -->
     <div class="flex lg:hidden items-center gap-1.5 overflow-x-auto py-2 border-t border-slate-800/80 text-[11px] font-semibold no-scrollbar">
       <a href={`${localePrefix}/directory`} class="px-2.5 py-1 rounded-lg bg-slate-800/80 text-slate-200 whitespace-nowrap shrink-0">{ui.nav.directory}</a>
-      <a href={`${localePrefix}/category-packs`} class="px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/30 whitespace-nowrap shrink-0">{ui.nav.categoryPacks}</a>
+      <a href={`${localePrefix}/dropshipping`} class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 whitespace-nowrap shrink-0">{ui.nav.categoryPacks}</a>
       <a href={`${localePrefix}/concierge`} class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 whitespace-nowrap shrink-0">{ui.nav.concierge}</a>
       <a href="/sourcing-guide" class="px-2.5 py-1 rounded-lg bg-slate-800/80 text-slate-200 whitespace-nowrap shrink-0">{ui.nav.sourcingGuide}</a>
       <a href="/market-map" class="px-2.5 py-1 rounded-lg bg-slate-800/80 text-slate-200 whitespace-nowrap shrink-0">{ui.nav.marketMap}</a>

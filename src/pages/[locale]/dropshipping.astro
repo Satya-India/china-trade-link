@@ -1,0 +1,179 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import AlibabaDropshipBox from '../../components/AlibabaDropshipBox.astro';
+import { getLocaleConfig, NON_DEFAULT_LOCALES, t } from '../../lib/i18n';
+
+const { locale: paramLocale } = Astro.params;
+const locale = (paramLocale && NON_DEFAULT_LOCALES.includes(paramLocale as any)) ? paramLocale : '';
+
+if (!locale) {
+  return Astro.redirect('/dropshipping');
+}
+
+const currentLocale = getLocaleConfig(locale);
+const ui = t(currentLocale.code);
+const canonicalUrl = `https://sinotradelink.com/${locale}/dropshipping`;
+
+const whatsappQuoteUrl = `https://wa.me/8613482725985?text=${encodeURIComponent(
+  'Hi SinoTradeLink Yiwu Desk, I want a factory-direct & dropshipping quote for an Alibaba.com product link.'
+)}`;
+---
+
+<Layout
+  title={ui.seo.packsTitle}
+  description={ui.seo.packsDesc}
+  keywords={ui.seo.homeKeywords}
+  canonicalUrl={canonicalUrl}
+  activePage="dropshipping"
+  locale={locale}
+>
+  <!-- Localized Hero & Interactive Alibaba Link Quote Box -->
+  <section class="relative bg-slate-950 text-white pt-12 pb-6 overflow-hidden border-b border-slate-800">
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-amber-500/15 via-slate-950 to-slate-950 pointer-events-none"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs font-bold mb-5">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" aria-hidden="true"></span>
+        <span>{ui.membership.badge}</span>
+      </div>
+
+      <h1 class="text-3xl sm:text-5xl font-black tracking-tight text-white max-w-4xl mx-auto leading-tight">
+        {ui.nav.categoryPacks} &mdash; <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-orange-400 to-emerald-400">{ui.membership.proPrice}</span>
+      </h1>
+
+      <p class="mt-4 text-sm sm:text-lg text-slate-300 max-w-3xl mx-auto leading-relaxed">
+        {ui.membership.subtitle}
+      </p>
+    </div>
+
+    <AlibabaDropshipBox locale={locale} headingId={`dropship-box-${locale}`} />
+  </section>
+
+  <!-- 3 Fulfillment Modes Grid -->
+  <section class="py-14 bg-white border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <span class="text-xs font-bold uppercase tracking-wider text-blue-600 block mb-1">{ui.membership.badge}</span>
+        <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">{ui.membership.title}</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="rounded-3xl border border-slate-200 bg-slate-50 p-7 flex flex-col justify-between">
+          <div>
+            <span class="text-xs font-black uppercase tracking-wider text-amber-600 block mb-2">{ui.membership.singleLabel}</span>
+            <div class="text-3xl font-black text-slate-900 mb-3">{ui.membership.singlePrice}</div>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-6">{ui.membership.singleDesc}</p>
+          </div>
+          <a href="#alibaba-dropship-box" class="w-full py-3 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs text-center transition-colors block">
+            {ui.membership.singleCta}
+          </a>
+        </div>
+
+        <div class="rounded-3xl border-2 border-emerald-500 bg-emerald-50/40 p-7 flex flex-col justify-between shadow-lg">
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <span class="text-xs font-black uppercase tracking-wider text-emerald-700">{ui.membership.proLabel}</span>
+              <span class="px-2 py-0.5 rounded-full bg-emerald-600 text-white text-[10px] font-black">{ui.membership.proBadge}</span>
+            </div>
+            <div class="text-3xl font-black text-slate-900 mb-1">{ui.membership.proPrice}</div>
+            <span class="block text-xs font-bold text-emerald-700 mb-3">{ui.membership.proSave}</span>
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed mb-6">{ui.membership.proDesc}</p>
+          </div>
+          <a href={whatsappQuoteUrl} target="_blank" rel="noopener noreferrer" class="w-full py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs text-center transition-colors block shadow-md shadow-emerald-600/20">
+            {ui.membership.proCta}
+          </a>
+        </div>
+
+        <div class="rounded-3xl border border-slate-200 bg-slate-50 p-7 flex flex-col justify-between">
+          <div>
+            <span class="text-xs font-black uppercase tracking-wider text-indigo-600 block mb-2">{ui.membership.bizLabel}</span>
+            <div class="text-3xl font-black text-slate-900 mb-1">{ui.membership.bizPrice}</div>
+            <span class="block text-xs font-bold text-indigo-700 mb-3">{ui.membership.bizSave}</span>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-6">{ui.membership.bizDesc}</p>
+          </div>
+          <a href={whatsappQuoteUrl} target="_blank" rel="noopener noreferrer" class="w-full py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs text-center transition-colors block">
+            {ui.membership.bizCta}
+          </a>
+        </div>
+      </div>
+
+      <p class="text-center text-xs text-slate-600 font-medium mt-6">
+        {ui.membership.openBookNote}
+      </p>
+    </div>
+  </section>
+
+  <!-- Open-Book Comparison Section -->
+  <section id="branding" class="py-14 bg-slate-50 border-b border-slate-200">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 block mb-1">{ui.openBook.badge}</span>
+        <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">{ui.openBook.title}</h2>
+        <p class="text-sm text-slate-600 mt-2">{ui.openBook.subtitle}</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="rounded-2xl border border-red-200 bg-red-50/60 p-6">
+          <h3 class="text-base font-black text-red-900 mb-4">{ui.openBook.tradTitle}</h3>
+          <ul class="space-y-3 text-sm text-red-800">
+            <li class="flex items-start gap-2.5"><span class="text-red-500 font-bold shrink-0">&#10007;</span> {ui.openBook.trad1}</li>
+            <li class="flex items-start gap-2.5"><span class="text-red-500 font-bold shrink-0">&#10007;</span> {ui.openBook.trad2}</li>
+            <li class="flex items-start gap-2.5"><span class="text-red-500 font-bold shrink-0">&#10007;</span> {ui.openBook.trad3}</li>
+            <li class="flex items-start gap-2.5"><span class="text-red-500 font-bold shrink-0">&#10007;</span> {ui.openBook.trad4}</li>
+            <li class="flex items-start gap-2.5"><span class="text-red-500 font-bold shrink-0">&#10007;</span> {ui.openBook.trad5}</li>
+          </ul>
+        </div>
+
+        <div class="rounded-2xl border border-emerald-300 bg-emerald-50/60 p-6">
+          <h3 class="text-base font-black text-emerald-900 mb-4">{ui.openBook.stlTitle}</h3>
+          <ul class="space-y-3 text-sm text-emerald-800">
+            <li class="flex items-start gap-2.5"><span class="text-emerald-600 font-bold shrink-0">&#10003;</span> {ui.openBook.stl1}</li>
+            <li class="flex items-start gap-2.5"><span class="text-emerald-600 font-bold shrink-0">&#10003;</span> {ui.openBook.stl2}</li>
+            <li class="flex items-start gap-2.5"><span class="text-emerald-600 font-bold shrink-0">&#10003;</span> {ui.openBook.stl3}</li>
+            <li class="flex items-start gap-2.5"><span class="text-emerald-600 font-bold shrink-0">&#10003;</span> {ui.openBook.stl4}</li>
+            <li class="flex items-start gap-2.5"><span class="text-emerald-600 font-bold shrink-0">&#10003;</span> {ui.openBook.stl5}</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="mt-8 text-center space-y-2">
+        <a
+          href={whatsappQuoteUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 px-7 py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-sm shadow-lg shadow-emerald-600/20 transition-all"
+        >
+          {ui.openBook.cta}
+        </a>
+        <p class="text-xs text-slate-500">{ui.openBook.responseNote}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Localized FAQ Section -->
+  <section class="py-14 bg-white">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-10">
+        <span class="text-xs font-bold uppercase tracking-wider text-blue-600 block mb-1">{ui.faq.badge}</span>
+        <h2 class="text-2xl sm:text-3xl font-black text-slate-900">{ui.faq.title}</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-slate-50 rounded-2xl border border-slate-200 p-6">
+          <h3 class="text-sm font-black text-slate-900 mb-2">{ui.faq.q2}</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">{ui.faq.a2}</p>
+        </div>
+        <div class="bg-slate-50 rounded-2xl border border-slate-200 p-6">
+          <h3 class="text-sm font-black text-slate-900 mb-2">{ui.faq.q3}</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">{ui.faq.a3}</p>
+        </div>
+        <div class="bg-slate-50 rounded-2xl border border-slate-200 p-6">
+          <h3 class="text-sm font-black text-slate-900 mb-2">{ui.faq.q4}</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">{ui.faq.a4}</p>
+        </div>
+        <div class="bg-slate-50 rounded-2xl border border-slate-200 p-6">
+          <h3 class="text-sm font-black text-slate-900 mb-2">{ui.faq.q5}</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">{ui.faq.a5}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

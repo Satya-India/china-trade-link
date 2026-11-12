@@ -1807,7 +1807,7 @@ export function getSmartCountrySeoMeta(
     : `Import from Yiwu China to ${country.name} (${country.flag}) — 27,706 Verified Factory Stalls, Direct Contacts & Shipping to ${country.ports.split(',')[0]} | Sino Trade Link`;
 
   const seoDescription = category
-    ? `Source ${category.shortName} directly from Yiwu ${catLocation} for ${country.name} (${country.ports}, ${country.seaTransitDays} sea transit). Verify ${country.customsCompliance} compliance, unlock +86 factory phones ($29), or book a $99 stall audit.`
+    ? `Source ${category.shortName} directly from Yiwu ${catLocation} for ${country.name} (${country.ports}, ${country.seaTransitDays} sea transit). Verify ${country.customsCompliance} compliance, access free +86 factory phones, quote Alibaba links, or book a $99 stall audit.`
     : `Bypass 15–30% trading markups when importing from Yiwu to ${country.name} (${country.ports}). Browse 27,706 verified stalls, verify ${country.customsCompliance} with a $99 physical booth audit, and ship LCL/FCL at 6% open-book commission.`;
 
   const baseKeywords = category

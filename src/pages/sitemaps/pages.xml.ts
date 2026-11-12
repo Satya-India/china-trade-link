@@ -8,7 +8,7 @@ export const GET: APIRoute = async () => {
     { loc: 'https://sinotradelink.com/', priority: '1.0', changefreq: 'daily' },
     { loc: 'https://sinotradelink.com/directory', priority: '0.9', changefreq: 'daily' },
     { loc: 'https://sinotradelink.com/market-map', priority: '0.9', changefreq: 'weekly' },
-    { loc: 'https://sinotradelink.com/category-packs', priority: '0.85', changefreq: 'weekly' },
+    { loc: 'https://sinotradelink.com/dropshipping', priority: '0.9', changefreq: 'weekly' },
     { loc: 'https://sinotradelink.com/concierge', priority: '0.85', changefreq: 'weekly' },
     { loc: 'https://sinotradelink.com/sourcing-guide', priority: '0.9', changefreq: 'weekly' },
     { loc: 'https://sinotradelink.com/countries', priority: '0.9', changefreq: 'weekly' },

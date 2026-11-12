@@ -21,7 +21,7 @@ export const GET: APIRoute = async () => {
         changefreq: 'daily',
       },
       {
-        loc: `https://sinotradelink.com/${loc}/category-packs`,
+        loc: `https://sinotradelink.com/${loc}/dropshipping`,
         priority: '0.90',
         changefreq: 'weekly',
       },

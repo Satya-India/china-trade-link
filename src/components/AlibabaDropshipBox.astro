@@ -1,0 +1,1092 @@
+---
+import { getLocaleConfig } from '../lib/i18n';
+
+interface Props {
+  locale?: string;
+  compact?: boolean;
+  headingId?: string;
+}
+
+const {
+  locale = 'en',
+  compact = false,
+  headingId = 'alibaba-box-heading'
+} = Astro.props;
+
+const currentLocale = getLocaleConfig(locale).code;
+
+interface BoxCopy {
+  badge: string;
+  title: string;
+  subtitle: string;
+  tabPaste: string;
+  tabSearch: string;
+  urlLabel: string;
+  urlHint: string;
+  urlPlaceholder: string;
+  urlError: string;
+  orderLegend: string;
+  modeDropship: string;
+  modeDropshipHint: string;
+  modeLowMoq: string;
+  modeLowMoqHint: string;
+  modeBulk: string;
+  modeBulkHint: string;
+  countryLabel: string;
+  countryPlaceholder: string;
+  contactLabel: string;
+  contactPlaceholder: string;
+  submitBtn: string;
+  submittingBtn: string;
+  appBtn: string;
+  appHint: string;
+  searchLabel: string;
+  searchHint: string;
+  searchPlaceholder: string;
+  searchBtn: string;
+  searchError: string;
+  searchNote: string;
+  detectedLabel: string;
+  statusReady: string;
+  errorSummaryPrefix: string;
+  guarantee1: string;
+  guarantee2: string;
+  guarantee3: string;
+}
+
+const BOX_DICT: Record<string, BoxCopy> = {
+  en: {
+    badge: '100% Free Quote · Zero Monthly Fees · Worldwide 5–9 Day Dispatch',
+    title: 'Paste Any Alibaba.com Link — We Source Direct & Dropship For You',
+    subtitle: 'Browse Alibaba.com for product ideas, paste the product URL below (or send an app screenshot), and our bilingual Yiwu team finds the real factory price, removes middleman brochures, and handles 1-piece dropshipping or low-MOQ consolidation.',
+    tabPaste: 'Paste Alibaba.com Link',
+    tabSearch: 'Search on Alibaba.com',
+    urlLabel: 'Alibaba.com Product URL',
+    urlHint: 'Include alibaba.com (e.g. https://www.alibaba.com/product-detail/Wireless-Earbuds_1600123456.html)',
+    urlPlaceholder: 'https://www.alibaba.com/product-detail/...',
+    urlError: 'Please paste a full Alibaba.com product link (must contain alibaba.com).',
+    orderLegend: 'Order Fulfillment Mode',
+    modeDropship: '1-Piece Private Dropshipping',
+    modeDropshipHint: 'Fulfill customer orders from 1 unit, blind packaging',
+    modeLowMoq: 'Low-MOQ Test Batch (10–100 pcs)',
+    modeLowMoqHint: 'Bypass high supplier MOQs with Yiwu warehouse stock',
+    modeBulk: 'Bulk / Mixed Container Consolidation',
+    modeBulkHint: 'OEM packaging + 6% open-book RMB factory receipts',
+    countryLabel: 'Destination Country',
+    countryPlaceholder: 'e.g. United States, UK, UAE, Brazil...',
+    contactLabel: 'Your Name / WhatsApp (Optional)',
+    contactPlaceholder: 'e.g. Alex / +1 555 234 5678',
+    submitBtn: 'Get Direct Factory & Shipping Quote on WhatsApp →',
+    submittingBtn: 'Preparing WhatsApp Desk...',
+    appBtn: 'Using Alibaba App? Send Screenshot on WhatsApp',
+    appHint: 'On mobile and prefer sending a photo or product screenshot? Chat directly with our Yiwu sourcing desk (+86 134 8272 5985).',
+    searchLabel: 'Product Keyword to Search on Alibaba.com',
+    searchHint: 'Opens Alibaba.com search in a new tab. Copy any product URL you like and paste it back in the first tab.',
+    searchPlaceholder: 'e.g. magnetic phone stand, silicone kitchenware, LED desk lamp...',
+    searchBtn: 'Search Live Catalog on Alibaba.com ↗',
+    searchError: 'Please enter a product keyword (at least 2 characters) to search.',
+    searchNote: 'Tip: Even if an Alibaba supplier lists a 500-piece MOQ, copy the link anyway — our Yiwu team can fulfill from 1 piece or negotiate a lower test batch.',
+    detectedLabel: 'Detected Product:',
+    statusReady: 'WhatsApp chat prepared! Click the direct link below if a new tab did not open automatically:',
+    errorSummaryPrefix: 'Error:',
+    guarantee1: '$0 Upfront Subscription',
+    guarantee2: 'Blind White-Label Parcels',
+    guarantee3: 'Warehouse QC Photos Before Ship'
+  },
+  es: {
+    badge: 'Cotización 100% Gratis · Cero Cuotas Mensuales · Envíos Globales 5–9 Días',
+    title: 'Pegue Cualquier Enlace de Alibaba.com — Cotizamos Directo de Fábrica',
+    subtitle: 'Explore productos en Alibaba.com, pegue el enlace abajo (o envíe una captura de pantalla) y nuestro equipo en Yiwu consigue el precio real de fábrica y gestiona envíos dropshipping desde 1 unidad o lotes bajos.',
+    tabPaste: 'Pegar Enlace Alibaba.com',
+    tabSearch: 'Buscar en Alibaba.com',
+    urlLabel: 'URL del Producto en Alibaba.com',
+    urlHint: 'Debe incluir alibaba.com (ej. https://www.alibaba.com/product-detail/...)',
+    urlPlaceholder: 'https://www.alibaba.com/product-detail/...',
+    urlError: 'Pegue un enlace válido de producto en Alibaba.com (debe incluir alibaba.com).',
+    orderLegend: 'Modalidad de Pedido',
+    modeDropship: 'Dropshipping Privado (1 Unidad)',
+    modeDropshipHint: 'Envío directo al cliente final desde 1 pieza sin marca china',
+    modeLowMoq: 'Lote de Prueba Bajo MOQ (10–100 uds)',
+    modeLowMoqHint: 'Supere mínimos altos comprando directo en Yiwu',
+    modeBulk: 'Consolidación / Mayoreo OEM',
+    modeBulkHint: 'Empaque privado + recibo original RMB a libro abierto',
+    countryLabel: 'País de Destino',
+    countryPlaceholder: 'ej. España, México, Colombia, EE. UU...',
+    contactLabel: 'Su Nombre / WhatsApp (Opcional)',
+    contactPlaceholder: 'ej. Carlos / +34 612 345 678',
+    submitBtn: 'Cotizar Precio Directo de Fábrica en WhatsApp →',
+    submittingBtn: 'Abriendo WhatsApp Directo...',
+    appBtn: '¿Usa la App de Alibaba? Enviar Captura por WhatsApp',
+    appHint: '¿Prefiere enviarnos una foto o captura de pantalla? Escríbanos directo al equipo en Yiwu (+86 134 8272 5985).',
+    searchLabel: 'Producto que Desea Buscar en Alibaba.com',
+    searchHint: 'Abre Alibaba.com en una pestaña nueva. Copie cualquier enlace de producto y péguelo en la primera pestaña.',
+    searchPlaceholder: 'ej. soporte magnético móvil, utensilios cocina silicona...',
+    searchBtn: 'Buscar en Alibaba.com ↗',
+    searchError: 'Ingrese una palabra clave (mínimo 2 caracteres) para buscar.',
+    searchNote: 'Consejo: Aunque el anuncio en Alibaba pida MOQ de 500 piezas, copie el enlace igualmente — negociamos desde 1 unidad.',
+    detectedLabel: 'Producto Detectado:',
+    statusReady: '¡Mensaje listo! Haga clic abajo si WhatsApp no se abrió automáticamente:',
+    errorSummaryPrefix: 'Error:',
+    guarantee1: '$0 Cuotas de Suscripción',
+    guarantee2: 'Paquetes Sin Marca China',
+    guarantee3: 'Fotos Reales Antes de Enviar'
+  },
+  pt: {
+    badge: 'Cotação 100% Grátis · Zero Mensalidades · Envio Global 5–9 Dias',
+    title: 'Cole Qualquer Link da Alibaba.com — Cotamos Direto da Fábrica para Você',
+    subtitle: 'Navegue na Alibaba.com para escolher produtos, cole o link abaixo (ou envie print do app) e nossa equipe em Yiwu negocia o valor real de fábrica e realiza dropshipping de 1 peça ou lote teste.',
+    tabPaste: 'Colar Link Alibaba.com',
+    tabSearch: 'Buscar na Alibaba.com',
+    urlLabel: 'URL do Produto na Alibaba.com',
+    urlHint: 'Deve conter alibaba.com (ex: https://www.alibaba.com/product-detail/...)',
+    urlPlaceholder: 'https://www.alibaba.com/product-detail/...',
+    urlError: 'Cole um link válido da Alibaba.com (deve conter alibaba.com).',
+    orderLegend: 'Tipo de Operação',
+    modeDropship: 'Dropshipping Privado (1 Unidade)',
+    modeDropshipHint: 'Despacho unitário sem panfletos de terceiros',
+    modeLowMoq: 'Lote Teste Baixo MOQ (10–100 pçs)',
+    modeLowMoqHint: 'Compre pequenas quantidades mesmo com MOQ alto',
+    modeBulk: 'Atacado / Consolidação OEM',
+    modeBulkHint: 'Embalagem personalizada + recibo RMB transparente',
+    countryLabel: 'País de Destino',
+    countryPlaceholder: 'ex: Brasil, Portugal, EUA, Angola...',
+    contactLabel: 'Seu Nome / WhatsApp (Opcional)',
+    contactPlaceholder: 'ex: Lucas / +55 11 99999 0000',
+    submitBtn: 'Receber Cotação de Fábrica no WhatsApp →',
+    submittingBtn: 'Conectando ao WhatsApp...',
+    appBtn: 'Usando o App Alibaba? Enviar Print no WhatsApp',
+    appHint: 'Prefere mandar foto ou print de tela direto pelo celular? Fale com nossa mesa em Yiwu (+86 134 8272 5985).',
+    searchLabel: 'Produto para Pesquisar na Alibaba.com',
+    searchHint: 'Abre a Alibaba.com em uma nova aba. Copie o link do item escolhido e volte para colar aqui.',
+    searchPlaceholder: 'ex: organizador cozinha, fone bluetooth, garrafa térmica...',
+    searchBtn: 'Buscar Catálogo na Alibaba.com ↗',
+    searchError: 'Digite pelo menos 2 caracteres para pesquisar.',
+    searchNote: 'Dica: Mesmo se o anúncio na Alibaba exigir 500 peças, cole o link aqui — atendemos a partir de 1 unidade.',
+    detectedLabel: 'Produto Identificado:',
+    statusReady: 'Orçamento preparado! Clique abaixo se o WhatsApp não abriu automaticamente:',
+    errorSummaryPrefix: 'Erro:',
+    guarantee1: 'Zero Assinatura Mensal',
+    guarantee2: 'Pacote Neutro White-Label',
+    guarantee3: 'Fotos de Conferência em Armazém'
+  },
+  fr: {
+    badge: 'Devis 100 % Gratuit · Zéro Abonnement · Expédition Mondiale 5–9 Jours',
+    title: 'Collez Un Lien Alibaba.com — Nous Sourçons Directement à l’Usine',
+    subtitle: 'Repérez vos produits sur Alibaba.com, collez le lien ci-dessous (ou envoyez une capture) et notre équipe à Yiwu obtient le vrai tarif usine avec dropshipping dès 1 pièce.',
+    tabPaste: 'Coller un Lien Alibaba.com',
+    tabSearch: 'Rechercher sur Alibaba.com',
+    urlLabel: 'URL du Produit Alibaba.com',
+    urlHint: 'Doit contenir alibaba.com (ex. https://www.alibaba.com/product-detail/...)',
+    urlPlaceholder: 'https://www.alibaba.com/product-detail/...',
+    urlError: 'Veuillez coller un lien produit Alibaba.com valide.',
+    orderLegend: 'Mode d’Exécution',
+    modeDropship: 'Dropshipping Privé (1 Pièce)',
+    modeDropshipHint: 'Expédition à l’unité en colis neutre marque blanche',
+    modeLowMoq: 'Lot Test Faible MOQ (10–100 pcs)',
+    modeLowMoqHint: 'Contournez les MOQ élevés grâce au stock sur place',
+    modeBulk: 'Gros / Consolidation Conteneur',
+    modeBulkHint: 'Packaging OEM + factures RMB transparentes',
+    countryLabel: 'Pays de Destination',
+    countryPlaceholder: 'ex. France, Belgique, Canada, Maroc...',
+    contactLabel: 'Nom / WhatsApp (Optionnel)',
+    contactPlaceholder: 'ex. Thomas / +33 6 12 34 56 78',
+    submitBtn: 'Obtenir un Devis Usine sur WhatsApp →',
+    submittingBtn: 'Préparation WhatsApp...',
+    appBtn: 'Sur l’App Alibaba ? Envoyer une Capture WhatsApp',
+    appHint: 'Vous préférez envoyer une photo ou capture d’écran ? Contactez notre bureau de Yiwu (+86 134 8272 5985).',
+    searchLabel: 'Mot-clé Produit à Chercher sur Alibaba.com',
+    searchHint: 'Ouvre Alibaba.com dans un nouvel onglet. Copiez l’URL du produit puis revenez la coller ici.',
+    searchPlaceholder: 'ex. lampe LED sans fil, ustensiles cuisine...',
+    searchBtn: 'Rechercher sur Alibaba.com ↗',
+    searchError: 'Veuillez saisir au moins 2 caractères pour rechercher.',
+    searchNote: 'Astuce : Même si une fiche affiche un MOQ de 500 pièces, copiez le lien — nous expédions dès 1 unité.',
+    detectedLabel: 'Produit Détecté :',
+    statusReady: 'Message prêt ! Cliquez ci-dessous si WhatsApp ne s’est pas ouvert :',
+    errorSummaryPrefix: 'Erreur :',
+    guarantee1: '0 $ d’Abonnement',
+    guarantee2: 'Colis Neutre Marque Blanche',
+    guarantee3: 'Photos Entrepôt Avant Envoi'
+  },
+  de: {
+    badge: '100 % Kostenloses Angebot · Ohne Abo · Weltweiter Versand 5–9 Tage',
+    title: 'Alibaba.com-Link Einfügen — Wir Beschaffen Direkt ab Fabrik',
+    subtitle: 'Suchen Sie Produkte auf Alibaba.com aus, fügen Sie den Link ein (oder senden Sie einen Screenshot) und unser Team in Yiwu verhandelt den echten Fabrikpreis inklusive 1-Stück-Dropshipping.',
+    tabPaste: 'Alibaba.com-Link einfügen',
+    tabSearch: 'Auf Alibaba.com suchen',
+    urlLabel: 'Alibaba.com-Produkt-URL',
+    urlHint: 'Muss alibaba.com enthalten (z. B. https://www.alibaba.com/product-detail/...)',
+    urlPlaceholder: 'https://www.alibaba.com/product-detail/...',
+    urlError: 'Bitte fügen Sie eine gültige Alibaba.com-Produkt-URL ein.',
+    orderLegend: 'Auftragsart wählen',
+    modeDropship: '1-Stück Private Dropshipping',
+    modeDropshipHint: 'Einzelversand weltweit mit neutraler Verpackung',
+    modeLowMoq: 'Kleinmenge Testbestellung (10–100 Stk.)',
+    modeLowMoqHint: 'Niedrige Testlose trotz hoher Lieferanten-MOQs',
+    modeBulk: 'Großhandel / Container-Konsolidierung',
+    modeBulkHint: 'OEM-Branding + transparente RMB-Fabrikbelege',
+    countryLabel: 'Zielland',
+    countryPlaceholder: 'z. B. Deutschland, Österreich, Schweiz...',
+    contactLabel: 'Ihr Name / WhatsApp (Optional)',
+    contactPlaceholder: 'z. B. Lukas / +49 170 1234567',
+    submitBtn: 'Direktpreis per WhatsApp anfordern →',
+    submittingBtn: 'WhatsApp wird vorbereitet...',
+    appBtn: 'Alibaba-App genutzt? Screenshot per WhatsApp senden',
+    appHint: 'Lieber direkt ein Foto oder Screenshot vom Handy senden? Schreiben Sie unserem Yiwu-Büro (+86 134 8272 5985).',
+    searchLabel: 'Suchbegriff für Alibaba.com',
+    searchHint: 'Öffnet Alibaba.com in einem neuen Tab. Kopieren Sie den Produktlink und fügen Sie ihn links ein.',
+    searchPlaceholder: 'z. B. Smartphone-Halterung, Silikon-Küchenhelfer...',
+    searchBtn: 'Auf Alibaba.com suchen ↗',
+    searchError: 'Bitte mindestens 2 Zeichen für die Suche eingeben.',
+    searchNote: 'Tipp: Auch wenn ein Anbieter 500 Stück Mindestmenge angibt — wir liefern oft bereits ab 1 Stück.',
+    detectedLabel: 'Erkanntes Produkt:',
+    statusReady: 'WhatsApp-Nachricht bereit! Klicken Sie unten, falls sich kein neues Fenster öffnete:',
+    errorSummaryPrefix: 'Fehler:',
+    guarantee1: '0 $ Grundgebühr',
+    guarantee2: 'Neutrales White-Label-Paket',
+    guarantee3: 'Lager-QC-Fotos vor Versand'
+  },
+  ar: {
+    badge: 'تسعير مجاني 100% · بدون اشتراكات · شحن عالمي 5–9 أيام',
+    title: 'الصق أي رابط من Alibaba.com — نشتري من المصنع ونشحن لك مباشرة',
+    subtitle: 'تصفح المنتجات على Alibaba.com، الصق رابط المنتج أدناه (أو أرسل صورة الشاشة)، وسيصل فريقنا في إيوو للسعر الحقيقي من المصنع مع شحن دروب شيبينغ بقطعة واحدة أو دفعات صغيرة.',
+    tabPaste: 'لصق رابط Alibaba.com',
+    tabSearch: 'البحث في Alibaba.com',
+    urlLabel: 'رابط المنتج في Alibaba.com',
+    urlHint: 'يجب أن يحتوي على alibaba.com (مثال: https://www.alibaba.com/product-detail/...)',
+    urlPlaceholder: 'https://www.alibaba.com/product-detail/...',
+    urlError: 'يرجى لصق رابط منتج صحيح من موقع Alibaba.com.',
+    orderLegend: 'طريقة التنفيذ والشحن',
+    modeDropship: 'دروب شيبينغ خاص (قطعة واحدة)',
+    modeDropshipHint: 'شحن مباشر لعميلك من قطعة واحدة بتغليف محايد',
+    modeLowMoq: 'دفعة تجربة كمية قليلة (10–100 قطعة)',
+    modeLowMoqHint: 'تجاوز الحد الأدنى المرتفع عبر مخزون إيوو',
+    modeBulk: 'جملة / تجميع شحنات وتغليف خاص',
+    modeBulkHint: 'تغليف علامتك التجارية + فواتير المصنع الأصلية باليوان',
+    countryLabel: 'بلد الوصول',
+    countryPlaceholder: 'مثال: السعودية، الإمارات، مصر، أمريكا...',
+    contactLabel: 'الاسم / رقم واتساب (اختياري)',
+    contactPlaceholder: 'مثال: أحمد / +966 5X XXX XXXX',
+    submitBtn: 'اطلب سعر المصنع المباشر عبر واتساب ←',
+    submittingBtn: 'جاري تجهيز محادثة واتساب...',
+    appBtn: 'تستخدم تطبيق علي بابا؟ أرسل لقطة شاشة على واتساب',
+    appHint: 'تفضل إرسال صورة أو لقطة شاشة من جوالك؟ راسل مكتبنا في إيوو مباشرة (+86 134 8272 5985).',
+    searchLabel: 'ابحث عن منتج داخل Alibaba.com',
+    searchHint: 'يفتح البحث في Alibaba.com بصفحة جديدة. انسخ رابط المنتج وألصقه هنا للتسعير المباشر.',
+    searchPlaceholder: 'مثال: سماعات لاسلكية، أدوات مطبخ سيليكون...',
+    searchBtn: 'افتح البحث في Alibaba.com ↗',
+    searchError: 'أدخل كلمة بحث من حرفين على الأقل.',
+    searchNote: 'نصيحة: حتى لو كتب التاجر أقل كمية 500 قطعة، انسخ الرابط — فريقنا يجهز الطلب من قطعة واحدة.',
+    detectedLabel: 'المنتج المستخرج:',
+    statusReady: 'الرسالة جاهزة! اضغط أدناه إذا لم يفتح واتساب تلقائياً:',
+    errorSummaryPrefix: 'خطأ:',
+    guarantee1: 'بدون رسوم اشتراك',
+    guarantee2: 'تغليف خاص بدون فواتير صينية',
+    guarantee3: 'صور فحص من المستودع قبل الشحن'
+  },
+  ru: {
+    badge: 'Бесплатный расчет · $0 подписок · Доставка по миру 5–9 дней',
+    title: 'Вставьте ссылку Alibaba.com — найдем фабрику и отправим напрямую',
+    subtitle: 'Выбирайте товары на Alibaba.com, вставьте ссылку ниже (или пришлите скриншот), а команда в Иу договорится о реальной фабричной цене, уберет чужую рекламу и отправит от 1 штуки.',
+    tabPaste: 'Вставить ссылку Alibaba.com',
+    tabSearch: 'Найти на Alibaba.com',
+    urlLabel: 'Ссылка на товар Alibaba.com',
+    urlHint: 'Должна содержать alibaba.com (напр. https://www.alibaba.com/product-detail/...)',
+    urlPlaceholder: 'https://www.alibaba.com/product-detail/...',
+    urlError: 'Пожалуйста, вставьте корректную ссылку товара на Alibaba.com.',
+    orderLegend: 'Формат выполнения заказа',
+    modeDropship: 'Дропшиппинг от 1 штуки',
+    modeDropshipHint: 'Поштучная отправка в нейтральной упаковке',
+    modeLowMoq: 'Тестовая партия малый опт (10–100 шт.)',
+    modeLowMoqHint: 'Обход высокого MOQ напрямую на рынке Иу',
+    modeBulk: 'Опт / Консолидация груза и OEM',
+    modeBulkHint: 'Брендированная упаковка + оригиналы чеков RMB',
+    countryLabel: 'Страна доставки',
+    countryPlaceholder: 'напр. Россия, Казахстан, США, ОАЭ...',
+    contactLabel: 'Имя / WhatsApp (необязательно)',
+    contactPlaceholder: 'напр. Алексей / +7 999 000 00 00',
+    submitBtn: 'Получить фабричную цену в WhatsApp →',
+    submittingBtn: 'Открываем WhatsApp...',
+    appBtn: 'В приложении Alibaba? Отправьте скриншот в WhatsApp',
+    appHint: 'Удобнее прислать фото или скриншот с телефона? Напишите в наш офис в Иу (+86 134 8272 5985).',
+    searchLabel: 'Ключевое слово для поиска на Alibaba.com',
+    searchHint: 'Откроет каталог Alibaba.com в новой вкладке. Скопируйте ссылку товара и вставьте в первую вкладку.',
+    searchPlaceholder: 'напр. держатель для телефона, силиконовая форма...',
+    searchBtn: 'Искать в каталоге Alibaba.com ↗',
+    searchError: 'Введите слово для поиска (минимум 2 символа).',
+    searchNote: 'Совет: даже если на карточке указан MOQ 500 шт., все равно скопируйте ссылку — отправим от 1 штуки.',
+    detectedLabel: 'Товар:',
+    statusReady: 'Сообщение готово! Нажмите ниже, если WhatsApp не открылся автоматически:',
+    errorSummaryPrefix: 'Ошибка:',
+    guarantee1: '$0 абонентской платы',
+    guarantee2: 'Нейтральная упаковка без чеков',
+    guarantee3: 'Фото со склада перед отправкой'
+  },
+  it: {
+    badge: 'Preventivo 100% Gratis · Zero Abbonamenti · Consegna 5–9 Giorni',
+    title: 'Incolla Un Link Alibaba.com — Compriamo Diretto in Fabbrica per Te',
+    subtitle: 'Sfoglia Alibaba.com per trovare prodotti vincenti, incolla l’URL qui sotto (o invia uno screenshot) e il nostro team a Yiwu ottiene il vero prezzo di fabbrica gestendo dropshipping da 1 pezzo o piccoli lotti.',
+    tabPaste: 'Incolla Link Alibaba.com',
+    tabSearch: 'Cerca su Alibaba.com',
+    urlLabel: 'URL Prodotto Alibaba.com',
+    urlHint: 'Deve contenere alibaba.com (es. https://www.alibaba.com/product-detail/...)',
+    urlPlaceholder: 'https://www.alibaba.com/product-detail/...',
+    urlError: 'Incolla un link prodotto valido di Alibaba.com.',
+    orderLegend: 'Modalità di Ordine',
+    modeDropship: 'Dropshipping Privato (1 Pezzo)',
+    modeDropshipHint: 'Spedizione singola in pacco neutro white-label',
+    modeLowMoq: 'Lotto Test Basso MOQ (10–100 pz)',
+    modeLowMoqHint: 'Supera i minimi elevati con ritiro diretto a Yiwu',
+    modeBulk: 'Ingrosso / Consolidamento OEM',
+    modeBulkHint: 'Packaging personalizzato + ricevute RMB trasparenti',
+    countryLabel: 'Paese di Destinazione',
+    countryPlaceholder: 'es. Italia, Svizzera, USA, Spagna...',
+    contactLabel: 'Tuo Nome / WhatsApp (Opzionale)',
+    contactPlaceholder: 'es. Marco / +39 340 123 4567',
+    submitBtn: 'Richiedi Prezzo di Fabbrica su WhatsApp →',
+    submittingBtn: 'Apertura WhatsApp...',
+    appBtn: 'Usi l’App Alibaba? Invia Screenshot su WhatsApp',
+    appHint: 'Preferisci inviare una foto o uno screenshot dallo smartphone? Scrivi al nostro ufficio a Yiwu (+86 134 8272 5985).',
+    searchLabel: 'Parola chiave da cercare su Alibaba.com',
+    searchHint: 'Apre la ricerca su Alibaba.com in una nuova scheda. Copia l’URL del prodotto e incollalo nella prima scheda.',
+    searchPlaceholder: 'es. supporto magnetico auto, accessori cucina...',
+    searchBtn: 'Cerca Catalogo su Alibaba.com ↗',
+    searchError: 'Inserisci almeno 2 caratteri per cercare.',
+    searchNote: 'Consiglio: anche se un fornitore indica MOQ 500 pezzi, copia comunque il link — possiamo evadere anche 1 solo pezzo.',
+    detectedLabel: 'Prodotto Rilevato:',
+    statusReady: 'Chat pronta! Clicca qui sotto se WhatsApp non si è aperto automaticamente:',
+    errorSummaryPrefix: 'Errore:',
+    guarantee1: '0 $ di Abbonamento',
+    guarantee2: 'Pacchi Neutri White-Label',
+    guarantee3: 'Foto QC in Magazzino'
+  }
+};
+
+const copy = BOX_DICT[currentLocale] || BOX_DICT.en;
+const rootId = `alibaba-box-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<section
+  id="alibaba-dropship-box"
+  aria-labelledby={headingId}
+  class={`w-full scroll-mt-20 ${compact ? '' : 'py-10 sm:py-12'}`}
+  data-alibaba-root={rootId}
+  data-detected-label={copy.detectedLabel}
+  data-url-error={copy.urlError}
+  data-search-error={copy.searchError}
+  data-submitting-label={copy.submittingBtn}
+  data-submit-label={copy.submitBtn}
+>
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="rounded-3xl bg-slate-900 text-white border border-slate-800 shadow-2xl overflow-hidden">
+      <!-- Top Header Band -->
+      <div class="bg-gradient-to-r from-orange-600/20 via-amber-500/15 to-emerald-500/15 border-b border-slate-800 px-6 sm:px-8 pt-6 pb-5">
+        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-xs font-bold mb-3">
+          <span class="w-2 h-2 rounded-full bg-emerald-400" aria-hidden="true"></span>
+          {copy.badge}
+        </span>
+        <h2 id={headingId} class="text-xl sm:text-3xl font-black tracking-tight text-white">
+          {copy.title}
+        </h2>
+        <p class="mt-2 text-xs sm:text-sm text-slate-300 leading-relaxed max-w-3xl">
+          {copy.subtitle}
+        </p>
+      </div>
+
+      <!-- Accessible Tabs -->
+      <div class="px-6 sm:px-8 pt-4 bg-slate-950/60 border-b border-slate-800">
+        <div role="tablist" aria-label={copy.title} class="stl-tablist flex items-center gap-6 overflow-x-auto no-scrollbar">
+          <button
+            type="button"
+            role="tab"
+            id={`${rootId}-tab-paste`}
+            aria-selected="true"
+            tabindex="0"
+            class="stl-tab text-xs sm:text-sm py-3 whitespace-nowrap text-slate-300 cursor-pointer"
+          >
+            {copy.tabPaste}
+          </button>
+          <button
+            type="button"
+            role="tab"
+            id={`${rootId}-tab-search`}
+            aria-selected="false"
+            tabindex="-1"
+            class="stl-tab text-xs sm:text-sm py-3 whitespace-nowrap text-slate-300 cursor-pointer"
+          >
+            {copy.tabSearch} &#8599;
+          </button>
+        </div>
+      </div>
+
+      <!-- Tab Panel 1: Paste Alibaba Link -->
+      <div
+        role="tabpanel"
+        id={`${rootId}-panel-paste`}
+        aria-labelledby={`${rootId}-tab-paste`}
+        class="stl-tabpanel"
+      >
+        <div class="p-6 sm:p-8 space-y-6 bg-slate-900">
+          <form id={`${rootId}-paste-form`} aria-labelledby={headingId} novalidate class="space-y-5">
+            <!-- Alibaba URL Field -->
+            <div class="stl-field">
+              <label for={`${rootId}-url-input`} class="block text-xs sm:text-sm font-bold text-slate-100 mb-1">
+                {copy.urlLabel} <span class="text-amber-400" aria-hidden="true">*</span>
+              </label>
+              <span id={`${rootId}-url-hint`} class="block text-[11px] sm:text-xs text-slate-400 mb-2">
+                {copy.urlHint}
+              </span>
+              <input
+                type="url"
+                id={`${rootId}-url-input`}
+                name="alibaba_url"
+                required
+                autocorrect="off"
+                autocapitalize="none"
+                spellcheck="false"
+                enterkeyhint="next"
+                aria-invalid="false"
+                aria-describedby={`${rootId}-url-hint`}
+                data-error={`${rootId}-url-error`}
+                placeholder={copy.urlPlaceholder}
+                class="stl-control w-full px-4 py-3.5 rounded-2xl bg-slate-950 border-2 border-slate-700 text-white placeholder-slate-500 text-sm sm:text-base focus:outline-none focus:border-amber-400 transition-colors"
+              />
+              <div id={`${rootId}-url-error`} class="stl-error-msg mt-2 text-xs text-rose-300 font-semibold">
+                <span role="img" aria-label={copy.errorSummaryPrefix}>&#10060;</span> {copy.urlError}
+              </div>
+
+              <!-- Live Parsed Slug Preview (Polite Status) -->
+              <div
+                id={`${rootId}-slug-preview`}
+                role="status"
+                aria-live="polite"
+                class="hidden mt-3 p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-xs text-emerald-200"
+              >
+                <div class="flex items-center gap-2.5">
+                  <span class="shrink-0 w-2 h-2 rounded-full bg-emerald-400" aria-hidden="true"></span>
+                  <div>
+                    <span class="font-bold text-emerald-300">{copy.detectedLabel} </span>
+                    <span id={`${rootId}-slug-text`} class="font-semibold text-white"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3-Option Radio Group: Fulfillment Mode -->
+            <fieldset class="space-y-2.5">
+              <legend class="text-xs sm:text-sm font-bold text-slate-100 mb-1">
+                {copy.orderLegend}
+              </legend>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div class="relative flex items-start gap-3 p-3.5 rounded-2xl bg-slate-950/90 border border-slate-700/80 hover:border-amber-400/60 transition-colors">
+                  <input
+                    type="radio"
+                    id={`${rootId}-mode-dropship`}
+                    name="order_type"
+                    value="1-Piece Private Dropshipping"
+                    checked
+                    class="mt-1 w-4 h-4 shrink-0 cursor-pointer accent-amber-400"
+                  />
+                  <label for={`${rootId}-mode-dropship`} class="cursor-pointer select-none">
+                    <span class="block text-xs font-bold text-white">{copy.modeDropship}</span>
+                    <span class="block text-[11px] text-slate-400 mt-0.5 leading-snug">{copy.modeDropshipHint}</span>
+                  </label>
+                </div>
+
+                <div class="relative flex items-start gap-3 p-3.5 rounded-2xl bg-slate-950/90 border border-slate-700/80 hover:border-amber-400/60 transition-colors">
+                  <input
+                    type="radio"
+                    id={`${rootId}-mode-lowmoq`}
+                    name="order_type"
+                    value="Low-MOQ Test Batch (10-100 pcs)"
+                    class="mt-1 w-4 h-4 shrink-0 cursor-pointer accent-amber-400"
+                  />
+                  <label for={`${rootId}-mode-lowmoq`} class="cursor-pointer select-none">
+                    <span class="block text-xs font-bold text-white">{copy.modeLowMoq}</span>
+                    <span class="block text-[11px] text-slate-400 mt-0.5 leading-snug">{copy.modeLowMoqHint}</span>
+                  </label>
+                </div>
+
+                <div class="relative flex items-start gap-3 p-3.5 rounded-2xl bg-slate-950/90 border border-slate-700/80 hover:border-amber-400/60 transition-colors">
+                  <input
+                    type="radio"
+                    id={`${rootId}-mode-bulk`}
+                    name="order_type"
+                    value="Bulk / Mixed Consolidation"
+                    class="mt-1 w-4 h-4 shrink-0 cursor-pointer accent-amber-400"
+                  />
+                  <label for={`${rootId}-mode-bulk`} class="cursor-pointer select-none">
+                    <span class="block text-xs font-bold text-white">{copy.modeBulk}</span>
+                    <span class="block text-[11px] text-slate-400 mt-0.5 leading-snug">{copy.modeBulkHint}</span>
+                  </label>
+                </div>
+              </div>
+            </fieldset>
+
+            <!-- Optional Destination Country & Buyer Contact -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="stl-field">
+                <label for={`${rootId}-country-input`} class="block text-xs font-bold text-slate-200 mb-1.5">
+                  {copy.countryLabel}
+                </label>
+                <input
+                  type="text"
+                  id={`${rootId}-country-input`}
+                  name="buyer_country"
+                  list={`${rootId}-country-datalist`}
+                  autocomplete="country-name"
+                  enterkeyhint="next"
+                  placeholder={copy.countryPlaceholder}
+                  class="stl-control w-full px-4 py-3 rounded-2xl bg-slate-950 border-2 border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-amber-400 transition-colors"
+                />
+                <datalist id={`${rootId}-country-datalist`}>
+                  <option value="United States" />
+                  <option value="United Kingdom" />
+                  <option value="Canada" />
+                  <option value="Australia" />
+                  <option value="United Arab Emirates" />
+                  <option value="Saudi Arabia" />
+                  <option value="Germany" />
+                  <option value="France" />
+                  <option value="Spain" />
+                  <option value="Italy" />
+                  <option value="Brazil" />
+                  <option value="Mexico" />
+                  <option value="Nigeria" />
+                  <option value="South Africa" />
+                  <option value="Kenya" />
+                  <option value="Tanzania" />
+                  <option value="India" />
+                  <option value="Netherlands" />
+                  <option value="Poland" />
+                  <option value="Russia" />
+                </datalist>
+              </div>
+
+              <div class="stl-field">
+                <label for={`${rootId}-contact-input`} class="block text-xs font-bold text-slate-200 mb-1.5">
+                  {copy.contactLabel}
+                </label>
+                <input
+                  type="text"
+                  id={`${rootId}-contact-input`}
+                  name="buyer_contact"
+                  autocomplete="name"
+                  enterkeyhint="done"
+                  placeholder={copy.contactPlaceholder}
+                  class="stl-control w-full px-4 py-3 rounded-2xl bg-slate-950 border-2 border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-amber-400 transition-colors"
+                />
+              </div>
+            </div>
+
+            <!-- Submit Button + Screenshot App Option -->
+            <div class="pt-1 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+              <button
+                type="submit"
+                id={`${rootId}-submit-btn`}
+                class="flex-1 min-h-[48px] px-6 py-3.5 rounded-2xl bg-[#25D366] hover:bg-[#20ba5a] text-slate-950 font-black text-xs sm:text-sm shadow-lg shadow-emerald-500/20 transition-all cursor-pointer flex items-center justify-center gap-2"
+              >
+                <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.969.586 1.761.884 2.791.884 3.182 0 5.768-2.586 5.768-5.766 0-3.18-2.586-5.77-5.768-5.77zm3.393 8.163c-.144.405-.837.774-1.17.824-.312.045-.694.072-2.008-.472-1.68-.696-2.757-2.42-2.841-2.531-.084-.112-.68-1.026-.68-1.956 0-.93.486-1.385.66-1.575.174-.189.38-.236.507-.236.126 0 .253.001.364.007.119.006.277-.045.434.33.162.388.555 1.353.604 1.452.049.1.082.216.016.347-.066.13-.1.21-.197.324-.099.113-.208.253-.297.34-.1.098-.204.205-.088.404.116.199.516.852 1.108 1.38.763.68 1.408.89 1.609.99.201.1.319.083.437-.052.119-.136.508-.59.644-.793.136-.203.273-.169.458-.101.186.068 1.182.557 1.385.658.203.102.338.152.388.237.05.085.05.49-.094.895z" />
+                  <path d="M12 2C6.477 2 2 6.477 2 12c0 1.891.528 3.659 1.446 5.174L2 22l4.981-1.306C8.423 21.545 10.15 22 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18.062c-1.644 0-3.167-.487-4.444-1.325l-.318-.21-2.964.777.791-2.89-.229-.364C3.935 14.717 3.438 13.398 3.438 12c0-4.721 3.841-8.562 8.562-8.562 4.721 0 8.562 3.841 8.562 8.562 0 4.721-3.841 8.062-8.562 8.062z" />
+                </svg>
+                <span>{copy.submitBtn}</span>
+              </button>
+
+              <a
+                href="https://wa.me/8613482725985?text=Hi%20SinoTradeLink%2C%20I%20am%20browsing%20Alibaba%20and%20want%20to%20send%20product%20screenshots%20for%20a%20direct%20factory%20%26%20dropshipping%20quote."
+                target="_blank"
+                rel="noopener noreferrer"
+                class="min-h-[48px] px-5 py-3.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-700 font-bold text-xs text-center flex items-center justify-center gap-2 transition-colors whitespace-nowrap"
+              >
+                <span>&#128248; {copy.appBtn}</span>
+              </a>
+            </div>
+
+            <!-- Live Submission Confirmation & Fallback Link -->
+            <div
+              id={`${rootId}-submit-status`}
+              role="status"
+              aria-live="polite"
+              class="hidden p-4 rounded-2xl bg-emerald-950/60 border border-emerald-500/40 text-xs text-emerald-100 space-y-2"
+            >
+              <p class="font-semibold">{copy.statusReady}</p>
+              <a
+                id={`${rootId}-wa-fallback-link`}
+                href="https://wa.me/8613482725985"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs transition-colors"
+              >
+                Open WhatsApp Chat (+86 134 8272 5985) &rarr;
+              </a>
+            </div>
+          </form>
+
+          <!-- Guarantee Pills Footer -->
+          <div class="pt-4 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3 text-[11px] text-slate-400">
+            <div class="flex flex-wrap items-center gap-x-5 gap-y-2">
+              <span class="inline-flex items-center gap-1.5"><span class="text-emerald-400">&#10003;</span> {copy.guarantee1}</span>
+              <span class="inline-flex items-center gap-1.5"><span class="text-emerald-400">&#10003;</span> {copy.guarantee2}</span>
+              <span class="inline-flex items-center gap-1.5"><span class="text-emerald-400">&#10003;</span> {copy.guarantee3}</span>
+            </div>
+            <span class="text-slate-500">{copy.appHint}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab Panel 2: Search on Alibaba.com Helper -->
+      <div
+        role="tabpanel"
+        id={`${rootId}-panel-search`}
+        aria-labelledby={`${rootId}-tab-search`}
+        hidden="until-found"
+        class="stl-tabpanel"
+      >
+        <div class="p-6 sm:p-8 space-y-5 bg-slate-900">
+          <form id={`${rootId}-search-form`} aria-label={copy.tabSearch} novalidate class="space-y-4">
+            <div class="stl-field">
+              <label for={`${rootId}-search-input`} class="block text-xs sm:text-sm font-bold text-slate-100 mb-1">
+                {copy.searchLabel} <span class="text-amber-400" aria-hidden="true">*</span>
+              </label>
+              <span id={`${rootId}-search-hint`} class="block text-[11px] sm:text-xs text-slate-400 mb-2">
+                {copy.searchHint}
+              </span>
+              <div class="flex flex-col sm:flex-row gap-3">
+                <div class="flex-1">
+                  <input
+                    type="search"
+                    id={`${rootId}-search-input`}
+                    name="alibaba_query"
+                    required
+                    minlength="2"
+                    autocorrect="off"
+                    autocapitalize="none"
+                    spellcheck="false"
+                    enterkeyhint="search"
+                    aria-invalid="false"
+                    aria-describedby={`${rootId}-search-hint`}
+                    data-error={`${rootId}-search-error`}
+                    placeholder={copy.searchPlaceholder}
+                    class="stl-control w-full px-4 py-3.5 rounded-2xl bg-slate-950 border-2 border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-amber-400 transition-colors"
+                  />
+                  <div id={`${rootId}-search-error`} class="stl-error-msg mt-2 text-xs text-rose-300 font-semibold">
+                    <span role="img" aria-label={copy.errorSummaryPrefix}>&#10060;</span> {copy.searchError}
+                  </div>
+                </div>
+                <button
+                  type="submit"
+                  class="min-h-[48px] px-6 py-3.5 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs sm:text-sm shadow-md transition-colors cursor-pointer whitespace-nowrap self-start"
+                >
+                  {copy.searchBtn}
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <div class="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 text-xs text-slate-300 leading-relaxed flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <p>{copy.searchNote}</p>
+            <a
+              href="https://wa.me/8613482725985?text=Hi%20SinoTradeLink%2C%20I%20am%20browsing%20Alibaba%20and%20want%20to%20send%20product%20screenshots%20for%20a%20direct%20factory%20%26%20dropshipping%20quote."
+              target="_blank"
+              rel="noopener noreferrer"
+              class="shrink-0 px-4 py-2 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 font-bold text-xs whitespace-nowrap transition-colors"
+            >
+              &#128248; {copy.appBtn}
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .stl-tab {
+    position: relative;
+    transition: color 0.15s ease;
+  }
+
+  .stl-tab[aria-selected="true"] {
+    color: #fbbf24;
+  }
+
+  .stl-tab[aria-selected="true"]::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0;
+    border-block-end: 3px solid #fbbf24;
+  }
+
+  .stl-tab:focus-visible,
+  .stl-control:focus-visible {
+    outline: 3px solid #fbbf24;
+    outline-offset: 2px;
+  }
+
+  .stl-error-msg {
+    display: none;
+  }
+
+  .stl-control:is(:user-invalid, .user-invalid-fallback) {
+    border-color: #fb7185;
+    background-color: rgba(136, 19, 55, 0.2);
+  }
+
+  .stl-control:is(:user-invalid, .user-invalid-fallback) + .stl-error-msg {
+    display: block;
+  }
+
+  .stl-control:is(:user-valid, .user-valid-fallback):not(:placeholder-shown) {
+    border-color: #34d399;
+  }
+
+  .stl-visually-hidden:where(:not(:focus-within, :active)) {
+    position: absolute !important;
+    clip-path: inset(50%) !important;
+    overflow: hidden !important;
+    width: 1px !important;
+    height: 1px !important;
+    margin: -1px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    white-space: nowrap !important;
+  }
+</style>
+
+<script is:inline define:vars={{ rootId }}>
+  (function () {
+    var root = document.querySelector('[data-alibaba-root="' + rootId + '"]');
+    if (!root) return;
+
+    var tabPaste = document.getElementById(rootId + '-tab-paste');
+    var tabSearch = document.getElementById(rootId + '-tab-search');
+    var panelPaste = document.getElementById(rootId + '-panel-paste');
+    var panelSearch = document.getElementById(rootId + '-panel-search');
+
+    var pasteForm = document.getElementById(rootId + '-paste-form');
+    var urlInput = document.getElementById(rootId + '-url-input');
+    var urlErrorMsg = root.getAttribute('data-url-error') || 'Please paste a valid Alibaba.com link.';
+    var searchErrorMsg = root.getAttribute('data-search-error') || 'Please enter a keyword.';
+    var slugPreview = document.getElementById(rootId + '-slug-preview');
+    var slugText = document.getElementById(rootId + '-slug-text');
+    var countryInput = document.getElementById(rootId + '-country-input');
+    var contactInput = document.getElementById(rootId + '-contact-input');
+    var submitBtn = document.getElementById(rootId + '-submit-btn');
+    var submitStatus = document.getElementById(rootId + '-submit-status');
+    var waFallbackLink = document.getElementById(rootId + '-wa-fallback-link');
+
+    var searchForm = document.getElementById(rootId + '-search-form');
+    var searchInput = document.getElementById(rootId + '-search-input');
+
+    var tabs = [tabPaste, tabSearch];
+    var panels = [panelPaste, panelSearch];
+
+    function selectTab(index, moveFocus) {
+      for (var i = 0; i < tabs.length; i++) {
+        var isSelected = i === index;
+        var t = tabs[i];
+        var p = panels[i];
+        if (!t || !p) continue;
+        t.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+        t.setAttribute('tabindex', isSelected ? '0' : '-1');
+        if (isSelected) {
+          p.removeAttribute('hidden');
+        } else {
+          p.hidden = 'until-found';
+        }
+        if (isSelected && moveFocus) {
+          t.focus();
+        }
+      }
+    }
+
+    for (var ti = 0; ti < tabs.length; ti++) {
+      (function (idx) {
+        var t = tabs[idx];
+        var p = panels[idx];
+        if (!t || !p) return;
+        t.addEventListener('click', function () {
+          selectTab(idx, false);
+        });
+        t.addEventListener('keydown', function (e) {
+          if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+            e.preventDefault();
+            var next = idx === 0 ? 1 : 0;
+            selectTab(next, true);
+          } else if (e.key === 'Home') {
+            e.preventDefault();
+            selectTab(0, true);
+          } else if (e.key === 'End') {
+            e.preventDefault();
+            selectTab(tabs.length - 1, true);
+          }
+        });
+        p.addEventListener('beforematch', function () {
+          selectTab(idx, false);
+        });
+      })(ti);
+    }
+
+    // Shared polite live announcer for blur/change validation errors
+    var announcer = document.createElement('div');
+    announcer.setAttribute('aria-live', 'polite');
+    announcer.className = 'stl-visually-hidden';
+    document.body.appendChild(announcer);
+    var announceTimer = null;
+    var announcedField = null;
+
+    function linkError(el, shown) {
+      var errorId = el.getAttribute('data-error');
+      if (!errorId) return;
+      var raw = el.getAttribute('aria-describedby') || '';
+      var parts = raw.split(/\s+/).filter(function (id) {
+        return id && id !== errorId;
+      });
+      if (shown) parts.push(errorId);
+      if (parts.length) el.setAttribute('aria-describedby', parts.join(' '));
+      else el.removeAttribute('aria-describedby');
+    }
+
+    function normalizeAlibabaUrl(val) {
+      var trimmed = (val || '').trim();
+      if (!trimmed) return '';
+      if (/^alibaba\./i.test(trimmed) || /^www\.alibaba\./i.test(trimmed) || /^[a-z]{1,8}\.alibaba\./i.test(trimmed)) {
+        return 'https://' + trimmed;
+      }
+      return trimmed;
+    }
+
+    function isAlibabaUrlValid(rawVal) {
+      var normalized = normalizeAlibabaUrl(rawVal);
+      if (!normalized) return false;
+      try {
+        var parsed = new URL(normalized);
+        var host = parsed.hostname.toLowerCase();
+        return host === 'alibaba.com' || host.endsWith('.alibaba.com');
+      } catch (err) {
+        return false;
+      }
+    }
+
+    function extractProductTitle(rawUrl) {
+      var normalized = normalizeAlibabaUrl(rawUrl);
+      if (!normalized) return '';
+      try {
+        var parsed = new URL(normalized);
+        var path = parsed.pathname || '';
+        var detailMatch = path.match(/\/product-detail\/([^/?#]+?)(?:_\d+)?\.html/i);
+        var slug = '';
+        if (detailMatch && detailMatch[1]) {
+          slug = detailMatch[1];
+        } else {
+          var q = parsed.searchParams.get('SearchText') || '';
+          if (q) slug = q;
+        }
+        if (!slug) {
+          var cleanedParts = path.split('/').filter(function (seg) {
+            return seg && seg !== 'product-detail' && !/^\d+\.html$/.test(seg);
+          });
+          if (cleanedParts.length) {
+            slug = cleanedParts[cleanedParts.length - 1].replace(/\.html$/i, '').replace(/_\d+$/, '');
+          }
+        }
+        if (!slug) return '';
+        var decoded = decodeURIComponent(slug).replace(/[-_+]+/g, ' ').replace(/\s+/g, ' ').trim();
+        if (!decoded) return '';
+        return decoded.slice(0, 90);
+      } catch (err) {
+        return '';
+      }
+    }
+
+    function updateSlugPreview() {
+      if (!urlInput || !slugPreview || !slugText) return;
+      var raw = urlInput.value.trim();
+      if (!isAlibabaUrlValid(raw)) {
+        slugPreview.classList.add('hidden');
+        slugText.textContent = '';
+        return;
+      }
+      var title = extractProductTitle(raw);
+      if (title && title.length >= 3) {
+        slugText.textContent = title;
+        slugPreview.classList.remove('hidden');
+      } else {
+        slugText.textContent = 'Alibaba.com Product Link Ready';
+        slugPreview.classList.remove('hidden');
+      }
+    }
+
+    var dirtyMap = new WeakMap();
+    var announcedMap = new WeakSet();
+
+    function applyFieldState(el, isValid, announce) {
+      if (!el) return;
+      el.classList.toggle('user-invalid-fallback', !isValid);
+      el.classList.toggle('user-valid-fallback', isValid);
+      el.setAttribute('aria-invalid', isValid ? 'false' : 'true');
+      linkError(el, !isValid);
+
+      if (!isValid && announce && !announcedMap.has(el)) {
+        announcedMap.add(el);
+        var errEl = document.getElementById(el.getAttribute('data-error') || '');
+        if (errEl) {
+          clearTimeout(announceTimer);
+          announcer.textContent = '';
+          announcedField = el;
+          announceTimer = setTimeout(function () {
+            announcer.textContent = errEl.textContent.replace(/\s+/g, ' ').trim();
+          }, 500);
+        }
+      } else if (isValid) {
+        announcedMap.delete(el);
+        if (announcedField === el) {
+          clearTimeout(announceTimer);
+          announcer.textContent = '';
+        }
+      }
+    }
+
+    if (urlInput) {
+      urlInput.addEventListener('input', function () {
+        var st = dirtyMap.get(urlInput) || { interacted: false, blurred: false };
+        st.interacted = true;
+        dirtyMap.set(urlInput, st);
+        urlInput.setCustomValidity('');
+        if (urlInput.getAttribute('aria-invalid') === 'true' && isAlibabaUrlValid(urlInput.value)) {
+          applyFieldState(urlInput, true, false);
+        }
+        updateSlugPreview();
+      });
+
+      urlInput.addEventListener('blur', function () {
+        var normalized = normalizeAlibabaUrl(urlInput.value);
+        if (normalized && normalized !== urlInput.value.trim()) {
+          urlInput.value = normalized;
+        }
+        var st = dirtyMap.get(urlInput) || { interacted: false, blurred: false };
+        st.blurred = true;
+        dirtyMap.set(urlInput, st);
+        if (st.interacted || urlInput.value.trim()) {
+          var valid = isAlibabaUrlValid(urlInput.value);
+          urlInput.setCustomValidity(valid ? '' : urlErrorMsg);
+          applyFieldState(urlInput, valid, true);
+        }
+        updateSlugPreview();
+      });
+    }
+
+    if (searchInput) {
+      searchInput.addEventListener('input', function () {
+        var st = dirtyMap.get(searchInput) || { interacted: false, blurred: false };
+        st.interacted = true;
+        dirtyMap.set(searchInput, st);
+        searchInput.setCustomValidity('');
+        if (searchInput.getAttribute('aria-invalid') === 'true' && searchInput.value.trim().length >= 2) {
+          applyFieldState(searchInput, true, false);
+        }
+      });
+
+      searchInput.addEventListener('blur', function () {
+        var st = dirtyMap.get(searchInput) || { interacted: false, blurred: false };
+        st.blurred = true;
+        dirtyMap.set(searchInput, st);
+        if (st.interacted && searchInput.value.trim().length > 0 && searchInput.value.trim().length < 2) {
+          searchInput.setCustomValidity(searchErrorMsg);
+          applyFieldState(searchInput, false, true);
+        }
+      });
+    }
+
+    if (pasteForm && urlInput) {
+      pasteForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        var normalized = normalizeAlibabaUrl(urlInput.value);
+        if (normalized) urlInput.value = normalized;
+
+        var valid = isAlibabaUrlValid(normalized);
+        urlInput.setCustomValidity(valid ? '' : urlErrorMsg);
+        applyFieldState(urlInput, valid, false);
+        if (!valid) {
+          urlInput.focus();
+          return;
+        }
+
+        var selectedRadio = pasteForm.querySelector('input[name="order_type"]:checked');
+        var orderMode = selectedRadio ? selectedRadio.value : '1-Piece Private Dropshipping';
+        var countryVal = countryInput && countryInput.value ? countryInput.value.trim() : '';
+        var contactVal = contactInput && contactInput.value ? contactInput.value.trim() : '';
+        var parsedTitle = extractProductTitle(normalized) || 'Product from Alibaba Link';
+
+        var origHtml = submitBtn ? submitBtn.innerHTML : '';
+        if (submitBtn) {
+          submitBtn.disabled = true;
+        }
+
+        var msgLines = [
+          'Hi SinoTradeLink Yiwu Desk, I want a factory-direct & dropshipping quote for this Alibaba product:',
+          '• Product: ' + parsedTitle,
+          '• Alibaba Link: ' + normalized,
+          '• Order Mode: ' + orderMode
+        ];
+        if (countryVal) msgLines.push('• Destination Country: ' + countryVal);
+        if (contactVal) msgLines.push('• Buyer Name / Contact: ' + contactVal);
+        var waText = msgLines.join('\n');
+        var waUrl = 'https://wa.me/8613482725985?text=' + encodeURIComponent(waText);
+
+        // Silent non-blocking lead capture to Cloudflare D1 / Telegram / Resend
+        try {
+          fetch('/api/inquiry', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            keepalive: true,
+            body: JSON.stringify({
+              quick_whatsapp: true,
+              shop_id: 'ALIBABA_DROPSHIP',
+              alibaba_url: normalized,
+              order_type: orderMode,
+              buyer_name: contactVal || 'WhatsApp Direct Buyer',
+              buyer_country: countryVal || 'Global',
+              phone: contactVal || undefined,
+              service_type: 'Alibaba Dropshipping Quote (' + orderMode + ')',
+              message: waText
+            })
+          }).catch(function () {});
+        } catch (err) {}
+
+        if (waFallbackLink) {
+          waFallbackLink.href = waUrl;
+        }
+        if (submitStatus) {
+          submitStatus.classList.remove('hidden');
+        }
+
+        window.open(waUrl, '_blank', 'noopener,noreferrer');
+
+        setTimeout(function () {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            if (origHtml) submitBtn.innerHTML = origHtml;
+          }
+        }, 900);
+      });
+    }
+
+    if (searchForm && searchInput) {
+      searchForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var kw = (searchInput.value || '').trim();
+        if (kw.length < 2) {
+          searchInput.setCustomValidity(searchErrorMsg);
+          applyFieldState(searchInput, false, false);
+          searchInput.focus();
+          return;
+        }
+        applyFieldState(searchInput, true, false);
+        var alibabaSearchUrl = 'https://www.alibaba.com/trade/search?SearchText=' + encodeURIComponent(kw);
+        window.open(alibabaSearchUrl, '_blank', 'noopener,noreferrer');
+      });
+    }
+  })();
+</script>

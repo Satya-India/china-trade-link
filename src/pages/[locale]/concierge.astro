@@ -98,16 +98,14 @@ const canonicalUrl = `https://sinotradelink.com/${locale}/concierge`;
               >
                 {ui.supplier.auditBtn}
               </a>
-              <button
-                type="button"
-                data-item-id={svc.id}
-                data-item-title={svc.title}
-                data-item-price={svc.price}
-                data-item-type="concierge"
-                class="paypal-trigger-btn w-full py-2.5 rounded-2xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+              <a
+                href={`https://wa.me/8613482725985?text=${encodeURIComponent(`Hi SinoTradeLink, I want to book ${svc.title} ($${svc.price}) in Yiwu. Can your ground team assist?`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="w-full py-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors"
               >
-                <span>⚡ PayPal (${svc.price})</span>
-              </button>
+                <span>{ui.supplier.whatsappBtn} &rarr;</span>
+              </a>
             </div>
           </div>
         ))}
@@ -144,7 +142,7 @@ const canonicalUrl = `https://sinotradelink.com/${locale}/concierge`;
         </div>
         <div class="mt-6 text-center">
           <a
-            href="https://wa.me/8613482725985?text=Hi%20SinoTradeLink%2C%20I%20want%20to%20start%20open-book%20sourcing%20with%20the%20Business%20Tier.%20How%20does%20it%20work%3F"
+            href="https://wa.me/8613482725985?text=Hi%20SinoTradeLink%2C%20I%20want%20to%20start%20open-book%20direct%20sourcing%20in%20Yiwu.%20How%20does%20it%20work%3F"
             target="_blank" rel="noopener noreferrer"
             class="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm transition-colors shadow-md shadow-emerald-600/20"
           >{ui.openBook.cta}</a>
