@@ -53,9 +53,10 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return next();
   }
 
-  // 4. Check Cloudflare Edge Cache API (caches.default) using canonical URL string key
+  // 4. Check Cloudflare Edge Cache API (caches.default) using deploy-versioned URL string key
+  const EDGE_CACHE_VERSION = '20261112-dropship-v2';
   const cache = typeof globalThis !== 'undefined' && 'caches' in globalThis ? (globalThis as any).caches?.default : null;
-  const cacheKey = url.toString();
+  const cacheKey = `${url.origin}${url.pathname}${url.search ? `${url.search}&` : '?'}__cf_ver=${EDGE_CACHE_VERSION}`;
 
   if (cache) {
     try {
@@ -80,17 +81,17 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   // 6. Apply caching headers and save to Edge Cache on successful 200
   if (response.status === 200) {
-    let cacheControl = 'public, max-age=3600, s-maxage=86400, stale-while-revalidate=604800'; // Default 24h edge
+    let cacheControl = 'public, max-age=60, s-maxage=300, stale-while-revalidate=3600'; // Default 5m edge / 1m browser
 
     if (pathname.startsWith('/supplier/')) {
-      // Supplier profile (27,706 pages) - 24h edge, 1h browser, 7d stale-while-revalidate
-      cacheControl = 'public, max-age=3600, s-maxage=86400, stale-while-revalidate=604800';
+      // Supplier profile (27,706 pages) - 1h edge, 5m browser, 24h stale-while-revalidate
+      cacheControl = 'public, max-age=300, s-maxage=3600, stale-while-revalidate=86400';
     } else if (pathname.includes('/country/') || pathname.endsWith('/countries')) {
-      // Country Corridors & Hubs (2,500+ pages) - 24h edge
-      cacheControl = 'public, max-age=3600, s-maxage=86400, stale-while-revalidate=604800';
+      // Country Corridors & Hubs (2,500+ pages) - 1h edge
+      cacheControl = 'public, max-age=300, s-maxage=3600, stale-while-revalidate=86400';
     } else if (pathname.includes('/directory')) {
-      // Directory listing & filters - 12h edge, 30m browser
-      cacheControl = 'public, max-age=1800, s-maxage=43200, stale-while-revalidate=86400';
+      // Directory listing & filters - 15m edge, 2m browser
+      cacheControl = 'public, max-age=120, s-maxage=900, stale-while-revalidate=3600';
     } else if (pathname.startsWith('/api/suppliers.json')) {
       // Directory search API - 1h edge, 5m browser
       cacheControl = 'public, max-age=300, s-maxage=3600, stale-while-revalidate=86400';
