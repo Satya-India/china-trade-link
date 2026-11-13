@@ -54,7 +54,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
   }
 
   // 4. Check Cloudflare Edge Cache API (caches.default) using deploy-versioned URL string key
-  const EDGE_CACHE_VERSION = '20261112-chinawide-v3';
+  const EDGE_CACHE_VERSION = '20261114-opt-v1';
   const cache = typeof globalThis !== 'undefined' && 'caches' in globalThis ? (globalThis as any).caches?.default : null;
   const cacheKey = `${url.origin}${url.pathname}${url.search ? `${url.search}&` : '?'}__cf_ver=${EDGE_CACHE_VERSION}`;
 
@@ -81,20 +81,23 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   // 6. Apply caching headers and save to Edge Cache on successful 200
   if (response.status === 200) {
-    let cacheControl = 'public, max-age=60, s-maxage=300, stale-while-revalidate=3600'; // Default 5m edge / 1m browser
+    let cacheControl = 'public, max-age=600, s-maxage=86400, stale-while-revalidate=86400'; // Default 24h edge / 10m browser
 
     if (pathname.startsWith('/supplier/')) {
-      // Supplier profile (27,706 pages) - 1h edge, 5m browser, 24h stale-while-revalidate
-      cacheControl = 'public, max-age=300, s-maxage=3600, stale-while-revalidate=86400';
+      // Supplier profile (27,706 pages) - 7 days edge, 1h browser, 24h stale-while-revalidate
+      cacheControl = 'public, max-age=3600, s-maxage=604800, stale-while-revalidate=86400';
     } else if (pathname.includes('/country/') || pathname.endsWith('/countries')) {
-      // Country Corridors & Hubs (2,500+ pages) - 1h edge
-      cacheControl = 'public, max-age=300, s-maxage=3600, stale-while-revalidate=86400';
+      // Country Corridors & Hubs (2,500+ pages) - 7 days edge, 1h browser
+      cacheControl = 'public, max-age=3600, s-maxage=604800, stale-while-revalidate=86400';
+    } else if (pathname.startsWith('/category/')) {
+      // Category Hubs (24 niche hubs) - 7 days edge, 1h browser
+      cacheControl = 'public, max-age=3600, s-maxage=604800, stale-while-revalidate=86400';
     } else if (pathname.includes('/directory')) {
-      // Directory listing & filters - 15m edge, 2m browser
-      cacheControl = 'public, max-age=120, s-maxage=900, stale-while-revalidate=3600';
+      // Directory listing & filters - 24h edge, 10m browser
+      cacheControl = 'public, max-age=600, s-maxage=86400, stale-while-revalidate=86400';
     } else if (pathname.startsWith('/api/suppliers.json')) {
-      // Directory search API - 1h edge, 5m browser
-      cacheControl = 'public, max-age=300, s-maxage=3600, stale-while-revalidate=86400';
+      // Directory search API - 24h edge, 30m browser
+      cacheControl = 'public, max-age=1800, s-maxage=86400, stale-while-revalidate=86400';
     }
 
     // Keep existing header only if it was already explicitly set to a public cache
@@ -103,21 +106,17 @@ export const onRequest = defineMiddleware(async (context, next) => {
       ? existingCC
       : cacheControl;
 
-    let modifiedResponse: Response;
-    try {
-      response.headers.set('Cache-Control', finalCacheControl);
-      response.headers.set('X-Cache-Status', 'MISS');
-      modifiedResponse = response;
-    } catch {
-      const newHeaders = new Headers(response.headers);
-      newHeaders.set('Cache-Control', finalCacheControl);
-      newHeaders.set('X-Cache-Status', 'MISS');
-      modifiedResponse = new Response(response.body, {
-        status: response.status,
-        statusText: response.statusText,
-        headers: newHeaders
-      });
-    }
+    const newHeaders = new Headers(response.headers);
+    newHeaders.set('Cache-Control', finalCacheControl);
+    newHeaders.set('CDN-Cache-Control', finalCacheControl);
+    newHeaders.set('Cloudflare-CDN-Cache-Control', finalCacheControl);
+    newHeaders.set('X-Cache-Status', 'MISS');
+
+    const modifiedResponse = new Response(response.body, {
+      status: response.status,
+      statusText: response.statusText,
+      headers: newHeaders
+    });
 
     // Save to Cloudflare Edge Cache in background
     if (cache && method === 'GET') {
