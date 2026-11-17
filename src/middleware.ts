@@ -19,17 +19,65 @@ export const onRequest = defineMiddleware(async (context, next) => {
   const method = context.request.method;
   const pathname = url.pathname;
 
-  // 2. Sensitive / Private / Mutation routes - NEVER cache
+  // 2. Legacy /admin and /api/admin redirects -> 301 permanent redirect to https://sinotradelink.com/app
+  if (pathname === '/admin' || pathname.startsWith('/admin/') || pathname === '/api/admin' || pathname.startsWith('/api/admin/')) {
+    return Response.redirect('https://sinotradelink.com/app', 301);
+  }
+
+  // 3. /ai shortcut alias -> 301 permanent redirect to https://sinotradelink.com/app/*
+  if (pathname === '/ai' || pathname.startsWith('/ai/')) {
+    const subPath = pathname === '/ai' || pathname === '/ai/' ? '' : pathname.slice(3);
+    const target = `https://sinotradelink.com/app${subPath}${url.search}`;
+    return Response.redirect(target, 301);
+  }
+
+  // 4. Reverse Proxy /app and /app/* -> Sino Trade AI (Cloudflare Pages)
+  if (pathname === '/app' || pathname.startsWith('/app/')) {
+    const targetUrl = new URL(context.request.url);
+    targetUrl.hostname = 'sino-trade-ai.pages.dev';
+    targetUrl.port = '';
+    targetUrl.protocol = 'https:';
+    if (pathname === '/app') {
+      targetUrl.pathname = '/app/';
+    }
+
+    const proxyHeaders = new Headers(context.request.headers);
+    proxyHeaders.set('Host', 'sino-trade-ai.pages.dev');
+    proxyHeaders.set('X-Forwarded-Host', url.hostname);
+    proxyHeaders.set('X-Forwarded-Proto', 'https');
+
+    const hasBody = !['GET', 'HEAD'].includes(method);
+    const proxyReq = new Request(targetUrl.toString(), {
+      method,
+      headers: proxyHeaders,
+      body: hasBody ? context.request.body : undefined,
+      redirect: 'manual'
+    });
+
+    const proxyRes = await fetch(proxyReq);
+
+    const resHeaders = new Headers(proxyRes.headers);
+    // Enforce private no-cache for app responses
+    if (!resHeaders.has('Cache-Control') || pathname.includes('/api/')) {
+      resHeaders.set('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+    }
+
+    return new Response(proxyRes.body, {
+      status: proxyRes.status,
+      statusText: proxyRes.statusText,
+      headers: resHeaders
+    });
+  }
+
+  // 5. Sensitive / Private / Mutation routes - NEVER cache
   const isSafeMethod = method === 'GET' || method === 'HEAD';
-  const isPrivateOrAdmin =
-    pathname.startsWith('/admin') ||
-    pathname.startsWith('/api/admin') ||
+  const isPrivateOrMutation =
     pathname.startsWith('/api/download-pack') ||
     pathname.startsWith('/api/unlock-contact') ||
     pathname.startsWith('/api/inquiry') ||
     pathname.startsWith('/api/payment');
 
-  if (!isSafeMethod || isPrivateOrAdmin) {
+  if (!isSafeMethod || isPrivateOrMutation) {
     const res = await next();
     // Enforce strict no-cache on private admin/checkout responses
     if (!res.headers.has('Cache-Control')) {

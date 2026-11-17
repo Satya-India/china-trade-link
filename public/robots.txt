@@ -1,4 +1,6 @@
 User-agent: *
+Disallow: /app/
+Disallow: /ai/
 Disallow: /admin/
 Disallow: /api/
 Disallow: /*?q=
@@ -14,6 +16,8 @@ Allow: /
 
 # Multilingual and Regional Search Spiders
 User-agent: Googlebot
+Disallow: /app/
+Disallow: /ai/
 Disallow: /admin/
 Disallow: /api/
 Disallow: /*?q=
@@ -28,6 +32,8 @@ Disallow: /*?*
 Allow: /
 
 User-agent: Bingbot
+Disallow: /app/
+Disallow: /ai/
 Disallow: /admin/
 Disallow: /api/
 Disallow: /*?q=
@@ -42,6 +48,8 @@ Disallow: /*?*
 Allow: /
 
 User-agent: Baiduspider
+Disallow: /app/
+Disallow: /ai/
 Disallow: /admin/
 Disallow: /api/
 Disallow: /*?q=
@@ -56,6 +64,8 @@ Disallow: /*?*
 Allow: /
 
 User-agent: Sogou web spider
+Disallow: /app/
+Disallow: /ai/
 Disallow: /admin/
 Disallow: /api/
 Disallow: /*?q=
@@ -70,6 +80,8 @@ Disallow: /*?*
 Allow: /
 
 User-agent: Yandex
+Disallow: /app/
+Disallow: /ai/
 Disallow: /admin/
 Disallow: /api/
 Disallow: /*?q=

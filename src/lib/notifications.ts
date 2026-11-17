@@ -69,7 +69,7 @@ ${p.targetBooth ? `🏬 <b>Target Stall:</b> Booth ${escapeHtml(p.targetBooth)}\
 📝 <b>Specifications:</b>
 <i>"${escapeHtml(p.message)}"</i>
 
-🔗 <a href="https://sinotradelink.com/admin/leads">Open Leads Operations Portal</a>`;
+🔗 <a href="https://sinotradelink.com/app/admin">Open Leads Operations Portal</a>`;
 
     const res = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
       method: 'POST',
@@ -135,7 +135,7 @@ async function sendResendEmail(apiKey: string, toEmail: string, p: InquiryNotifi
         </div>
 
         <div style="text-align: center;">
-          <a href="https://sinotradelink.com/admin/leads" style="display: inline-block; background: #f59e0b; color: #0f172a; font-weight: bold; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-size: 14px;">
+          <a href="https://sinotradelink.com/app/admin" style="display: inline-block; background: #f59e0b; color: #0f172a; font-weight: bold; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-size: 14px;">
             Open Leads Admin Portal
           </a>
         </div>

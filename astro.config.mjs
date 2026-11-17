@@ -6,7 +6,7 @@ import cloudflare from '@astrojs/cloudflare';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://www.sinotradelink.com',
-  trailingSlash: 'never',
+  trailingSlash: 'ignore',
   output: 'server',
   adapter: cloudflare({
     platformProxy: {
