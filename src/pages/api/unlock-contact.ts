@@ -1,60 +1,66 @@
 import type { APIRoute } from 'astro';
 import { getD1Database, getSupplierById } from '../../lib/data';
 import { dispatchInquiryAlerts } from '../../lib/notifications';
+import { cleanMultiline, cleanSingleLine, enforcePublicRateLimit, getPublicClientIp, readBoundedJson } from '../../lib/rate-limit';
+
+const JSON_HEADERS = {
+  'Content-Type': 'application/json',
+  'Cache-Control': 'no-store, private',
+  'X-Content-Type-Options': 'nosniff'
+};
 
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
-    let body: any;
-    try {
-      body = await request.json();
-    } catch {
-      return new Response(JSON.stringify({ success: false, error: 'Invalid JSON request body.' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' }
+    const rl = await enforcePublicRateLimit(request, locals, {
+      scope: 'public_unlock_contact',
+      windowSeconds: 600,
+      maxRequests: 15
+    });
+    if (!rl.allowed) {
+      return new Response(JSON.stringify({ success: false, error: 'Too many quote requests. Please wait a few minutes and try again.' }), {
+        status: 429,
+        headers: { ...JSON_HEADERS, 'Retry-After': String(rl.retryAfter) }
       });
     }
 
-    const {
-      shop_id,
-      buyer_name,
-      buyer_email,
-      buyer_country,
-      buyer_phone,
-      message
-    } = body || {};
-
-    if (!shop_id || typeof shop_id !== 'string' || shop_id.trim().length === 0) {
-      return new Response(JSON.stringify({ success: false, error: 'Missing supplier identifier.' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' }
+    const parsed = await readBoundedJson(request, 16384);
+    if (!parsed.ok) {
+      return new Response(JSON.stringify({ success: false, error: parsed.error }), {
+        status: parsed.status,
+        headers: JSON_HEADERS
       });
     }
 
-    if (!buyer_name || typeof buyer_name !== 'string' || buyer_name.trim().length < 2) {
-      return new Response(JSON.stringify({ success: false, error: 'Please enter your full name.' }), {
+    const body = parsed.data;
+    const cleanShopId = cleanSingleLine(body.shop_id, 64);
+    if (!cleanShopId || !/^[a-zA-Z0-9_-]{1,64}$/.test(cleanShopId)) {
+      return new Response(JSON.stringify({ success: false, error: 'Invalid or missing supplier identifier.' }), {
         status: 400,
-        headers: { 'Content-Type': 'application/json' }
+        headers: JSON_HEADERS
       });
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!buyer_email || typeof buyer_email !== 'string' || !emailRegex.test(buyer_email.trim())) {
+    const cleanName = cleanSingleLine(body.buyer_name, 120);
+    if (!cleanName || cleanName.length < 2) {
+      return new Response(JSON.stringify({ success: false, error: 'Please enter your full name (2–120 characters).' }), {
+        status: 400,
+        headers: JSON_HEADERS
+      });
+    }
+
+    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,63}$/i;
+    const cleanEmail = cleanSingleLine(body.buyer_email, 254).toLowerCase();
+    if (!cleanEmail || !emailRegex.test(cleanEmail)) {
       return new Response(JSON.stringify({ success: false, error: 'Please enter a valid business email address.' }), {
         status: 400,
-        headers: { 'Content-Type': 'application/json' }
+        headers: JSON_HEADERS
       });
     }
 
-    const cleanShopId = String(shop_id).trim();
-    const cleanName = buyer_name.trim();
-    const cleanEmail = buyer_email.trim().toLowerCase();
-    const cleanCountry = (buyer_country && typeof buyer_country === 'string') ? buyer_country.trim() : 'Global';
-    const cleanPhone = (buyer_phone && typeof buyer_phone === 'string') ? buyer_phone.trim() : '';
-    const cleanNotes = (message && typeof message === 'string') ? message.trim() : '';
-
-    const clientIp = request.headers.get('cf-connecting-ip') ||
-                     request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-                     '127.0.0.1';
+    const cleanCountry = cleanSingleLine(body.buyer_country, 80) || 'Global';
+    const cleanPhone = cleanSingleLine(body.buyer_phone, 40);
+    const cleanNotes = cleanMultiline(body.message, 2000);
+    const clientIp = getPublicClientIp(request);
 
     const db = await getD1Database();
 
@@ -81,14 +87,13 @@ export const POST: APIRoute = async ({ request, locals }) => {
     if (!supplier) {
       return new Response(JSON.stringify({ success: false, error: 'Supplier stall not found in directory.' }), {
         status: 404,
-        headers: { 'Content-Type': 'application/json' }
+        headers: JSON_HEADERS
       });
     }
 
     const supplierName = supplier.clean_name || supplier.name || 'Verified Supplier';
     const internalPhone = supplier.unmasked_direct_phone || '';
 
-    // Record the quote inquiry event in D1
     const inquiryId = crypto.randomUUID();
     const messageNotes = [
       cleanNotes || `Direct factory price & MOQ quote request for ${supplierName} (Booth ${supplier.booth_no || 'N/A'}).`,
@@ -109,7 +114,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
       }
     }
 
-    // Dispatch internal admin notification (Telegram / Email / Webhook)
     dispatchInquiryAlerts({
       inquiryId,
       buyerName: cleanName,
@@ -133,10 +137,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
       status: 'QUOTE_REQUESTED'
     }), {
       status: 200,
-      headers: {
-        'Content-Type': 'application/json',
-        'Cache-Control': 'no-store, private'
-      }
+      headers: JSON_HEADERS
     });
 
   } catch (err: any) {
@@ -146,7 +147,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
       error: 'An unexpected error occurred while submitting your quote request.'
     }), {
       status: 500,
-      headers: { 'Content-Type': 'application/json' }
+      headers: JSON_HEADERS
     });
   }
 };

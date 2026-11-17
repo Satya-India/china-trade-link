@@ -117,8 +117,7 @@ function resolveDataFilePath(): string | null {
   const candidates = [
     path.resolve(process.cwd(), 'public/search-index.json'),
     path.resolve(process.cwd(), '../data/futian_suppliers/futian_suppliers.json'),
-    path.resolve(process.cwd(), 'data/futian_suppliers/futian_suppliers.json'),
-    '/Users/satya/Documents/Yiwu Website/data/futian_suppliers/futian_suppliers.json'
+    path.resolve(process.cwd(), 'data/futian_suppliers/futian_suppliers.json')
   ];
   for (const c of candidates) {
     try {

@@ -1,5 +1,65 @@
 import { defineMiddleware } from 'astro:middleware';
 
+const PROD_ALLOWED_ORIGINS = new Set(['https://sinotradelink.com']);
+const DEV_ALLOWED_ORIGINS = new Set([
+  'https://sinotradelink.com',
+  'http://localhost:4321',
+  'http://127.0.0.1:4321'
+]);
+
+const SITE_CSP = [
+  "default-src 'self'",
+  "script-src 'self' 'unsafe-inline'",
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data: https:",
+  "font-src 'self' data:",
+  "connect-src 'self' https://sinotradelink.com",
+  "frame-ancestors 'none'",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  'upgrade-insecure-requests'
+].join('; ');
+
+const API_CSP = "default-src 'none'; frame-ancestors 'none'";
+
+function isAllowedOrigin(origin: string | null, isLocalDev: boolean): boolean {
+  if (!origin) return false;
+  return isLocalDev ? DEV_ALLOWED_ORIGINS.has(origin) : PROD_ALLOWED_ORIGINS.has(origin);
+}
+
+function applySecurityHeaders(headers: Headers, opts: { isApi: boolean; allowedOrigin?: string | null; preserveUpstreamCsp?: boolean }) {
+  headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
+  headers.set('X-Frame-Options', 'DENY');
+  headers.set('X-Content-Type-Options', 'nosniff');
+  headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+  headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=(), usb=()');
+  if (!opts.preserveUpstreamCsp || !headers.has('Content-Security-Policy')) {
+    headers.set('Content-Security-Policy', opts.isApi ? API_CSP : SITE_CSP);
+  }
+  if (opts.isApi) {
+    if (opts.allowedOrigin) {
+      headers.set('Access-Control-Allow-Origin', opts.allowedOrigin);
+      headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+      headers.set('Access-Control-Allow-Headers', 'Content-Type');
+      headers.set('Access-Control-Max-Age', '600');
+      headers.set('Vary', 'Origin');
+    } else {
+      headers.delete('Access-Control-Allow-Origin');
+    }
+  }
+}
+
+function withHeaders(res: Response, mutate: (h: Headers) => void): Response {
+  const h = new Headers(res.headers);
+  mutate(h);
+  return new Response(res.body, {
+    status: res.status,
+    statusText: res.statusText,
+    headers: h
+  });
+}
+
 function dispatchWaitUntil(context: any, promise: Promise<any>) {
   const cfCtx = context.locals?.cfContext || context.locals?.runtime?.ctx || context.locals?.runtime;
   if (cfCtx && typeof cfCtx.waitUntil === 'function') {
@@ -9,15 +69,30 @@ function dispatchWaitUntil(context: any, promise: Promise<any>) {
 
 export const onRequest = defineMiddleware(async (context, next) => {
   const url = new URL(context.request.url);
+  const isLocalDev = url.hostname === 'localhost' || url.hostname === '127.0.0.1';
 
-  // 1. Canonical 301 Permanent Redirect: www.sinotradelink.com -> sinotradelink.com
+  // 1. Canonical 301 Permanent Redirect: www.sinotradelink.com -> https://sinotradelink.com
   if (url.hostname === 'www.sinotradelink.com') {
     url.hostname = 'sinotradelink.com';
+    url.protocol = 'https:';
+    return Response.redirect(url.toString(), 301);
+  }
+
+  // 1b. Enforce HTTPS in production (preserve localhost dev)
+  if (!isLocalDev && url.protocol === 'http:') {
+    url.protocol = 'https:';
     return Response.redirect(url.toString(), 301);
   }
 
   const method = context.request.method;
   const pathname = url.pathname;
+
+  // 1c. Explicitly block sensitive dotfile, backup, SQL, and source map probes with 404
+  if (/(?:^|\/)\.(?:env|git|dev\.vars|htaccess)|(?:\.map|\.sql|\.bak|\.local)$/i.test(pathname)) {
+    const h = new Headers({ 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store' });
+    applySecurityHeaders(h, { isApi: true, allowedOrigin: null });
+    return new Response('Not Found', { status: 404, headers: h });
+  }
 
   // 2. Legacy /admin and /api/admin redirects -> 301 permanent redirect to https://sinotradelink.com/app
   if (pathname === '/admin' || pathname.startsWith('/admin/') || pathname === '/api/admin' || pathname.startsWith('/api/admin/')) {
@@ -29,6 +104,24 @@ export const onRequest = defineMiddleware(async (context, next) => {
     const subPath = pathname === '/ai' || pathname === '/ai/' ? '' : pathname.slice(3);
     const target = `https://sinotradelink.com/app${subPath}${url.search}`;
     return Response.redirect(target, 301);
+  }
+
+  // 3b. Permanently retired PayPal & paid pack download endpoints -> 410 Gone
+  if (
+    pathname === '/api/payment' ||
+    pathname.startsWith('/api/payment/') ||
+    pathname === '/api/download-pack' ||
+    pathname.startsWith('/api/download-pack/')
+  ) {
+    const goneHeaders = new Headers({
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-store, private'
+    });
+    applySecurityHeaders(goneHeaders, { isApi: true, allowedOrigin: null });
+    return new Response(JSON.stringify({ error: 'This endpoint has been permanently removed.' }), {
+      status: 410,
+      headers: goneHeaders
+    });
   }
 
   // 4. Reverse Proxy /app and /app/* -> Sino Trade AI (Cloudflare Pages)
@@ -57,10 +150,17 @@ export const onRequest = defineMiddleware(async (context, next) => {
     const proxyRes = await fetch(proxyReq);
 
     const resHeaders = new Headers(proxyRes.headers);
-    // Enforce private no-cache for app responses
     if (!resHeaders.has('Cache-Control') || pathname.includes('/api/')) {
       resHeaders.set('Cache-Control', 'private, no-cache, no-store, must-revalidate');
     }
+    const isAppApi = pathname.startsWith('/app/api/');
+    const origin = context.request.headers.get('Origin');
+    const allowedOrigin = isAllowedOrigin(origin, isLocalDev) ? origin : null;
+    applySecurityHeaders(resHeaders, {
+      isApi: isAppApi,
+      allowedOrigin: isAppApi ? allowedOrigin : null,
+      preserveUpstreamCsp: true
+    });
 
     return new Response(proxyRes.body, {
       status: proxyRes.status,
@@ -69,40 +169,60 @@ export const onRequest = defineMiddleware(async (context, next) => {
     });
   }
 
-  // 5. Sensitive / Private / Mutation routes - NEVER cache
+  // 5. Public site API routes: strict CORS, CSRF Origin validation & private no-cache
+  const isApiPath = pathname.startsWith('/api/');
+  const origin = context.request.headers.get('Origin');
+  const allowedOrigin = isAllowedOrigin(origin, isLocalDev) ? origin : null;
+
+  if (isApiPath) {
+    if (method === 'OPTIONS') {
+      const h = new Headers();
+      applySecurityHeaders(h, { isApi: true, allowedOrigin });
+      return new Response(null, { status: allowedOrigin || !origin ? 204 : 403, headers: h });
+    }
+    if (!['GET', 'HEAD'].includes(method) && origin && !allowedOrigin) {
+      const h = new Headers({
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-store, private'
+      });
+      applySecurityHeaders(h, { isApi: true, allowedOrigin: null });
+      console.warn(JSON.stringify({ event: 'security_csrf_blocked', path: pathname, method, origin }));
+      return new Response(JSON.stringify({ success: false, error: 'Cross-origin request blocked.' }), {
+        status: 403,
+        headers: h
+      });
+    }
+  }
+
   const isSafeMethod = method === 'GET' || method === 'HEAD';
   const isPrivateOrMutation =
-    pathname.startsWith('/api/download-pack') ||
     pathname.startsWith('/api/unlock-contact') ||
-    pathname.startsWith('/api/inquiry') ||
-    pathname.startsWith('/api/payment');
+    pathname.startsWith('/api/inquiry');
 
   if (!isSafeMethod || isPrivateOrMutation) {
     const res = await next();
-    // Enforce strict no-cache on private admin/checkout responses
-    if (!res.headers.has('Cache-Control')) {
-      try {
-        res.headers.set('Cache-Control', 'private, no-cache, no-store, must-revalidate');
-      } catch {
-        const h = new Headers(res.headers);
+    return withHeaders(res, (h) => {
+      if (!h.has('Cache-Control')) {
         h.set('Cache-Control', 'private, no-cache, no-store, must-revalidate');
-        return new Response(res.body, { status: res.status, statusText: res.statusText, headers: h });
       }
-    }
-    return res;
+      applySecurityHeaders(h, { isApi: isApiPath, allowedOrigin: isApiPath ? allowedOrigin : null });
+    });
   }
 
-  // 3. Static assets handled by Cloudflare Static Assets (do not intercept with Cache API)
+  // 6. Static assets handled by Cloudflare Static Assets (do not intercept with Cache API)
   const isStaticAsset =
     pathname.startsWith('/_astro/') ||
     pathname.match(/\.(svg|ico|png|jpg|jpeg|webp|gif|css|js|woff2?|map)$/i);
 
   if (isStaticAsset) {
-    return next();
+    const res = await next();
+    return withHeaders(res, (h) => {
+      applySecurityHeaders(h, { isApi: false, preserveUpstreamCsp: true });
+    });
   }
 
-  // 4. Check Cloudflare Edge Cache API (caches.default) using deploy-versioned URL string key
-  const EDGE_CACHE_VERSION = '20261114-opt-v1';
+  // 7. Check Cloudflare Edge Cache API (caches.default) using deploy-versioned URL string key
+  const EDGE_CACHE_VERSION = '20261117-sec-v2';
   const cache = typeof globalThis !== 'undefined' && 'caches' in globalThis ? (globalThis as any).caches?.default : null;
   const cacheKey = `${url.origin}${url.pathname}${url.search ? `${url.search}&` : '?'}__cf_ver=${EDGE_CACHE_VERSION}`;
 
@@ -112,6 +232,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
       if (cachedResponse) {
         const hitHeaders = new Headers(cachedResponse.headers);
         hitHeaders.set('X-Cache-Status', 'HIT');
+        applySecurityHeaders(hitHeaders, { isApi: isApiPath, allowedOrigin: isApiPath ? allowedOrigin : null });
         const body = method === 'HEAD' ? null : cachedResponse.body;
         return new Response(body, {
           status: cachedResponse.status,
@@ -124,31 +245,25 @@ export const onRequest = defineMiddleware(async (context, next) => {
     }
   }
 
-  // 5. Cache Miss: Execute SSR
+  // 8. Cache Miss: Execute SSR
   const response = await next();
 
-  // 6. Apply caching headers and save to Edge Cache on successful 200
+  // 9. Apply caching & security headers and save to Edge Cache on successful 200
   if (response.status === 200) {
-    let cacheControl = 'public, max-age=600, s-maxage=86400, stale-while-revalidate=86400'; // Default 24h edge / 10m browser
+    let cacheControl = 'public, max-age=600, s-maxage=86400, stale-while-revalidate=86400';
 
     if (pathname.startsWith('/supplier/')) {
-      // Supplier profile (27,706 pages) - 7 days edge, 1h browser, 24h stale-while-revalidate
       cacheControl = 'public, max-age=3600, s-maxage=604800, stale-while-revalidate=86400';
     } else if (pathname.includes('/country/') || pathname.endsWith('/countries')) {
-      // Country Corridors & Hubs (2,500+ pages) - 7 days edge, 1h browser
       cacheControl = 'public, max-age=3600, s-maxage=604800, stale-while-revalidate=86400';
     } else if (pathname.startsWith('/category/')) {
-      // Category Hubs (24 niche hubs) - 7 days edge, 1h browser
       cacheControl = 'public, max-age=3600, s-maxage=604800, stale-while-revalidate=86400';
     } else if (pathname.includes('/directory')) {
-      // Directory listing & filters - 24h edge, 10m browser
       cacheControl = 'public, max-age=600, s-maxage=86400, stale-while-revalidate=86400';
     } else if (pathname.startsWith('/api/suppliers.json')) {
-      // Directory search API - 24h edge, 30m browser
       cacheControl = 'public, max-age=1800, s-maxage=86400, stale-while-revalidate=86400';
     }
 
-    // Keep existing header only if it was already explicitly set to a public cache
     const existingCC = response.headers.get('Cache-Control') || '';
     const finalCacheControl = (existingCC.startsWith('public') && !existingCC.includes('max-age=0'))
       ? existingCC
@@ -159,6 +274,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
     newHeaders.set('CDN-Cache-Control', finalCacheControl);
     newHeaders.set('Cloudflare-CDN-Cache-Control', finalCacheControl);
     newHeaders.set('X-Cache-Status', 'MISS');
+    applySecurityHeaders(newHeaders, { isApi: isApiPath, allowedOrigin: isApiPath ? allowedOrigin : null });
 
     const modifiedResponse = new Response(response.body, {
       status: response.status,
@@ -166,7 +282,6 @@ export const onRequest = defineMiddleware(async (context, next) => {
       headers: newHeaders
     });
 
-    // Save to Cloudflare Edge Cache in background
     if (cache && method === 'GET') {
       const toCache = modifiedResponse.clone();
       const putPromise = cache.put(cacheKey, toCache).catch((err: any) => {
@@ -177,21 +292,11 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
     return modifiedResponse;
   } else if (response.status === 404) {
-    // Short edge cache for 404s (5 mins browser, 10 mins edge) to prevent crawler hammer
     const short404Cache = 'public, max-age=300, s-maxage=600';
-    let modified404: Response;
-    try {
-      response.headers.set('Cache-Control', short404Cache);
-      modified404 = response;
-    } catch {
-      const h404 = new Headers(response.headers);
-      h404.set('Cache-Control', short404Cache);
-      modified404 = new Response(response.body, {
-        status: response.status,
-        statusText: response.statusText,
-        headers: h404
-      });
-    }
+    const modified404 = withHeaders(response, (h) => {
+      h.set('Cache-Control', short404Cache);
+      applySecurityHeaders(h, { isApi: isApiPath, allowedOrigin: isApiPath ? allowedOrigin : null });
+    });
 
     if (cache && method === 'GET') {
       const put404 = cache.put(cacheKey, modified404.clone()).catch(() => {});
@@ -201,5 +306,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return modified404;
   }
 
-  return response;
+  return withHeaders(response, (h) => {
+    applySecurityHeaders(h, { isApi: isApiPath, allowedOrigin: isApiPath ? allowedOrigin : null });
+  });
 });

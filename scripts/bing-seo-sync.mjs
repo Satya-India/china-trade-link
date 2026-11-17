@@ -11,8 +11,13 @@
 
 const SITE_URL = 'https://sinotradelink.com/';
 const HOST = 'sinotradelink.com';
-const API_KEY = process.env.BING_API_KEY || '0c309bcdd14f41388e4c7cd825b7f437';
-const KEY_LOCATION = `https://${HOST}/${API_KEY}.txt`;
+const API_KEY = process.env.BING_API_KEY;
+const INDEXNOW_KEY = process.env.INDEXNOW_KEY;
+if (!API_KEY) {
+  console.error('Missing required BING_API_KEY environment variable.');
+  process.exit(1);
+}
+const KEY_LOCATION = INDEXNOW_KEY ? `https://${HOST}/${INDEXNOW_KEY}.txt` : '';
 
 const SITEMAP_FEEDS = [
   'https://sinotradelink.com/sitemap.xml',
@@ -123,28 +128,32 @@ async function main() {
   }
 
   // Step 5: Push ALL 27,700+ URLs via Bing IndexNow (up to 10,000 URLs per POST)
-  console.log('\n5. Pushing ALL URLs via Bing IndexNow Protocol (www.bing.com/indexnow)...');
-  const CHUNK_SIZE = 9500;
-  let chunkIndex = 0;
-  for (let i = 0; i < allUrls.length; i += CHUNK_SIZE) {
-    chunkIndex++;
-    const chunk = allUrls.slice(i, i + CHUNK_SIZE);
-    const payload = {
-      host: HOST,
-      key: API_KEY,
-      keyLocation: KEY_LOCATION,
-      urlList: chunk,
-    };
+  if (!INDEXNOW_KEY) {
+    console.log('\n5. Skipping IndexNow push (INDEXNOW_KEY env var not set; never reuse BING_API_KEY).');
+  } else {
+    console.log('\n5. Pushing ALL URLs via Bing IndexNow Protocol (www.bing.com/indexnow)...');
+    const CHUNK_SIZE = 9500;
+    let chunkIndex = 0;
+    for (let i = 0; i < allUrls.length; i += CHUNK_SIZE) {
+      chunkIndex++;
+      const chunk = allUrls.slice(i, i + CHUNK_SIZE);
+      const payload = {
+        host: HOST,
+        key: INDEXNOW_KEY,
+        keyLocation: KEY_LOCATION,
+        urlList: chunk,
+      };
 
-    const indexNowRes = await fetch('https://www.bing.com/indexnow', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json; charset=utf-8' },
-      body: JSON.stringify(payload),
-    });
-    const respText = await indexNowRes.text();
-    console.log(
-      `   -> IndexNow Batch #${chunkIndex} (${chunk.length.toLocaleString()} URLs, items ${i + 1}..${i + chunk.length}): HTTP ${indexNowRes.status} ${respText || 'OK (Accepted)'}`
-    );
+      const indexNowRes = await fetch('https://www.bing.com/indexnow', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json; charset=utf-8' },
+        body: JSON.stringify(payload),
+      });
+      const respText = await indexNowRes.text();
+      console.log(
+        `   -> IndexNow Batch #${chunkIndex} (${chunk.length.toLocaleString()} URLs, items ${i + 1}..${i + chunk.length}): HTTP ${indexNowRes.status} ${respText || 'OK (Accepted)'}`
+      );
+    }
   }
 
   console.log('\n================================================================');

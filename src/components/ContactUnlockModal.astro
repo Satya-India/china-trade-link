@@ -344,7 +344,9 @@
     currentBooth = btn.getAttribute('data-booth') || '';
 
     if (modalSupplierName) modalSupplierName.textContent = currentSupplierName;
-    if (modalStallInfo) modalStallInfo.innerHTML = `<span>${currentDistrict}</span>${currentBooth ? ` • <span>Booth ${currentBooth}</span>` : ''}`;
+    if (modalStallInfo) {
+      modalStallInfo.textContent = currentBooth ? `${currentDistrict} • Booth ${currentBooth}` : currentDistrict;
+    }
 
     if (gateShopId) gateShopId.value = currentShopId;
     if (gateTargetBooth) gateTargetBooth.value = currentBooth;

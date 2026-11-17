@@ -97,7 +97,7 @@ async function sendResendEmail(apiKey: string, toEmail: string, p: InquiryNotifi
       <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; background: #0f172a; color: #f8fafc; padding: 24px; border-radius: 12px;">
         <div style="border-bottom: 1px solid #334155; padding-bottom: 16px; margin-bottom: 20px;">
           <h2 style="color: #f59e0b; margin: 0 0 4px 0; font-size: 20px;">SinoTradeLink · New Wholesale Inquiry</h2>
-          <p style="color: #94a3b8; margin: 0; font-size: 13px;">Inquiry ID: ${p.inquiryId}</p>
+          <p style="color: #94a3b8; margin: 0; font-size: 13px;">Inquiry ID: ${escapeHtml(p.inquiryId)}</p>
         </div>
 
         <table style="width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 20px;">
@@ -151,7 +151,7 @@ async function sendResendEmail(apiKey: string, toEmail: string, p: InquiryNotifi
       body: JSON.stringify({
         from: 'SinoTradeLink <onboarding@resend.dev>',
         to: [toEmail],
-        subject: `[New Lead] ${p.buyerName} (${p.buyerCountry || 'Global'}) - ${p.targetBooth ? `Booth ${p.targetBooth}` : 'Wholesale RFQ'}`,
+        subject: `[New Lead] ${String(p.buyerName || '').replace(/[\r\n]+/g, ' ').slice(0, 80)} (${String(p.buyerCountry || 'Global').replace(/[\r\n]+/g, ' ').slice(0, 40)}) - ${p.targetBooth ? `Booth ${String(p.targetBooth).replace(/[\r\n]+/g, ' ').slice(0, 40)}` : 'Wholesale RFQ'}`,
         html
       })
     });
@@ -186,5 +186,7 @@ function escapeHtml(text: string): string {
   return String(text)
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }

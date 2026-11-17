@@ -27,9 +27,8 @@ Sino Trade Link has been architected as an **Outcome-Driven Sourcing & On-Ground
 | **Cloudflare Worker** | `china-trade-link` | Latest live version: `d6859692-0678-4293-a0d4-3f0a6d069ca6` |
 | **Cloudflare D1 Database** | `sinotradelink-db` (`ace4b44c-95cf-4172-98e8-d7a0e2c41a9d`) | Bound as `env.DB` in `wrangler.json` |
 | **Cloudflare KV** | `SESSION` (`5a252a687f15464cbfd7df0199271ff7`) | Bound as `env.SESSION` in `wrangler.json` |
-| **Admin CRM Dashboard** | `https://sinotradelink.com/admin/leads` | Password (`ADMIN_PASSWORD`): `SinoAdmin2026!` |
-| **Admin CSV Export** | `https://sinotradelink.com/api/admin/export.csv` | Authenticated via `ADMIN_PASSWORD` |
-| **Email Alerts** | `RESEND_API_KEY` | Configured on Worker via `src/lib/notifications.ts` |
+| **Operations Portal** | `https://sinotradelink.com/app` | Consolidated into Sino Trade AI (JWT + RBAC auth); legacy `/admin/*` 301 redirects |
+| **Email Alerts** | `RESEND_API_KEY` | Configured on Worker via encrypted Cloudflare secret |
 | **WhatsApp Ground Desk** | `+86 134 8272 5985` | Embedded globally & pre-filled per stall/service |
 
 ---
@@ -41,22 +40,14 @@ Sino Trade Link has been architected as an **Outcome-Driven Sourcing & On-Ground
    - `unmasked_direct_phone` (99.9% coverage), `wechat_id`, `email`
    - `district` (`1, 2, 3, 4, 5, 6, 7, 60`), `floor`, `gate`, `booth_no`, `full_location`
    - `sample_products`, `chinese_official_category`, `is_direct_factory` (`10,141` licensed factories)
-2. **`leads_unlocks` Table:**
-   - Captures buyer email/WhatsApp when unlocking stall contacts (`/api/unlock-contact`) and logs completed PayPal transactions (`/api/payment/complete` with prefix `PAYPAL_ORDER:`).
-3. **`inquiries` Table:**
-   - Stores direct wholesale RFQs and on-demand concierge stall audit bookings (`/api/inquiry`).
+2. **`inquiries` Table:**
+   - Stores direct wholesale RFQs, quote requests (`/api/unlock-contact`), and concierge bookings (`/api/inquiry`).
 
 ---
 
-## 4. PayPal Live Checkout & KYC Status
+## 4. Payments Policy
 
-- **File:** `src/components/PayPalCheckoutModal.astro`
-- **Live Client ID:** `BAA-U7WpNQZudJZbn-39Kd2E2Alw7toZtsb_8pRNtFgIpkZXRT2yUdps5-Eyk-N7a2cz0LF0E0R4SOYGgc` (App ID: `APP-5U77933118435081G`)
-- **Critical Technical Rule:** The `<script is:inline define:vars={{ PAYPAL_CLIENT_ID }}>` block in `PayPalCheckoutModal.astro` is **not** transpiled by Vite/TypeScript. It must strictly remain 100% pure vanilla JavaScript (never add TypeScript type casts like `as HTMLElement`).
-- **Current KYC Status (Oct 8, 2026):**
-  - **IDfy KYC Onboarding:** Completed (`Verification Successful`).
-  - **Compliance Sync Window:** PayPal India takes **2–24 hours** to review the IDfy submission and lift `PAYEE_ACCOUNT_RESTRICTED`. (Also verify that Bank Account penny deposits and RBI Purpose Code `P0802`/`P1004` are confirmed in the PayPal dashboard).
-  - **1-Click WhatsApp Checkout Fallback:** While PayPal completes its backend review, if any customer clicks "Pay with PayPal", `#paypal-error-box` displays a polite compliance sync notice and a green **"Complete Order via WhatsApp Desk ->"** button (`#paypal-error-wa-btn`) pre-populated with the exact item title and price. Once PayPal lifts the restriction, live checkouts will process automatically with zero code changes needed.
+- PayPal checkout, `/api/payment/complete`, and `/api/download-pack` have been permanently removed. All sourcing flows operate via free WhatsApp-first direct inquiries.
 
 ---
 
@@ -73,10 +64,10 @@ Sino Trade Link has been architected as an **Outcome-Driven Sourcing & On-Ground
   - `https://sinotradelink.com/sitemaps/suppliers-6.xml` (25,001–27,706)
 - **Crawler Directives:** Configured in `public/robots.txt` and `public/llms.txt`.
 - **Bing Webmaster API & IndexNow Bulk Indexing:**
-  - **Bing Webmaster API Key:** `0c309bcdd14f41388e4c7cd825b7f437`
+  - **Bing Webmaster API Key:** Stored exclusively in environment variable `BING_API_KEY` (never committed to source)
   - **Bing Verification Tag (`msvalidate.01`):** `D323FDCD8670F30E79A66452C4D9A7FA` (in `src/layouts/Layout.astro`)
-  - **IndexNow Verification File:** `https://sinotradelink.com/0c309bcdd14f41388e4c7cd825b7f437.txt` (`public/0c309bcdd14f41388e4c7cd825b7f437.txt`)
-  - **Automated Sync Script:** `npm run seo:bing` (`node scripts/bing-seo-sync.mjs`) — registers all 8 XML sitemaps via `SubmitFeed`, pushes priority URLs via `SubmitUrlBatch`, and bulk-pushes all `27,734` URLs in 3 batches (`9,500` + `9,500` + `8,734`) via Bing IndexNow (`HTTP 200 OK`).
+  - **IndexNow Key:** Stored in environment variable `INDEXNOW_KEY` (separate from Webmaster API key)
+  - **Automated Sync Script:** `BING_API_KEY=... INDEXNOW_KEY=... npm run seo:bing` (`node scripts/bing-seo-sync.mjs`)
 
 ---
 

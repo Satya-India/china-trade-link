@@ -176,6 +176,21 @@
     renderModalItems(list);
   }
 
+  function escapeHtml(text: unknown): string {
+    return String(text ?? '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function sanitizeCsvCell(val: unknown): string {
+    let str = String(val ?? '').replace(/\r?\n/g, ' ');
+    if (/^[=+\-@\t\r]/.test(str)) str = `'${str}`;
+    return `"${str.replace(/"/g, '""')}"`;
+  }
+
   function renderModalItems(list: ShortlistItem[]) {
     const container = document.getElementById('shortlist-items-container');
     if (!container) return;
@@ -194,20 +209,20 @@
       <div class="flex items-center justify-between p-3.5 bg-slate-50 rounded-2xl border border-slate-200">
         <div>
           <div class="flex items-center gap-2 mb-1">
-            <span class="text-xs font-bold text-slate-900">${item.name}</span>
-            ${item.booth ? `<span class="text-[10px] font-mono font-bold bg-white text-slate-700 px-1.5 py-0.5 rounded border border-slate-200">Booth ${item.booth}</span>` : ''}
+            <span class="text-xs font-bold text-slate-900">${escapeHtml(item.name)}</span>
+            ${item.booth ? `<span class="text-[10px] font-mono font-bold bg-white text-slate-700 px-1.5 py-0.5 rounded border border-slate-200">Booth ${escapeHtml(item.booth)}</span>` : ''}
           </div>
           <div class="text-xs text-slate-500 flex items-center gap-3">
-            <span>${item.district}</span>
+            <span>${escapeHtml(item.district)}</span>
             <span>•</span>
-            <span>Contact: <strong class="text-slate-700">${item.contactPerson || 'Factory Manager'}</strong></span>
+            <span>Contact: <strong class="text-slate-700">${escapeHtml(item.contactPerson || 'Factory Manager')}</strong></span>
             <span>•</span>
             <span class="font-medium text-emerald-700">Quote via SinoTradeLink Desk</span>
           </div>
         </div>
         <button 
           type="button" 
-          data-remove-id="${item.id}"
+          data-remove-id="${escapeHtml(item.id)}"
           class="remove-shortlist-btn text-slate-400 hover:text-rose-500 p-1.5 rounded-lg hover:bg-white transition-colors"
           title="Remove"
         >
@@ -236,15 +251,16 @@
 
     const headers = ['Supplier Name', 'District', 'Booth Number', 'Contact Person', 'Supplier Profile URL', 'Request Quote via WhatsApp'];
     const rows = list.map(item => {
-      const profileUrl = `https://sinotradelink.com/supplier/${item.id}`;
+      const safeId = encodeURIComponent(String(item.id || ''));
+      const profileUrl = `https://sinotradelink.com/supplier/${safeId}`;
       const waLink = `https://wa.me/8613482725985?text=${encodeURIComponent(`Hi SinoTradeLink, I want a factory quote for ${item.name} (Booth ${item.booth || 'N/A'})`)}`;
       return [
-        `"${(item.name || '').replace(/"/g, '""')}"`,
-        `"${(item.district || '').replace(/"/g, '""')}"`,
-        `"${(item.booth || '').replace(/"/g, '""')}"`,
-        `"${(item.contactPerson || '').replace(/"/g, '""')}"`,
-        `"${profileUrl}"`,
-        `"${waLink}"`
+        sanitizeCsvCell(item.name),
+        sanitizeCsvCell(item.district),
+        sanitizeCsvCell(item.booth),
+        sanitizeCsvCell(item.contactPerson),
+        sanitizeCsvCell(profileUrl),
+        sanitizeCsvCell(waLink)
       ].join(',');
     });
 
