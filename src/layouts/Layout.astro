@@ -59,7 +59,11 @@ const resolvedCanonical = canonicalUrl || new URL(Astro.url.pathname, 'https://s
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=crossing-20261118" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=crossing-20261118" />
+    <link rel="icon" href="/favicon.ico?v=crossing-20261118" sizes="any" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=crossing-20261118" />
+    <meta name="theme-color" content="#0F172A" />
     <meta name="generator" content={Astro.generator} />
 
     <title>{title}</title>
@@ -84,7 +88,13 @@ const resolvedCanonical = canonicalUrl || new URL(Astro.url.pathname, 'https://s
     <meta property="og:site_name" content="Sino Trade Link" />
     <meta property="og:locale" content={currentLocale.hreflang.replace('-', '_')} />
 
+    <meta property="og:image" content="https://sinotradelink.com/brand/social-card.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Sino Trade Link — Connecting Chinese suppliers with global buyers" />
+
     <!-- Twitter Card -->
+    <meta name="twitter:image" content="https://sinotradelink.com/brand/social-card.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
