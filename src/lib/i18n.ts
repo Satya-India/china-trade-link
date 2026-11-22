@@ -866,7 +866,6 @@ export interface UIDictionary {
     trustGuarantee: string;
     statStalls: string;
     statPhones: string;
-    statKickbacks: string;
   };
   faq: {
     badge: string;
@@ -933,7 +932,6 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
       trustGuarantee: 'Managed Factory Outreach — We Contact Suppliers For You',
       statStalls: 'Listed Suppliers',
       statPhones: 'China-Wide Factory Access',
-      statKickbacks: 'Trading Markups'
     },
     faq: {
       badge: 'Transparency First',
@@ -998,7 +996,6 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
       trustGuarantee: 'Negociación Directa Gestionada — Contactamos por Usted',
       statStalls: 'Proveedores en el directorio',
       statPhones: 'Cobertura en Toda China',
-      statKickbacks: 'Sobreprecio de Agentes'
     },
     faq: {
       badge: 'Transparencia Total',
@@ -1063,7 +1060,6 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
       trustGuarantee: 'Negociação Gerenciada — Falamos com as Fábricas por Você',
       statStalls: 'Fornecedores no diretório',
       statPhones: 'Alcance em Toda a China',
-      statKickbacks: 'Comissões Ocultas'
     },
     faq: {
       badge: 'Transparência em Primeiro Lugar',
@@ -1128,7 +1124,6 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
       trustGuarantee: 'Négociation Gérée — Nous Contactons les Usines pour Vous',
       statStalls: 'Fournisseurs répertoriés',
       statPhones: 'Accès Usines Toute la Chine',
-      statKickbacks: 'Marges Cachées'
     },
     faq: {
       badge: 'Transparence Absolue',
@@ -1193,7 +1188,6 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
       trustGuarantee: 'Betreuter Einkauf — Wir Kontaktieren Lieferanten Für Sie',
       statStalls: 'Gelistete Anbieter',
       statPhones: 'Chinaweiter Fabrikzugang',
-      statKickbacks: 'Händleraufschläge'
     },
     faq: {
       badge: 'Transparenz an Erster Stelle',
@@ -1258,7 +1252,6 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
       trustGuarantee: 'تواصل وتفاوض مُدار — نتواصل مع الموردين نيابةً عنك',
       statStalls: 'مورد مدرج في الدليل',
       statPhones: 'وصول لمصانع عموم الصين',
-      statKickbacks: 'عمولات خفية'
     },
     faq: {
       badge: 'الشفافية أولاً',
@@ -1323,7 +1316,6 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
       trustGuarantee: 'Полное сопровождение — сами ведем переговоры с фабриками',
       statStalls: 'Поставщиков в каталоге',
       statPhones: 'Закупки по всему Китаю',
-      statKickbacks: 'Скрытых наценок'
     },
     faq: {
       badge: 'Честность и прозрачность',
@@ -1388,7 +1380,6 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
       trustGuarantee: 'Trattativa Gestita — Contattiamo le Fabbriche per Te',
       statStalls: 'Fornitori in elenco',
       statPhones: 'Accesso Fabbriche in Tutta la Cina',
-      statKickbacks: 'Ricarichi di Agenzia'
     },
     faq: {
       badge: 'Massima Trasparenza',
