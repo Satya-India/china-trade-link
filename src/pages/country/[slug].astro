@@ -57,7 +57,7 @@ const seoDescription = smartSeo.seoDescription;
 const seoKeywords = smartSeo.seoKeywords;
 
 const whatsappText = isCategoryMode && category
-  ? `Hi SinoTradeLink, I am an importer in ${country.name} (${country.code}) sourcing "${category.shortName}" from Yiwu (${category.districtLabel}, ${category.floor}). Can your team help with stall contacts, $99 audit, or shipping to ${country.ports}?`
+  ? `Hi SinoTradeLink, I am an importer in ${country.name} (${country.code}) sourcing "${category.shortName}" from Yiwu (${category.districtLabel}, ${category.floor}). Can your team help with stall contacts, a stall visit, or shipping to ${country.ports}?`
   : `Hi SinoTradeLink, I am an importer in ${country.name} (${country.code}) looking to source directly from Yiwu Market stalls and ship to ${country.ports}. Can your Yiwu desk assist?`;
 
 const whatsappUrl = `https://wa.me/8613482725985?text=${encodeURIComponent(whatsappText)}`;
@@ -123,7 +123,7 @@ const baseFaqQuestions = isCategoryMode && category
         "name": `What customs and product compliance is required for importing ${category.shortName} into ${country.name}?`,
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": `Shipments entering ${country.name} (${country.currency}) require ${country.customsCompliance}. During a $99 physical stall audit, Sino Trade Link's Yiwu engineers verify factory certificates and inspect: ${category.qcChecklist.join('; ')}.`
+          "text": `Shipments entering ${country.name} (${country.currency}) require ${country.customsCompliance}. During a supplier visit, Sino Trade Link's Yiwu engineers verify factory certificates and inspect: ${category.qcChecklist.join('; ')}.`
         }
       },
       {
@@ -131,7 +131,7 @@ const baseFaqQuestions = isCategoryMode && category
         "name": `How can ${country.name} buyers avoid 15–30% China trading agent commissions?`,
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": `${country.corridorAdvantage} Importers browse 27,706+ verified stalls free, request managed factory quotes via our SinoTradeLink sourcing desk, paste any Alibaba.com product link for direct factory 1-piece dropshipping or low-MOQ sourcing across China (Yiwu, Shenzhen, Guangzhou, Ningbo & nationwide), order $99 physical stall audits or $149 sample boxes, and ship containers at a transparent 6% open-book commission.`
+          "text": `${country.corridorAdvantage} Browse verified stalls and contact us to discuss a supplier visit in China.`
         }
       }
     ]
@@ -149,7 +149,7 @@ const baseFaqQuestions = isCategoryMode && category
         "name": `What customs compliance and certifications are needed to import from Yiwu to ${country.name}?`,
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": `Imports into ${country.name} require ${country.customsCompliance}. Our bilingual Yiwu field engineers verify supplier export documentation, HS codes, and physical product labeling during our $99 on-site stall audit and $149 AQL 2.5 pre-shipment inspection.`
+          "text": `Imports into ${country.name} require ${country.customsCompliance}. Our bilingual Yiwu field engineers verify supplier export documentation, HS codes, and physical product labeling during a supplier visit.`
         }
       },
       {
@@ -162,10 +162,10 @@ const baseFaqQuestions = isCategoryMode && category
       },
       {
         "@type": "Question",
-        "name": `How does Sino Trade Link's 6% Open-Book Sourcing work for ${country.name} importers?`,
+        "name": `How can Sino Trade Link help ${country.name} importers?`,
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": `${country.corridorAdvantage} Instead of paying hidden 15–25% factory kickbacks to traditional 'free' agents, ${country.name} buyers browse 27,706+ verified stalls, submit managed factory quote requests through our China-wide sourcing desk (covering Yiwu, Shenzhen, Guangzhou, Ningbo & nationwide factory hubs), and work with our Open-Book Direct Execution team for raw RMB factory receipts plus a transparent fee.`
+          "text": `${country.corridorAdvantage} Browse verified stalls and contact us to discuss your sourcing requirements.`
         }
       }
     ];
@@ -201,29 +201,6 @@ const pageJsonLd = {
           "name": `${s.clean_name || s.name} (Booth ${s.booth_no || 'N/A'})`
         }))
       }
-    },
-    {
-      "@type": "Service",
-      "@id": `${canonicalUrl}#service`,
-      "name": isCategoryMode && category
-        ? `Yiwu ${category.shortName} Direct Sourcing & Stall Inspection for ${country.name}`
-        : `Yiwu Wholesale Direct Sourcing, Stall Audit & Container Consolidation to ${country.name}`,
-      "serviceType": "B2B Wholesale Sourcing, Factory Verification & Freight Consolidation",
-      "provider": {
-        "@type": "Organization",
-        "name": "Sino Trade Link",
-        "url": "https://sinotradelink.com"
-      },
-      "areaServed": {
-        "@type": "Country",
-        "name": country.name,
-        "identifier": country.code
-      },
-      "offers": [
-        { "@type": "Offer", "name": "Alibaba.com Link Direct Sourcing & Dropshipping Quote", "price": "0.00", "priceCurrency": "USD" },
-        { "@type": "Offer", "name": "On-Demand Physical Stall Audit (4K Video)", "price": "99.00", "priceCurrency": "USD" },
-        { "@type": "Offer", "name": "5-Booth Sample Consolidation & Express Dispatch", "price": "149.00", "priceCurrency": "USD" }
-      ]
     },
     {
       "@type": "BreadcrumbList",
@@ -346,13 +323,11 @@ const pageJsonLd = {
             <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-3.5">
               <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">3. Express &amp; Air DDP</span>
               <span class="text-xs font-bold text-emerald-300 mt-1 block">{country.airTransitDays}</span>
-              <span class="text-[10px] text-slate-400 mt-0.5 block">$149 5-Booth Sample Box available</span>
             </div>
 
             <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-3.5">
               <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">4. Local Customs &amp; Compliance</span>
               <span class="text-xs font-bold text-amber-300 mt-1 block">{country.customsCompliance}</span>
-              <span class="text-[10px] text-slate-400 mt-0.5 block">Verified during $99 Stall Audit</span>
             </div>
           </div>
 
@@ -375,103 +350,11 @@ const pageJsonLd = {
           )}
         </div>
 
-        <!-- Right Conversion Card (Hero CTAs) -->
+        <!-- Supplier visit contact -->
         <div class="lg:col-span-4 bg-slate-950/90 border border-slate-800 rounded-3xl p-6 shadow-xl">
-          {isCategoryMode && category ? (
-            <>
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-[10px] font-black uppercase tracking-wider text-emerald-400">
-                  {country.flag} {country.name} Direct Sourcing
-                </span>
-                <span class="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-                  {result.total.toLocaleString()}+ Stalls
-                </span>
-              </div>
-              <h2 class="text-base font-black text-white mb-1">
-                Source {category.shortName} Direct for {country.name}
-              </h2>
-              <p class="text-xs text-slate-400 mb-4 leading-relaxed">
-                Browse verified booths in {category.districtLabel} free, or paste an Alibaba.com {category.shortName} link for 1-piece dropshipping &amp; factory quotes to {country.ports}.
-              </p>
-
-              <div class="flex items-baseline gap-2 mb-4">
-                <span class="text-3xl font-black text-emerald-400">$0</span>
-                <span class="text-xs font-semibold text-slate-300">Monthly Fee · Pay Per Approved Order</span>
-              </div>
-
-              <div class="space-y-2.5">
-                <a
-                  href="/dropshipping"
-                  class="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs shadow-md transition-all text-center block"
-                >
-                  Paste Alibaba Link for Free Quote &rarr;
-                </a>
-
-                <button
-                  type="button"
-                  class="open-sample-audit-btn w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-xs transition-all cursor-pointer flex items-center justify-center gap-1.5"
-                >
-                  <span>Preview Sample Audit Report (#STL-YW-0842)</span>
-                </button>
-
-                <a
-                  href={whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="w-full py-2.5 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 font-bold text-xs transition-all flex items-center justify-center gap-1.5"
-                >
-                  <span>WhatsApp Yiwu Desk for {country.name} Importers</span>
-                </a>
-              </div>
-            </>
-          ) : (
-            <>
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-[10px] font-black uppercase tracking-wider text-emerald-400">
-                  {country.flag} {country.name} Direct Access
-                </span>
-                <span class="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-                  27,706 Stalls
-                </span>
-              </div>
-              <h2 class="text-base font-black text-white mb-1">
-                Free Yiwu Directory &amp; Alibaba Link Agent
-              </h2>
-              <p class="text-xs text-slate-400 mb-4 leading-relaxed">
-                Browse 27,706 verified stalls free or paste any Alibaba.com product link for factory-direct 1-piece dropshipping &amp; consolidation to {country.ports}.
-              </p>
-
-              <div class="flex items-baseline gap-2 mb-4">
-                <span class="text-3xl font-black text-emerald-400">$0</span>
-                <span class="text-xs font-semibold text-slate-300">Upfront Subscription · Pay Only On Order</span>
-              </div>
-
-              <div class="space-y-2.5">
-                <a
-                  href="/dropshipping"
-                  class="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs shadow-md transition-all text-center block"
-                >
-                  Paste Alibaba.com Link (Free Quote) &rarr;
-                </a>
-
-                <button
-                  type="button"
-                  class="open-sample-audit-btn w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-xs transition-all cursor-pointer flex items-center justify-center gap-1.5"
-                >
-                  <span>Preview Sample Audit Report (#STL-YW-0842)</span>
-                </button>
-
-                <a
-                  href={whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="w-full py-2.5 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 font-bold text-xs transition-all flex items-center justify-center gap-1.5"
-                >
-                  <span>WhatsApp Yiwu Desk for {country.name} Importers</span>
-                </a>
-              </div>
-            </>
-          )}
+          <h2 class="text-base font-black text-white mb-2">{country.flag} {country.name} Supplier Enquiries</h2>
+          <p class="text-xs text-slate-400 mb-4 leading-relaxed">Visiting a supplier in China? Contact us for a stall visit.</p>
+          <a href={whatsappUrl} target="_blank" rel="noopener" class="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs shadow-md transition-all text-center block">Contact us on WhatsApp</a>
         </div>
       </div>
     </div>
@@ -563,137 +446,7 @@ const pageJsonLd = {
     </div>
   </section>
 
-  <!-- Country Logistics, Customs & Open-Book Execution Playbook Section -->
-  <section class="py-14 bg-white border-b border-slate-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-3xl mb-10">
-        <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 block mb-1">
-          {country.flag} {country.name} Direct Sourcing Playbook
-        </span>
-        <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-          How {country.name} Importers Source Direct from Yiwu in 3 Steps
-        </h2>
-        <p class="text-sm text-slate-600 mt-2 leading-relaxed">
-          {country.corridorAdvantage}
-        </p>
-      </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <!-- Step 1 -->
-        <div class="rounded-3xl border border-slate-200 bg-slate-50 p-6 flex flex-col justify-between">
-          <div>
-            <div class="flex items-center justify-between mb-4">
-              <span class="px-3 py-1 rounded-full bg-blue-600 text-white text-xs font-black">
-                STEP 1 · Direct Access
-              </span>
-              <span class="text-xs font-bold text-emerald-700">100% Free Access</span>
-            </div>
-            <h3 class="text-base font-black text-slate-900 mb-2">
-              Browse Verified Stalls or Paste Alibaba.com Links
-            </h3>
-            <p class="text-xs text-slate-600 leading-relaxed mb-4">
-              Skip Alibaba trading markups and local {country.name} importers. Browse verified Yiwu Futian Market booths free, or paste any Alibaba.com link on WhatsApp for real RMB factory quotes from 1 piece.
-            </p>
-          </div>
-          <a
-            href="/dropshipping"
-            class="text-xs font-bold text-blue-600 hover:text-blue-700 inline-flex items-center gap-1"
-          >
-            Paste Alibaba.com Link (Free Quote) &rarr;
-          </a>
-        </div>
-
-        <!-- Step 2 -->
-        <div class="rounded-3xl border border-blue-200 bg-blue-50/40 p-6 flex flex-col justify-between">
-          <div>
-            <div class="flex items-center justify-between mb-4">
-              <span class="px-3 py-1 rounded-full bg-emerald-600 text-white text-xs font-black">
-                STEP 2 · Ground Verification
-              </span>
-              <span class="text-xs font-bold text-emerald-700">$99 Audit / $149 Samples</span>
-            </div>
-            <h3 class="text-base font-black text-slate-900 mb-2">
-              $99 On-Site Stall Audit or $149 Sample Box to {country.name}
-            </h3>
-            <p class="text-xs text-slate-600 leading-relaxed mb-4">
-              Before wiring a 30% deposit from {country.name} ({country.currency}), our bilingual Yiwu field engineers visit the physical booth to shoot 4K video walkthroughs, verify business licenses, or collect samples from up to 5 stalls into one DHL/FedEx box ({country.airTransitDays} transit).
-            </p>
-          </div>
-          <div class="flex flex-wrap items-center gap-3">
-            <a
-              href="/concierge"
-              class="text-xs font-bold text-emerald-700 hover:text-emerald-800 inline-flex items-center gap-1"
-            >
-              Book $99 Audit / $149 Sample Box &rarr;
-            </a>
-            <button
-              type="button"
-              class="open-sample-audit-btn text-xs font-bold text-slate-700 underline cursor-pointer"
-            >
-              View Sample Report
-            </button>
-          </div>
-        </div>
-
-        <!-- Step 3 -->
-        <div class="rounded-3xl border border-slate-200 bg-slate-50 p-6 flex flex-col justify-between">
-          <div>
-            <div class="flex items-center justify-between mb-4">
-              <span class="px-3 py-1 rounded-full bg-amber-500 text-slate-950 text-xs font-black">
-                STEP 3 · Open-Book Execution
-              </span>
-              <span class="text-xs font-bold text-slate-500">6% Commission + AQL 2.5</span>
-            </div>
-            <h3 class="text-base font-black text-slate-900 mb-2">
-              6% Open-Book Container Consolidation to {country.ports}
-            </h3>
-            <p class="text-xs text-slate-600 leading-relaxed mb-4">
-              Work with our zero-subscription <strong>Open-Book Direct Execution</strong> team for 1-piece dropshipping or multi-stall warehouse consolidation, raw RMB factory receipts + transparent fee invoice, optional <strong>$149 Pre-Shipment AQL 2.5 Carton Inspection</strong>, and full <strong>{country.customsCompliance}</strong> documentation routed from Ningbo to <strong>{country.ports}</strong> ({country.seaTransitDays}).
-            </p>
-          </div>
-          <a
-            href={whatsappUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-xs font-bold text-blue-600 hover:text-blue-700 inline-flex items-center gap-1"
-          >
-            Start Open-Book Execution on WhatsApp &rarr;
-          </a>
-        </div>
-      </div>
-
-      {isCategoryMode && category && (
-        <div class="mt-8 bg-slate-900 text-white rounded-3xl p-6 sm:p-8 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-          <div class="space-y-2 max-w-3xl">
-            <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-black uppercase">
-              {category.shortName} QC Checklist for {country.name} ({country.customsCompliance})
-            </span>
-            <h3 class="text-lg font-black text-white">
-              What Our Yiwu Engineers Inspect Before Shipping {category.shortName} to {country.ports}
-            </h3>
-            <ul class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2">
-              {category.qcChecklist.map((item, idx) => (
-                <li class="bg-slate-800/90 p-3.5 rounded-2xl border border-slate-700 text-xs text-slate-200 leading-relaxed flex items-start gap-2">
-                  <span class="w-5 h-5 rounded-full bg-amber-500 text-slate-950 font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5">
-                    {idx + 1}
-                  </span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div class="shrink-0">
-            <a
-              href="/concierge?service=stall-audit"
-              class="inline-block px-5 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs transition-all"
-            >
-              Book $99 Stall Audit &rarr;
-            </a>
-          </div>
-        </div>
-      )}
-    </div>
-  </section>
 
   <!-- FAQ Section -->
   <section class="py-12 bg-slate-50 border-b border-slate-200">

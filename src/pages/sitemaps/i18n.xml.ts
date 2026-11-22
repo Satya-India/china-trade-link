@@ -8,7 +8,7 @@ export const GET: APIRoute = async () => {
   const urls: { loc: string; priority: string; changefreq: string }[] = [];
 
   for (const loc of NON_DEFAULT_LOCALES) {
-    // 5 Core Localized Pages per language (7 × 5 = 35 URLs)
+    // 3 Core Localized Pages per language (7 × 3 = 21 URLs)
     urls.push(
       {
         loc: `https://sinotradelink.com/${loc}`,
@@ -19,16 +19,6 @@ export const GET: APIRoute = async () => {
         loc: `https://sinotradelink.com/${loc}/directory`,
         priority: '0.90',
         changefreq: 'daily',
-      },
-      {
-        loc: `https://sinotradelink.com/${loc}/dropshipping`,
-        priority: '0.90',
-        changefreq: 'weekly',
-      },
-      {
-        loc: `https://sinotradelink.com/${loc}/concierge`,
-        priority: '0.90',
-        changefreq: 'weekly',
       },
       {
         loc: `https://sinotradelink.com/${loc}/countries`,

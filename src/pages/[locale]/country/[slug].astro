@@ -65,7 +65,7 @@ const seoDescription = `${ui.seo.homeDesc} (${country.name} · ${country.ports} 
 const seoKeywords = `${ui.seo.homeKeywords}, ${smartSeo.seoKeywords}`;
 
 const whatsappText = isCategoryMode && category
-  ? `Hi SinoTradeLink (${localeConfig.nativeName}), I am an importer in ${country.name} (${country.code}) sourcing "${category.shortName}" from Yiwu (${category.districtLabel}, ${category.floor}). Can your team help with stall contacts, $99 audit, or shipping to ${country.ports}?`
+  ? `Hi SinoTradeLink (${localeConfig.nativeName}), I am an importer in ${country.name} (${country.code}) sourcing "${category.shortName}" from Yiwu (${category.districtLabel}, ${category.floor}). Can your team help with stall contacts, a stall visit, or shipping to ${country.ports}?`
   : `Hi SinoTradeLink (${localeConfig.nativeName}), I am an importer in ${country.name} (${country.code}) looking to source directly from Yiwu Market stalls and ship to ${country.ports}. Can your Yiwu desk assist?`;
 
 const whatsappUrl = `https://wa.me/8613482725985?text=${encodeURIComponent(whatsappText)}`;
@@ -110,9 +110,6 @@ if (isCategoryMode && category) {
 
 const faqQuestions = [
   { "@type": "Question", "name": ui.faq.q1, "acceptedAnswer": { "@type": "Answer", "text": ui.faq.a1 } },
-  { "@type": "Question", "name": ui.faq.q2, "acceptedAnswer": { "@type": "Answer", "text": ui.faq.a2 } },
-  { "@type": "Question", "name": ui.faq.q3, "acceptedAnswer": { "@type": "Answer", "text": ui.faq.a3 } },
-  { "@type": "Question", "name": ui.faq.q4, "acceptedAnswer": { "@type": "Answer", "text": ui.faq.a4 } },
   { "@type": "Question", "name": ui.faq.q5, "acceptedAnswer": { "@type": "Answer", "text": `${ui.faq.a5} (${country.name}: ${country.customsCompliance} · ${country.ports})` } }
 ];
 
@@ -136,26 +133,6 @@ const pageJsonLd = {
           "name": `${s.clean_name || s.name} (${ui.supplier.boothLabel} ${s.booth_no || 'N/A'})`
         }))
       }
-    },
-    {
-      "@type": "Service",
-      "@id": `${canonicalUrl}#service`,
-      "name": seoTitle,
-      "serviceType": "B2B Wholesale Sourcing, Factory Verification & Freight Consolidation",
-      "provider": {
-        "@type": "Organization",
-        "name": "Sino Trade Link",
-        "url": "https://sinotradelink.com"
-      },
-      "areaServed": {
-        "@type": "Country",
-        "name": country.name,
-        "identifier": country.code
-      },
-      "offers": [
-        { "@type": "Offer", "name": ui.nav.categoryPacks, "price": "0.00", "priceCurrency": "USD" },
-        { "@type": "Offer", "name": ui.nav.concierge, "price": "99.00", "priceCurrency": "USD" }
-      ]
     },
     {
       "@type": "BreadcrumbList",
@@ -260,63 +237,20 @@ const pageJsonLd = {
             <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-3.5">
               <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">3. {ui.countriesSection.airTransitLabel}</span>
               <span class="text-xs font-bold text-emerald-300 mt-1 block">{country.airTransitDays}</span>
-              <span class="text-[10px] text-slate-400 mt-0.5 block">$149 Sample Box</span>
             </div>
 
             <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-3.5">
               <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">4. {ui.countriesSection.complianceLabel}</span>
               <span class="text-xs font-bold text-amber-300 mt-1 block">{country.customsCompliance}</span>
-              <span class="text-[10px] text-slate-400 mt-0.5 block">{ui.nav.concierge}</span>
             </div>
           </div>
         </div>
 
-        <!-- Right Conversion Card (Hero CTAs) -->
+        <!-- Supplier visit contact -->
         <div class="lg:col-span-4 bg-slate-950/90 border border-slate-800 rounded-3xl p-6 shadow-xl">
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-[10px] font-black uppercase tracking-wider text-emerald-400">
-              {country.flag} {country.name} — {ui.membership.proBadge}
-            </span>
-            <span class="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-              {isCategoryMode && category ? `${result.total.toLocaleString()}+` : '27,706+'}
-            </span>
-          </div>
-          <h2 class="text-base font-black text-white mb-1">
-            {isCategoryMode && category ? `${category.shortName} · ${ui.nav.categoryPacks}` : ui.membership.proLabel}
-          </h2>
-          <p class="text-xs text-slate-400 mb-4 leading-relaxed">
-            {isCategoryMode && category ? ui.membership.singleDesc : ui.membership.proDesc}
-          </p>
-
-          <div class="flex items-baseline gap-2 mb-4">
-            <span class="text-3xl font-black text-emerald-400">{ui.membership.proPrice}</span>
-            <span class="text-[11px] text-slate-300 ml-auto">{ui.membership.singlePrice}</span>
-          </div>
-
-          <div class="space-y-2.5">
-            <a
-              href={`/${locale}/dropshipping`}
-              class="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs shadow-md transition-all text-center block"
-            >
-              {ui.membership.singleCta}
-            </a>
-
-            <a
-              href={`/${locale}/concierge?service=audit`}
-              class="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-xs transition-all flex items-center justify-center gap-1.5"
-            >
-              <span>{ui.supplier.auditBtn}</span>
-            </a>
-
-            <a
-              href={whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="w-full py-2.5 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 font-bold text-xs transition-all flex items-center justify-center gap-1.5"
-            >
-              <span>{ui.supplier.whatsappBtn} ({country.name})</span>
-            </a>
-          </div>
+          <h2 class="text-base font-black text-white mb-2">{country.flag} {country.name} Supplier Enquiries</h2>
+          <p class="text-xs text-slate-400 mb-4 leading-relaxed">Visiting a supplier in China? Contact us for a stall visit.</p>
+          <a href={whatsappUrl} target="_blank" rel="noopener" class="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs shadow-md transition-all text-center block">Contact us on WhatsApp</a>
         </div>
       </div>
     </div>
@@ -398,38 +332,7 @@ const pageJsonLd = {
     </div>
   </section>
 
-  <!-- Open-Book Comparison Section -->
-  <section class="py-14 bg-white border-b border-slate-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center max-w-2xl mx-auto mb-10">
-        <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 block mb-1">{ui.openBook.badge}</span>
-        <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">{ui.openBook.title}</h2>
-        <p class="text-sm text-slate-600 mt-2">{ui.openBook.subtitle}</p>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-        <div class="rounded-2xl border border-red-200 bg-red-50/60 p-6">
-          <h3 class="text-base font-black text-red-900 mb-4">{ui.openBook.tradTitle}</h3>
-          <ul class="space-y-3 text-sm text-red-800">
-            <li class="flex items-start gap-2.5"><span class="text-red-500 font-bold shrink-0">✗</span> {ui.openBook.trad1}</li>
-            <li class="flex items-start gap-2.5"><span class="text-red-500 font-bold shrink-0">✗</span> {ui.openBook.trad2}</li>
-            <li class="flex items-start gap-2.5"><span class="text-red-500 font-bold shrink-0">✗</span> {ui.openBook.trad3}</li>
-            <li class="flex items-start gap-2.5"><span class="text-red-500 font-bold shrink-0">✗</span> {ui.openBook.trad4}</li>
-            <li class="flex items-start gap-2.5"><span class="text-red-500 font-bold shrink-0">✗</span> {ui.openBook.trad5}</li>
-          </ul>
-        </div>
-        <div class="rounded-2xl border border-emerald-300 bg-emerald-50/60 p-6">
-          <h3 class="text-base font-black text-emerald-900 mb-4">{ui.openBook.stlTitle}</h3>
-          <ul class="space-y-3 text-sm text-emerald-800">
-            <li class="flex items-start gap-2.5"><span class="text-emerald-600 font-bold shrink-0">✓</span> {ui.openBook.stl1}</li>
-            <li class="flex items-start gap-2.5"><span class="text-emerald-600 font-bold shrink-0">✓</span> {ui.openBook.stl2}</li>
-            <li class="flex items-start gap-2.5"><span class="text-emerald-600 font-bold shrink-0">✓</span> {ui.openBook.stl3}</li>
-            <li class="flex items-start gap-2.5"><span class="text-emerald-600 font-bold shrink-0">✓</span> {ui.openBook.stl4}</li>
-            <li class="flex items-start gap-2.5"><span class="text-emerald-600 font-bold shrink-0">✓</span> {ui.openBook.stl5}</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
+
 
   <!-- FAQ Section -->
   <section class="py-12 bg-slate-50 border-b border-slate-200">

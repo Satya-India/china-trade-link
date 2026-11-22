@@ -2,17 +2,16 @@
 import Layout from '../layouts/Layout.astro';
 import SupplierCard from '../components/SupplierCard.astro';
 import ContactUnlockModal from '../components/ContactUnlockModal.astro';
-import AlibabaDropshipBox from '../components/AlibabaDropshipBox.astro';
 import { getStats, getFeaturedSuppliers } from '../lib/data';
-import { WHOLESALE_MARKETS, CONCIERGE_SERVICES } from '../lib/markets';
+import { WHOLESALE_MARKETS } from '../lib/markets';
 
 const stats = await getStats();
 const featuredSuppliers = await getFeaturedSuppliers(8);
 ---
 
 <Layout
-  title="Sino Trade Link | Alibaba.com Dropshipping & China-Wide Direct Factory Sourcing"
-  description="Source directly from factories anywhere in China (Yiwu, Shenzhen, Guangzhou, Ningbo & beyond). Paste any Alibaba.com product link or browse 27,706+ verified stalls free and request managed factory quotes."
+  title="Sino Trade Link | China-Wide Direct Factory Sourcing"
+  description="Source directly from factories anywhere in China (Yiwu, Shenzhen, Guangzhou, Ningbo & beyond). Browse 27,706+ verified stalls free and request managed factory quotes."
   activePage="home"
 >
   <!-- Hero Section -->
@@ -32,7 +31,7 @@ const featuredSuppliers = await getFeaturedSuppliers(8);
       </h1>
 
       <p class="mt-6 text-base sm:text-xl text-slate-300 max-w-2xl mx-auto font-normal leading-relaxed">
-        We procure across <strong class="text-white font-semibold">Yiwu, Shenzhen, Guangzhou, Ningbo &amp; factory belts nationwide</strong> — not only Yiwu market. Paste any Alibaba.com link or browse <strong class="text-white font-semibold">{stats.totalSuppliers.toLocaleString()}+ verified stalls</strong> free and request direct factory quotes through our team.
+        We procure across <strong class="text-white font-semibold">Yiwu, Shenzhen, Guangzhou, Ningbo &amp; factory belts nationwide</strong>. Browse <strong class="text-white font-semibold">{stats.totalSuppliers.toLocaleString()}+ verified stalls</strong> free and request direct factory quotes through our team.
       </p>
 
       <!-- Search Bar -->
@@ -68,20 +67,8 @@ const featuredSuppliers = await getFeaturedSuppliers(8);
           <span>•</span>
           <a href="/directory?q=textile" rel="nofollow" class="hover:text-white underline decoration-slate-600">Bedding</a>
         </div>
-        <div class="mt-5 flex flex-wrap items-center justify-center gap-3">
-          <a
-            href="#alibaba-dropship-box"
-            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs shadow-lg shadow-emerald-500/20 transition-all"
-          >
-            <span>&#128230; Have an Alibaba Link? Get Factory Quote Free &rarr;</span>
-          </a>
-          <a
-            href="/dropshipping"
-            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-700 font-bold text-xs transition-all"
-          >
-            1-Piece Dropshipping Workflow &rarr;
-          </a>
-        </div>
+        <p class="mt-5 text-sm text-slate-300">Visiting a supplier in China? Contact us for a stall visit.</p>
+        <a href="https://wa.me/8613482725985" target="_blank" rel="noopener" class="inline-flex items-center gap-2 mt-3 px-5 py-2.5 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs shadow-lg shadow-emerald-500/20 transition-all">Contact us on WhatsApp</a>
       </div>
 
       <!-- On-Ground Trust Bar -->
@@ -113,92 +100,6 @@ const featuredSuppliers = await getFeaturedSuppliers(8);
           <div class="text-2xl sm:text-3xl font-black text-blue-400">0%</div>
           <div class="text-xs text-slate-400 font-medium mt-1">Trading Markups</div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Alibaba.com Dropshipping & Direct Factory Quote Box -->
-  <div class="bg-slate-950 border-b border-slate-800">
-    <AlibabaDropshipBox locale="en" headingId="home-alibaba-box-heading" />
-  </div>
-
-  <!-- Alibaba.com vs Direct China Factory Price Comparison Section -->
-  <section class="py-16 bg-slate-900 text-white border-b border-slate-800">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center max-w-2xl mx-auto mb-10">
-        <span class="text-xs font-bold uppercase tracking-wider text-amber-400 block mb-1">Alibaba.com vs. China Factory Direct</span>
-        <h2 class="text-3xl font-black text-white tracking-tight">Alibaba.com Price vs. Our Direct Factory Price</h2>
-        <p class="text-sm text-slate-400 mt-2">Typical public Alibaba.com trader listings vs. direct RMB factory rates we procure across Yiwu, Shenzhen, Guangzhou, Ningbo &amp; all Chinese manufacturing hubs.</p>
-      </div>
-
-      <div class="overflow-x-auto rounded-2xl border border-slate-700 shadow-xl">
-        <table class="w-full text-sm">
-          <thead>
-            <tr class="bg-slate-800 text-slate-400 text-[11px] uppercase tracking-wider">
-              <th class="text-left px-5 py-3.5 font-bold">Product</th>
-              <th class="text-left px-4 py-3.5 font-bold">China Sourcing Hub</th>
-              <th class="text-right px-4 py-3.5 font-bold text-red-400">Alibaba.com Price</th>
-              <th class="text-right px-4 py-3.5 font-bold text-emerald-400">Our Direct Price</th>
-              <th class="text-right px-4 py-3.5 font-bold">Dropship / MOQ</th>
-              <th class="text-right px-5 py-3.5 font-bold text-amber-400">Saving</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-slate-800">
-            <tr class="bg-slate-900 hover:bg-slate-800/80 transition-colors">
-              <td class="px-5 py-4 font-medium text-white"><a href="/directory?q=phone+case" rel="nofollow" class="hover:text-blue-400 transition-colors">MagSafe Silicone Phone Case</a></td>
-              <td class="px-4 py-4 text-slate-400"><a href="/dropshipping" class="hover:text-blue-400 transition-colors">Shenzhen · Electronics Belt</a></td>
-              <td class="px-4 py-4 text-right text-red-400 font-mono">$1.85/unit</td>
-              <td class="px-4 py-4 text-right text-emerald-400 font-mono font-bold">$0.92/unit</td>
-              <td class="px-4 py-4 text-right text-slate-400">From 1 pc · Bulk 100+</td>
-              <td class="px-5 py-4 text-right font-black text-amber-400">−50%</td>
-            </tr>
-            <tr class="bg-slate-900/80 hover:bg-slate-800/80 transition-colors">
-              <td class="px-5 py-4 font-medium text-white"><a href="/directory?q=insulated+mug" rel="nofollow" class="hover:text-blue-400 transition-colors">Stainless 304 Insulated Tumbler</a></td>
-              <td class="px-4 py-4 text-slate-400"><a href="/directory?district=2" rel="nofollow" class="hover:text-blue-400 transition-colors">Yongkang / Yiwu · Dist 2</a></td>
-              <td class="px-4 py-4 text-right text-red-400 font-mono">$4.90/unit</td>
-              <td class="px-4 py-4 text-right text-emerald-400 font-mono font-bold">$2.45/unit</td>
-              <td class="px-4 py-4 text-right text-slate-400">From 1 pc · Bulk 50+</td>
-              <td class="px-5 py-4 text-right font-black text-amber-400">−50%</td>
-            </tr>
-            <tr class="bg-slate-900 hover:bg-slate-800/80 transition-colors">
-              <td class="px-5 py-4 font-medium text-white"><a href="/directory?q=LED+lamp" rel="nofollow" class="hover:text-blue-400 transition-colors">Rechargeable LED Desk Lamp</a></td>
-              <td class="px-4 py-4 text-slate-400"><a href="/dropshipping" class="hover:text-blue-400 transition-colors">Zhongshan · Lighting Belt</a></td>
-              <td class="px-4 py-4 text-right text-red-400 font-mono">$5.60/unit</td>
-              <td class="px-4 py-4 text-right text-emerald-400 font-mono font-bold">$2.95/unit</td>
-              <td class="px-4 py-4 text-right text-slate-400">From 1 pc · Bulk 50+</td>
-              <td class="px-5 py-4 text-right font-black text-amber-400">−47%</td>
-            </tr>
-            <tr class="bg-slate-900/80 hover:bg-slate-800/80 transition-colors">
-              <td class="px-5 py-4 font-medium text-white"><a href="/directory?q=plush+bear" rel="nofollow" class="hover:text-blue-400 transition-colors">Plush Stuffed Toy 30cm</a></td>
-              <td class="px-4 py-4 text-slate-400"><a href="/directory?district=1" rel="nofollow" class="hover:text-blue-400 transition-colors">Yangzhou / Yiwu · Dist 1</a></td>
-              <td class="px-4 py-4 text-right text-red-400 font-mono">$4.40/unit</td>
-              <td class="px-4 py-4 text-right text-emerald-400 font-mono font-bold">$2.25/unit</td>
-              <td class="px-4 py-4 text-right text-slate-400">From 1 pc · Bulk 100+</td>
-              <td class="px-5 py-4 text-right font-black text-amber-400">−49%</td>
-            </tr>
-            <tr class="bg-slate-900 hover:bg-slate-800/80 transition-colors">
-              <td class="px-5 py-4 font-medium text-white"><a href="/directory?q=kitchen" rel="nofollow" class="hover:text-blue-400 transition-colors">Silicone Kitchen Utensil Set</a></td>
-              <td class="px-4 py-4 text-slate-400"><a href="/dropshipping" class="hover:text-blue-400 transition-colors">Ningbo / Yangjiang Hub</a></td>
-              <td class="px-4 py-4 text-right text-red-400 font-mono">$6.80/set</td>
-              <td class="px-4 py-4 text-right text-emerald-400 font-mono font-bold">$3.60/set</td>
-              <td class="px-4 py-4 text-right text-slate-400">From 1 pc · Bulk 100+</td>
-              <td class="px-5 py-4 text-right font-black text-amber-400">−47%</td>
-            </tr>
-            <tr class="bg-slate-900/80 hover:bg-slate-800/80 transition-colors">
-              <td class="px-5 py-4 font-medium text-white"><a href="/directory?q=socks" rel="nofollow" class="hover:text-blue-400 transition-colors">Custom Athletic &amp; Linen Socks</a></td>
-              <td class="px-4 py-4 text-slate-400"><a href="/directory?district=4" rel="nofollow" class="hover:text-blue-400 transition-colors">Zhuji / Yiwu · Dist 4</a></td>
-              <td class="px-4 py-4 text-right text-red-400 font-mono">$1.45/pair</td>
-              <td class="px-4 py-4 text-right text-emerald-400 font-mono font-bold">$0.62/pair</td>
-              <td class="px-4 py-4 text-right text-slate-400">From 1 pc · Bulk 200+</td>
-              <td class="px-5 py-4 text-right font-black text-amber-400">−57%</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="text-xs text-slate-500 mt-4 text-center">* Sample direct China factory EXW pricing across Yiwu, Shenzhen, Guangzhou &amp; Ningbo hubs compared against public Alibaba.com trader listings. 1-piece dropshipping &amp; bulk test orders available.</p>
-      <div class="text-center mt-8 flex flex-wrap items-center justify-center gap-3">
-        <a href="#alibaba-dropship-box" class="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-sm transition-colors shadow-md shadow-emerald-500/20">Paste Alibaba.com Link For Exact Quote →</a>
-        <a href="/directory" class="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm transition-colors shadow-md shadow-blue-600/20">Browse 27,706+ Verified Stalls →</a>
       </div>
     </div>
   </section>
@@ -271,94 +172,6 @@ const featuredSuppliers = await getFeaturedSuppliers(8);
     </div>
   </section>
 
-  <!-- Zero-Upfront Fulfillment & Sourcing Models -->
-  <section class="py-16 bg-white border-b border-slate-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center max-w-2xl mx-auto mb-12">
-        <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 block mb-1">Zero Upfront Subscriptions · Pay Per Order</span>
-        <h2 class="text-3xl font-black text-slate-900 tracking-tight">Browse Free. Quote Direct. Ship From 1 Unit.</h2>
-        <p class="text-sm text-slate-600 mt-2">No paid directory downloads or annual platform fees. Browse all 27,706+ stalls free or paste any Alibaba.com product link to source directly from the factory.</p>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-        
-        <!-- 1-Piece Dropshipping -->
-        <div class="rounded-3xl border border-slate-200 bg-slate-50 p-8 flex flex-col justify-between">
-          <div>
-            <span class="text-xs font-bold text-amber-600 uppercase tracking-wider block mb-3">1-Piece Dropshipping</span>
-            <div class="mb-2">
-              <span class="text-4xl font-black text-slate-900">From 1 Unit</span>
-            </div>
-            <p class="text-xs text-slate-600 mb-6 leading-relaxed">Paste any Alibaba.com product link. Our Yiwu desk locates the direct factory line, checks stock, and fulfills blind-labeled parcels worldwide in 5–9 days.</p>
-            <ul class="space-y-2.5 text-xs text-slate-700 mb-8">
-              <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> Bypass 100–500 pc online MOQs</li>
-              <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> 100% blind packaging (no Chinese flyers)</li>
-              <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> Warehouse QC photos before air dispatch</li>
-              <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> YunExpress, 4PX, DHL &amp; DDP Express lines</li>
-            </ul>
-          </div>
-          <a href="#alibaba-dropship-box" class="w-full py-3 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs text-center transition-colors block">Paste Alibaba Link (Free) →</a>
-        </div>
-
-        <!-- Alibaba Link -> Factory Direct -->
-        <div class="rounded-3xl border-2 border-emerald-500 bg-white p-8 flex flex-col justify-between shadow-xl shadow-emerald-500/10 relative">
-          <div class="absolute -top-4 left-1/2 -translate-x-1/2">
-            <span class="bg-emerald-600 text-white text-[11px] font-black px-4 py-1.5 rounded-full shadow-md">MOST POPULAR</span>
-          </div>
-          <div>
-            <span class="text-xs font-bold text-emerald-700 uppercase tracking-wider block mb-3 mt-2">Alibaba Link &rarr; Factory Direct</span>
-            <div class="mb-1">
-              <span class="text-4xl font-black text-slate-900">$0 Upfront</span>
-            </div>
-            <p class="text-xs text-emerald-600 font-semibold mb-1">Save 10–35% vs. public Alibaba trader quotes</p>
-            <p class="text-xs text-slate-600 mb-6 leading-relaxed">Send an Alibaba link or app screenshot on WhatsApp. We negotiate real RMB factory cost, combine items from multiple booths, and remove third-party brand tags.</p>
-            <ul class="space-y-2.5 text-xs text-slate-700 mb-8">
-              <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> Direct factory negotiation on your behalf</li>
-              <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> Custom thank-you cards &amp; logo stickers</li>
-              <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> Combine multi-stall items into one box</li>
-              <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> Priority WhatsApp response (2–6 hrs)</li>
-              <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> Pay $0 until you approve your unit quote</li>
-            </ul>
-          </div>
-          <a
-            href="https://wa.me/8613482725985?text=Hi%20SinoTradeLink%2C%20I%20want%20a%20free%20factory-direct%20and%20dropshipping%20quote%20for%20my%20Alibaba.com%20product%20links."
-            target="_blank"
-            rel="noopener noreferrer"
-            class="w-full py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs text-center transition-all flex items-center justify-center gap-2 shadow-md shadow-emerald-600/20"
-          >Get Free Factory Quote →</a>
-          <span class="block text-center text-[10px] text-slate-400 mt-2">Zero monthly fee · Direct Yiwu WhatsApp desk</span>
-        </div>
-
-        <!-- Open-Book Wholesale -->
-        <div class="rounded-3xl border border-indigo-300 bg-gradient-to-b from-indigo-50/70 to-white p-8 flex flex-col justify-between">
-          <div>
-            <span class="text-xs font-bold text-indigo-700 uppercase tracking-wider block mb-3">Open-Book Wholesale</span>
-            <div class="mb-1">
-              <span class="text-4xl font-black text-slate-900">6% Flat Fee</span>
-            </div>
-            <p class="text-xs text-indigo-700 font-semibold mb-1">Original RMB factory receipts shared before payment</p>
-            <p class="text-xs text-slate-600 mb-6 leading-relaxed">Scale winning SKUs with a dedicated bilingual Yiwu field rep, physical stall verification, custom OEM packaging, and sea or air container consolidation from Ningbo.</p>
-            <ul class="space-y-2.5 text-xs text-slate-700 mb-6">
-              <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> Zero annual membership fee</li>
-              <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> Optional $99 4K physical stall audit</li>
-              <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> Dedicated bilingual Yiwu rep on WhatsApp</li>
-              <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> Open-Book execution at 6% commission</li>
-              <li class="flex items-center gap-2"><span class="text-emerald-600">✓</span> Pre-shipment AQL 2.5 carton inspection</li>
-            </ul>
-            <p class="text-[11px] text-indigo-800 bg-indigo-100/70 border border-indigo-200 rounded-xl px-3 py-2 leading-relaxed">💡 You receive the raw RMB factory receipt + our separate invoice. You see exactly what the factory charges vs. our fee.</p>
-          </div>
-          <a
-            href="https://wa.me/8613482725985?text=Hi%20SinoTradeLink%2C%20I%27m%20interested%20in%20your%206%25%20Open-Book%20Wholesale%20%26%20Container%20Consolidation%20service.%20Can%20we%20talk%3F"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="w-full py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs text-center transition-all flex items-center justify-center gap-2 mt-4"
-          >Start on WhatsApp →</a>
-          <span class="block text-center text-[10px] text-slate-400 mt-2">Onboarded personally by our Yiwu team</span>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
   <!-- Featured Verified Stalls Section -->
   <section class="py-16 bg-white border-b border-slate-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -402,207 +215,10 @@ const featuredSuppliers = await getFeaturedSuppliers(8);
           <h3 class="text-sm font-black text-slate-900 mb-3">"Do you source only from Yiwu market, and why do I contact Sino Trade Link instead of supplier numbers?"</h3>
           <p class="text-xs text-slate-600 leading-relaxed">We procure anywhere across China — Shenzhen (electronics), Guangzhou/Foshan (apparel, beauty, furniture), Ningbo/Yongkang (hardware &amp; homeware), Shantou (toys), and Yiwu markets. Supplier numbers stay private with our bilingual desk so we protect your buyer identity, negotiate real RMB factory prices, verify business licenses, and prevent trader markups.</p>
         </div>
-        <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-          <h3 class="text-sm font-black text-slate-900 mb-3">"Can I paste an Alibaba.com link even if I only need 1 piece or low MOQ?"</h3>
-          <p class="text-xs text-slate-600 leading-relaxed">Yes. Paste any Alibaba.com product URL into our Dropshipping Quote Box (or send an app screenshot on WhatsApp). Even if the online listing shows a 100–500 piece MOQ, our on-ground Yiwu team negotiates with the physical factory stall for 1-piece private dropshipping or a low-MOQ test batch.</p>
-        </div>
-        <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-          <h3 class="text-sm font-black text-slate-900 mb-3">"How does Sino Trade Link make money if directory access and quotes are free?"</h3>
-          <p class="text-xs text-slate-600 leading-relaxed">Transparent answer: We removed all upfront pack paywalls and annual subscriptions ($0 to browse, $0 to request quotes). We earn transparent fulfillment and service fees only when you place an order through us (dropshipping dispatch, multi-booth consolidation, on-site inspection, or 6% open-book wholesale execution).</p>
-        </div>
-        <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-          <h3 class="text-sm font-black text-slate-900 mb-3">"Is my order money safe? Who handles quality before dispatch?"</h3>
-          <p class="text-xs text-slate-600 leading-relaxed">You pay $0 before approving your itemized factory quote, photos, and shipping rate. Our Yiwu warehouse physically receives every unit from the factory, checks workmanship and packaging, removes unwanted Chinese supplier flyers, and shares photo proof before international dispatch.</p>
-        </div>
         <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm md:col-span-2">
           <h3 class="text-sm font-black text-slate-900 mb-3">"What if my country has import restrictions on certain Chinese goods?"</h3>
-          <p class="text-xs text-slate-600 leading-relaxed">Our ground team verifies CE, FCC, EN71/ASTM toy safety, and RoHS certificates at the stall level during an on-site audit or before dropship dispatch. We also proactively flag DG (Dangerous Goods) categories — lighters, batteries, liquids, aerosols — that need specialized air/sea lanes before you commit.</p>
+          <p class="text-xs text-slate-600 leading-relaxed">Our ground team verifies CE, FCC, EN71/ASTM toy safety, and RoHS certificates at the stall level during an on-site audit before shipment. We also proactively flag DG (Dangerous Goods) categories — lighters, batteries, liquids, aerosols — that need specialized air/sea lanes before you commit.</p>
         </div>
-      </div>
-      <div class="bg-blue-600 rounded-2xl p-6 sm:p-8 text-white text-center max-w-3xl mx-auto">
-        <p class="text-sm sm:text-base font-medium leading-relaxed">Our business model is built on <strong>repeat buyers</strong>. A buyer who trusts us completes a $5,000 first order and returns for a $50,000 second. Misleading you once would cost us 10× in lifetime value. That's why we publish our fees openly and route every factory inquiry straight through our dedicated WhatsApp sourcing desk.</p>
-        <a href="https://wa.me/8613482725985" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 mt-4 px-5 py-2.5 rounded-xl bg-white text-blue-700 font-bold text-sm hover:bg-blue-50 transition-colors">Talk to Our China Sourcing Team on WhatsApp →</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Alibaba.com Dropshipping & Blind Fulfillment Showcase -->
-  <section class="py-16 bg-slate-900 text-white border-b border-slate-800">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center max-w-2xl mx-auto mb-12">
-        <span class="text-xs font-bold uppercase tracking-wider text-emerald-400 block mb-1">
-          Alibaba.com Product Link &rarr; Private Fulfillment
-        </span>
-        <h2 class="text-3xl font-black text-white tracking-tight">
-          Why Dropshippers &amp; Brands Switch From Buying Blind on Alibaba
-        </h2>
-        <p class="text-sm text-slate-400 mt-2">
-          Browse Alibaba.com for product discovery, then let our China-wide sourcing team negotiate directly with factories in Yiwu, Shenzhen, Guangzhou, Ningbo &amp; nationwide, inspect every parcel, and ship fast worldwide.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="rounded-2xl border bg-slate-800/60 border-slate-700 p-6 flex flex-col justify-between">
-          <div>
-            <span class="text-xs font-bold text-amber-400 block">No High-MOQ Roadblocks</span>
-            <h3 class="text-lg font-bold text-white mt-1 mb-2">1-Piece &amp; Low-MOQ Factory Sourcing</h3>
-            <p class="text-xs text-slate-400 leading-relaxed mb-4">Alibaba listings often quote 200–500 piece minimums. Our Yiwu team walks straight to the source stall to secure 1-piece fulfillment or small test batches.</p>
-            <ul class="space-y-2 text-xs text-slate-300 border-t border-slate-700/60 pt-4 mb-6">
-              <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Quote back in 2–6 working hours</li>
-              <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Accept desktop links or mobile screenshots</li>
-              <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Zero software subscription fee</li>
-            </ul>
-          </div>
-          <a href="/dropshipping" class="w-full py-3 rounded-xl font-bold text-xs text-center bg-blue-600 hover:bg-blue-500 text-white transition-all">
-            Paste Alibaba Link Free &rarr;
-          </a>
-        </div>
-
-        <div class="rounded-2xl border bg-gradient-to-b from-slate-800 to-slate-900 border-emerald-500/50 shadow-xl shadow-emerald-500/10 p-6 flex flex-col justify-between">
-          <div>
-            <span class="inline-block bg-emerald-500 text-slate-950 text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full mb-3">
-              White-Label Ready
-            </span>
-            <span class="text-xs font-bold text-emerald-400 block">Zero Third-Party Flyers</span>
-            <h3 class="text-lg font-bold text-white mt-1 mb-2">Blind Repacking &amp; Custom Brand Inserts</h3>
-            <p class="text-xs text-slate-400 leading-relaxed mb-4">Every item passes through our Yiwu warehouse where Chinese invoices, supplier stickers, and random promos are stripped and replaced with clean packaging.</p>
-            <ul class="space-y-2 text-xs text-slate-300 border-t border-slate-700/60 pt-4 mb-6">
-              <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Custom logo mailers, stickers &amp; thank-you cards</li>
-              <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Combine multiple SKUs into custom bundles</li>
-              <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Live photo check before courier handover</li>
-            </ul>
-          </div>
-          <a href="/dropshipping#branding" class="w-full py-3 rounded-xl font-bold text-xs text-center bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-lg shadow-emerald-500/20 transition-all">
-            Explore Private Branding &rarr;
-          </a>
-        </div>
-
-        <div class="rounded-2xl border bg-slate-800/60 border-slate-700 p-6 flex flex-col justify-between">
-          <div>
-            <span class="text-xs font-bold text-blue-400 block">5–9 Day Global Air Lines</span>
-            <h3 class="text-lg font-bold text-white mt-1 mb-2">Direct Express Dispatch Worldwide</h3>
-            <p class="text-xs text-slate-400 leading-relaxed mb-4">Ship daily via priority e-commerce lines (YunExpress, 4PX, DHL, FedEx) to US, UK, EU, UAE, Australia, and Latin America with instant tracking.</p>
-            <ul class="space-y-2 text-xs text-slate-300 border-t border-slate-700/60 pt-4 mb-6">
-              <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> DDP air lines (no surprise import bills)</li>
-              <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Smooth scale-up to Ningbo LCL / FCL sea</li>
-              <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Direct WhatsApp sourcing desk (24h response)</li>
-            </ul>
-          </div>
-          <a href="https://wa.me/8613482725985?text=Hi%20SinoTradeLink%2C%20I%20want%20to%20quote%20fast%20dropshipping%20from%20China." target="_blank" rel="noopener noreferrer" class="w-full py-3 rounded-xl font-bold text-xs text-center bg-amber-500 hover:bg-amber-400 text-slate-950 transition-all">
-            Chat With China Sourcing Desk &rarr;
-          </a>
-        </div>
-      </div>
-
-      <div class="text-center mt-10">
-        <a href="/dropshipping" class="text-xs font-bold text-emerald-400 hover:text-emerald-300 underline">
-          Open full Alibaba.com Dropshipping &amp; Fulfillment Guide &rarr;
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Traditional Agent vs Open-Book Comparison -->
-  <section class="py-16 bg-slate-50 border-b border-slate-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center max-w-2xl mx-auto mb-10">
-        <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 block mb-1">Open-Book Sourcing</span>
-        <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">Traditional 'Free' Yiwu Agent vs. Sino Trade Link Direct Execution</h2>
-        <p class="text-sm text-slate-600 mt-2">Most Yiwu agents claim to work for free. They don't. They earn 10–20% kickbacks from factories — baked invisibly into the unit price you see.</p>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-        <div class="rounded-2xl border border-red-200 bg-red-50/60 p-6 sm:p-8">
-          <h3 class="text-base font-black text-red-900 mb-5 flex items-center gap-2">❌ Traditional 'Free' Yiwu Agent</h3>
-          <ul class="space-y-3.5 text-sm text-red-800">
-            <li class="flex items-start gap-2.5"><span class="text-red-500 font-bold mt-0.5 shrink-0">✗</span> Claims to work for free — earns 10–20% hidden kickback from the factory you buy from</li>
-            <li class="flex items-start gap-2.5"><span class="text-red-500 font-bold mt-0.5 shrink-0">✗</span> Shows you a "best price" — already inflated before you see it</li>
-            <li class="flex items-start gap-2.5"><span class="text-red-500 font-bold mt-0.5 shrink-0">✗</span> No paper trail — you can't verify actual factory price vs. what you paid</li>
-            <li class="flex items-start gap-2.5"><span class="text-red-500 font-bold mt-0.5 shrink-0">✗</span> Financially incentivized to push affiliated factories over better alternatives</li>
-            <li class="flex items-start gap-2.5"><span class="text-red-500 font-bold mt-0.5 shrink-0">✗</span> Typically disappears after commission is collected</li>
-          </ul>
-        </div>
-        <div class="rounded-2xl border border-emerald-300 bg-emerald-50/60 p-6 sm:p-8">
-          <h3 class="text-base font-black text-emerald-900 mb-5 flex items-center gap-2">✅ Sino Trade Link Direct Execution (Zero Subscription)</h3>
-          <ul class="space-y-3.5 text-sm text-emerald-800">
-            <li class="flex items-start gap-2.5"><span class="text-emerald-600 font-bold mt-0.5 shrink-0">✓</span> Zero annual subscription or membership lock-in — $0 until you confirm an order</li>
-            <li class="flex items-start gap-2.5"><span class="text-emerald-600 font-bold mt-0.5 shrink-0">✓</span> You receive the raw RMB factory receipt + our invoice as two separate line items</li>
-            <li class="flex items-start gap-2.5"><span class="text-emerald-600 font-bold mt-0.5 shrink-0">✓</span> Open-Book Mandate: if we negotiate ¥23/unit at the stall, you pay ¥23 + agreed fee — nothing else</li>
-            <li class="flex items-start gap-2.5"><span class="text-emerald-600 font-bold mt-0.5 shrink-0">✓</span> Source from Alibaba product links or our 27,706 verified stall database</li>
-            <li class="flex items-start gap-2.5"><span class="text-emerald-600 font-bold mt-0.5 shrink-0">✓</span> Real warehouse QC photos &amp; negotiations logged directly with you on WhatsApp</li>
-          </ul>
-        </div>
-      </div>
-      <div class="text-center mt-10">
-        <a
-          href="https://wa.me/8613482725985?text=Hi%20SinoTradeLink%2C%20I%20want%20to%20understand%20how%20your%20open-book%20sourcing%20model%20works.%20Can%20we%20talk%3F"
-          target="_blank" rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm transition-colors shadow-md shadow-emerald-600/20"
-        >Start Open-Book Sourcing on WhatsApp →</a>
-        <p class="text-xs text-slate-500 mt-3">Our Yiwu team typically responds within 2 hours during business hours (UTC+8).</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- On-Demand Ground Concierge & Inspection Section ($99–$299) -->
-  <section class="py-16 bg-white border-b border-slate-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center max-w-2xl mx-auto mb-12">
-        <span class="text-xs font-bold uppercase tracking-wider text-blue-600 block mb-1">
-          Ground Verification In Yiwu
-        </span>
-        <h2 class="text-3xl font-black text-slate-900 tracking-tight">
-          Can't Fly to China? We Walk the Market for You.
-        </h2>
-        <p class="text-sm text-slate-600 mt-2">
-          Order an on-demand physical stall visit. Our bilingual local agents inspect the booth, take 4K video walkthroughs, and collect physical product samples.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {CONCIERGE_SERVICES.map(svc => (
-          <div class={`rounded-2xl border p-6 flex flex-col justify-between ${svc.recommended ? 'bg-blue-50/50 border-blue-300 shadow-md' : 'bg-slate-50 border-slate-200'}`}>
-            <div>
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-xs font-bold text-blue-600">{svc.turnaround}</span>
-                {svc.recommended && (
-                  <span class="bg-blue-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
-                    Recommended
-                  </span>
-                )}
-              </div>
-              <h3 class="text-base font-bold text-slate-900 mb-2">{svc.title}</h3>
-              <p class="text-xs text-slate-600 mb-4 leading-relaxed">{svc.description}</p>
-              <div class="text-2xl font-black text-slate-900 mb-4">${svc.price} <span class="text-xs font-normal text-slate-500">flat fee</span></div>
-
-              <div class="space-y-2 text-xs text-slate-700 border-t border-slate-200 pt-4 mb-6">
-                <span class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Included:</span>
-                {svc.deliverables.map(d => (
-                  <div class="flex items-center gap-2">
-                    <span class="w-1.5 h-1.5 rounded-full bg-blue-600 shrink-0"></span>
-                    <span>{d}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div class="space-y-2">
-              <a 
-                href={`/concierge?service=${svc.id}`} 
-                class="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs text-center transition-colors block"
-              >
-                Book Service (${svc.price}) &rarr;
-              </a>
-              <a
-                href={`https://wa.me/8613482725985?text=${encodeURIComponent(`Hi SinoTradeLink, I want to inquire about your ${svc.title} ($${svc.price}). Can you help me inspect suppliers in Yiwu?`)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="w-full py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 font-bold text-[11px] text-center transition-colors flex items-center justify-center gap-1.5"
-              >
-                <span>WhatsApp Liaison</span>
-              </a>
-            </div>
-          </div>
-        ))}
       </div>
     </div>
   </section>

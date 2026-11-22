@@ -87,7 +87,7 @@ const topProductsSnippet = extractedKeywords.length > 0
   ? extractedKeywords.slice(0, 6).join(', ')
   : (sampleProducts.slice(0, 2).join(', ') || translatedCategory || districtName);
 
-const seoDescription = `${supplierName}${supplier.company_name && supplier.company_name !== supplierName ? ` (${supplier.company_name})` : ''} is a ${isDirectFactory ? 'direct manufacturing factory' : 'verified wholesale supplier'} at Yiwu International Trade City ${districtName}, Floor ${supplier.floor || '1'}, Gate ${supplier.gate || 'Direct'}, ${boothLabel}. Wholesale products: ${topProductsSnippet}. Request direct RMB factory pricing, 1-piece dropshipping, or an on-ground stall audit via Sino Trade Link.`;
+const seoDescription = `${supplierName}${supplier.company_name && supplier.company_name !== supplierName ? ` (${supplier.company_name})` : ''} is a ${isDirectFactory ? 'direct manufacturing factory' : 'verified wholesale supplier'} at Yiwu International Trade City ${districtName}, Floor ${supplier.floor || '1'}, Gate ${supplier.gate || 'Direct'}, ${boothLabel}. Wholesale products: ${topProductsSnippet}. Request direct RMB factory pricing or a supplier visit via Sino Trade Link.`;
 
 // Build rich keyword list for <meta name="keywords"> and on-page tag cloud
 const productKeywordVariations = extractedKeywords.slice(0, 8).flatMap(p => [
@@ -210,8 +210,8 @@ const supplierJsonLd = {
           "acceptedAnswer": {
             "@type": "Answer",
             "text": isDirectFactory
-              ? `Yes, ${supplierName} (${supplier.company_name || supplierName}) is classified as a Verified Direct Factory showroom in Yiwu Futian Market${supplier.years_in_futian ? ` with ${supplier.years_in_futian}+ years of market history` : ''}. Buyers can book a $99 physical stall audit or $299 factory license verification through Sino Trade Link.`
-              : `${supplierName} is a verified wholesale market distributor located at Booth ${supplier.booth_no || 'N/A'} in ${districtName}. Our on-ground Yiwu field engineers can visit this stall for $99 to verify their factory source, real-time stock, and EXW/FOB wholesale pricing.`
+              ? `Yes, ${supplierName} (${supplier.company_name || supplierName}) is classified as a Verified Direct Factory showroom in Yiwu Futian Market${supplier.years_in_futian ? ` with ${supplier.years_in_futian}+ years of market history` : ''}. Buyers can book a supplier visit through Sino Trade Link.`
+              : `${supplierName} is a verified wholesale market distributor located at Booth ${supplier.booth_no || 'N/A'} in ${districtName}. Our on-ground Yiwu field engineers can visit this stall to verify their factory source, real-time stock, and EXW/FOB wholesale pricing.`
           }
         },
         {
@@ -229,7 +229,7 @@ const supplierJsonLd = {
           "name": `How do I request a factory quote or place an order with ${supplierName}?`,
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": `Submit a quote request on this page or message Sino Trade Link's bilingual China sourcing desk on WhatsApp. Our on-ground team contacts ${supplier.contact_person || 'the Stall Manager'} at Booth ${supplier.booth_no || 'N/A'} to negotiate direct RMB pricing, arrange 1-piece dropshipping, or conduct an on-site audit across Yiwu or partner factories anywhere in China.`
+            "text": `Submit a quote request on this page or message Sino Trade Link's bilingual China sourcing desk on WhatsApp. Our on-ground team contacts ${supplier.contact_person || 'the Stall Manager'} at Booth ${supplier.booth_no || 'N/A'} to negotiate direct RMB pricing, arrange a supplier visit across Yiwu or partner factories anywhere in China.`
           }
         }
       ]
@@ -426,7 +426,7 @@ const supplierJsonLd = {
               </div>
             ) : (
               <div class="p-4 rounded-xl bg-slate-50 border border-slate-100 text-xs text-slate-600 mb-5">
-                <strong>{supplierName}</strong> operates an active wholesale showroom in <strong>{districtName}</strong> ({boothLabel}){translatedCategory ? ` specializing in ${translatedCategory}` : ''}. Request a direct factory quote or a $99 physical stall walkthrough to receive their latest PDF catalog and carton packing list.
+                <strong>{supplierName}</strong> operates an active wholesale showroom in <strong>{districtName}</strong> ({boothLabel}){translatedCategory ? ` specializing in ${translatedCategory}` : ''}. Request a direct factory quote or a supplier visit to receive their latest PDF catalog and carton packing list.
               </div>
             )}
 
@@ -477,10 +477,10 @@ const supplierJsonLd = {
                 <strong>1. Managed Factory Negotiation (Zero Markup):</strong> Unlike traditional Yiwu trading companies that add a <span class="text-slate-900 font-semibold">5%–10% hidden commission</span> on top of factory prices, our bilingual China sourcing team contacts <strong>{supplier.contact_person || 'the Stall Manager'}</strong> at <strong>{supplierName}</strong> directly on your behalf — or matches your target product across partner factories anywhere in China (Yiwu, Shenzhen, Guangzhou, Ningbo) — to secure genuine RMB <code>EXW</code> or <code>FOB</code> rates and live showroom videos.
               </p>
               <p>
-                <strong>2. On-Ground Physical Stall Audit ($99 Flat Fee):</strong> Before wiring a 30% T/T deposit to {boothLabel}, you can dispatch a bilingual Sino Trade Link field engineer to walk directly to <strong>Floor {supplier.floor || '1'}, Gate {supplier.gate || 'Direct'}, {boothLabel}</strong>. We shoot unedited 4K video of their physical samples, verify material tolerances and GSM/weight specs, and confirm their registered Chinese business license (<code>营业执照</code>).
+                <strong>2. On-Ground Supplier Visit:</strong> Before wiring a 30% T/T deposit to {boothLabel}, you can dispatch a bilingual Sino Trade Link field engineer to walk directly to <strong>Floor {supplier.floor || '1'}, Gate {supplier.gate || 'Direct'}, {boothLabel}</strong>. We shoot unedited 4K video of their physical samples, verify material tolerances and GSM/weight specs, and confirm their registered Chinese business license (<code>营业执照</code>).
               </p>
               <p>
-                <strong>3. Freight, CBM & Sample Consolidation:</strong> Ordering samples from multiple stalls in {districtName}? Use our <a href="/concierge" class="text-blue-600 font-bold hover:underline">$149 Sample Consolidation Box</a> to combine samples from up to 20 booths into one master DHL/FedEx carton, or calculate your exact sea/air landed cost per unit using our <a href="/sourcing-guide#freight-calculator" class="text-blue-600 font-bold hover:underline">Interactive CBM & Volumetric Freight Calculator</a>.
+                <strong>3. Freight, CBM & Sample Consolidation:</strong> Ordering samples from multiple stalls in {districtName}? Use our <a href="https://wa.me/8613482725985" target="_blank" rel="noopener" class="text-blue-600 font-bold hover:underline">sample consolidation</a> to combine samples from up to 20 booths into one master DHL/FedEx carton, or calculate your exact sea/air landed cost per unit using our <a href="/sourcing-guide#freight-calculator" class="text-blue-600 font-bold hover:underline">Interactive CBM & Volumetric Freight Calculator</a>.
               </p>
             </div>
           </div>
@@ -508,8 +508,8 @@ const supplierJsonLd = {
                 </summary>
                 <p class="text-xs text-slate-600 mt-2.5 leading-relaxed">
                   {isDirectFactory
-                    ? `Yes — ${supplierName} (${supplier.company_name || supplierName}) is listed as a Verified Direct Factory showroom in Yiwu Futian Market. For OEM custom molds or bulk orders over $5,000, we recommend booking our $99 Physical Stall Audit or $299 Comprehensive Factory License Verification.`
-                    : `${supplierName} is a verified wholesale market stall at ${boothLabel} in ${districtName}. Our bilingual Yiwu ground team can visit this booth for a flat $99 fee to inspect their physical stock, verify whether they hold direct factory tooling, and negotiate Tier-1 EXW pricing.`}
+                    ? `Yes — ${supplierName} (${supplier.company_name || supplierName}) is listed as a Verified Direct Factory showroom in Yiwu Futian Market. For OEM custom molds or bulk orders over $5,000, we recommend booking a supplier visit.`
+                    : `${supplierName} is a verified wholesale market stall at ${boothLabel} in ${districtName}. Our bilingual Yiwu ground team can visit this booth to inspect their physical stock, verify whether they hold direct factory tooling, and negotiate Tier-1 EXW pricing.`}
                 </p>
               </details>
 
@@ -519,7 +519,7 @@ const supplierJsonLd = {
                   <span class="text-blue-600 font-black group-open:rotate-45 transition-transform">+</span>
                 </summary>
                 <p class="text-xs text-slate-600 mt-2.5 leading-relaxed">
-                  For ready-stock wholesale items in {districtName}, stalls typically accept minimum orders of <strong>1 to 5 master cartons</strong> (with 3–7 day delivery to Yiwu consolidation warehouses or Ningbo Port). For custom private-label packaging or OEM production runs, see our <a href="/sourcing-guide#oem-manufacturing" class="text-blue-600 font-semibold hover:underline">MOQ Negotiation Scripts & OEM Playbook</a>.
+                  For ready-stock wholesale items in {districtName}, stalls typically accept minimum orders of <strong>1 to 5 master cartons</strong> (with 3–7 day delivery to Yiwu consolidation warehouses or Ningbo Port). For custom private-label packaging or OEM production runs, see our <a href="/sourcing-guide#oem-roadmap" class="text-blue-600 font-semibold hover:underline">MOQ Negotiation Scripts & OEM Playbook</a>.
                 </p>
               </details>
             </div>
@@ -604,24 +604,18 @@ const supplierJsonLd = {
               Ground Service in Yiwu
             </span>
             <h3 class="text-base font-bold text-white mb-2">
-              Have Us Visit This Stall For You ($99)
+              Contact Us for a Stall Visit
             </h3>
             <p class="text-xs text-slate-400 mb-4 leading-relaxed">
               Our bilingual field staff walks to {boothLabel}, inspects their real samples, shoots 4K video, and verifies their wholesale pricing.
             </p>
             <div class="space-y-2">
               <a 
-                href={`/concierge?booth=${encodeURIComponent(supplier.booth_no || '')}&name=${encodeURIComponent(supplierName)}`}
+                href="https://wa.me/8613482725985" target="_blank" rel="noopener"
                 class="block w-full py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold rounded-xl text-center shadow transition-colors"
               >
-                Book Stall Audit ($99) &rarr;
+                Contact us on WhatsApp
               </a>
-              <button
-                type="button"
-                class="open-sample-audit-btn w-full py-2.5 bg-slate-800/90 hover:bg-slate-700 text-amber-300 text-xs font-bold rounded-xl text-center border border-slate-700 transition-colors cursor-pointer"
-              >
-                Preview Sample $99 Report
-              </button>
               <a 
                 href={whatsappSupplierUrl}
                 target="_blank"

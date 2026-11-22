@@ -3,7 +3,7 @@ import { NON_DEFAULT_LOCALES } from '../../lib/i18n';
 
 const { locale } = Astro.params;
 if (locale && NON_DEFAULT_LOCALES.includes(locale as any)) {
-  return Astro.redirect(`/${locale}/dropshipping`, 301);
+  return Astro.redirect(`/${locale}/directory`, 301);
 }
-return Astro.redirect('/dropshipping', 301);
+return Astro.redirect('/directory', 301);
 ---

@@ -97,7 +97,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
     }
 
     const id = crypto.randomUUID();
-    const cleanShopId = cleanSingleLine(body.shop_id, 64) || (cleanAlibabaUrl ? 'ALIBABA_DROPSHIP' : 'GENERAL');
+    const cleanShopId = cleanSingleLine(body.shop_id, 64) || (cleanAlibabaUrl ? 'PRODUCT_SOURCING' : 'GENERAL');
     const cleanCountry = cleanSingleLine(body.buyer_country, 80) || 'Global';
 
     const db = await getD1Database();

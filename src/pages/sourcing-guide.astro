@@ -88,15 +88,15 @@ const shippingMethods = [
   },
   {
     name: "7. Postal Parcel & ePacket (< 2 kg)",
-    bestFor: "Single-Item Dropshipping Only (Not Recommended for B2B)",
+    bestFor: "Small Postal Parcels",
     transit: "8–14 Days (Normal) • 30–60 Days (Peak Season)",
     divisor: "Max 2,000g • L+W+H < 90 cm (Longest Side ≤ 60 cm)",
     rateBenchmark: "$2.17 Fixed Fee + $0.009/gram (Min 50g = $2.62)",
-    badge: "High Risk / Dropship Only",
+    badge: "Postal Parcels",
     badgeColor: "bg-rose-100 text-rose-800 border-rose-200",
     insights: [
       "While a 120g cosmetic item costs only ~$3.25 via ePacket ($2.17 + $0.009 × 120g), damaged barcode labels or Q4 airport backlogs frequently cause 1–2 month delays with zero compensation.",
-      "For B2B product samples, never risk China Post—use our $149 5-Stall Sample Consolidation Box to combine 5 suppliers into one insured DHL/FedEx IP shipment."
+      "For B2B product samples, compare tracked courier options and ask suppliers about consolidating samples into one shipment."
     ]
   }
 ];
@@ -149,7 +149,7 @@ const oemSteps = [
     details: [
       "Stage 1 (Pre-Production & Tooling): Blank apparel screen-print sample ($10–$15); Silicone candle mold (~$35); Vinyl figure mold (~$300); Injection plastic steel mold ($2,000+ per part); Lab compliance testing (SGS/Intertek).",
       "Stage 2 (Bulk Production EXW): Raw materials, assembly labor, and standard master carton packing.",
-      "Stage 3 (QC & Landed Freight): Pre-shipment inspection ($99–$299 via Sino Trade Link vs $300+/day third-party agencies) + Total Shipping (DDP Price minus EXW Price)."
+      "Stage 3 (QC & Landed Freight): Pre-shipment inspection + Total Shipping (DDP Price minus EXW Price)."
     ]
   },
   {
@@ -188,15 +188,15 @@ const oemSteps = [
     summary: "Never wire the final 70%–80% balance until physical cartons are inspected at the stall or factory.",
     details: [
       "Once mass production starts, raw material substitutions or rushed packaging can occur if no local eyes are watching.",
-      "Deploy our Yiwu ground team ($99 Stall Audit or $299 Factory Audit) to verify AQL defect tolerances, carton drop-test durability, and barcode accuracy before cargo leaves Zhejiang."
+      "Ask about a supplier visit to check AQL defect tolerances, carton drop-test durability, and barcode accuracy before cargo leaves Zhejiang."
     ]
   }
 ];
 
 const importChecklist = [
   {
-    q: "1. What is the real difference between a 5%–10% Commission Sourcing Agent and Sino Trade Link?",
-    a: "Traditional sourcing agencies act as middlemen: they charge 5%–10% commission on your entire order value (and every future reorder) while keeping the actual factory's identity and booth location hidden from you. Worse, 'zero-commission' or ultra-low-fee agents routinely take undisclosed 5%–15% kickbacks from factories or mark up ocean/air freight rates. Sino Trade Link flips this model: we give you verified Futian booth coordinates, transparent China-wide sourcing across Yiwu, Shenzhen, Guangzhou & Ningbo, and free Alibaba.com product link quoting (0% subscription), while offering flat-fee On-Ground Audits ($99–$299) or open-book dropship/bulk fulfillment only when you need execution."
+    q: "1. How can I discuss a supplier visit in China?",
+    a: "Contact Sino Trade Link on WhatsApp and share the supplier details and what you would like checked during a stall visit."
   },
   {
     q: "2. Which 5 types of buyers benefit most from combining direct stall data with on-ground execution?",
@@ -212,14 +212,14 @@ const importChecklist = [
   },
   {
     q: "5. Why is consolidating samples from multiple Yiwu stalls into one box so important?",
-    a: "Shipping 5 separate 1 kg sample boxes via FedEx IP from 5 different suppliers costs roughly $31 × 5 = $155+ in base courier minimums—and most stall keepers don't have discounted international courier accounts. With our $149 Booth Sample Pickup & Consolidation service, our Yiwu team walks to up to 5 stalls, inspects and photographs every sample in our office, repacks them to minimize volumetric weight (L×W×H/5000), and dispatches one consolidated express parcel."
+    a: "Combining samples into one parcel can reduce repeated courier minimum charges. Compare actual weights, volumetric weights, and carrier quotes before arranging a shipment."
   }
 ];
 ---
 
 <Layout
   title="China Sourcing, OEM Manufacturing & Shipping Cost Playbook | Sino Trade Link"
-  description="Complete guide to importing from Yiwu & China: 7 shipping methods & landed cost calculator, 9-step private label manufacturing roadmap, MOQ negotiation scripts, and flat-fee vs commission agent comparison."
+  description="Complete guide to importing from Yiwu & China: 7 shipping methods & landed cost calculator, 9-step private label manufacturing roadmap, MOQ negotiation scripts, and supplier visit guidance."
   activePage="guide"
 >
   <!-- Hero Section -->
@@ -242,9 +242,6 @@ const importChecklist = [
         </a>
         <a href="#shipping-methods" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-bold transition-all">
           🚢 7 China-to-US/Global Shipping Methods
-        </a>
-        <a href="#agent-comparison" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-bold transition-all">
-          ⚖️ Direct Data vs. 10% Commission Agents
         </a>
         <a href="#oem-roadmap" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-bold transition-all">
           🛠️ 9-Step OEM & Private Label Roadmap
@@ -532,79 +529,6 @@ const importChecklist = [
     </div>
   </section>
 
-  <!-- Direct Data + Flat-Fee Ground Execution vs. Traditional 5%–10% Commission Agents -->
-  <section id="agent-comparison" class="py-16 bg-slate-900 text-white border-b border-slate-800 scroll-mt-20">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-3xl mb-12">
-        <span class="text-xs font-bold uppercase tracking-wider text-amber-400 block mb-1">
-          Supply Chain Transparency
-        </span>
-        <h2 class="text-2xl sm:text-4xl font-black text-white tracking-tight">
-          Why Smart Buyers Replace 10% Commission Agents with Direct Data + Flat-Fee Audits
-        </h2>
-        <p class="text-sm text-slate-300 mt-2 leading-relaxed">
-          Over 150+ small sourcing agencies have popped up on Google and Upwork in recent years. Understanding how agent fee structures actually work protects you from hidden factory kickbacks and locked supply chains.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
-        <!-- Col 1: Commission Agencies -->
-        <div class="rounded-3xl border border-slate-800 bg-slate-800/50 p-6">
-          <span class="text-[11px] font-bold uppercase tracking-wider text-rose-400 block mb-1">
-            Traditional Model #1
-          </span>
-          <h3 class="text-lg font-bold text-white mb-2">5%–10% Commission Sourcing Agencies</h3>
-          <p class="text-xs text-slate-400 leading-relaxed mb-4">
-            Large one-stop agencies charge 5%–10% of your total order value on every purchase—meaning a $50,000 container costs you $2,500–$5,000 in agency fees every time you reorder.
-          </p>
-          <ul class="space-y-2 text-xs text-slate-300">
-            <li class="flex items-start gap-2"><span class="text-rose-400 font-bold">✕</span> <span><strong>Zero Supplier Ownership:</strong> They hide the factory's name, booth number, and WeChat so you can never buy direct.</span></li>
-            <li class="flex items-start gap-2"><span class="text-rose-400 font-bold">✕</span> <span><strong>The "Free Trial / Low Fee" Trap:</strong> Agencies advertising 0%–2% commission routinely collect 5%–15% undisclosed kickbacks from suppliers or pad shipping & molding quotes.</span></li>
-          </ul>
-        </div>
-
-        <!-- Col 2: Solo Freelancers -->
-        <div class="rounded-3xl border border-slate-800 bg-slate-800/50 p-6">
-          <span class="text-[11px] font-bold uppercase tracking-wider text-amber-400 block mb-1">
-            Traditional Model #2
-          </span>
-          <h3 class="text-lg font-bold text-white mb-2">Solo Upwork / Street Translators (~$45/Day)</h3>
-          <p class="text-xs text-slate-400 leading-relaxed mb-4">
-            Solo interpreters walk with you inside Yiwu Market or search wholesale platforms online, charging a daily or hourly flat rate.
-          </p>
-          <ul class="space-y-2 text-xs text-slate-300">
-            <li class="flex items-start gap-2"><span class="text-amber-400 font-bold">!</span> <span><strong>No Inspection Accountability:</strong> Street translators interpret basic prices at the booth, but do not verify AIC business licenses or perform AQL defect checks.</span></li>
-            <li class="flex items-start gap-2"><span class="text-amber-400 font-bold">!</span> <span><strong>Category Blindness:</strong> One solo freelancer cannot deeply know toys, hardware tooling, textiles, and electronics compliance simultaneously.</span></li>
-          </ul>
-        </div>
-
-        <!-- Col 3: Sino Trade Link Hybrid Model -->
-        <div class="rounded-3xl border-2 border-emerald-500/60 bg-gradient-to-b from-slate-800 to-slate-900 p-6 shadow-xl shadow-emerald-500/10">
-          <span class="inline-block px-2.5 py-0.5 rounded-full bg-emerald-500 text-slate-950 text-[10px] font-black uppercase tracking-wider mb-2">
-            The Sino Trade Link Advantage
-          </span>
-          <h3 class="text-lg font-bold text-white mb-2">0% Markup Direct Data + Free Alibaba Link Quoting</h3>
-          <p class="text-xs text-slate-300 leading-relaxed mb-4">
-            We separate <strong class="text-white">Supplier Discovery</strong> from <strong class="text-white">On-Ground Verification</strong> so you own your factory relationships 100% while deploying our Yiwu field team only when needed:
-          </p>
-          <ul class="space-y-2 text-xs text-slate-200 mb-6">
-            <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold">✓</span> <span><strong>27,706 Verified Stalls (0% Subscription):</strong> Browse verified stall profiles &amp; exact Gate/Floor/Booth coordinates free in our <a href="/directory" class="text-amber-300 underline">live directory</a>, or paste any <a href="/dropshipping" class="text-emerald-300 underline">Alibaba.com link</a> for China-wide direct factory quotes.</span></li>
-            <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold">✓</span> <span><strong>$99 Physical Stall Audit:</strong> We walk to the exact booth, verify their business license, film 4K video, and confirm real factory pricing.</span></li>
-            <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold">✓</span> <span><strong>$149 Sample Consolidation Box:</strong> Collect samples from up to 5 stalls, inspect in our Yiwu office, and ship in 1 optimized DHL/FedEx box.</span></li>
-          </ul>
-          <div class="flex flex-wrap gap-2">
-            <a href="/concierge" class="flex-1 py-2.5 px-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs text-center transition-colors">
-              Book $99 Stall Audit &rarr;
-            </a>
-            <a href="/dropshipping" class="flex-1 py-2.5 px-3 rounded-xl bg-slate-700 hover:bg-slate-600 text-white font-bold text-xs text-center transition-colors">
-              Paste Alibaba Link Free
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- 9-Step OEM & Private Label Manufacturing Roadmap -->
   <section id="oem-roadmap" class="py-16 bg-slate-50 border-b border-slate-200 scroll-mt-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -699,9 +623,7 @@ const importChecklist = [
           <a href="/directory" class="px-4 py-2.5 rounded-xl bg-white text-slate-950 font-black text-xs hover:bg-slate-100 transition-colors">
             Search 27,706 Stalls
           </a>
-          <a href="/concierge" class="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs transition-colors">
-            Book Ground Audit ($99) &rarr;
-          </a>
+          <a href="https://wa.me/8613482725985" target="_blank" rel="noopener" class="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs transition-colors">Contact us on WhatsApp</a>
         </div>
       </div>
     </div>
@@ -807,7 +729,7 @@ const importChecklist = [
         if (titleEl) titleEl.textContent = 'Recommended Mode: Sea Freight LCL (CBM Volume Basis)';
         resRecText.textContent = 'At ' + totalCbm.toFixed(2) + ' CBM, LCL sea freight gives you the lowest landed cost per unit ($' + (totalLclCost / units).toFixed(2) + '/pc).';
       } else if (expBillableKg < 45) {
-        if (titleEl) titleEl.textContent = 'Recommended Mode: International Express (FedEx IP/IE) or $149 Sample Consolidation';
+        if (titleEl) titleEl.textContent = 'Recommended Mode: International Express (FedEx IP/IE)';
         resRecText.textContent = 'For small shipments under 45 kg, Express courier is fastest and avoids minimum sea freight surcharges.';
       } else {
         if (titleEl) titleEl.textContent = 'Recommended Mode: Sea Freight + UPS Combined (SFUC Fast DDP)';

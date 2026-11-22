@@ -4,7 +4,6 @@ import Footer from '../components/Footer.astro';
 import SourcingListDrawer from '../components/SourcingListDrawer.astro';
 import QuickSearchModal from '../components/QuickSearchModal.astro';
 import WhatsAppWidget from '../components/WhatsAppWidget.astro';
-import SampleAuditReportModal from '../components/SampleAuditReportModal.astro';
 import { getLocaleConfig, SUPPORTED_LOCALES } from '../lib/i18n';
 import '../styles/global.css';
 
@@ -21,8 +20,8 @@ interface Props {
 
 const {
   title = "Sino Trade Link | China-Wide Direct Factory Sourcing & 27,706+ Verified Market Suppliers",
-  description = "Source directly from anywhere in China (Yiwu, Shenzhen, Guangzhou, Ningbo & beyond) — paste any Alibaba.com product link or browse 27,706+ verified stalls free for direct factory quotes.",
-  keywords = "Alibaba dropshipping agent China, China-wide factory sourcing agent, Yiwu wholesale market directory, China direct factory quote, Shenzhen Guangzhou Ningbo sourcing",
+  description = "Source directly from anywhere in China (Yiwu, Shenzhen, Guangzhou, Ningbo & beyond) — browse 27,706+ verified stalls free for direct factory quotes.",
+  keywords = "China-wide factory sourcing agent, Yiwu wholesale market directory, China direct factory quote, Shenzhen Guangzhou Ningbo sourcing",
   canonicalUrl,
   ogType = "website",
   activePage = 'home',
@@ -38,8 +37,6 @@ const supportsLocaleAlternates =
   cleanPath === '/' ||
   cleanPath === '/countries' ||
   cleanPath === '/directory' ||
-  cleanPath === '/dropshipping' ||
-  cleanPath === '/concierge' ||
   cleanPath.startsWith('/country/');
 
 function buildAlternateUrl(locCode: string): string {
@@ -119,7 +116,6 @@ const resolvedCanonical = canonicalUrl || new URL(Astro.url.pathname, 'https://s
     <Footer />
     <SourcingListDrawer />
     <QuickSearchModal />
-    <WhatsAppWidget />
-    <SampleAuditReportModal />
+    {activePage !== 'home' && <WhatsAppWidget />}
   </body>
 </html>

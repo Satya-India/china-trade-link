@@ -41,7 +41,7 @@ if (result.suppliers.length < 6) {
 const canonicalUrl = `https://sinotradelink.com/category/${category.slug}`;
 
 const seoTitle = `${category.title} (${category.districtLabel}, ${category.floor}) | Sino Trade Link`;
-const seoDescription = `${category.description} Browse ${result.total.toLocaleString()}+ verified stalls at ${category.districtLabel} (${category.floor}, ${category.gateGuide}), request direct RMB factory quotes through our China team, or book a $99 physical stall audit.`;
+const seoDescription = `${category.description} Browse ${result.total.toLocaleString()}+ verified stalls at ${category.districtLabel} (${category.floor}, ${category.gateGuide}), request direct RMB factory quotes through our China team, or contact us for a stall visit.`;
 const seoKeywords = [
   ...category.seoKeywords,
   category.chineseCategory,
@@ -124,7 +124,7 @@ const categoryJsonLd = {
           "name": `How do I verify ${category.shortName} quality before paying a 30% deposit?`,
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": `Sino Trade Link's bilingual Yiwu field engineers perform $99 physical stall audits covering: ${category.qcChecklist.join('; ')}.`
+            "text": `Sino Trade Link's bilingual Yiwu field engineers can discuss supplier checks covering: ${category.qcChecklist.join('; ')}.`
           }
         }
       ]
@@ -189,7 +189,7 @@ const categoryJsonLd = {
           </div>
         </div>
 
-        <!-- Right Alibaba Dropship + On-Site Audit Card -->
+        <!-- Supplier contact card -->
         <div class="lg:col-span-4 bg-slate-950/90 border border-slate-800 rounded-3xl p-6 shadow-xl">
           <div class="flex items-center justify-between mb-2">
             <span class="text-[10px] font-black uppercase tracking-wider text-emerald-400">
@@ -200,31 +200,13 @@ const categoryJsonLd = {
             </span>
           </div>
           <h2 class="text-base font-black text-white mb-1">
-            Direct {category.shortName} Factory &amp; Dropship Quotes
+            Direct {category.shortName} Factory Enquiries
           </h2>
           <p class="text-xs text-slate-400 mb-4 leading-relaxed">
-            Browse all verified booths in {category.districtLabel} free, or paste an Alibaba.com {category.shortName} link for 1-piece dropshipping &amp; direct factory RMB pricing.
+            Browse all verified booths in {category.districtLabel} free and contact us to discuss your supplier visit.
           </p>
 
-          <div class="flex items-baseline gap-2 mb-4">
-            <span class="text-3xl font-black text-emerald-400">$0</span>
-            <span class="text-xs font-semibold text-slate-300">Monthly Fee · Free Quotes</span>
-          </div>
-
           <div class="space-y-2.5">
-            <a
-              href="/dropshipping"
-              class="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs shadow-md transition-all text-center block"
-            >
-              Paste Alibaba.com Link (Free Quote) &rarr;
-            </a>
-
-            <button
-              type="button"
-              class="open-sample-audit-btn w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-xs transition-all cursor-pointer flex items-center justify-center gap-1.5"
-            >
-              <span>Preview Sample $99 Stall Audit Report</span>
-            </button>
 
             <a
               href={whatsappCategoryUrl}
@@ -250,7 +232,7 @@ const categoryJsonLd = {
               Yiwu Field Engineer QC Protocol
             </span>
             <span class="text-xs font-semibold text-slate-500">
-              What we inspect at {category.shortName} stalls ($99 Flat Fee):
+              What we inspect at {category.shortName} stalls:
             </span>
           </div>
           <ul class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
@@ -266,12 +248,6 @@ const categoryJsonLd = {
         </div>
 
         <div class="flex flex-col sm:flex-row lg:flex-col gap-2.5 shrink-0">
-          <button
-            type="button"
-            class="open-sample-audit-btn px-5 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-sm transition-all cursor-pointer whitespace-nowrap"
-          >
-            See Sample $99 Audit Report &rarr;
-          </button>
           <a
             href="/sourcing-guide#freight-calculator"
             class="px-5 py-3 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 font-bold text-xs text-center transition-all whitespace-nowrap"

@@ -181,7 +181,7 @@ export const COUNTRIES: CountryCorridor[] = [
     customsCompliance: 'DIAN SYGA declarations, INVIMA (cosmetics/food contact), RETIE/RETILAP & SIC Spanish labeling',
     buyerFocus: 'San Victorino & Hueco wholesale importers, chain stores, and national distributors',
     marketSummary: 'Import fashion jewelry, footwear, toys, kitchenware, and hardware directly from Yiwu factory showrooms into Colombia.',
-    corridorAdvantage: 'Itemized DIAN-compliant packing lists with serial/model verification during our $149 pre-shipment inspection and fast Pacific routing to Buenaventura.'
+    corridorAdvantage: 'Itemized DIAN-compliant packing lists with serial/model verification during our pre-shipment inspection and fast Pacific routing to Buenaventura.'
   },
   {
     slug: 'peru',
@@ -406,7 +406,7 @@ export const COUNTRIES: CountryCorridor[] = [
     customsCompliance: 'TTBizLink / ASYCUDA World, TTBS compulsory electrical/toy standards & C82 declaration',
     buyerFocus: 'Caribbean regional distributors, retail chains, hardware importers, and festival suppliers',
     marketSummary: 'Import festival crafts, party supplies, home goods, and hardware from Yiwu to Port of Spain and Point Lisas.',
-    corridorAdvantage: 'TTBS voltage/plug compliance checks (115V/60Hz) during our $99 stall audit and consolidated container shipping to Port of Spain.'
+    corridorAdvantage: 'TTBS voltage/plug compliance checks (115V/60Hz) during our supplier visit and consolidated container shipping to Port of Spain.'
   },
 
   // ── 3. EUROPE (EU, UK & NON-EU) (26) ──
@@ -920,7 +920,7 @@ export const COUNTRIES: CountryCorridor[] = [
     customsCompliance: 'JSMO (Jordan Standards and Metrology Organization) Inspection, JFDA & ASYCUDA customs',
     buyerFocus: 'Amman Downtown & Zarqa Free Zone importers, variety stores, and Levant distributors',
     marketSummary: 'Import textiles, footwear, household necessities, and stationery from Yiwu directly into Port of Aqaba and Zarqa Free Zone.',
-    corridorAdvantage: 'JSMO technical standard verification during our $99 stall audit and direct Red Sea sailings from Ningbo to Aqaba.'
+    corridorAdvantage: 'JSMO technical standard verification during our supplier visit and direct Red Sea sailings from Ningbo to Aqaba.'
   },
   {
     slug: 'israel',
@@ -1703,7 +1703,7 @@ export function getSmartCountrySeoMeta(
     ];
     nativeSearchBanner = `US Importer Search Intent: Amazon FBA Private Label · Dollar & Variety Store Chains · Sea+UPS Combined (SFUC $1.50–$1.80/kg DDP) · ISF 10+2 & CPSC/FDA Compliance`;
     importerChannels = `Amazon FBA / TikTok Shop / Walmart Marketplace brands, US regional dollar-store & variety chains, ASD Market Week wholesale distributors, and promotional product importers`;
-    freightAndCustomsEdge = `For US shipments between 100 kg and 2,000 kg, Sea + UPS Combined (SFUC) from Yiwu to Los Angeles/Long Beach delivers door-to-door DDP in 22–28 days at $1.50–$1.80/kg with zero customs broker headaches. For 20'GP/40'HQ containers to LA, Savannah, NY/NJ, or Houston, we coordinate ISF 10+2 filings 48 hours pre-vessel and verify CPSC/ASTM/FDA lab reports during a $99 Stall Audit.`;
+    freightAndCustomsEdge = `For US shipments between 100 kg and 2,000 kg, Sea + UPS Combined (SFUC) from Yiwu to Los Angeles/Long Beach delivers door-to-door DDP in 22–28 days at $1.50–$1.80/kg with zero customs broker headaches. For 20'GP/40'HQ containers to LA, Savannah, NY/NJ, or Houston, we coordinate ISF 10+2 filings 48 hours pre-vessel and verify CPSC/ASTM/FDA lab reports during a supplier visit.`;
   } else if (country.slug === 'canada') {
     nativeTerms = [
       `Yiwu wholesale suppliers for Canada importers`,
@@ -1807,8 +1807,8 @@ export function getSmartCountrySeoMeta(
     : `Import from Yiwu China to ${country.name} (${country.flag}) — 27,706 Verified Factory Stalls, Direct Contacts & Shipping to ${country.ports.split(',')[0]} | Sino Trade Link`;
 
   const seoDescription = category
-    ? `Source ${category.shortName} directly from Yiwu ${catLocation} & factories across China for ${country.name} (${country.ports}, ${country.seaTransitDays} sea transit). Verify ${country.customsCompliance} compliance, request managed factory quotes, quote Alibaba links, or book a $99 stall audit.`
-    : `Bypass 15–30% trading markups when importing from Yiwu to ${country.name} (${country.ports}). Browse 27,706 verified stalls, verify ${country.customsCompliance} with a $99 physical booth audit, and ship LCL/FCL at 6% open-book commission.`;
+    ? `Source ${category.shortName} directly from Yiwu ${catLocation} & factories across China for ${country.name} (${country.ports}, ${country.seaTransitDays} sea transit). Verify ${country.customsCompliance} compliance, request managed factory quotes, quote Alibaba links, or discuss a supplier visit.`
+    : `Bypass 15–30% trading markups when importing from Yiwu to ${country.name} (${country.ports}). Browse 27,706 verified stalls, verify ${country.customsCompliance} with a supplier visit, and discuss LCL/FCL shipping requirements.`;
 
   const baseKeywords = category
     ? [
@@ -1836,7 +1836,7 @@ export function getSmartCountrySeoMeta(
     },
     {
       name: `What is the most cost-effective freight and customs strategy from Yiwu to ${country.name} (${country.ports})?`,
-      text: `${freightAndCustomsEdge} Ocean transit from Ningbo-Zhoushan takes ${country.seaTransitDays}, while Air Express / DDP sample consolidation ($149 for up to 5 stalls) arrives in ${country.airTransitDays}.`
+      text: `${freightAndCustomsEdge} Ocean transit from Ningbo-Zhoushan takes ${country.seaTransitDays}, while Air Express / DDP sample consolidation arrives in ${country.airTransitDays}.`
     }
   ];
 

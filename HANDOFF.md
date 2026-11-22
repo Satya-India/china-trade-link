@@ -12,10 +12,7 @@
 
 Sino Trade Link has been architected as an **Outcome-Driven Sourcing & On-Ground Execution Platform** for China's physical wholesale markets (Yiwu Futian International Trade City Districts 1–5, District 6 Expansion, Production Materials Market, and Huangyuan Garment Market).
 
-- **Data Moat + Service Flywheel:** Rather than selling raw contact lists alone, the platform uses **27,706 verified stalls** (with 99.9% unmasked Chinese mobile numbers and exact Gate/Floor/Booth navigation coordinates) and **$29 Niche Category Packs** as a low-friction tripwire to convert international buyers into high-margin **On-Ground Yiwu Execution Services ($99–$299)**:
-  1. **Physical Stall Audit & 4K Video Walkthrough ($99)**
-  2. **Booth Sample Pickup & Consolidation Box ($149)**
-  3. **Comprehensive Factory & License Verification ($299)**
+- **Public website:** Supplier directory, China sourcing information, and WhatsApp enquiries for supplier visits. Public paid service offers have been removed.
 
 ---
 
@@ -41,7 +38,7 @@ Sino Trade Link has been architected as an **Outcome-Driven Sourcing & On-Ground
    - `district` (`1, 2, 3, 4, 5, 6, 7, 60`), `floor`, `gate`, `booth_no`, `full_location`
    - `sample_products`, `chinese_official_category`, `is_direct_factory` (`10,141` licensed factories)
 2. **`inquiries` Table:**
-   - Stores direct wholesale RFQs, quote requests (`/api/unlock-contact`), and concierge bookings (`/api/inquiry`).
+   - Stores direct wholesale RFQs, quote requests (`/api/unlock-contact`), and general enquiries (`/api/inquiry`).
 
 ---
 
@@ -76,15 +73,13 @@ Sino Trade Link has been architected as an **Outcome-Driven Sourcing & On-Ground
 1. **China Sourcing, OEM & Freight Playbook (`/sourcing-guide`):**
    - **Interactive Volumetric Weight, CBM & Landed Cost Calculator:** Pure vanilla JS calculator comparing actual gross weight vs. express volumetric weight (`÷5000`) and air/SFUC volumetric weight (`÷6000`), estimating total and per-unit landed costs across FedEx IE, Air + UPS (`AFUC`), Sea + UPS (`SFUC`), and Sea `LCL` across US West, Central, and East Coast regions.
    - **Incoterms & 7 Shipping Methods Deep Dive:** `EXW`, `FOB`, `DDP` (`DDP - EXW = Total Freight`) plus FCL container capacities (`20'GP = 28 CBM`, `40'GP = 58 CBM`, `40'HQ = 68 CBM`) and why ePacket/China Post fails B2B bulk imports.
-   - **Direct Data + Flat-Fee Audits vs. 5%–10% Commission Agents:** Transparent side-by-side economics showing how buyers save `$1,200–$2,400+` per order over traditional Yiwu brokerage companies.
    - **9-Step OEM & Private Label Manufacturing Roadmap:** 3D prototypes, Direct Factory Showrooms vs. trading stalls, Close-to-MOQ & Far-Below-MOQ negotiation scripts, NNN Agreements & `< $300` Provisional Patents, 3-stage budgeting with mold benchmarks, PP sample verification, compliance, Yiwu packaging/kitting, and pre-shipment QC.
    - **10-Point Verification & Import FAQ:** Native accessible `<details name="import-faq-accordion">` accordion.
 2. **Expanded Yiwu Market Map (`/market-map`):**
    - **4 Niche Yiwu Wholesale Complexes:** International Production Materials Market, Yiwu Furniture Market, Yiwu Building & Material Market, and Zhezhong Timber Market.
    - **14 Specialized & Stock-Lot Streets:** Filterable street directory (including Meihu & Wuai Stock-Lot Streets with 80% off factory overruns, Changchun Ornament Street, Chouzhou Packaging Street, etc.) with 1-click **"Copy Chinese Address for Taxi"** buttons.
    - **How Business Works Inside Yiwu:** The 10-Booth Cluster Rule, Translator Reality, Ready-Stock vs. Custom Packaging, Cash RMB vs. T/T Wire Deposits, and Ningbo Port / Yixinou Eurasia Railway logistics.
-3. **Field Engineer Stall Inspection Standards (`/concierge`):**
-   - Category-specific stall inspection tolerances (Plush GSM & stuffing density, Plastics parting lines & flashing, Hardware salt-spray & metal thickness) and the `$149` Volumetric Sample Consolidation math (`20 stalls -> 1 box`).
+
 
 ---
 

@@ -849,11 +849,9 @@ export function getMatchingChineseCategoryTerms(query: string): string[] {
 export interface UIDictionary {
   nav: {
     directory: string;
-    categoryPacks: string;
     countries: string;
     marketMap: string;
     sourcingGuide: string;
-    concierge: string;
     browseStalls: string;
   };
   hero: {
@@ -871,74 +869,13 @@ export interface UIDictionary {
     statFactories: string;
     statKickbacks: string;
   };
-  priceTable: {
-    badge: string;
-    title: string;
-    subtitle: string;
-    colProduct: string;
-    colDistrict: string;
-    colAmazon: string;
-    colYiwu: string;
-    colMoq: string;
-    colSaving: string;
-    footnote: string;
-    cta: string;
-  };
-  membership: {
-    badge: string;
-    title: string;
-    subtitle: string;
-    singleLabel: string;
-    singlePrice: string;
-    singleDesc: string;
-    singleCta: string;
-    proBadge: string;
-    proLabel: string;
-    proPrice: string;
-    proSave: string;
-    proDesc: string;
-    proCta: string;
-    bizLabel: string;
-    bizPrice: string;
-    bizSave: string;
-    bizDesc: string;
-    bizCta: string;
-    openBookNote: string;
-  };
   faq: {
     badge: string;
     title: string;
     q1: string;
     a1: string;
-    q2: string;
-    a2: string;
-    q3: string;
-    a3: string;
-    q4: string;
-    a4: string;
     q5: string;
     a5: string;
-    calloutText: string;
-    calloutCta: string;
-  };
-  openBook: {
-    badge: string;
-    title: string;
-    subtitle: string;
-    tradTitle: string;
-    trad1: string;
-    trad2: string;
-    trad3: string;
-    trad4: string;
-    trad5: string;
-    stlTitle: string;
-    stl1: string;
-    stl2: string;
-    stl3: string;
-    stl4: string;
-    stl5: string;
-    cta: string;
-    responseNote: string;
   };
   countriesSection: {
     badge: string;
@@ -963,7 +900,6 @@ export interface UIDictionary {
     mainProducts: string;
     officialCategory: string;
     unlockBtn: string;
-    auditBtn: string;
     whatsappBtn: string;
   };
   seo: {
@@ -972,10 +908,6 @@ export interface UIDictionary {
     homeKeywords: string;
     directoryTitle: string;
     directoryDesc: string;
-    packsTitle: string;
-    packsDesc: string;
-    conciergeTitle: string;
-    conciergeDesc: string;
     countriesTitle: string;
     countriesDesc: string;
   };
@@ -985,17 +917,15 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
   en: {
     nav: {
       directory: 'Stall Directory',
-      categoryPacks: 'Alibaba Dropshipping',
       countries: '100 Countries',
       marketMap: 'Market Map',
       sourcingGuide: 'Sourcing Playbook',
-      concierge: 'Ground QC & Agents',
       browseStalls: 'Browse 27,706 Stalls'
     },
     hero: {
       badge: '🇨🇳 China-Wide Factory Sourcing · Yiwu, Shenzhen, Guangzhou & More · Zero Middleman Markups',
       title: 'Source Directly from Factories & Markets Anywhere in China.',
-      subtitle: 'We procure across Yiwu, Shenzhen, Guangzhou, Ningbo, and all major Chinese industrial hubs — not just Yiwu market. Paste any Alibaba.com link or browse 27,706+ verified stalls free and let our team quote & handle every supplier directly for you.',
+      subtitle: 'We procure across Yiwu, Shenzhen, Guangzhou, Ningbo, and all major Chinese industrial hubs — not just Yiwu market. Browse 27,706+ verified stalls free and let our team quote & handle every supplier directly for you.',
       searchPlaceholder: 'Search by product, category, or stall name (e.g. Toys, Kitchenware, Booth 62159)...',
       searchBtn: 'Search Directory',
       trustLocation: 'China-Wide Hubs: Yiwu, Shenzhen, Guangzhou, Ningbo',
@@ -1007,79 +937,18 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
       statFactories: 'Licensed Factories',
       statKickbacks: 'Trading Markups'
     },
-    priceTable: {
-      badge: 'Alibaba.com vs. China Factory Direct',
-      title: 'Alibaba.com Price vs. Our Direct Factory Price',
-      subtitle: 'Compare typical public Alibaba.com trader quotes against what our China-wide sourcing team secures directly from factories in Yiwu, Shenzhen, Guangzhou, Ningbo & nationwide.',
-      colProduct: 'Product',
-      colDistrict: 'China Sourcing Hub',
-      colAmazon: 'Alibaba.com Price',
-      colYiwu: 'Our Direct Price',
-      colMoq: 'Dropship / MOQ',
-      colSaving: 'Saving',
-      footnote: '* Direct China EXW factory rates across Shenzhen, Ningbo, Zhongshan, Guangzhou & Yiwu compared to public Alibaba.com listings. 1-piece dropshipping & low-MOQ batches available.',
-      cta: 'Paste Alibaba.com Link For Direct Quote →'
-    },
-    membership: {
-      badge: 'Zero Upfront Subscriptions · Pay Per Order',
-      title: 'Browse Free. Quote Direct. Ship From 1 Unit.',
-      subtitle: 'No paid CSV packs or annual memberships. Browse 27,706+ Yiwu stalls free or paste any Alibaba.com product link to source direct from the factory.',
-      singleLabel: '1-Piece Dropshipping',
-      singlePrice: 'From 1 Unit',
-      singleDesc: 'Paste any Alibaba.com product link. Our Yiwu desk locates the direct factory line, checks stock, and fulfills blind-labeled parcels worldwide in 5–9 days.',
-      singleCta: 'Paste Alibaba Link (Free) →',
-      proBadge: 'MOST POPULAR',
-      proLabel: 'Alibaba Link → Factory Direct',
-      proPrice: '$0 Upfront',
-      proSave: 'Save 10–35% vs. public Alibaba trader quotes',
-      proDesc: 'Send an Alibaba link or product photo on WhatsApp. We negotiate real RMB factory cost, combine items from multiple booths, and remove third-party brand tags.',
-      proCta: 'Get Free Factory Quote →',
-      bizLabel: 'Open-Book Wholesale',
-      bizPrice: '6% Flat Fee',
-      bizSave: 'Original RMB factory receipts shared before payment',
-      bizDesc: 'Dedicated bilingual Yiwu field rep, 4K stall verification video, custom OEM packaging, AQL 2.5 pre-shipment inspection, and sea or air consolidation from Ningbo.',
-      bizCta: 'Start on WhatsApp →',
-      openBookNote: '💡 You receive the raw RMB factory receipt + our separate invoice. You pay $0 until you approve your sample or landed quote.'
-    },
     faq: {
       badge: 'Transparency First',
       title: 'The Questions Serious Buyers Ask Before Trusting Us With Their Orders',
       q1: '"Do you source only from Yiwu market, and why do I contact Sino Trade Link instead of supplier numbers?"',
       a1: 'We procure anywhere across China — Shenzhen (electronics), Guangzhou/Foshan (apparel, beauty, furniture), Ningbo/Yongkang (hardware & homeware), Shantou (toys), and Yiwu markets. Supplier phone numbers are kept private with our bilingual desk so we protect your buyer identity, negotiate local RMB factory rates, verify licenses, and prevent online trader markups.',
-      q2: '"Can I paste an Alibaba.com link even if I only need 1 piece or low MOQ?"',
-      a2: 'Yes. Paste any Alibaba.com product URL into our Dropshipping Quote Box (or send a screenshot on WhatsApp). Even if the listing shows a high MOQ, our on-ground Yiwu team negotiates with the physical factory stall for 1-piece private dropshipping or a low-MOQ test batch.',
-      q3: '"How does Sino Trade Link make money if directory access and quotes are free?"',
-      a3: 'Transparent answer: We removed all upfront pack paywalls and platform subscriptions ($0 to browse, $0 to request a quote). We only earn transparent fulfillment fees when you place an order through us (dropshipping dispatch, multi-booth consolidation, on-site inspection, or 6% open-book wholesale execution).',
-      q4: '"Is my order money safe? Who handles quality before dispatch?"',
-      a4: 'You pay $0 before approving your exact landed cost quote, photos, and shipping rate. Our Yiwu warehouse physically receives every unit from the factory, inspects quality and packaging, removes unwanted supplier flyers, and sends proof photos before international dispatch.',
       q5: '"What if my country has import restrictions on certain Chinese goods?"',
-      a5: 'Our ground team can verify CE, FCC, EN71/ASTM toy safety, and RoHS certificates at the stall level during an on-site audit or before dropship dispatch. We also proactively flag DG (Dangerous Goods) categories — lighters, batteries, liquids, aerosols — that need specialized freight lanes before you commit.',
-      calloutText: 'Our business model is built on repeat buyers and scaling dropshippers. Talk to us directly on WhatsApp — we share real factory quotes and warehouse photos before you spend a dollar.',
-      calloutCta: 'Talk to Our Yiwu Team on WhatsApp →'
-    },
-    openBook: {
-      badge: 'Open-Book Sourcing',
-      title: "Traditional 'Free' Yiwu Agent vs. Sino Trade Link Direct Execution",
-      subtitle: "Most Yiwu agents claim to work for free. They don't. They earn 10–20% kickbacks from factories — baked invisibly into the unit price you see.",
-      tradTitle: "❌ Traditional 'Free' Yiwu Agent",
-      trad1: 'Claims to work for free — earns 10–20% hidden kickback from the factory you buy from',
-      trad2: 'Shows you a "best price" — already inflated before you see it',
-      trad3: "No paper trail — you can't verify actual factory price vs. what you paid",
-      trad4: 'Financially incentivized to push affiliated factories over better alternatives',
-      trad5: 'Typically disappears after commission is collected',
-      stlTitle: '✅ Sino Trade Link Direct Execution (Zero Subscription)',
-      stl1: 'No annual subscription or membership lock-in — $0 until you confirm an order',
-      stl2: 'You receive the raw RMB factory receipt + our fee as two separate transparent line items',
-      stl3: 'Open-Book Mandate: if we negotiate ¥23/unit at the stall, you pay ¥23 + our agreed fee — nothing else',
-      stl4: 'Direct factory sourcing from Alibaba links or our 27,706 verified stall database',
-      stl5: 'Real warehouse QC photos & all supplier negotiations logged on WhatsApp',
-      cta: 'Start Open-Book Sourcing on WhatsApp →',
-      responseNote: 'Our Yiwu team typically responds within 2 hours during business hours (UTC+8).'
+      a5: 'Our ground team can verify CE, FCC, EN71/ASTM toy safety, and RoHS certificates at the stall level during an on-site audit before shipment. We also proactively flag DG (Dangerous Goods) categories — lighters, batteries, liquids, aerosols — that need specialized freight lanes before you commit.',
     },
     countriesSection: {
       badge: '🌍 100 Global Import Corridors • 2,400 Category Trade Lanes',
       title: 'Global Yiwu-to-Port Sourcing Corridors (100 Countries)',
-      subtitle: 'Explore country-specific Yiwu wholesale hubs with Ningbo ocean transit times, destination ports, local customs compliance (CE, SABER, BIS, SONCAP, INMETRO), on-demand stall audits, and 6% open-book execution.',
+      subtitle: 'Explore country-specific Yiwu wholesale hubs with Ningbo ocean transit times, destination ports, local customs compliance (CE, SABER, BIS, SONCAP, INMETRO) and supplier visits.',
       viewAllCta: 'Explore All 100 Country Import Corridors →',
       portsLabel: 'Ports:',
       seaTransitLabel: 'Sea Transit:',
@@ -1099,19 +968,14 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
       mainProducts: 'Wholesale Catalog Keywords:',
       officialCategory: 'Official Market Category:',
       unlockBtn: 'Request Factory Quote',
-      auditBtn: 'Request On-Site Audit →',
       whatsappBtn: 'WhatsApp Ground Desk'
     },
     seo: {
-      homeTitle: 'Sino Trade Link | Alibaba.com Dropshipping & China-Wide Direct Factory Sourcing Agent',
-      homeDesc: 'Source directly from factories anywhere in China (Yiwu, Shenzhen, Guangzhou, Ningbo). Paste any Alibaba.com product link or browse 27,706+ verified stalls free and request managed factory quotes.',
-      homeKeywords: 'Alibaba dropshipping agent China, China-wide factory sourcing, Yiwu Shenzhen Guangzhou procurement, 1 piece China dropshipping, private label fulfillment China',
+      homeTitle: "Sino Trade Link | China-Wide Direct Factory Sourcing",
+      homeDesc: 'Source directly from factories anywhere in China (Yiwu, Shenzhen, Guangzhou, Ningbo). Browse 27,706+ verified stalls free and request managed factory quotes.',
+      homeKeywords: "China factory sourcing, Yiwu supplier directory, supplier visits, Shenzhen Guangzhou Ningbo",
       directoryTitle: 'China Wholesale Market Directory | 27,706+ Verified Stalls & Factory Quote Requests',
       directoryDesc: 'Search 27,706+ verified wholesale stalls & direct China factories free. Request managed factory quotes, samples, and China-wide consolidation directly with our team.',
-      packsTitle: 'Alibaba.com Dropshipping & Direct China Factory Agent (No Subscription) | Sino Trade Link',
-      packsDesc: 'Paste any Alibaba.com product link to source direct from Chinese factories anywhere in China with 1-piece fulfillment, blind white-label shipping, and free WhatsApp quotes.',
-      conciergeTitle: 'Yiwu On-Ground Stall Audit, Sample Consolidation & AQL 2.5 Inspection',
-      conciergeDesc: 'Hire our bilingual Yiwu field engineers for physical booth 4K video audits, consolidated sample boxes, and AQL 2.5 pre-shipment inspections — discuss direct on WhatsApp.',
       countriesTitle: '100 Country Import Corridors from Yiwu, China | Sea Freight & Customs Compliance',
       countriesDesc: 'Country-by-country wholesale sourcing hubs from Yiwu & Ningbo Port to 100 countries with transit times, duties, and required import certifications.'
     }
@@ -1119,17 +983,15 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
   es: {
     nav: {
       directory: 'Directorio de Puestos',
-      categoryPacks: 'Dropshipping Alibaba',
       countries: '100 Países',
       marketMap: 'Mapa del Mercado',
       sourcingGuide: 'Guía de Importación',
-      concierge: 'Inspección en Yiwu',
       browseStalls: 'Ver 27.706 Puestos'
     },
     hero: {
       badge: '🇨🇳 Compras en Toda China · Yiwu, Shenzhen, Guangzhou y Más · Cero Sobrecostos',
       title: 'Compre Directo en Fábricas y Mercados de Toda China.',
-      subtitle: 'Abastecemos desde cualquier ciudad industrial de China (Yiwu, Shenzhen, Guangzhou, Ningbo y más allá), no solo en el mercado de Yiwu. Pegue cualquier enlace de Alibaba.com o explore 27.706+ puestos gratis y solicite cotización gestionada con nuestro equipo.',
+      subtitle: 'Abastecemos desde cualquier ciudad industrial de China (Yiwu, Shenzhen, Guangzhou, Ningbo y más allá), no solo en el mercado de Yiwu. Explore 27.706+ puestos gratis y solicite cotización gestionada con nuestro equipo.',
       searchPlaceholder: 'Buscar por producto, categoría o número de puesto (ej. Juguetes, Cocina, Puesto 62159)...',
       searchBtn: 'Buscar Puestos',
       trustLocation: 'Polos en Toda China: Yiwu, Shenzhen, Guangzhou, Ningbo',
@@ -1141,74 +1003,13 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
       statFactories: 'Fábricas Directas',
       statKickbacks: 'Sobreprecio de Agentes'
     },
-    priceTable: {
-      badge: 'Alibaba.com vs. Fábrica Directa en China',
-      title: 'Precio Alibaba.com vs. Nuestro Precio Directo de Fábrica',
-      subtitle: 'Compare precios públicos habituales de revendedores en Alibaba.com frente al precio real de fábrica que conseguimos en Yiwu, Shenzhen, Guangzhou, Ningbo y toda China.',
-      colProduct: 'Producto',
-      colDistrict: 'Polo Industrial China',
-      colAmazon: 'Precio Alibaba.com',
-      colYiwu: 'Nuestro Precio Directo',
-      colMoq: 'Dropship / MOQ',
-      colSaving: 'Ahorro',
-      footnote: '* Precios EXW de fábrica en toda China comparados con anuncios públicos de Alibaba.com. Dropshipping desde 1 unidad y lotes de prueba disponibles.',
-      cta: 'Pegar Enlace Alibaba.com para Cotizar →'
-    },
-    membership: {
-      badge: 'Cero Suscripciones · Pague Solo por Pedido',
-      title: 'Explore Gratis. Cotice Directo. Envíe Desde 1 Unidad.',
-      subtitle: 'Sin paquetes CSV de pago ni membresías anuales. Explore 27.706+ puestos en Yiwu gratis o pegue cualquier enlace de Alibaba.com para cotizar directo de fábrica.',
-      singleLabel: 'Dropshipping 1 Unidad',
-      singlePrice: 'Desde 1 Pieza',
-      singleDesc: 'Pegue cualquier producto de Alibaba.com. Nuestro equipo en Yiwu localiza la fábrica directa, verifica calidad y envía paquetes sin marca ajena en 5–9 días.',
-      singleCta: 'Pegar Enlace Alibaba (Gratis) →',
-      proBadge: 'MÁS SOLICITADO',
-      proLabel: 'Enlace Alibaba → Fábrica Directa',
-      proPrice: '$0 Inicial',
-      proSave: 'Ahorra 10–35% frente a cotizaciones minoristas en Alibaba',
-      proDesc: 'Envíe un link de Alibaba o captura por WhatsApp. Negociamos en RMB en origen, consolidamos varios artículos y colocamos su propio empaque.',
-      proCta: 'Cotizar Gratis en WhatsApp →',
-      bizLabel: 'Mayoreo Open-Book',
-      bizPrice: '6% Comisión Fija',
-      bizSave: 'Recibo original de fábrica en RMB compartido antes de pagar',
-      bizDesc: 'Agente bilingüe en Yiwu, video 4K en tienda, marca blanca OEM, inspección AQL 2.5 pre-embarque y flete aéreo o marítimo desde Ningbo.',
-      bizCta: 'Consultar por WhatsApp →',
-      openBookNote: '💡 Recibirá el recibo original de fábrica en RMB más nuestra factura por separado. Paga $0 hasta aprobar la cotización final.'
-    },
     faq: {
       badge: 'Transparencia Total',
       title: 'Las Preguntas que Todo Importador Serio Hace Antes de Iniciar Pedidos',
       q1: '«¿Compran solo en el mercado de Yiwu o en toda China, y por qué contacto a Sino Trade Link?»',
       a1: 'Abastecemos en toda China — Shenzhen (electrónica), Guangzhou/Foshan (textil, muebles, belleza), Ningbo/Yongkang (ferretería y menaje), Shantou (juguetes) además de Yiwu. Mantenemos la comunicación con los proveedores centralizada en nuestro equipo bilingüe para proteger sus precios locales en RMB, auditar licencias y evitar sobrecostos.',
-      q2: '«¿Puedo enviar un enlace de Alibaba.com aunque solo necesite 1 unidad o poca cantidad?»',
-      a2: 'Sí. Pegue cualquier enlace de Alibaba.com en nuestro formulario rápido o envíe una captura por WhatsApp. Aunque la publicación pida alto MOQ, negociamos directamente con el puesto o fábrica para dropshipping desde 1 pieza o lotes de prueba.',
-      q3: '«¿Cómo gana dinero Sino Trade Link si explorar y cotizar es gratis?»',
-      a3: 'Sin suscripciones ni packs de pago ($0 para buscar y cotizar). Solo cobramos tarifas transparentes cuando usted aprueba una orden con nosotros: gestión logística de dropshipping, consolidación de paquetes, inspecciones en Yiwu o 6% en compras mayores.',
-      q4: '«¿Mi dinero está seguro? ¿Quién verifica la calidad antes del envío?»',
-      a4: 'No paga nada hasta aprobar el precio puesto en destino y fotos reales. Nuestro almacén en Yiwu recibe cada producto de fábrica, revisa defectos, retira facturas chinas y envía fotos antes de despachar.',
       q5: '«¿Qué ocurre con las normas aduaneras y certificaciones de mi país (NOM, CE, INMETRO)?»',
       a5: 'Nuestro equipo en Yiwu verifica certificados CE, FCC, EN71/ASTM y RoHS directamente en el puesto antes de embarcar e identifica mercancías peligrosas (baterías, líquidos) para usar líneas de flete seguras.',
-      calloutText: 'Nuestro modelo se basa en importadores recurrentes y tiendas de dropshipping que escalan con nosotros. Escríbanos por WhatsApp sin compromiso.',
-      calloutCta: 'Hablar con Nuestro Equipo en Yiwu por WhatsApp →'
-    },
-    openBook: {
-      badge: 'Compras a Libro Abierto (Open-Book)',
-      title: 'Agente Tradicional «Gratis» en Yiwu vs. Sino Trade Link Ejecución Directa',
-      subtitle: 'La mayoría de los agentes en Yiwu dicen trabajar gratis o al 1%, pero cobran entre 10% y 20% de comisión oculta de la fábrica, inflando su costo unitario.',
-      tradTitle: '❌ Agente Tradicional «Gratis» en Yiwu',
-      trad1: 'Dice cobrar 0% o 1%, pero recibe 10–20% de comisión oculta pagada por la fábrica',
-      trad2: 'Le presenta un «precio final» que ya viene inflado antes de que usted lo vea',
-      trad3: 'Sin comprobantes reales: nunca sabe cuánto cobró realmente el fabricante',
-      trad4: 'Incentivado a llevarlo a fábricas cómplices en lugar de las mejores opciones',
-      trad5: 'Desaparece cuando surgen problemas de calidad tras cobrar su comisión',
-      stlTitle: '✅ Sino Trade Link Ejecución Directa (Cero Suscripciones)',
-      stl1: 'Sin cuotas mensuales ni paquetes previos: $0 hasta aprobar su cotización',
-      stl2: 'Recibe el comprobante original del puesto en RMB + nuestra tarifa por separado',
-      stl3: 'Mandato a Libro Abierto: si negociamos ¥23/unidad en fábrica, paga ¥23 + tarifa acordada',
-      stl4: 'Cero alianzas ocultas: cotizamos desde sus enlaces de Alibaba o 27.706 puestos verificados',
-      stl5: 'Fotos reales de almacén y negociación documentada directamente por WhatsApp',
-      cta: 'Iniciar Compra a Libro Abierto por WhatsApp →',
-      responseNote: 'Nuestro equipo en Yiwu responde habitualmente en menos de 2 horas en horario comercial (UTC+8).'
     },
     countriesSection: {
       badge: '🌍 100 Corredores Globales de Importación • 2.400 Rutas Comerciales',
@@ -1233,19 +1034,14 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
       mainProducts: 'Catálogo Mayorista:',
       officialCategory: 'Categoría Oficial del Mercado:',
       unlockBtn: 'Solicitar Cotización',
-      auditBtn: 'Solicitar Auditoría en Puesto →',
       whatsappBtn: 'Consultar por WhatsApp'
     },
     seo: {
-      homeTitle: 'Sino Trade Link | Agente Dropshipping Alibaba y Compras Directas de Fábrica en Toda China',
-      homeDesc: 'Compre directo de fábricas en toda China (Yiwu, Shenzhen, Guangzhou, Ningbo). Pegue cualquier enlace de Alibaba.com o explore 27.706+ puestos gratis para solicitar cotización directa.',
-      homeKeywords: 'agente dropshipping Alibaba China, compras fabrica China, Yiwu Shenzhen Guangzhou, dropshipping 1 unidad China, marca blanca China',
+      homeTitle: "Sino Trade Link | Compras Directas de Fábrica en Toda China",
+      homeDesc: 'Compre directo de fábricas en toda China (Yiwu, Shenzhen, Guangzhou, Ningbo). Explore 27.706+ puestos gratis para solicitar cotización directa.',
+      homeKeywords: "compras fábricas China, directorio proveedores Yiwu, visitas a proveedores",
       directoryTitle: 'Directorio del Mercado Mayorista en China | 27.706+ Puestos y Cotizaciones Directas',
       directoryDesc: 'Busque entre 27.706+ puestos verificados en Yiwu y solicite cotizaciones directas de fábrica en toda China a través de nuestro equipo.',
-      packsTitle: 'Dropshipping Alibaba.com y Agente Directo de Fábrica en China | Sino Trade Link',
-      packsDesc: 'Pegue su enlace de Alibaba.com para comprar directo a fábrica en China con envíos desde 1 unidad, empaque privado y cotización gratuita por WhatsApp.',
-      conciergeTitle: 'Auditoría Física de Puestos en Yiwu, Consolidación de Muestras e Inspección AQL 2.5',
-      conciergeDesc: 'Contrate a nuestros ingenieros bilingües en Yiwu para videollamadas 4K desde el puesto, consolidación de muestras e inspección pre-embarque AQL 2.5.',
       countriesTitle: 'Importar desde Yiwu, China hacia 100 Países | Flete Marítimo y Aduanas',
       countriesDesc: 'Guías de importación desde Yiwu y el Puerto de Ningbo hacia 100 países con tiempos de tránsito marítimo, aranceles y certificaciones requeridas.'
     }
@@ -1253,17 +1049,15 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
   pt: {
     nav: {
       directory: 'Diretório de Lojas',
-      categoryPacks: 'Dropshipping Alibaba',
       countries: '100 Países',
       marketMap: 'Mapa do Mercado',
       sourcingGuide: 'Guia de Importação',
-      concierge: 'Auditoria em Yiwu',
       browseStalls: 'Ver 27.706 Lojas'
     },
     hero: {
       badge: '🇨🇳 Compras em Toda a China · Yiwu, Shenzhen, Guangzhou e Mais · Zero Ágio de Intermediários',
       title: 'Compre Direto de Fábricas e Mercados em Qualquer Lugar da China.',
-      subtitle: 'Compramos em toda a China — Yiwu, Shenzhen, Guangzhou, Ningbo e polos industriais — não apenas no mercado de Yiwu. Cole qualquer link da Alibaba.com ou pesquise 27.706+ fornecedores grátis e fale conosco para cotar direto na fábrica.',
+      subtitle: 'Compramos em toda a China — Yiwu, Shenzhen, Guangzhou, Ningbo e polos industriais — não apenas no mercado de Yiwu. Pesquise 27.706+ fornecedores grátis e fale conosco para cotar direto na fábrica.',
       searchPlaceholder: 'Busque por produto, categoria ou número do box (ex: Brinquedos, Cozinha, Box 62159)...',
       searchBtn: 'Buscar Fornecedores',
       trustLocation: 'Polos em Toda a China: Yiwu, Shenzhen, Guangzhou, Ningbo',
@@ -1275,74 +1069,13 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
       statFactories: 'Fábricas Licenciadas',
       statKickbacks: 'Comissões Ocultas'
     },
-    priceTable: {
-      badge: 'Alibaba.com vs. Fábrica Direta na China',
-      title: 'Preço Alibaba.com vs. Nosso Preço Direto de Fábrica',
-      subtitle: 'Compare cotações públicas típicas na Alibaba.com contra o preço real de fábrica que negociamos diretamente em Yiwu, Shenzhen, Guangzhou, Ningbo e toda a China.',
-      colProduct: 'Produto',
-      colDistrict: 'Polo Industrial China',
-      colAmazon: 'Preço Alibaba.com',
-      colYiwu: 'Nosso Preço Direto',
-      colMoq: 'Dropship / MOQ',
-      colSaving: 'Economia',
-      footnote: '* Valores EXW diretos de fábricas na China comparados a anúncios públicos da Alibaba.com. Dropshipping de 1 unidade e lotes teste disponíveis.',
-      cta: 'Colar Link Alibaba.com para Cotar →'
-    },
-    membership: {
-      badge: 'Zero Assinaturas · Pague Apenas por Pedido',
-      title: 'Explore Grátis. Cote Direto. Envie a Partir de 1 Unidade.',
-      subtitle: 'Sem pacotes CSV pagos ou mensalidades. Pesquise 27.706+ boxes em Yiwu grátis ou cole qualquer link da Alibaba.com para cotação direta de fábrica.',
-      singleLabel: 'Dropshipping 1 Unidade',
-      singlePrice: 'A partir de 1 Peça',
-      singleDesc: 'Cole qualquer link de produto da Alibaba.com. Nossa equipe em Yiwu encontra a fábrica direta, checa qualidade e despacha embalagens sem marca em 5–9 dias.',
-      singleCta: 'Colar Link Alibaba (Grátis) →',
-      proBadge: 'MAIS PROCURADO',
-      proLabel: 'Link Alibaba → Fábrica Direta',
-      proPrice: '$0 Inicial',
-      proSave: 'Economize 10–35% frente às cotações públicas no Alibaba',
-      proDesc: 'Envie um link do Alibaba ou foto pelo WhatsApp. Negociamos em RMB na fonte, consolidamos vários itens e aplicamos sua própria marca ou etiqueta.',
-      proCta: 'Cotar Grátis no WhatsApp →',
-      bizLabel: 'Atacado Open-Book',
-      bizPrice: '6% Taxa Fixa',
-      bizSave: 'Recibo original da fábrica em RMB compartilhado antes do pagamento',
-      bizDesc: 'Agente bilíngue dedicado em Yiwu, vídeo 4K no box, embalagem OEM personalizada, inspeção AQL 2.5 e frete aéreo ou marítimo desde Ningbo.',
-      bizCta: 'Falar no WhatsApp →',
-      openBookNote: '💡 Você recebe o recibo original da fábrica em RMB + nossa fatura separada. Você paga $0 até aprovar a cotação final.'
-    },
     faq: {
       badge: 'Transparência em Primeiro Lugar',
       title: 'As Perguntas que Importadores Experientes Fazem Antes de Fechar Pedido',
       q1: '“Vocês compram apenas em Yiwu ou em toda a China, e por que devo falar com a Sino Trade Link?”',
       a1: 'Atuamos em todos os polos chineses — Shenzhen (eletrônicos), Guangzhou/Foshan (vestuário, móveis, beleza), Ningbo/Yongkang (ferramentas e utilidades), Shantou (brinquedos) e Yiwu. Centralizamos o contato com fábricas via WhatsApp para proteger seu custo real em RMB, checar licenças e evitar ágios de intermediários.',
-      q2: '“Posso enviar um link da Alibaba.com mesmo precisando de 1 unidade ou lote baixo?”',
-      a2: 'Sim. Cole qualquer URL de produto da Alibaba.com na nossa caixa de cotação ou envie print no WhatsApp. Mesmo se o anúncio indicar MOQ alto, negociamos diretamente com a fábrica para dropshipping unitário ou lote teste.',
-      q3: '“Como a Sino Trade Link ganha dinheiro se a busca e a cotação são gratuitas?”',
-      a3: 'Zero mensalidades ou pacotes pagos ($0 para buscar e cotar). Só cobramos taxas claras quando você aprova um pedido: logística de dropshipping, consolidação de pacotes, inspeção sob demanda ou 6% no atacado Open-Book.',
-      q4: '“Meu dinheiro está seguro? Quem confere a qualidade antes do despacho?”',
-      a4: 'Você não paga nada antes de aprovar preço final, frete e fotos. Nosso armazém em Yiwu recebe a mercadoria da fábrica, verifica defeitos, remove panfletos chineses e envia fotos reais antes de postar.',
       q5: '“Como funcionam as certificações exigidas na alfândega (INMETRO, ANATEL, CE)?”',
       a5: 'Nossa equipe em Yiwu verifica certificados CE, RoHS, FCC e requisitos INMETRO diretamente no box antes do envio e identifica cargas especiais (baterias, líquidos) para rotas aéreas adequadas.',
-      calloutText: 'Nosso modelo é baseado em lojistas e importadores recorrentes. Converse com nossa equipe em Yiwu no WhatsApp sem compromisso.',
-      calloutCta: 'Falar com Nossa Equipe em Yiwu no WhatsApp →'
-    },
-    openBook: {
-      badge: 'Importação Open-Book (Livro Aberto)',
-      title: 'Agente Tradicional “Grátis” em Yiwu vs. Sino Trade Link Execução Direta',
-      subtitle: 'A maioria dos agentes em Yiwu diz trabalhar de graça ou cobrar 1%, mas recebe de 10% a 20% de comissão oculta da fábrica — embutida no preço unitário que você paga.',
-      tradTitle: '❌ Agente Tradicional “Grátis” em Yiwu',
-      trad1: 'Diz não cobrar comissão, mas recebe 10–20% de repasse oculto pago pela fábrica',
-      trad2: 'Apresenta um “preço final” que já vem inflacionado antes de chegar até você',
-      trad3: 'Sem comprovantes reais — impossível auditar o valor real cobrado pela fábrica',
-      trad4: 'Incentivado financeiramente a indicar fábricas parceiras em vez das melhores opções',
-      trad5: 'Desaparece após receber a comissão quando surgem problemas de qualidade',
-      stlTitle: '✅ Sino Trade Link Execução Direta (Zero Assinatura)',
-      stl1: 'Sem anuidade nem compra de pacotes — $0 até você confirmar um pedido',
-      stl2: 'Você recebe o recibo original da fábrica em RMB + nossa taxa em itens separados',
-      stl3: 'Mandato Open-Book: se negociarmos ¥23/unidade no box, você paga ¥23 + taxa combinada',
-      stl4: 'Sem vínculo oculto — cotamos a partir de seus links do Alibaba ou 27.706 boxes verificados',
-      stl5: 'Fotos de conferência em armazém e negociação compartilhadas no WhatsApp',
-      cta: 'Iniciar Importação Open-Book no WhatsApp →',
-      responseNote: 'Nossa equipe em Yiwu responde normalmente em até 2 horas no horário comercial (UTC+8).'
     },
     countriesSection: {
       badge: '🌍 100 Corredores Globais de Importação • 2.400 Rotas Comerciais',
@@ -1367,19 +1100,14 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
       mainProducts: 'Catálogo Atacadista:',
       officialCategory: 'Categoria Oficial do Mercado:',
       unlockBtn: 'Solicitar Cotação de Fábrica',
-      auditBtn: 'Solicitar Auditoria do Box →',
       whatsappBtn: 'Chamar Equipe no WhatsApp'
     },
     seo: {
-      homeTitle: 'Sino Trade Link | Agente Dropshipping Alibaba e Compras em Toda a China',
-      homeDesc: 'Compre direto de fábricas em qualquer lugar da China (Yiwu, Shenzhen, Guangzhou, Ningbo). Cole qualquer link da Alibaba.com ou explore 27.706+ boxes grátis e solicite sua cotação conosco.',
-      homeKeywords: 'agente dropshipping Alibaba China, comprar direto fabrica China, Yiwu Shenzhen Guangzhou, dropshipping 1 unidade China, marca própria China',
+      homeTitle: "Sino Trade Link | Compras Diretas de Fábricas em Toda a China",
+      homeDesc: 'Compre direto de fábricas em qualquer lugar da China (Yiwu, Shenzhen, Guangzhou, Ningbo). Explore 27.706+ boxes grátis e solicite sua cotação conosco.',
+      homeKeywords: "compras fábricas China, diretório fornecedores Yiwu, visitas a fornecedores",
       directoryTitle: 'Diretório do Mercado Atacadista na China | 27.706+ Boxes e Cotações Diretas',
       directoryDesc: 'Pesquise 27.706+ fornecedores verificados em Yiwu gratuitamente e peça cotações diretas de fábrica em toda a China com nossa equipe.',
-      packsTitle: 'Dropshipping Alibaba.com e Agente Direto de Fábrica na China | Sino Trade Link',
-      packsDesc: 'Cole seu link da Alibaba.com para comprar direto da fábrica na China com envio de 1 unidade, embalagem privada e cotação grátis no WhatsApp.',
-      conciergeTitle: 'Auditoria Presencial de Box em Yiwu, Consolidação de Amostras e Inspeção AQL 2.5',
-      conciergeDesc: 'Contrate nossos engenheiros bilíngues em Yiwu para auditoria em vídeo 4K, caixa consolidada de amostras e inspeção pré-embarque AQL 2.5.',
       countriesTitle: 'Corredores de Importação de Yiwu, China para 100 Países | Frete Marítimo e Alfândega',
       countriesDesc: 'Guias completos de importação de Yiwu e Porto de Ningbo para 100 países com prazos marítimos, impostos e certificações obrigatórias.'
     }
@@ -1387,17 +1115,15 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
   fr: {
     nav: {
       directory: 'Annuaire des Stands',
-      categoryPacks: 'Dropshipping Alibaba',
       countries: '100 Pays',
       marketMap: 'Plan du Marché',
       sourcingGuide: 'Guide Sourcing',
-      concierge: 'Contrôle sur Place',
       browseStalls: 'Voir 27 706 Stands'
     },
     hero: {
       badge: '🇨🇳 Sourcing Partout en Chine · Yiwu, Shenzhen, Guangzhou & Plus · Zéro Marge Cachée',
       title: 'Sourcez Directement auprès d’Usines & Marchés Partout en Chine.',
-      subtitle: 'Nous achetons dans toute la Chine (Yiwu, Shenzhen, Guangzhou, Ningbo et pôles industriels) — pas uniquement à Yiwu. Collez un lien Alibaba.com ou parcourez 27 706+ stands et demandez un devis direct auprès de notre équipe.',
+      subtitle: 'Nous achetons dans toute la Chine (Yiwu, Shenzhen, Guangzhou, Ningbo et pôles industriels) — pas uniquement à Yiwu. Parcourez 27 706+ stands et demandez un devis direct auprès de notre équipe.',
       searchPlaceholder: 'Rechercher par produit, catégorie ou numéro de stand (ex. Jouets, Cuisine, Stand 62159)...',
       searchBtn: 'Rechercher',
       trustLocation: 'Pôles Chinois : Yiwu, Shenzhen, Guangzhou, Ningbo',
@@ -1409,74 +1135,13 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
       statFactories: 'Usines Certifiées',
       statKickbacks: 'Marges Cachées'
     },
-    priceTable: {
-      badge: 'Alibaba.com vs. Prix Direct Usine Chine',
-      title: 'Prix Alibaba.com vs. Notre Tarif Direct Usine',
-      subtitle: 'Comparez les devis publics habituels sur Alibaba.com aux tarifs usine réels que notre équipe obtient à Yiwu, Shenzhen, Guangzhou, Ningbo et partout en Chine.',
-      colProduct: 'Produit',
-      colDistrict: 'Pôle Industriel Chine',
-      colAmazon: 'Prix Alibaba.com',
-      colYiwu: 'Notre Prix Direct',
-      colMoq: 'Dropship / MOQ',
-      colSaving: 'Économie',
-      footnote: '* Tarifs départ usine (EXW) partout en Chine vs offres publiques Alibaba.com. Dropshipping à l’unité et petits lots test disponibles.',
-      cta: 'Coller un Lien Alibaba.com pour Devis →'
-    },
-    membership: {
-      badge: 'Zéro Abonnement · Paiement à la Commande',
-      title: 'Explorez Gratuitement. Citez en Direct. Expédiez Dès 1 Pièce.',
-      subtitle: 'Aucun pack CSV payant ni abonnement annuel. Consultez 27 706+ stands Yiwu gratuitement ou collez un lien Alibaba.com pour sourcer à l’usine.',
-      singleLabel: 'Dropshipping 1 Pièce',
-      singlePrice: 'Dès 1 Unité',
-      singleDesc: 'Collez un lien produit Alibaba.com. Notre équipe à Yiwu identifie la ligne d’usine directe, contrôle le stock et expédie en marque blanche sous 5–9 jours.',
-      singleCta: 'Coller un Lien Alibaba (Gratuit) →',
-      proBadge: 'LE PLUS DEMANDÉ',
-      proLabel: 'Lien Alibaba → Usine Directe',
-      proPrice: '0 $ d’Avance',
-      proSave: 'Économisez 10–35 % face aux devis publics sur Alibaba',
-      proDesc: 'Envoyez un lien Alibaba ou une capture sur WhatsApp. Nous négocions en RMB sur place, groupons vos articles et retirons toute facture fournisseur.',
-      proCta: 'Devis Usine Gratuit WhatsApp →',
-      bizLabel: 'Gros Open-Book',
-      bizPrice: '6 % Forfaitaire',
-      bizSave: 'Reçu d’usine original en RMB partagé avant paiement',
-      bizDesc: 'Agent bilingue dédié à Yiwu, vidéo 4K au stand, packaging OEM sur mesure, contrôle AQL 2.5 et groupage maritime ou aérien depuis Ningbo.',
-      bizCta: 'Démarrer sur WhatsApp →',
-      openBookNote: '💡 Vous recevez le reçu original en RMB + notre facture séparée. 0 $ d’avance avant validation de votre devis livré.'
-    },
     faq: {
       badge: 'Transparence Absolue',
       title: 'Les Questions que Posent les Importateurs Sérieux Avant de Commander',
       q1: '« Achetez-vous uniquement à Yiwu ou partout en Chine, et pourquoi contacter Sino Trade Link ? »',
       a1: 'Nous sourçons partout en Chine — Shenzhen (électronique), Guangzhou/Foshan (textile, mobilier, beauté), Ningbo/Yongkang (quincaillerie), Shantou (jouets) et Yiwu. Les coordonnées directes restent gérées par notre bureau bilingue pour négocier en RMB à la source, vérifier les licences et vous éviter toute marge intermédiaire.',
-      q2: '« Puis-je coller un lien Alibaba.com même pour 1 pièce ou une petite quantité ? »',
-      a2: 'Oui. Collez n’importe quelle URL Alibaba.com dans notre outil ou envoyez une capture sur WhatsApp. Même si l’annonce impose un MOQ élevé, notre équipe négocie sur place pour du dropshipping à l’unité ou un lot test.',
-      q3: '« Comment Sino Trade Link se rémunère-t-il si le catalogue et les devis sont gratuits ? »',
-      a3: 'Aucun abonnement ni pack payant (0 $ pour consulter et demander un devis). Nous facturons uniquement des frais transparents sur les commandes validées : exécution dropshipping, groupage colis, audit sur site ou 6 % Open-Book.',
-      q4: '« Mon capital est-il protégé ? Qui contrôle la qualité avant expédition ? »',
-      a4: 'Vous ne réglez rien avant d’approuver le prix livré et les photos. Notre entrepôt de Yiwu réceptionne chaque article, vérifie l’état, retire les documents chinois et vous envoie des photos avant expédition.',
       q5: '« Qu’en est-il des normes douanières (CE, RoHS, REACH, SONCAP) ? »',
       a5: 'Notre équipe à Yiwu vérifie les certificats CE, RoHS, EN71/ASTM directement au stand avant expédition et signale les marchandises réglementées (batteries, liquides) afin d’utiliser les lignes fret adaptées.',
-      calloutText: 'Notre modèle repose sur des e-commerçants et importateurs fidèles. Écrivez-nous directement sur WhatsApp avant d’engager le moindre dollar.',
-      calloutCta: 'Parler à Notre Équipe à Yiwu sur WhatsApp →'
-    },
-    openBook: {
-      badge: 'Sourcing à Livre Ouvert (Open-Book)',
-      title: 'Agent Yiwu Traditionnel « Gratuit » vs. Sino Trade Link Exécution Directe',
-      subtitle: 'La plupart des agents à Yiwu prétendent travailler gratuitement ou à 1 %, mais perçoivent 10 à 20 % de rétrocommissions cachées des usines — incluses dans votre prix unitaire.',
-      tradTitle: '❌ Agent Traditionnel « Gratuit » à Yiwu',
-      trad1: 'Prétend travailler gratuitement — touche 10 à 20 % de commission occulte de l’usine',
-      trad2: 'Vous présente un « meilleur prix » déjà gonflé avant même que vous ne le voyiez',
-      trad3: 'Aucune traçabilité — impossible de vérifier le vrai tarif sortie usine',
-      trad4: 'Incité financièrement à privilégier des usines affiliées au détriment de la qualité',
-      trad5: 'Disparaît souvent une fois sa commission encaissée en cas de litige qualité',
-      stlTitle: '✅ Sino Trade Link Exécution Directe (Zéro Abonnement)',
-      stl1: 'Aucun abonnement annuel ni frais d’entrée — 0 $ avant confirmation de commande',
-      stl2: 'Vous recevez le reçu original du stand en RMB + nos frais séparément',
-      stl3: 'Mandat à Livre Ouvert : si nous négocions 23 ¥/unité au stand, vous payez 23 ¥ + frais convenus',
-      stl4: 'Aucune affiliation usine — nous sourçons via vos liens Alibaba ou nos 27 706 stands vérifiés',
-      stl5: 'Photos réelles en entrepôt et négociations partagées en direct sur WhatsApp',
-      cta: 'Lancer un Sourcing à Livre Ouvert sur WhatsApp →',
-      responseNote: 'Notre équipe à Yiwu répond généralement en moins de 2 heures pendant les heures ouvrables (UTC+8).'
     },
     countriesSection: {
       badge: '🌍 100 Corridors d’Importation • 2 400 Lignes Commerciales',
@@ -1501,19 +1166,14 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
       mainProducts: 'Catalogue Grossiste :',
       officialCategory: 'Catégorie Officielle du Marché :',
       unlockBtn: 'Demander Devis Usine',
-      auditBtn: 'Demander un Audit sur Place →',
       whatsappBtn: 'Bureau Chine WhatsApp'
     },
     seo: {
-      homeTitle: 'Sino Trade Link | Agent Dropshipping Alibaba & Sourcing Usines Partout en Chine',
-      homeDesc: 'Sourcez directement auprès des usines partout en Chine (Yiwu, Shenzhen, Guangzhou, Ningbo). Collez un lien Alibaba.com ou consultez 27 706+ stands pour recevoir un devis géré par notre équipe.',
-      homeKeywords: 'agent dropshipping Alibaba Chine, sourcing usine toute la Chine, Yiwu Shenzhen Guangzhou, dropshipping 1 pièce Chine, marque blanche Chine',
+      homeTitle: "Sino Trade Link | Sourcing Usines Partout en Chine",
+      homeDesc: 'Sourcez directement auprès des usines partout en Chine (Yiwu, Shenzhen, Guangzhou, Ningbo). Consultez 27 706+ stands pour recevoir un devis géré par notre équipe.',
+      homeKeywords: "sourcing usines Chine, annuaire fournisseurs Yiwu, visites fournisseurs",
       directoryTitle: 'Annuaire du Marché de Gros en Chine | 27 706+ Stands & Devis Usine',
       directoryDesc: 'Parcourez 27 706+ stands vérifiés gratuitement et demandez des devis directs d’usine partout en Chine via notre équipe bilingue.',
-      packsTitle: 'Dropshipping Alibaba.com & Agent Direct Usine en Chine | Sino Trade Link',
-      packsDesc: 'Collez votre lien Alibaba.com pour sourcer directement en usine avec expédition dès 1 pièce, emballage neutre et devis gratuit sur WhatsApp.',
-      conciergeTitle: 'Audit Physique de Stand à Yiwu, Consolidation d’Échantillons & Inspection AQL 2.5',
-      conciergeDesc: 'Mandatez nos ingénieurs bilingues à Yiwu pour un audit vidéo 4K en stand, un colis d’échantillons consolidés ou une inspection AQL 2.5.',
       countriesTitle: '100 Corridors d’Importation depuis Yiwu, Chine | Fret Maritime & Douanes',
       countriesDesc: 'Guides d’importation par pays depuis Yiwu et le port de Ningbo vers 100 destinations avec délais maritimes, droits de douane et certifications.'
     }
@@ -1521,17 +1181,15 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
   de: {
     nav: {
       directory: 'Standverzeichnis',
-      categoryPacks: 'Alibaba-Dropshipping',
       countries: '100 Länder',
       marketMap: 'Marktkarte',
       sourcingGuide: 'Einkaufsleitfaden',
-      concierge: 'Vor-Ort-Prüfung',
       browseStalls: '27.706 Stände ansehen'
     },
     hero: {
       badge: '🇨🇳 Chinaweite Fabrikbeschaffung · Yiwu, Shenzhen, Guangzhou & Mehr · Ohne Zwischenhändler',
       title: 'Direkteinkauf bei Fabriken & Märkten in Ganz China.',
-      subtitle: 'Wir beschaffen landesweit in Yiwu, Shenzhen, Guangzhou, Ningbo und allen chinesischen Industrieregionen — nicht nur auf dem Markt in Yiwu. Fügen Sie einen Alibaba.com-Link ein oder durchsuchen Sie 27.706+ Stände und fordern Sie Ihr Fabrikangebot direkt über unser Team an.',
+      subtitle: 'Wir beschaffen landesweit in Yiwu, Shenzhen, Guangzhou, Ningbo und allen chinesischen Industrieregionen — nicht nur auf dem Markt in Yiwu. Durchsuchen Sie 27.706+ Stände und fordern Sie Ihr Fabrikangebot direkt über unser Team an.',
       searchPlaceholder: 'Suche nach Produkt, Kategorie oder Standnummer (z. B. Spielwaren, Küche, Stand 62159)...',
       searchBtn: 'Verzeichnis durchsuchen',
       trustLocation: 'Chinaweite Hubs: Yiwu, Shenzhen, Guangzhou, Ningbo',
@@ -1543,74 +1201,13 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
       statFactories: 'Lizenzierte Fabriken',
       statKickbacks: 'Händleraufschläge'
     },
-    priceTable: {
-      badge: 'Alibaba.com vs. China-Fabrikpreis Direkt',
-      title: 'Alibaba.com-Preis vs. Unser Direkter Fabrikpreis',
-      subtitle: 'Vergleichen Sie typische öffentliche Alibaba.com-Händlerangebote mit den realen Fabrikpreisen, die unser Team direkt in Yiwu, Shenzhen, Guangzhou, Ningbo und ganz China verhandelt.',
-      colProduct: 'Produkt',
-      colDistrict: 'China-Produktionshub',
-      colAmazon: 'Alibaba.com-Preis',
-      colYiwu: 'Unser Direktpreis',
-      colMoq: 'Dropship / MOQ',
-      colSaving: 'Ersparnis',
-      footnote: '* EXW-Fabrikpreise in ganz China im Vergleich zu öffentlichen Alibaba.com-Listungen. 1-Stück-Dropshipping und kleine Testlose verfügbar.',
-      cta: 'Alibaba.com-Link für Angebot einfügen →'
-    },
-    membership: {
-      badge: 'Keine Abos · Zahlung pro Bestellung',
-      title: 'Kostenlos Stöbern. Direkt Kalkulieren. Ab 1 Stück.',
-      subtitle: 'Keine bezahlten CSV-Pakete oder Jahresabos. Durchsuchen Sie 27.706+ Yiwu-Stände gratis oder fügen Sie einen Alibaba.com-Produktlink für Direktpreise ab Werk ein.',
-      singleLabel: '1-Stück-Dropshipping',
-      singlePrice: 'Ab 1 Einheit',
-      singleDesc: 'Fügen Sie einen beliebigen Alibaba.com-Link ein. Unser Yiwu-Team findet die direkte Fabriklinie, prüft den Bestand und versendet neutral verpackt in 5–9 Tagen.',
-      singleCta: 'Alibaba-Link einfügen (Gratis) →',
-      proBadge: 'AM BELIEBTESTEN',
-      proLabel: 'Alibaba-Link → Direktabruf ab Werk',
-      proPrice: '0 $ Vorauszahlung',
-      proSave: '10–35 % günstiger als öffentliche Alibaba-Händlerangebote',
-      proDesc: 'Senden Sie einen Alibaba-Link oder Screenshot per WhatsApp. Wir verhandeln echte RMB-Preise vor Ort, bündeln Artikel und entfernen Händlerbeilagen.',
-      proCta: 'Gratis-Fabrikangebot anfordern →',
-      bizLabel: 'Open-Book-Großhandel',
-      bizPrice: '6 % Festprovision',
-      bizSave: 'Original-RMB-Fabrikquittung vor Zahlung geteilt',
-      bizDesc: 'Zweisprachiger Yiwu-Betreuer, 4K-Standvideo, individuelles OEM-Packaging, AQL-2.5-Versandkontrolle sowie See- oder Luftfracht ab Ningbo.',
-      bizCta: 'Auf WhatsApp starten →',
-      openBookNote: '💡 Sie erhalten die Original-RMB-Fabrikquittung + unsere separate Rechnung. 0 $ Kosten bis zur Freigabe Ihres Angebots.'
-    },
     faq: {
       badge: 'Transparenz an Erster Stelle',
       title: 'Die Fragen, die Seriöse Einkäufer Stellen, Bevor Sie Bestellen',
       q1: '„Beschaffen Sie nur vom Yiwu-Markt oder in ganz China – und warum läuft der Kontakt über Sie?“',
       a1: 'Wir beschaffen landesweit in ganz China: Shenzhen (Elektronik), Guangzhou/Foshan (Mode, Möbel), Ningbo/Yongkang (Werkzeuge & Haushaltswaren), Shantou (Spielwaren) und Yiwu. Lieferantendaten bleiben intern bei unserem zweisprachigen Team, damit wir lokale RMB-Fabrikpreise verhandeln, Lizenzen prüfen und Händleraufschläge verhindern.',
-      q2: '„Kann ich einen Alibaba.com-Link senden, auch wenn ich nur 1 Stück oder Kleinmengen brauche?“',
-      a2: 'Ja. Fügen Sie jede Alibaba.com-Produkt-URL in unser Angebotsfeld ein oder senden Sie einen Screenshot per WhatsApp. Selbst bei hoher Mindestbestellmenge verhandeln wir vor Ort 1-Stück-Dropshipping oder kleine Testlose.',
-      q3: '„Wie verdient Sino Trade Link Geld, wenn Verzeichnis und Angebote kostenlos sind?“',
-      a3: 'Keine Jahresgebühren oder bezahlte Downloads (0 $ fürs Stöbern und Anfragen). Wir berechnen ausschließlich transparente Servicegebühren bei Auftragsbestätigung: Dropshipping-Abwicklung, Konsolidierung, Vor-Ort-Prüfungen oder 6 % Open-Book.',
-      q4: '„Ist mein Bestellkapital sicher? Wer prüft die Qualität vor dem Versand?“',
-      a4: 'Sie zahlen nichts im Voraus, bevor Sie Preis, Frachtrate und reale Fotos freigegeben haben. Unser Lager in Yiwu nimmt jede Lieferung entgegen, prüft Qualität, entfernt Lieferantenbeilagen und sendet Fotos vor Versand.',
       q5: '„Wie werden EU-/deutsche Einfuhrbestimmungen (CE, RoHS, REACH, LUCID) geprüft?“',
       a5: 'Unser Team in Yiwu prüft CE-, RoHS-, REACH- und EN71-Zertifikate direkt am Stand vor dem Versand und weist frühzeitig auf Gefahrgut (Akkus, Flüssigkeiten) sowie geeignete Versandwege hin.',
-      calloutText: 'Unser Geschäftsmodell basiert auf wiederkehrenden Importeuren und wachsenden Online-Shops. Schreiben Sie uns unverbindlich direkt auf WhatsApp.',
-      calloutCta: 'Mit Unserem Yiwu-Team auf WhatsApp sprechen →'
-    },
-    openBook: {
-      badge: 'Open-Book-Beschaffung',
-      title: 'Traditioneller „Kostenloser“ Yiwu-Agent vs. Sino Trade Link Direktausführung',
-      subtitle: 'Die meisten Yiwu-Agenten behaupten, kostenlos zu arbeiten. Tatsächlich kassieren sie 10–20 % versteckte Provisionen von den Fabriken – unsichtbar eingepreist in Ihren Stückpreis.',
-      tradTitle: '❌ Traditioneller „Kostenloser“ Yiwu-Agent',
-      trad1: 'Behauptet kostenlos zu arbeiten – kassiert 10–20 % versteckte Kickbacks von der Fabrik',
-      trad2: 'Präsentiert Ihnen einen „Bestpreis“, der bereits vorab künstlich erhöht wurde',
-      trad3: 'Keine Originalbelege – Sie erfahren nie den echten Fabrikpreis',
-      trad4: 'Finanzieller Anreiz, Partnerfabriken statt der qualitativ besten Anbieter zu empfehlen',
-      trad5: 'Bei Qualitätsproblemen nach Provisionszahlung oft nicht mehr greifbar',
-      stlTitle: '✅ Sino Trade Link Direktausführung (Ohne Abo)',
-      stl1: 'Keine Jahresmitgliedschaft oder Vorab-Pakete – 0 $ bis zur Bestätigung Ihrer Bestellung',
-      stl2: 'Sie erhalten die Original-RMB-Quittung des Stands + unsere Gebühr getrennt',
-      stl3: 'Open-Book-Mandat: Verhandeln wir 23 ¥/Stück am Stand, zahlen Sie exakt 23 ¥ + vereinbarte Gebühr',
-      stl4: 'Keine Fabrikbindungen – Beschaffung über Ihre Alibaba-Links oder unsere 27.706 verifizierten Stände',
-      stl5: 'Echte Lager-QC-Fotos und alle Verhandlungen transparent per WhatsApp geteilt',
-      cta: 'Open-Book-Einkauf per WhatsApp starten →',
-      responseNote: 'Unser Team in Yiwu antwortet während der Geschäftszeiten (UTC+8) in der Regel innerhalb von 2 Stunden.'
     },
     countriesSection: {
       badge: '🌍 100 Globale Importkorridore • 2.400 Handelsrouten',
@@ -1635,19 +1232,14 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
       mainProducts: 'Großhandelssortiment:',
       officialCategory: 'Offizielle Marktkategorie:',
       unlockBtn: 'Fabrikpreis anfragen',
-      auditBtn: 'Vor-Ort-Prüfung anfragen →',
       whatsappBtn: 'WhatsApp China-Büro'
     },
     seo: {
-      homeTitle: 'Sino Trade Link | Alibaba-Dropshipping & Chinaweite Direkte Fabrikbeschaffung',
-      homeDesc: 'Direkteinkauf bei Fabriken überall in China (Yiwu, Shenzhen, Guangzhou, Ningbo). Alibaba.com-Link einfügen oder 27.706+ Stände gratis durchsuchen und Direktangebote anfragen.',
-      homeKeywords: 'Alibaba Dropshipping Agent China, Chinaweite Fabrikbeschaffung, Yiwu Shenzhen Guangzhou, 1 Stück Dropshipping China, Private Label China',
+      homeTitle: "Sino Trade Link | Chinaweite Direkte Fabrikbeschaffung",
+      homeDesc: 'Direkteinkauf bei Fabriken überall in China (Yiwu, Shenzhen, Guangzhou, Ningbo). 27.706+ Stände gratis durchsuchen und Direktangebote anfragen.',
+      homeKeywords: "Fabrikbeschaffung China, Lieferantenverzeichnis Yiwu, Lieferantenbesuche",
       directoryTitle: 'China Großhandelsverzeichnis | 27.706+ Stände & Direkte Fabrikanfragen',
       directoryDesc: 'Durchsuchen Sie 27.706+ verifizierte Großhandelsstände kostenlos und fordern Sie direkte Fabrikpreise in ganz China über unser Team an.',
-      packsTitle: 'Alibaba.com-Dropshipping & Direkter Fabrikagent in China | Sino Trade Link',
-      packsDesc: 'Fügen Sie Ihren Alibaba.com-Link ein für Einkauf direkt ab Fabrik mit 1-Stück-Versand, neutralem Packaging und kostenlosem WhatsApp-Angebot.',
-      conciergeTitle: 'Yiwu Vor-Ort-Standaudit, Musterkonsolidierung & AQL 2.5 Inspektion',
-      conciergeDesc: 'Beauftragen Sie unsere zweisprachigen Ingenieure in Yiwu für 4K-Video-Audits, Musterkonsolidierung und AQL-2.5-Versandkontrollen.',
       countriesTitle: '100 Länder-Importkorridore ab Yiwu, China | Seefracht & Zollbestimmungen',
       countriesDesc: 'Länderspezifische Großhandelsleitfäden von Yiwu & Hafen Ningbo in 100 Länder inklusive Seefrachtlaufzeiten, Zöllen und Einfuhrzertifikaten.'
     }
@@ -1655,17 +1247,15 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
   ar: {
     nav: {
       directory: 'دليل المحلات',
-      categoryPacks: 'دروب شيبينغ علي بابا',
       countries: '100 دولة',
       marketMap: 'خريطة السوق',
       sourcingGuide: 'دليل الاستيراد',
-      concierge: 'فحص ميداني بإيوو',
       browseStalls: 'تصفح 27,706 محل'
     },
     hero: {
       badge: '🇨🇳 استيراد من جميع أنحاء الصين · إيوو وشينزن وقوانغتشو وغيرها · بدون هوامش وسطاء',
       title: 'اشترِ مباشرة من المصانع والأسواق في أي مكان بالصين.',
-      subtitle: 'نوفر لك البضائع من شينزن وقوانغتشو ونينغبو وإيوو وكافة المناطق الصناعية في الصين — وليس من سوق إيوو فقط. الصق أي رابط من Alibaba.com أو تصفح 27,706+ محل مجاناً ودع فريقنا يتفاوض ويجهز عرض السعر لك مباشرة.',
+      subtitle: 'نوفر لك البضائع من شينزن وقوانغتشو ونينغبو وإيوو وكافة المناطق الصناعية في الصين — وليس من سوق إيوو فقط. تصفح 27,706+ محل مجاناً ودع فريقنا يتفاوض ويجهز عرض السعر لك مباشرة.',
       searchPlaceholder: 'ابحث حسب المنتج أو الفئة أو رقم المحل (مثال: ألعاب، أدوات منزلية، محل 62159)...',
       searchBtn: 'ابحث في الدليل',
       trustLocation: 'مراكزنا بالصين: إيوو، شينزن، قوانغتشو، نينغبو',
@@ -1677,74 +1267,13 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
       statFactories: 'مصنع مرخص',
       statKickbacks: 'عمولات خفية'
     },
-    priceTable: {
-      badge: 'مقارنة Alibaba.com مقابل سعر المصنع المباشر',
-      title: 'سعر Alibaba.com مقابل سعرنا المباشر من المصنع',
-      subtitle: 'قارن أسعار الوسطاء العلنية الشائعة على Alibaba.com مع الأسعار المباشرة التي يحصل عليها فريقنا من المصانع في إيوو وشينزن وقوانغتشو ونينغبو وعموم الصين.',
-      colProduct: 'المنتج',
-      colDistrict: 'مركز الإنتاج في الصين',
-      colAmazon: 'سعر Alibaba.com',
-      colYiwu: 'سعرنا المباشر',
-      colMoq: 'دروب شيبينغ / MOQ',
-      colSaving: 'التوفير',
-      footnote: '* أسعار المصنع المباشرة (EXW) من إيوو وشينزن وقوانغتشو ونينغبو مقارنة بأسعار العروض العلنية على Alibaba.com. متاح من قطعة واحدة.',
-      cta: 'الصق رابط Alibaba.com لطلب التسعيرة ←'
-    },
-    membership: {
-      badge: 'بدون اشتراكات مسبقة · ادفع فقط عند التنفيذ',
-      title: 'تصفح مجاناً. اطلب عرض سعر مباشر. اشحن من قطعة واحدة.',
-      subtitle: 'بدون باقات مدفوعة أو اشتراكات سنوية. تصفح 27,706+ محل في إيوو مجاناً أو الصق رابط أي منتج من Alibaba.com للحصول على سعر المصنع المباشر.',
-      singleLabel: 'دروب شيبينغ من قطعة واحدة',
-      singlePrice: 'ابتداءً من قطعة',
-      singleDesc: 'الصق رابط أي منتج من Alibaba.com. يتواصل فريقنا في إيوو مع المصنع مباشرة، يفحص الجودة، ويشحن لعملائك بتغليف محايد خلال 5–9 أيام.',
-      singleCta: 'أرسل رابط علي بابا (مجاناً) ←',
-      proBadge: 'الأكثر طلباً',
-      proLabel: 'رابط علي بابا ← مصنع مباشر',
-      proPrice: '0$ اشتراك مسبق',
-      proSave: 'وفر 10–35% مقارنة بعروض التجار العلنية على علي بابا',
-      proDesc: 'أرسل رابط علي بابا أو صورة المنتج عبر واتساب. نتفاوض باليوان الصيني من المصدر، نجمع منتجاتك، ونزيل فواتير الموردين.',
-      proCta: 'احصل على تسعيرة مصنع مجانية ←',
-      bizLabel: 'شراء جملة بنظام الكتاب المفتوح',
-      bizPrice: 'عمولة 6% ثابتة',
-      bizSave: 'مشاركة إيصال المصنع الأصلي باليوان قبل الدفع',
-      bizDesc: 'مندوب ثنائي اللغة في إيوو، فيديو 4K من المحل، تغليف OEM مخصص، فحص جودة AQL 2.5 وشحن بحري أو جوي من ميناء نينغبو.',
-      bizCta: 'ابدأ عبر واتساب ←',
-      openBookNote: '💡 تستلم فاتورة المصنع الأصلية باليوان الصيني (RMB) + فاتورتنا منفصلة. لا تدفع أي مبلغ قبل اعتماد العرض النهائي.'
-    },
     faq: {
       badge: 'الشفافية أولاً',
       title: 'الأسئلة التي يطرحها التجار والمستوردون قبل بدء الطلبات',
       q1: '«هل تشترون من سوق إيوو فقط أم من عموم الصين، ولماذا أتواصل مع Sino Trade Link مباشرة؟»',
       a1: 'نحن نشتري من المصانع في جميع أنحاء الصين: شينزن (الإلكترونيات)، قوانغتشو وفوشان (الملابس والأثاث)، نينغبو (الأدوات والمعدات)، شانتو (الألعاب)، وإيوو. تظل أرقام المصانع خاصة لدى فريقنا لنتفاوض لك باليوان الصيني من المصدر ونتحقق من الجودة والتراخيص.',
-      q2: '«هل يمكنني إرسال رابط Alibaba.com حتى لو كنت أحتاج قطعة واحدة أو كمية تجربة صغيرة؟»',
-      a2: 'نعم. الصق أي رابط منتج من Alibaba.com في نموذج التسعير السريع أو أرسل لقطة شاشة عبر واتساب. حتى لو كان الحد الأدنى في الإعلان مرتفعاً، نتفاوض مباشرة مع المصنع لتجهيز شحن دروب شيبينغ بقطعة واحدة أو دفعة تجريبية.',
-      q3: '«كيف تربح Sino Trade Link إذا كان تصفح الدليل وطلب الأسعار مجانياً؟»',
-      a3: 'أزلنا جميع الاشتراكات المسبقة وباقات CSV المدفوعة (0$ للتصفح والتسعير). نحقق أرباحنا بشفافية فقط عندما تؤكد طلباً فعلياً: تجهيز وشحن دروب شيبينغ، تجميع الطرود، خدمات الفحص الميداني، أو عمولة 6% لطلبات الجملة بنظام الكتاب المفتوح.',
-      q4: '«هل أموالي آمنة؟ ومن يفحص الجودة قبل الشحن؟»',
-      a4: 'لا تدفع أي مبلغ قبل موافقتك على السعر النهائي وتكلفة الشحن وصور البضاعة. يستلم مستودعنا في إيوو كل قطعة من المصنع، يفحص الجودة، يزيل الملصقات غير المرغوبة، ويرسل صوراً حقيقية قبل الشحن الدولي.',
       q5: '«ماذا عن شهادات المطابقة الجمركية مثل سابر (SABER) و CE والمواصفات الخليجية؟»',
       a5: 'يتحقق فريقنا الميداني في إيوو من شهادات SABER و CE و RoHS مباشرة في المحل قبل الشحن، كما ننبهك مسبقاً لأي سلع مقيدة أو خطرة (بطاريات، سوائل) لاختيار خط الشحن المناسب.',
-      calloutText: 'نموذج عملنا يعتمد على التجار الدائمين ومتاجر الدروب شيبينغ الناجحة. تواصل معنا مباشرة عبر واتساب في إيوو دون أي التزام مسبق.',
-      calloutCta: 'تحدث مع فريقنا في إيوو عبر واتساب ←'
-    },
-    openBook: {
-      badge: 'الاستيراد بنظام الكتاب المفتوح (Open-Book)',
-      title: 'مقارنة بين وسيط إيوو التقليدي «المجاني» وخدمة التنفيذ المباشر من Sino Trade Link',
-      subtitle: 'يدّعي معظم الوسطاء في إيوو أنهم يعملون مجاناً أو بعمولة 1%، لكنهم يتقاضون 10% إلى 20% عمولة خفية من المصنع تُضاف سراً إلى سعر القطعة الذي تدفعه.',
-      tradTitle: '❌ وسيط إيوو التقليدي «المجاني»',
-      trad1: 'يدّعي العمل مجاناً — لكنه يأخذ 10–20% عمولة خفية من المصنع الذي تشتري منه',
-      trad2: 'يعرض عليك «أفضل سعر» بعد أن تم رفعه مسبقاً قبل أن تراه',
-      trad3: 'لا توجد فواتير أصلية — لا يمكنك معرفة السعر الحقيقي للمصنع',
-      trad4: 'يوجهك نحو مصانع متفقة معه بدلاً من المصانع الأفضل جودة وسعراً',
-      trad5: 'يتنصل من المسؤولية بعد استلام عمولته عند ظهور مشاكل في الجودة',
-      stlTitle: '✅ التنفيذ المباشر من Sino Trade Link (بدون اشتراك)',
-      stl1: 'بدون رسوم عضوية سنوية أو باقات مسبقة — 0$ حتى توافق على طلبك',
-      stl2: 'تستلم إيصال المحل الأصلي باليوان (RMB) + أتعابنا في بندين منفصلين تماماً',
-      stl3: 'نظام الكتاب المفتوح: إذا تفاوضنا على 23 يوان للقطعة، تدفع 23 يوان + الأتعاب المتفق عليها فقط',
-      stl4: 'استقلالية تامة — نسعّر عبر روابط علي بابا الخاصة بك أو من قاعدة 27,706 محل موثق',
-      stl5: 'صور فحص حقيقية من مستودعنا بإيوو ومشاركة كل المفاوضات عبر واتساب',
-      cta: 'ابدأ الاستيراد بنظام الكتاب المفتوح عبر واتساب ←',
-      responseNote: 'يرد فريقنا في إيوو عادةً خلال ساعتين في أوقات العمل الرسمية (توقيت الصين UTC+8).'
     },
     countriesSection: {
       badge: '🌍 100 مسار استيراد عالمي • 2,400 خط تجاري حسب الفئة',
@@ -1769,19 +1298,14 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
       mainProducts: 'المنتجات الرئيسية بالجملة:',
       officialCategory: 'الفئة الرسمية في السوق:',
       unlockBtn: 'اطلب تسعيرة المصنع',
-      auditBtn: 'اطلب فحص ميداني للمحل ←',
       whatsappBtn: 'تواصل مع مكتب الصين واتساب'
     },
     seo: {
-      homeTitle: 'Sino Trade Link | وكيل دروب شيبينغ علي بابا والشراء المباشر من مصانع عموم الصين',
-      homeDesc: 'استورد مباشرة من المصانع في أي مكان بالصين (إيوو، شينزن، قوانغتشو، نينغبو). الصق رابط Alibaba.com أو تصفح 27,706+ محل مجاناً واطلب تسعيرة المصنع عبر فريقنا.',
-      homeKeywords: 'وكيل دروب شيبينغ علي بابا, الاستيراد من مصانع الصين, إيوو شينزن قوانغتشو, شحن دروب شيبينغ قطعة واحدة الصين, تغليف علامة تجارية الصين',
+      homeTitle: "Sino Trade Link | الشراء المباشر من مصانع عموم الصين",
+      homeDesc: 'استورد مباشرة من المصانع في أي مكان بالصين (إيوو، شينزن، قوانغتشو، نينغبو). تصفح 27,706+ محل مجاناً واطلب تسعيرة المصنع عبر فريقنا.',
+      homeKeywords: "الاستيراد من مصانع الصين، دليل موردي إيوو، زيارة الموردين",
       directoryTitle: 'دليل سوق الجملة في الصين | 27,706+ محل وعروض أسعار المصانع المباشرة',
       directoryDesc: 'ابحث في أكثر من 27,706 محل موثق مجاناً واطلب تسعيرات مباشرة من المصانع في عموم الصين عبر فريقنا.',
-      packsTitle: 'دروب شيبينغ Alibaba.com ووكيل شراء مباشر من مصانع الصين | Sino Trade Link',
-      packsDesc: 'الصق رابط المنتج من Alibaba.com للشراء من أي مصنع في الصين مع شحن من قطعة واحدة وتغليف محايد وعرض سعر مجاني عبر واتساب.',
-      conciergeTitle: 'فحص ميداني للمحلات في إيوو، تجميع العينات وفحص الجودة AQL 2.5',
-      conciergeDesc: 'أرسل مهندسينا في إيوو لتصوير المحل والمنتجات بدقة 4K، أو تجميع العينات من عدة محلات في طرد واحد، أو فحص ما قبل الشحن AQL 2.5.',
       countriesTitle: 'مسارات الاستيراد والشحن من إيوو، الصين إلى 100 دولة | الشحن البحري والجمارك',
       countriesDesc: 'أدلة شاملة للاستيراد من سوق إيوو وميناء نينغبو إلى 100 دولة تشمل مدة الشحن البحري والرسوم الجمركية وشهادات المطابقة المطلوبة.'
     }
@@ -1789,17 +1313,15 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
   ru: {
     nav: {
       directory: 'Каталог павильонов',
-      categoryPacks: 'Дропшиппинг Alibaba',
       countries: '100 стран',
       marketMap: 'Карта рынка',
       sourcingGuide: 'Гид по закупкам',
-      concierge: 'Проверка на месте',
       browseStalls: 'Все 27 706 павильонов'
     },
     hero: {
       badge: '🇨🇳 Закупки по всему Китаю · Иу, Шэньчжэнь, Гуанчжоу и др. · Без скрытых наценок',
       title: 'Закупайте напрямую у фабрик и рынков в любой точке Китая.',
-      subtitle: 'Мы выкупаем товар по всему Китаю (Иу, Шэньчжэнь, Гуанчжоу, Нинбо, Фошань), а не только на рынке Иу. Вставьте ссылку с Alibaba.com или выберите павильон из 27 706+ — наш отдел рассчитает прямую фабричную цену.',
+      subtitle: 'Мы выкупаем товар по всему Китаю (Иу, Шэньчжэнь, Гуанчжоу, Нинбо, Фошань), а не только на рынке Иу. Выберите павильон из 27 706+ — наш отдел рассчитает прямую фабричную цену.',
       searchPlaceholder: 'Поиск по товару, категории или номеру бутика (например: Игрушки, Посуда, павильон 62159)...',
       searchBtn: 'Найти поставщиков',
       trustLocation: 'Хабы в Китае: Иу, Шэньчжэнь, Гуанчжоу, Нинбо',
@@ -1811,74 +1333,13 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
       statFactories: 'Прямых фабрик',
       statKickbacks: 'Скрытых наценок'
     },
-    priceTable: {
-      badge: 'Alibaba.com vs. Прямая цена фабрики в Китае',
-      title: 'Цена на Alibaba.com vs. Наша прямая цена с фабрики',
-      subtitle: 'Сравните типичные предложения торговых посредников на Alibaba.com с реальной стоимостью напрямую на фабриках Иу, Шэньчжэня, Гуанчжоу и Нинбо.',
-      colProduct: 'Товар',
-      colDistrict: 'Промышленный хаб КНР',
-      colAmazon: 'Цена Alibaba.com',
-      colYiwu: 'Наша прямая цена',
-      colMoq: 'Дропшип / MOQ',
-      colSaving: 'Выгода',
-      footnote: '* Прямые цены EXW с фабрик по всему Китаю в сравнении с публичными листингами на Alibaba.com. Возможен дропшиппинг от 1 штуки.',
-      cta: 'Вставить ссылку Alibaba.com для расчета →'
-    },
-    membership: {
-      badge: 'Без подписок · Оплата только за заказ',
-      title: 'Поиск бесплатно. Расчет напрямую. От 1 штуки.',
-      subtitle: 'Никаких платных CSV-пакетов или годовых подписок. Ищите среди 27 706+ павильонов Иу бесплатно или вставьте ссылку на товар Alibaba.com для прямого расчета с фабрикой.',
-      singleLabel: 'Дропшиппинг от 1 шт.',
-      singlePrice: 'От 1 единицы',
-      singleDesc: 'Вставьте любую ссылку Alibaba.com. Наш офис в Иу находит прямую фабрику, проверяет наличие и отправляет посылки без брендов поставщика за 5–9 дней.',
-      singleCta: 'Вставить ссылку Alibaba (Бесплатно) →',
-      proBadge: 'ПОПУЛЯРНОЕ',
-      proLabel: 'Ссылка Alibaba → Фабрика напрямую',
-      proPrice: '$0 предоплата',
-      proSave: 'Экономия 10–35% по сравнению с розничными ценами на Alibaba',
-      proDesc: 'Отправьте ссылку Alibaba или скриншот в WhatsApp. Договоримся о цене в юанях на месте, объединим товары и уберем чужую рекламу.',
-      proCta: 'Бесплатный расчет в WhatsApp →',
-      bizLabel: 'Опт Open-Book',
-      bizPrice: '6% фикс. комиссия',
-      bizSave: 'Оригинальный чек фабрики в юанях предоставляется до оплаты',
-      bizDesc: 'Личный русско-/англоязычный координатор в Иу, видео 4K из павильона, брендированная OEM-упаковка, контроль AQL 2.5 и доставка из Нинбо.',
-      bizCta: 'Начать в WhatsApp →',
-      openBookNote: '💡 Вы получаете оригинальный счет фабрики в юанях (RMB) и наш счет отдельно. $0 предоплаты до согласования цены.'
-    },
     faq: {
       badge: 'Честность и прозрачность',
       title: 'Ответы на главные вопросы оптовых закупщиков и продавцов',
       q1: '«Вы закупаете только в Иу или по всему Китаю, и почему контакт идет через вас?»',
       a1: 'Мы работаем по всему Китаю: Шэньчжэнь (электроника), Гуанчжоу и Фошань (одежда, мебель), Нинбо (металлоизделия), Шаньтоу (игрушки) и Иу. Прямые номера поставщиков остаются у нашей двуязычной команды, чтобы вы получали реальную цену фабрики в юанях без наценок посредников.',
-      q2: '«Можно ли отправить ссылку Alibaba.com, если мне нужна всего 1 штука или мелкий опт?»',
-      a2: 'Да. Вставьте любую ссылку товара с Alibaba.com в нашу форму быстрого расчета или пришлите скриншот в WhatsApp. Даже при высоком MOQ в карточке мы договариваемся с фабрикой на поштучную отправку или тестовую партию.',
-      q3: '«На чем зарабатывает Sino Trade Link, если каталог и расчет бесплатны?»',
-      a3: 'Никаких подписок и платных выгрузок ($0 за поиск и расчет цены). Мы берем прозрачную комиссию только при оформлении реального заказа: фулфилмент дропшиппинга, консолидация образцов, инспекция или 6% за сопровождение опта.',
-      q4: '«Безопасна ли оплата товара? Кто проверяет качество перед отправкой?»',
-      a4: 'Вы ничего не платите до утверждения итоговой цены, доставки и реальных фото. Наш склад в Иу принимает товар с фабрики, проверяет брак, убирает лишние листовки и присылает фотоотчет до отправки.',
       q5: '«Как проверить сертификаты (ЕАЭС, CE, RoHS) и ограничения на ввоз?»',
       a5: 'Наши инженеры в Иу проверяют сертификаты и лицензии прямо в павильоне перед отправкой, а также заранее предупреждают об опасных грузах (аккумуляторы, жидкости) для подбора карго или авиамаршрута.',
-      calloutText: 'Наш бизнес держится на постоянных клиентах и растущих селлерах. Напишите команде в Иу в WhatsApp без обязательств.',
-      calloutCta: 'Написать команде в Иу в WhatsApp →'
-    },
-    openBook: {
-      badge: 'Закупки по открытой книге (Open-Book)',
-      title: 'Обычный «бесплатный» агент в Иу vs. Прямое исполнение Sino Trade Link',
-      subtitle: 'Большинство агентов в Иу обещают работать бесплатно или за 1–2%, но на деле получают 10–20% скрытого отката от фабрики, который заложен в вашу закупочную цену.',
-      tradTitle: '❌ Обычный «бесплатный» агент в Иу',
-      trad1: 'Обещает работать бесплатно — берет 10–20% скрытой комиссии у фабрики',
-      trad2: 'Показывает вам «лучшую цену», которая уже искусственно завышена',
-      trad3: 'Никаких первичных чеков — вы не знаете реальную отпускную цену павильона',
-      trad4: 'Финансово заинтересован вести вас к «своим» фабрикам вместо лучших по качеству',
-      trad5: 'Исчезает после получения комиссии при обнаружении брака',
-      stlTitle: '✅ Sino Trade Link Прямое исполнение (Без подписок)',
-      stl1: 'Без годовых тарифов и платных пакетов — $0 до подтверждения заказа',
-      stl2: 'Вы получаете оригинальную накладную павильона в юанях (RMB) + нашу комиссию отдельно',
-      stl3: 'Принцип Open-Book: если мы сторговали ¥23/шт на месте, вы платите ¥23 + согласованную ставку',
-      stl4: 'Никаких аффилированных фабрик — ищем по вашим ссылкам Alibaba или по 27 706 павильонам базы',
-      stl5: 'Реальные фотоотчеты со склада и все переговоры передаются в WhatsApp',
-      cta: 'Начать закупки Open-Book в WhatsApp →',
-      responseNote: 'Команда в Иу обычно отвечает в течение 2 часов в рабочее время (UTC+8).'
     },
     countriesSection: {
       badge: '🌍 100 логистических коридоров • 2 400 товарных направлений',
@@ -1903,19 +1364,14 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
       mainProducts: 'Оптовый ассортимент:',
       officialCategory: 'Официальная категория рынка:',
       unlockBtn: 'Запросить цену фабрики',
-      auditBtn: 'Запросить проверку павильона →',
       whatsappBtn: 'WhatsApp офис в Китае'
     },
     seo: {
-      homeTitle: 'Sino Trade Link | Агент дропшиппинга Alibaba и прямые закупки по всему Китаю',
-      homeDesc: 'Закупайте напрямую с фабрик в любой точке Китая (Иу, Шэньчжэнь, Гуанчжоу, Нинбо). Вставьте ссылку Alibaba.com или смотрите 27 706+ павильонов бесплатно и запрашивайте прямой расчет у нас.',
-      homeKeywords: 'агент дропшиппинга Alibaba Китай, закупки с фабрик по всему Китаю, Иу Шэньчжэнь Гуанчжоу, дропшиппинг от 1 штуки Китай',
+      homeTitle: "Sino Trade Link | Прямые закупки по всему Китаю",
+      homeDesc: 'Закупайте напрямую с фабрик в любой точке Китая (Иу, Шэньчжэнь, Гуанчжоу, Нинбо). Смотрите 27 706+ павильонов бесплатно и запрашивайте прямой расчет у нас.',
+      homeKeywords: "закупки с фабрик Китая, каталог поставщиков Иу, посещение поставщиков",
       directoryTitle: 'Каталог оптового рынка Китая | 27 706+ проверенных павильонов и запросы цен',
       directoryDesc: 'Бесплатный поиск среди 27 706+ проверенных павильонов в Иу и прямой расчет фабричных цен по всему Китаю через нашу команду.',
-      packsTitle: 'Дропшиппинг с Alibaba.com и прямой агент фабрик в Китае | Sino Trade Link',
-      packsDesc: 'Вставьте ссылку Alibaba.com для закупки напрямую с фабрики в Китае, поштучной отправки без чужих брендов и бесплатного расчета в WhatsApp.',
-      conciergeTitle: 'Выездной аудит павильона в Иу, консолидация образцов и инспекция AQL 2.5',
-      conciergeDesc: 'Закажите видеопроверку павильона в 4K, сбор образцов из разных бутиков в одну коробку или предотгрузочную инспекцию AQL 2.5.',
       countriesTitle: 'Доставка и импорт из Иу, Китай в 100 стран | Сроки, порты и таможня',
       countriesDesc: 'Логистические справочники по доставке оптовых грузов из Иу и порта Нинбо в 100 стран мира: сроки, пошлины и сертификация.'
     }
@@ -1923,17 +1379,15 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
   it: {
     nav: {
       directory: 'Catalogo Stand',
-      categoryPacks: 'Dropshipping Alibaba',
       countries: '100 Paesi',
       marketMap: 'Mappa del Mercato',
       sourcingGuide: 'Guida Importazione',
-      concierge: 'Controllo in Loco',
       browseStalls: 'Esplora 27.706 Stand'
     },
     hero: {
       badge: '🇨🇳 Acquisti in Tutta la Cina · Yiwu, Shenzhen, Guangzhou e Oltre · Zero Ricarichi',
       title: 'Acquista Direttamente da Fabbriche e Mercati in Tutta la Cina.',
-      subtitle: 'Operiamo in tutta la Cina (Yiwu, Shenzhen, Guangzhou, Ningbo e poli industriali), non solo a Yiwu. Incolla qualsiasi link Alibaba.com o consulta 27.706+ stand gratis e richiedi un preventivo diretto tramite il nostro team.',
+      subtitle: 'Operiamo in tutta la Cina (Yiwu, Shenzhen, Guangzhou, Ningbo e poli industriali), non solo a Yiwu. Consulta 27.706+ stand gratis e richiedi un preventivo diretto tramite il nostro team.',
       searchPlaceholder: 'Cerca per prodotto, categoria o numero di stand (es. Giocattoli, Casalinghi, Stand 62159)...',
       searchBtn: 'Cerca nel Catalogo',
       trustLocation: 'Poli in Tutta la Cina: Yiwu, Shenzhen, Guangzhou, Ningbo',
@@ -1945,74 +1399,13 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
       statFactories: 'Fabbriche Certificate',
       statKickbacks: 'Ricarichi di Agenzia'
     },
-    priceTable: {
-      badge: 'Alibaba.com vs. Prezzo Diretto in Fabbrica',
-      title: 'Prezzo Alibaba.com vs. Il Nostro Prezzo Diretto',
-      subtitle: 'Confronta le normali quotazioni pubbliche dei rivenditori su Alibaba.com con i prezzi reali che il nostro team ottiene direttamente dalle fabbriche a Yiwu, Shenzhen, Guangzhou e Ningbo.',
-      colProduct: 'Prodotto',
-      colDistrict: 'Polo Produttivo Cina',
-      colAmazon: 'Prezzo Alibaba.com',
-      colYiwu: 'Nostro Prezzo Diretto',
-      colMoq: 'Dropship / MOQ',
-      colSaving: 'Risparmio',
-      footnote: '* Listini EXW diretti dalle fabbriche in tutta la Cina rispetto alle inserzioni pubbliche Alibaba.com. Dropshipping da 1 pezzo e piccoli lotti test disponibili.',
-      cta: 'Incolla Link Alibaba.com per Preventivo →'
-    },
-    membership: {
-      badge: 'Zero Abbonamenti · Pagamento solo su Ordine',
-      title: 'Esplora Gratis. Quota Diretto. Spedisci da 1 Pezzo.',
-      subtitle: 'Nessun pacchetto CSV a pagamento o abbonamento annuale. Esplora 27.706+ stand a Yiwu gratis o incolla un link Alibaba.com per prezzi diretti di fabbrica.',
-      singleLabel: 'Dropshipping 1 Pezzo',
-      singlePrice: 'Da 1 Unità',
-      singleDesc: 'Incolla qualsiasi link Alibaba.com. Il nostro ufficio a Yiwu individua la fabbrica diretta, verifica lo stock e spedisce pacchi neutri in 5–9 giorni.',
-      singleCta: 'Incolla Link Alibaba (Gratis) →',
-      proBadge: 'PIÙ RICHIESTO',
-      proLabel: 'Link Alibaba → Fabbrica Diretta',
-      proPrice: '0 $ Anticipo',
-      proSave: 'Risparmia il 10–35% rispetto alle quotazioni pubbliche Alibaba',
-      proDesc: 'Invia un link Alibaba o uno screenshot su WhatsApp. Negoziamo in RMB alla fonte, raggruppiamo più articoli e rimuoviamo materiali pubblicitari altrui.',
-      proCta: 'Preventivo Fabbrica Gratis →',
-      bizLabel: 'Ingrosso Open-Book',
-      bizPrice: '6% Commissione Fissa',
-      bizSave: 'Ricevuta originale della fabbrica in RMB condivisa prima del saldo',
-      bizDesc: 'Referente bilingue a Yiwu, video 4K dallo stand, packaging OEM personalizzato, controllo qualità AQL 2.5 e trasporto aereo o marittimo da Ningbo.',
-      bizCta: 'Inizia su WhatsApp →',
-      openBookNote: '💡 Ricevi la ricevuta originale della fabbrica in RMB + la nostra fattura separata. 0 $ finché non approvi il preventivo.'
-    },
     faq: {
       badge: 'Massima Trasparenza',
       title: 'Le Domande che gli Importatori Professionisti Fanno Prima di Ordinare',
       q1: '«Acquistate solo al mercato di Yiwu o in tutta la Cina, e perché il contatto passa da voi?»',
       a1: 'Acquistiamo ovunque in Cina: Shenzhen (elettronica), Guangzhou/Foshan (moda, arredamento), Ningbo/Yongkang (ferramenta e casalinghi), Shantou (giocattoli) e Yiwu. I contatti dei fornitori restano riservati al nostro team bilingue per negoziare in RMB alla fonte, verificare le licenze ed evitare ricarichi.',
-      q2: '«Posso incollare un link Alibaba.com anche se mi serve solo 1 pezzo o piccoli lotti?»',
-      a2: 'Sì. Incolla qualsiasi URL di Alibaba.com nel modulo rapido o invia uno screenshot su WhatsApp. Anche se l’annuncio indica un MOQ elevato, negoziamo direttamente con la fabbrica per dropshipping unitario o lotti test.',
-      q3: '«Come guadagna Sino Trade Link se la consultazione e i preventivi sono gratuiti?»',
-      a3: 'Zero abbonamenti o download a pagamento (0 $ per esplorare e chiedere preventivi). Applichiamo commissioni chiare solo sugli ordini approvati: evasione dropshipping, consolidamento campioni, audit o 6% Open-Book.',
-      q4: '«Il mio capitale è al sicuro? Chi verifica la qualità prima della spedizione?»',
-      a4: 'Non paghi nulla prima di approvare il preventivo finale, le spese di spedizione e le foto reali. Il nostro magazzino a Yiwu riceve la merce dalla fabbrica, controlla difetti e packaging e invia foto prima della partenza.',
       q5: '«Come vengono gestite le certificazioni doganali UE (CE, RoHS, REACH, EN71)?»',
       a5: 'Il nostro team a Yiwu verifica i certificati CE, RoHS, REACH ed EN71 direttamente allo stand prima della spedizione e segnala merci regolamentate (batterie, liquidi) per selezionare la rotta più sicura.',
-      calloutText: 'Il nostro modello si basa su e-commerce e importatori fidelizzati. Scrivici su WhatsApp al nostro team di Yiwu senza alcun impegno.',
-      calloutCta: 'Parla con il Nostro Team a Yiwu su WhatsApp →'
-    },
-    openBook: {
-      badge: 'Sourcing a Libro Aperto (Open-Book)',
-      title: 'Agente Tradizionale «Gratuito» a Yiwu vs. Sino Trade Link Esecuzione Diretta',
-      subtitle: 'La maggior parte degli agenti a Yiwu dichiara di lavorare gratis o all’1%, ma incassa il 10–20% di provvigione occulta dalle fabbriche — nascosta nel prezzo unitario che paghi.',
-      tradTitle: '❌ Agente Tradizionale «Gratuito» a Yiwu',
-      trad1: 'Dichiara di lavorare gratis — incassa il 10–20% di commissione nascosta dalla fabbrica',
-      trad2: 'Ti mostra un «prezzo migliore» già gonfiato prima ancora che tu lo veda',
-      trad3: 'Nessuna ricevuta originale — impossibile verificare il vero prezzo di fabbrica',
-      trad4: 'Incentivato a spingere fabbriche affiliate anziché i fornitori migliori',
-      trad5: 'Spesso sparisce dopo aver incassato la provvigione in caso di difetti qualitativi',
-      stlTitle: '✅ Sino Trade Link Esecuzione Diretta (Zero Abbonamento)',
-      stl1: 'Nessun abbonamento annuale o pacchetto prepagato — 0 $ fino alla conferma d’ordine',
-      stl2: 'Ricevi la ricevuta originale dello stand in RMB + la nostra tariffa separatamente',
-      stl3: 'Mandato Open-Book: se negoziamo ¥23/pezzo allo stand, paghi ¥23 + tariffa concordata',
-      stl4: 'Nessuna affiliazione occulta — quotiamo dai tuoi link Alibaba o dai 27.706 stand verificati',
-      stl5: 'Foto reali dal magazzino di Yiwu e trattative documentate in tempo reale su WhatsApp',
-      cta: 'Avvia Sourcing Open-Book su WhatsApp →',
-      responseNote: 'Il nostro team a Yiwu risponde solitamente entro 2 ore durante l’orario lavorativo (UTC+8).'
     },
     countriesSection: {
       badge: '🌍 100 Corridoi Globali di Importazione • 2.400 Rotte Merceologiche',
@@ -2037,19 +1430,14 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
       mainProducts: 'Catalogo Ingrosso:',
       officialCategory: 'Categoria Ufficiale del Mercato:',
       unlockBtn: 'Richiedi Prezzo Fabbrica',
-      auditBtn: 'Richiedi Controllo Stand →',
       whatsappBtn: 'Ufficio Cina WhatsApp'
     },
     seo: {
-      homeTitle: 'Sino Trade Link | Agente Dropshipping Alibaba & Acquisti Diretti in Tutta la Cina',
-      homeDesc: 'Acquista direttamente dalle fabbriche ovunque in Cina (Yiwu, Shenzhen, Guangzhou, Ningbo). Incolla qualsiasi link Alibaba.com o esplora 27.706+ stand gratis e richiedi un preventivo al nostro team.',
-      homeKeywords: 'agente dropshipping Alibaba Cina, acquisti fabbriche tutta la Cina, Yiwu Shenzhen Guangzhou, dropshipping 1 pezzo Cina, private label Cina',
+      homeTitle: "Sino Trade Link | Acquisti Diretti dalle Fabbriche in Tutta la Cina",
+      homeDesc: 'Acquista direttamente dalle fabbriche ovunque in Cina (Yiwu, Shenzhen, Guangzhou, Ningbo). Esplora 27.706+ stand gratis e richiedi un preventivo al nostro team.',
+      homeKeywords: "acquisti fabbriche Cina, elenco fornitori Yiwu, visite fornitori",
       directoryTitle: 'Catalogo Mercato all’Ingrosso in Cina | 27.706+ Stand & Preventivi Fabbrica',
       directoryDesc: 'Cerca tra 27.706+ stand verificati gratuitamente e richiedi preventivi diretti di fabbrica in tutta la Cina attraverso il nostro team.',
-      packsTitle: 'Dropshipping Alibaba.com & Agente Diretto Fabbrica in Cina | Sino Trade Link',
-      packsDesc: 'Incolla il tuo link Alibaba.com per acquistare direttamente dalla fabbrica in Cina con spedizione da 1 pezzo, packaging neutro e preventivo WhatsApp gratis.',
-      conciergeTitle: 'Audit Fisico Stand a Yiwu, Consolidamento Campioni e Ispezione AQL 2.5',
-      conciergeDesc: 'Incarica i nostri ingegneri bilingue a Yiwu per video-audit 4K allo stand, spedizione unica di campioni e ispezioni pre-spedizione AQL 2.5.',
       countriesTitle: '100 Corridoi di Importazione da Yiwu, Cina | Trasporto Marittimo e Dogana',
       countriesDesc: 'Guide all’importazione paese per paese da Yiwu e dal porto di Ningbo verso 100 destinazioni con tempi di transito, dazi e certificazioni richieste.'
     }
