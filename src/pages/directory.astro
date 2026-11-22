@@ -46,16 +46,16 @@ if (searchQuery) {
 } else if (districtFilter && activeDistrictObj) {
   pageTitleParts.push(`Yiwu ${activeDistrictObj.name} Stalls & Factories`);
 } else if (factoryFilter) {
-  pageTitleParts.push(`Verified Yiwu Direct Factories Directory (10,141+ Manufacturers)`);
+  pageTitleParts.push(`Yiwu Direct Factories Directory`);
 } else {
-  pageTitleParts.push(`Yiwu Wholesale Market Directory — 27,706 Verified Stalls & Direct Factories`);
+  pageTitleParts.push(`Yiwu Wholesale Market Directory — 27,706 Listed Stalls & Direct Factories`);
 }
 if (currentPage > 1) {
   pageTitleParts.push(`Page ${currentPage}`);
 }
 const seoTitle = `${pageTitleParts.join(' - ')} | Sino Trade Link`;
 
-const seoDescription = `Browse ${totalItems.toLocaleString()} verified wholesale market stalls${searchQuery ? ` for "${searchQuery}"` : ''} in ${activeDistrictName}. Request managed factory quotes, samples, and China-wide consolidation across Yiwu, Shenzhen, Guangzhou & Ningbo directly with our team.`;
+const seoDescription = `Browse ${totalItems.toLocaleString()} listed suppliers${searchQuery ? ` for "${searchQuery}"` : ''} in ${activeDistrictName}. Request managed factory quotes, samples, and China-wide consolidation across Yiwu, Shenzhen, Guangzhou & Ningbo directly with our team.`;
 
 const seoKeywords = [
   searchQuery ? `${searchQuery} wholesale China, ${searchQuery} Yiwu factory, ${searchQuery} manufacturer China` : '',
@@ -206,7 +206,7 @@ const directoryJsonLd = {
       <!-- Results Status Bar -->
       <div class="flex items-center justify-between pb-6 border-b border-slate-200 mb-6 text-xs text-slate-600">
         <div id="dir-status-text">
-          Showing <strong class="text-slate-900">{totalItems > 0 ? 1 : 0}–{Math.min(pageSize, totalItems)}</strong> of <strong class="text-slate-900">{totalItems.toLocaleString()}</strong> verified suppliers
+          Showing <strong class="text-slate-900">{totalItems > 0 ? 1 : 0}–{Math.min(pageSize, totalItems)}</strong> of <strong class="text-slate-900">{totalItems.toLocaleString()}</strong> listed suppliers
         </div>
         <div class="flex items-center gap-4">
           <div id="dir-live-badge" class="hidden text-xs font-semibold text-blue-600 items-center gap-1.5">
@@ -242,7 +242,7 @@ const directoryJsonLd = {
         </div>
         <h3 class="text-lg font-bold text-slate-900">No matching market stalls found</h3>
         <p class="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
-          Try adjusting your search keyword or clearing the district filter to view all verified stalls.
+          Try adjusting your search keyword or clearing the district filter to view all listed stalls.
         </p>
         <button type="button" id="dir-clear-empty-btn" class="mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold transition-colors">
           Clear Filters
@@ -276,7 +276,7 @@ const directoryJsonLd = {
             Browse Yiwu Wholesale Stalls by Specialized Sector (24 Hubs)
           </h2>
           <p class="text-xs text-slate-500 mt-0.5">
-            Each category hub includes verified stall lists, typical MOQs, master carton CBM specs, and field engineer QC checklists.
+            Each category hub includes supplier listings, typical MOQs, master carton CBM specs, and field engineer QC checklists.
           </p>
         </div>
 
@@ -577,7 +577,7 @@ const directoryJsonLd = {
     if (statusText) {
       const distName = district ? (districtNameMap[district] || `District ${district}`) : '';
       statusText.innerHTML = `
-        Showing <strong class="text-slate-900">${total > 0 ? startIndex + 1 : 0}–${Math.min(startIndex + PAGE_SIZE, total)}</strong> of <strong class="text-slate-900">${total.toLocaleString()}</strong> verified suppliers
+        Showing <strong class="text-slate-900">${total > 0 ? startIndex + 1 : 0}–${Math.min(startIndex + PAGE_SIZE, total)}</strong> of <strong class="text-slate-900">${total.toLocaleString()}</strong> listed suppliers
         ${distName ? `<span> in ${escapeHtml(distName)}</span>` : ''}
         ${cleanQ ? `<span> matching "${escapeHtml(cleanQ)}"</span>` : ''}
         ${isFactory ? `<span> (Factories Only)</span>` : ''}

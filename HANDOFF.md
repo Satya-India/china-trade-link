@@ -36,7 +36,7 @@ Sino Trade Link has been architected as an **Outcome-Driven Sourcing & On-Ground
    - `shop_id` (Primary Key), `name`, `clean_name`, `company_name`, `contact_person`
    - `unmasked_direct_phone` (99.9% coverage), `wechat_id`, `email`
    - `district` (`1, 2, 3, 4, 5, 6, 7, 60`), `floor`, `gate`, `booth_no`, `full_location`
-   - `sample_products`, `chinese_official_category`, `is_direct_factory` (`10,141` licensed factories)
+   - `sample_products`, `chinese_official_category`, `is_direct_factory`
 2. **`inquiries` Table:**
    - Stores direct wholesale RFQs, quote requests (`/api/unlock-contact`), and general enquiries (`/api/inquiry`).
 

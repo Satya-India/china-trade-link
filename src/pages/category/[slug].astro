@@ -12,7 +12,7 @@ if (!category) {
   return Astro.redirect('/directory');
 }
 
-// Fetch matching verified stalls from Cloudflare D1
+// Fetch matching listed stalls from Cloudflare D1
 let result = await getSuppliersPaginated({
   district: category.district,
   query: category.searchQuery,
@@ -20,7 +20,7 @@ let result = await getSuppliersPaginated({
   pageSize: 24
 });
 
-// If fewer than 6 stalls match the narrow keyword + district combo, enrich with verified direct factories in that district
+// If fewer than 6 stalls match the narrow keyword + district combo, enrich with listings marked as direct factories in that district
 if (result.suppliers.length < 6) {
   const districtFallback = await getSuppliersPaginated({
     district: category.district,
@@ -41,7 +41,7 @@ if (result.suppliers.length < 6) {
 const canonicalUrl = `https://sinotradelink.com/category/${category.slug}`;
 
 const seoTitle = `${category.title} (${category.districtLabel}, ${category.floor}) | Sino Trade Link`;
-const seoDescription = `${category.description} Browse ${result.total.toLocaleString()}+ verified stalls at ${category.districtLabel} (${category.floor}, ${category.gateGuide}), request direct RMB factory quotes through our China team, or contact us for a stall visit.`;
+const seoDescription = `${category.description} Browse ${result.total.toLocaleString()} listed suppliers at ${category.districtLabel} (${category.floor}, ${category.gateGuide}), request direct RMB factory quotes through our China team, or contact us for a stall visit.`;
 const seoKeywords = [
   ...category.seoKeywords,
   category.chineseCategory,
@@ -203,7 +203,7 @@ const categoryJsonLd = {
             Direct {category.shortName} Factory Enquiries
           </h2>
           <p class="text-xs text-slate-400 mb-4 leading-relaxed">
-            Browse all verified booths in {category.districtLabel} free and contact us to discuss your supplier visit.
+            Browse all listed booths in {category.districtLabel} free and contact us to discuss your supplier visit.
           </p>
 
           <div class="space-y-2.5">
@@ -259,16 +259,16 @@ const categoryJsonLd = {
     </div>
   </section>
 
-  <!-- Verified Stalls Grid -->
+  <!-- Listed Stalls Grid -->
   <section class="py-12 bg-slate-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
           <h2 class="text-xl sm:text-2xl font-black text-slate-900">
-            Verified {category.shortName} Stalls & Direct Factories
+            Listed {category.shortName} Stalls & Direct Factories
           </h2>
           <p class="text-xs text-slate-500 mt-0.5">
-            Showing top verified booths in {category.districtLabel} ({category.floor}). Click any stall to request a managed factory quote or sample consolidation.
+            Showing top listed booths in {category.districtLabel} ({category.floor}). Click any stall to request a managed factory quote or sample consolidation.
           </p>
         </div>
 

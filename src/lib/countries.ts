@@ -88,7 +88,7 @@ export const COUNTRIES: CountryCorridor[] = [
     airTransitDays: '3–5 Days Express / 7–10 Days Air DDP',
     customsCompliance: 'ISF 10+2, CBP Entry, CPSC/CPC, FCC, FDA & Country of Origin ("Made in China") labeling',
     buyerFocus: 'Amazon FBA aggregators, retail chains, dollar-store distributors, and wholesale importers',
-    marketSummary: 'Source directly from verified Yiwu factory stalls for US retail distribution, e-commerce private label, and multi-SKU container programs.',
+    marketSummary: 'Source directly from listed Yiwu factory stalls for US retail distribution, e-commerce private label, and multi-SKU container programs.',
     corridorAdvantage: 'Direct Matson/ZIM fast-boat sailings from Ningbo to LA/Long Beach in 14 days, FBA carton labeling at our Yiwu warehouse, and full ISF 10+2 customs documentation.'
   },
   {
@@ -165,7 +165,7 @@ export const COUNTRIES: CountryCorridor[] = [
     airTransitDays: '5–7 Days Express / 9–12 Days Air Cargo',
     customsCompliance: 'China-Chile FTA Form F (0% tariff on most Yiwu goods), SEC electrical mark & Spanish rotulado',
     buyerFocus: 'Meiggs & ZOFRI importers, department stores, hardware chains, and retail distributors',
-    marketSummary: 'Maximize margins under the China-Chile Free Trade Agreement by sourcing direct from 27,706 verified Yiwu stalls.',
+    marketSummary: 'Maximize margins under the China-Chile Free Trade Agreement by sourcing direct from 27,706 listed suppliers.',
     corridorAdvantage: 'Official China-Chile FTA Certificate of Origin (Form F) issuance for zero-duty entry plus direct Pacific container routing to San Antonio and Iquique.'
   },
   {
@@ -270,7 +270,7 @@ export const COUNTRIES: CountryCorridor[] = [
     airTransitDays: '5–7 Days Express / 9–13 Days Air Cargo',
     customsCompliance: 'DNA LUCIA customs platform, LATU toy/food-contact certification & URSEA energy labeling',
     buyerFocus: 'Montevideo Free Zone distributors, retail chains, bazaar wholesalers, and importers',
-    marketSummary: 'Source quality-verified home goods, seasonal decorations, pet supplies, and hardware from Yiwu to Port of Montevideo.',
+    marketSummary: 'Source home goods, seasonal decorations, pet supplies, and hardware from Yiwu to Port of Montevideo.',
     corridorAdvantage: 'LATU food-contact and toy compliance verification prior to shipment plus direct South Atlantic container sailings to Montevideo.'
   },
   {
@@ -361,7 +361,7 @@ export const COUNTRIES: CountryCorridor[] = [
     customsCompliance: 'DGA SIDUNEA World, DUCA declaration & USD commercial invoicing',
     buyerFocus: 'San Salvador commercial importers, dollar-store chains, and regional wholesalers',
     marketSummary: 'Use El Salvador’s USD economy to source $1–$5 price-point daily necessities, toys, and fashion accessories direct from Yiwu.',
-    corridorAdvantage: 'Direct Pacific container routing from Ningbo to Port of Acajutla with pre-verified carton counts and USD commercial invoices.'
+    corridorAdvantage: 'Direct Pacific container routing from Ningbo to Port of Acajutla with carton counts and USD commercial invoices.'
   },
   {
     slug: 'nicaragua',
@@ -572,7 +572,7 @@ export const COUNTRIES: CountryCorridor[] = [
     airTransitDays: '3–5 Days Express / 6–9 Days Air Cargo (Zurich/Geneva)',
     customsCompliance: 'BAZG Passar customs system, China-Switzerland FTA Certificate of Origin, Type J plug & ORRChem',
     buyerFocus: 'Swiss retail chains, promotional gift agencies, specialty stores, and boutique importers',
-    marketSummary: 'Leverage the bilateral China-Switzerland Free Trade Agreement for zero-duty imports of verified Yiwu consumer goods.',
+    marketSummary: 'Leverage the bilateral China-Switzerland Free Trade Agreement for zero-duty imports of Yiwu consumer goods.',
     corridorAdvantage: 'Official China-Switzerland FTA Certificate of Origin issuance for duty-free entry plus multimodal delivery to Basel.'
   },
   {
@@ -692,7 +692,7 @@ export const COUNTRIES: CountryCorridor[] = [
     airTransitDays: '3–5 Days Express / 7–10 Days Air DDP',
     customsCompliance: 'CE, REACH, Tukes safety regulations, Bilingual Finnish/Swedish labeling & Tulli EORI',
     buyerFocus: 'Finnish department stores, hypermarket non-food buyers, hardware chains, and outdoor distributors',
-    marketSummary: 'Consolidate verified Yiwu hardware, sports gear, winter knitwear, and household goods to Helsinki and Kotka.',
+    marketSummary: 'Consolidate Yiwu hardware, sports gear, winter knitwear, and household goods to Helsinki and Kotka.',
     corridorAdvantage: 'Tukes electrical and toy safety verification in Yiwu plus reliable Baltic feeder connections to Helsinki Vuosaari.'
   },
   {
@@ -767,7 +767,7 @@ export const COUNTRIES: CountryCorridor[] = [
     airTransitDays: '4–6 Days Express / 7–10 Days Air Cargo',
     customsCompliance: 'China-Serbia FTA Certificate of Origin (Duty-Free access), Serbian AAA (3A) Conformity Mark & Serbian labeling',
     buyerFocus: 'New Belgrade wholesale importers, Balkan retail chains, hardware distributors, and industrial buyers',
-    marketSummary: 'Maximize margin under the new China-Serbia Free Trade Agreement by sourcing directly from verified Yiwu manufacturers.',
+    marketSummary: 'Maximize margin under the new China-Serbia Free Trade Agreement by sourcing directly from listed Yiwu manufacturers.',
     corridorAdvantage: 'Official China-Serbia FTA Certificate of Origin for preferential zero-tariff clearance plus fast Piraeus-to-Belgrade rail transit.'
   },
   {
@@ -814,7 +814,7 @@ export const COUNTRIES: CountryCorridor[] = [
     airTransitDays: '3–4 Days Express / 5–8 Days Air DDP',
     customsCompliance: 'MOIAT ECAS / EQM Certificate of Conformity, Dubai Municipality Montaji (cosmetics/food contact) & Arabic/English labeling',
     buyerFocus: 'Deira / Murshid Bazaar & Dragon Mart Dubai traders, GCC retail chains, and MENA/East Africa re-exporters',
-    marketSummary: 'Supply Deira wholesale markets, Dragon Mart showrooms, and GCC retail chains directly from 27,706 verified Yiwu stalls.',
+    marketSummary: 'Supply Deira wholesale markets, Dragon Mart showrooms, and GCC retail chains directly from 27,706 listed suppliers.',
     corridorAdvantage: 'Fast 14–18 day direct sailings from Ningbo to Jebel Ali with full MOIAT ECAS conformity and Chamber of Commerce legalized invoices.'
   },
   {
@@ -1026,7 +1026,7 @@ export const COUNTRIES: CountryCorridor[] = [
     airTransitDays: '4–6 Days Express / 7–10 Days Air Cargo (OR Tambo JNB)',
     customsCompliance: 'NRCS LOA (Letter of Authority for electricals), SABS standards, SARS SAD500 & SANS 164-1/2 plugs',
     buyerFocus: 'Crown Mines / Dragon City Johannesburg wholesalers, national retail chains, Takealot sellers, and SADC re-exporters',
-    marketSummary: 'Consolidate verified Yiwu merchandise for Johannesburg, Durban, and Cape Town retail and wholesale distribution.',
+    marketSummary: 'Consolidate Yiwu merchandise for Johannesburg, Durban, and Cape Town retail and wholesale distribution.',
     corridorAdvantage: 'NRCS LOA electrical test report verification in Yiwu and direct 22-day Indian Ocean container loops from Ningbo to Durban.'
   },
   {
@@ -1041,7 +1041,7 @@ export const COUNTRIES: CountryCorridor[] = [
     airTransitDays: '4–6 Days Express / 7–10 Days Air Cargo (Cairo CAI)',
     customsCompliance: 'ACI / Nafeza (ACID 19-digit number mandatory before shipping), GOEIC factory registration & CargoX blockchain upload',
     buyerFocus: 'El-Mosky, El-Nozha & Port Said wholesale importers, hardware distributors, and household goods traders',
-    marketSummary: 'Import kitchenware, toys, bags, stationery, and hardware from GOEIC-verified factories and Yiwu booths into Ain Sokhna and Alexandria.',
+    marketSummary: 'Import kitchenware, toys, bags, stationery, and hardware from Yiwu supplier listings into Ain Sokhna and Alexandria.',
     corridorAdvantage: 'Full Nafeza ACID verification and CargoX blockchain document upload from Yiwu plus 18-day Red Sea/Suez transit to Ain Sokhna and Port Said.'
   },
   {
@@ -1161,7 +1161,7 @@ export const COUNTRIES: CountryCorridor[] = [
     airTransitDays: '4–6 Days Express / 8–12 Days Air Cargo',
     customsCompliance: 'COSEC BESC Waiver, ASN Conformity Verification & GAINDE ORBUS Single Window',
     buyerFocus: 'Sandaga, Petersen & Touba wholesale merchants, hardware importers, and Sahel transit traders',
-    marketSummary: 'Senegal’s trading diaspora has deep roots in Yiwu—browse 27,706+ verified booth profiles and consolidate containers straight to Dakar.',
+    marketSummary: 'Senegal’s trading diaspora has deep roots in Yiwu—browse 27,706 listed suppliers and consolidate containers straight to Dakar.',
     corridorAdvantage: 'BESC electronic waiver and ASN conformity preparation in Yiwu with high-cube container loading to Port of Dakar.'
   },
   {
@@ -1221,7 +1221,7 @@ export const COUNTRIES: CountryCorridor[] = [
     airTransitDays: '4–7 Days Express / 7–11 Days Kinshasa/Lubumbashi Air Cargo',
     customsCompliance: 'OGEFREM FERI / AD Certificate, OCC BIVAC Pre-Shipment Inspection & GUICE Single Window',
     buyerFocus: 'Grand Marché Zando (Kinshasa) & Lubumbashi wholesale importers, mining hardware suppliers, and general traders',
-    marketSummary: 'Supply Kinshasa (via Matadi) and Katanga/Kivu (via Dar es Salaam/Mombasa) directly from 27,706 verified Yiwu stalls.',
+    marketSummary: 'Supply Kinshasa (via Matadi) and Katanga/Kivu (via Dar es Salaam/Mombasa) directly from 27,706 listed suppliers.',
     corridorAdvantage: 'Full OGEFREM FERI electronic certificate and OCC inspection handling in Yiwu for both Western (Matadi) and Eastern (Dar es Salaam) DRC corridors.'
   },
   {
@@ -1328,7 +1328,7 @@ export const COUNTRIES: CountryCorridor[] = [
     airTransitDays: '3–5 Days Express / 6–9 Days Air Cargo',
     customsCompliance: 'BIS (ISI/CRS) Certification, ICEGATE Bill of Entry (BoE), EPR Plastic/E-Waste, Legal Metrology MRP stickers & Country of Origin',
     buyerFocus: 'Sadar Bazar & Karol Bagh (Delhi), Crawford Market & Masjid Bunder (Mumbai), Sowcarpet (Chennai) & Chickpet (Bengaluru) importers',
-    marketSummary: 'Source directly from 27,706 verified Yiwu stalls for Indian wholesale markets, D2C brands, Flipkart/Amazon India sellers, and corporate gifting.',
+    marketSummary: 'Source directly from 27,706 listed suppliers for Indian wholesale markets, D2C brands, Flipkart/Amazon India sellers, and corporate gifting.',
     corridorAdvantage: 'BIS compliance screening, Legal Metrology MRP & Country of Origin labeling in Yiwu, and 12–18 day direct sailings from Ningbo to JNPT, Mundra, and Chennai.'
   },
   {
@@ -1510,7 +1510,7 @@ export const COUNTRIES: CountryCorridor[] = [
     airTransitDays: '3–5 Days Express / 5–8 Days Air Cargo',
     customsCompliance: 'ASEAN-China FTA Form E, SNI (Standar Nasional Indonesia), Lartas PI / LS (Surveyor Report via KSO Sucofindo) & BPOM',
     buyerFocus: 'Tanah Abang, Asemka / Pasar Pagi & Mangga Dua (Jakarta) API-U importers, Surabaya wholesalers, and Tokopedia/Shopee brands',
-    marketSummary: 'Navigate Indonesia’s SNI and Lartas import regulations smoothly by sourcing from verified Yiwu manufacturers with pre-shipment KSO surveyor readiness.',
+    marketSummary: 'Navigate Indonesia’s SNI and Lartas import regulations smoothly by sourcing from listed Yiwu manufacturers with pre-shipment KSO surveyor readiness.',
     corridorAdvantage: 'Full support for KSO Sucofindo/Surveyor Indonesia pre-shipment inspection (LS), Form E tariff relief, and SNI labeling in Yiwu.'
   },
   {
@@ -1701,9 +1701,9 @@ export function getSmartCountrySeoMeta(
       `CPSC ASTM F963 FDA compliant Yiwu factories`,
       `bypass Alibaba trading companies direct Yiwu booth WeChat`
     ];
-    nativeSearchBanner = `US Importer Search Intent: Amazon FBA Private Label · Dollar & Variety Store Chains · Sea+UPS Combined (SFUC $1.50–$1.80/kg DDP) · ISF 10+2 & CPSC/FDA Compliance`;
+    nativeSearchBanner = `US Importer Search Intent: Amazon FBA Private Label · Dollar & Variety Store Chains · Sea+UPS Combined (SFUC) · ISF 10+2 & CPSC/FDA Compliance`;
     importerChannels = `Amazon FBA / TikTok Shop / Walmart Marketplace brands, US regional dollar-store & variety chains, ASD Market Week wholesale distributors, and promotional product importers`;
-    freightAndCustomsEdge = `For US shipments between 100 kg and 2,000 kg, Sea + UPS Combined (SFUC) from Yiwu to Los Angeles/Long Beach delivers door-to-door DDP in 22–28 days at $1.50–$1.80/kg with zero customs broker headaches. For 20'GP/40'HQ containers to LA, Savannah, NY/NJ, or Houston, we coordinate ISF 10+2 filings 48 hours pre-vessel and verify CPSC/ASTM/FDA lab reports during a supplier visit.`;
+    freightAndCustomsEdge = `For US shipments between 100 kg and 2,000 kg, ask your merchant for current door-to-door Sea + UPS Combined (SFUC) rates and transit times from Yiwu via Los Angeles or Long Beach. For 20'GP/40'HQ containers to LA, Savannah, NY/NJ, or Houston, discuss ISF 10+2 filings and any CPSC/ASTM/FDA documentation with your merchant or customs broker.`;
   } else if (country.slug === 'canada') {
     nativeTerms = [
       `Yiwu wholesale suppliers for Canada importers`,
@@ -1788,7 +1788,7 @@ export function getSmartCountrySeoMeta(
       );
       nativeSearchBanner = `Import Bezpośredni Polska (PL/EN): Hurtownia i Producenci Yiwu Chiny · Pociąg Yiwu–Małaszewicze (14–18 Dni) & Port Gdańsk · Certyfikaty CE/REACH`;
     } else {
-      nativeSearchBanner = `Europe & UK Direct Sourcing Corridor: Verified CE / REACH / RoHS / UKCA Factory Compliance · Sea Freight to ${country.ports} & Yiwu–Europe Express Block Train`;
+      nativeSearchBanner = `Europe & UK Direct Sourcing Corridor: CE / REACH / RoHS / UKCA Compliance Checks · Sea Freight to ${country.ports} & Yiwu–Europe Express Block Train`;
     }
     nativeTerms = euroExtra;
   } else {
@@ -1799,16 +1799,16 @@ export function getSmartCountrySeoMeta(
       `LCL FCL container shipping Ningbo to ${country.ports}`,
       `${country.customsCompliance} inspection Yiwu`
     ];
-    nativeSearchBanner = `Global Direct Sourcing Corridor (${country.code}): 27,706 Verified Yiwu Booths · Sea & Air Consolidation to ${country.ports} · ${country.customsCompliance}`;
+    nativeSearchBanner = `Global Direct Sourcing Corridor (${country.code}): 27,706 Listed Suppliers · Sea & Air Consolidation to ${country.ports} · ${country.customsCompliance}`;
   }
 
   const seoTitle = category
     ? `Yiwu ${category.shortName} Wholesale Suppliers for ${country.name} (${country.flag}) — Direct Factory Prices & Shipping to ${country.ports.split(',')[0]} | Sino Trade Link`
-    : `Import from Yiwu China to ${country.name} (${country.flag}) — 27,706 Verified Factory Stalls, Direct Contacts & Shipping to ${country.ports.split(',')[0]} | Sino Trade Link`;
+    : `Import from Yiwu China to ${country.name} (${country.flag}) — 27,706 Listed Suppliers, Direct Contacts & Shipping to ${country.ports.split(',')[0]} | Sino Trade Link`;
 
   const seoDescription = category
     ? `Source ${category.shortName} directly from Yiwu ${catLocation} & factories across China for ${country.name} (${country.ports}, ${country.seaTransitDays} sea transit). Verify ${country.customsCompliance} compliance, request managed factory quotes, quote Alibaba links, or discuss a supplier visit.`
-    : `Bypass 15–30% trading markups when importing from Yiwu to ${country.name} (${country.ports}). Browse 27,706 verified stalls, verify ${country.customsCompliance} with a supplier visit, and discuss LCL/FCL shipping requirements.`;
+    : `Bypass 15–30% trading markups when importing from Yiwu to ${country.name} (${country.ports}). Browse 27,706 listed suppliers, verify ${country.customsCompliance} with a supplier visit, and discuss LCL/FCL shipping requirements.`;
 
   const baseKeywords = category
     ? [

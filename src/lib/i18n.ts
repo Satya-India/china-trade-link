@@ -866,7 +866,6 @@ export interface UIDictionary {
     trustGuarantee: string;
     statStalls: string;
     statPhones: string;
-    statFactories: string;
     statKickbacks: string;
   };
   faq: {
@@ -920,21 +919,20 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
       countries: '100 Countries',
       marketMap: 'Market Map',
       sourcingGuide: 'Sourcing Playbook',
-      browseStalls: 'Browse 27,706 Stalls'
+      browseStalls: 'Browse 27,706 Listed Suppliers'
     },
     hero: {
       badge: '🇨🇳 China-Wide Factory Sourcing · Yiwu, Shenzhen, Guangzhou & More · Zero Middleman Markups',
       title: 'Source Directly from Factories & Markets Anywhere in China.',
-      subtitle: 'We procure across Yiwu, Shenzhen, Guangzhou, Ningbo, and all major Chinese industrial hubs — not just Yiwu market. Browse 27,706+ verified stalls free and let our team quote & handle every supplier directly for you.',
+      subtitle: 'We procure across Yiwu, Shenzhen, Guangzhou, Ningbo, and all major Chinese industrial hubs — not just Yiwu market. Browse 27,706 listed suppliers free and let our team quote & handle every supplier directly for you.',
       searchPlaceholder: 'Search by product, category, or stall name (e.g. Toys, Kitchenware, Booth 62159)...',
       searchBtn: 'Search Directory',
       trustLocation: 'China-Wide Hubs: Yiwu, Shenzhen, Guangzhou, Ningbo',
       trustTeam: 'Direct Sourcing Desk on WhatsApp (24h Quote)',
-      trustData: 'Vetted China factory & stall network',
+      trustData: 'China factory and stall directory',
       trustGuarantee: 'Managed Factory Outreach — We Contact Suppliers For You',
-      statStalls: 'Verified Stalls Indexed',
+      statStalls: 'Listed Suppliers',
       statPhones: 'China-Wide Factory Access',
-      statFactories: 'Licensed Factories',
       statKickbacks: 'Trading Markups'
     },
     faq: {
@@ -958,7 +956,7 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
     },
     supplier: {
       directFactoryBadge: 'Direct Factory',
-      marketWholesalerBadge: 'Verified Stall',
+      marketWholesalerBadge: 'Listed Stall',
       districtLabel: 'District',
       floorLabel: 'Floor',
       gateLabel: 'Gate',
@@ -972,10 +970,10 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
     },
     seo: {
       homeTitle: "Sino Trade Link | China-Wide Direct Factory Sourcing",
-      homeDesc: 'Source directly from factories anywhere in China (Yiwu, Shenzhen, Guangzhou, Ningbo). Browse 27,706+ verified stalls free and request managed factory quotes.',
+      homeDesc: 'Source directly from factories anywhere in China (Yiwu, Shenzhen, Guangzhou, Ningbo). Browse 27,706 listed suppliers free and request managed factory quotes.',
       homeKeywords: "China factory sourcing, Yiwu supplier directory, supplier visits, Shenzhen Guangzhou Ningbo",
-      directoryTitle: 'China Wholesale Market Directory | 27,706+ Verified Stalls & Factory Quote Requests',
-      directoryDesc: 'Search 27,706+ verified wholesale stalls & direct China factories free. Request managed factory quotes, samples, and China-wide consolidation directly with our team.',
+      directoryTitle: 'China Wholesale Market Directory | 27,706 Listed Stalls & Factory Quote Requests',
+      directoryDesc: 'Search 27,706 listed suppliers free. Request managed factory quotes, samples, and China-wide consolidation directly with our team.',
       countriesTitle: '100 Country Import Corridors from Yiwu, China | Sea Freight & Customs Compliance',
       countriesDesc: 'Country-by-country wholesale sourcing hubs from Yiwu & Ningbo Port to 100 countries with transit times, duties, and required import certifications.'
     }
@@ -991,16 +989,15 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
     hero: {
       badge: '🇨🇳 Compras en Toda China · Yiwu, Shenzhen, Guangzhou y Más · Cero Sobrecostos',
       title: 'Compre Directo en Fábricas y Mercados de Toda China.',
-      subtitle: 'Abastecemos desde cualquier ciudad industrial de China (Yiwu, Shenzhen, Guangzhou, Ningbo y más allá), no solo en el mercado de Yiwu. Explore 27.706+ puestos gratis y solicite cotización gestionada con nuestro equipo.',
+      subtitle: 'Abastecemos desde cualquier ciudad industrial de China (Yiwu, Shenzhen, Guangzhou, Ningbo y más allá), no solo en el mercado de Yiwu. Explore 27.706 proveedores del directorio gratis y solicite cotización gestionada con nuestro equipo.',
       searchPlaceholder: 'Buscar por producto, categoría o número de puesto (ej. Juguetes, Cocina, Puesto 62159)...',
       searchBtn: 'Buscar Puestos',
       trustLocation: 'Polos en Toda China: Yiwu, Shenzhen, Guangzhou, Ningbo',
       trustTeam: 'Mesa de Cotizaciones en WhatsApp (Respuesta Rápida)',
-      trustData: 'Red verificada de fábricas y puestos en China',
+      trustData: 'Directorio de fábricas y puestos en China',
       trustGuarantee: 'Negociación Directa Gestionada — Contactamos por Usted',
-      statStalls: 'Puestos Indexados',
+      statStalls: 'Proveedores en el directorio',
       statPhones: 'Cobertura en Toda China',
-      statFactories: 'Fábricas Directas',
       statKickbacks: 'Sobreprecio de Agentes'
     },
     faq: {
@@ -1024,7 +1021,7 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
     },
     supplier: {
       directFactoryBadge: 'Fábrica Directa',
-      marketWholesalerBadge: 'Puesto Verificado',
+      marketWholesalerBadge: 'Puesto en el Directorio',
       districtLabel: 'Distrito',
       floorLabel: 'Piso',
       gateLabel: 'Puerta',
@@ -1038,10 +1035,10 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
     },
     seo: {
       homeTitle: "Sino Trade Link | Compras Directas de Fábrica en Toda China",
-      homeDesc: 'Compre directo de fábricas en toda China (Yiwu, Shenzhen, Guangzhou, Ningbo). Explore 27.706+ puestos gratis para solicitar cotización directa.',
+      homeDesc: 'Compre directo de fábricas en toda China (Yiwu, Shenzhen, Guangzhou, Ningbo). Explore 27.706 proveedores del directorio gratis para solicitar cotización directa.',
       homeKeywords: "compras fábricas China, directorio proveedores Yiwu, visitas a proveedores",
-      directoryTitle: 'Directorio del Mercado Mayorista en China | 27.706+ Puestos y Cotizaciones Directas',
-      directoryDesc: 'Busque entre 27.706+ puestos verificados en Yiwu y solicite cotizaciones directas de fábrica en toda China a través de nuestro equipo.',
+      directoryTitle: 'Directorio del Mercado Mayorista en China | 27.706 Puestos del Directorio y Cotizaciones Directas',
+      directoryDesc: 'Busque entre 27.706 proveedores del directorio en Yiwu y solicite cotizaciones directas de fábrica en toda China a través de nuestro equipo.',
       countriesTitle: 'Importar desde Yiwu, China hacia 100 Países | Flete Marítimo y Aduanas',
       countriesDesc: 'Guías de importación desde Yiwu y el Puerto de Ningbo hacia 100 países con tiempos de tránsito marítimo, aranceles y certificaciones requeridas.'
     }
@@ -1057,16 +1054,15 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
     hero: {
       badge: '🇨🇳 Compras em Toda a China · Yiwu, Shenzhen, Guangzhou e Mais · Zero Ágio de Intermediários',
       title: 'Compre Direto de Fábricas e Mercados em Qualquer Lugar da China.',
-      subtitle: 'Compramos em toda a China — Yiwu, Shenzhen, Guangzhou, Ningbo e polos industriais — não apenas no mercado de Yiwu. Pesquise 27.706+ fornecedores grátis e fale conosco para cotar direto na fábrica.',
+      subtitle: 'Compramos em toda a China — Yiwu, Shenzhen, Guangzhou, Ningbo e polos industriais — não apenas no mercado de Yiwu. Pesquise 27.706 fornecedores do diretório grátis e fale conosco para cotar direto na fábrica.',
       searchPlaceholder: 'Busque por produto, categoria ou número do box (ex: Brinquedos, Cozinha, Box 62159)...',
       searchBtn: 'Buscar Fornecedores',
       trustLocation: 'Polos em Toda a China: Yiwu, Shenzhen, Guangzhou, Ningbo',
       trustTeam: 'Atendimento Direto no WhatsApp (Cotação Rápida)',
-      trustData: 'Rede verificada de fábricas e boxes chineses',
+      trustData: 'Diretório de fábricas e boxes chineses',
       trustGuarantee: 'Negociação Gerenciada — Falamos com as Fábricas por Você',
-      statStalls: 'Boxes Indexados',
+      statStalls: 'Fornecedores no diretório',
       statPhones: 'Alcance em Toda a China',
-      statFactories: 'Fábricas Licenciadas',
       statKickbacks: 'Comissões Ocultas'
     },
     faq: {
@@ -1090,7 +1086,7 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
     },
     supplier: {
       directFactoryBadge: 'Fábrica Direta',
-      marketWholesalerBadge: 'Box Verificado',
+      marketWholesalerBadge: 'Box no Diretório',
       districtLabel: 'Distrito',
       floorLabel: 'Andar',
       gateLabel: 'Portão',
@@ -1104,10 +1100,10 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
     },
     seo: {
       homeTitle: "Sino Trade Link | Compras Diretas de Fábricas em Toda a China",
-      homeDesc: 'Compre direto de fábricas em qualquer lugar da China (Yiwu, Shenzhen, Guangzhou, Ningbo). Explore 27.706+ boxes grátis e solicite sua cotação conosco.',
+      homeDesc: 'Compre direto de fábricas em qualquer lugar da China (Yiwu, Shenzhen, Guangzhou, Ningbo). Explore 27.706 fornecedores do diretório grátis e solicite sua cotação conosco.',
       homeKeywords: "compras fábricas China, diretório fornecedores Yiwu, visitas a fornecedores",
-      directoryTitle: 'Diretório do Mercado Atacadista na China | 27.706+ Boxes e Cotações Diretas',
-      directoryDesc: 'Pesquise 27.706+ fornecedores verificados em Yiwu gratuitamente e peça cotações diretas de fábrica em toda a China com nossa equipe.',
+      directoryTitle: 'Diretório do Mercado Atacadista na China | 27.706 Boxes do Diretório e Cotações Diretas',
+      directoryDesc: 'Pesquise 27.706 fornecedores do diretório em Yiwu gratuitamente e peça cotações diretas de fábrica em toda a China com nossa equipe.',
       countriesTitle: 'Corredores de Importação de Yiwu, China para 100 Países | Frete Marítimo e Alfândega',
       countriesDesc: 'Guias completos de importação de Yiwu e Porto de Ningbo para 100 países com prazos marítimos, impostos e certificações obrigatórias.'
     }
@@ -1123,16 +1119,15 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
     hero: {
       badge: '🇨🇳 Sourcing Partout en Chine · Yiwu, Shenzhen, Guangzhou & Plus · Zéro Marge Cachée',
       title: 'Sourcez Directement auprès d’Usines & Marchés Partout en Chine.',
-      subtitle: 'Nous achetons dans toute la Chine (Yiwu, Shenzhen, Guangzhou, Ningbo et pôles industriels) — pas uniquement à Yiwu. Parcourez 27 706+ stands et demandez un devis direct auprès de notre équipe.',
+      subtitle: 'Nous achetons dans toute la Chine (Yiwu, Shenzhen, Guangzhou, Ningbo et pôles industriels) — pas uniquement à Yiwu. Parcourez 27 706 fournisseurs répertoriés et demandez un devis direct auprès de notre équipe.',
       searchPlaceholder: 'Rechercher par produit, catégorie ou numéro de stand (ex. Jouets, Cuisine, Stand 62159)...',
       searchBtn: 'Rechercher',
       trustLocation: 'Pôles Chinois : Yiwu, Shenzhen, Guangzhou, Ningbo',
       trustTeam: 'Bureau Sourcing sur WhatsApp (Réponse Rapide)',
-      trustData: 'Réseau vérifié d’usines & stands en Chine',
+      trustData: 'Annuaire des usines et stands en Chine',
       trustGuarantee: 'Négociation Gérée — Nous Contactons les Usines pour Vous',
-      statStalls: 'Stands Indexés',
+      statStalls: 'Fournisseurs répertoriés',
       statPhones: 'Accès Usines Toute la Chine',
-      statFactories: 'Usines Certifiées',
       statKickbacks: 'Marges Cachées'
     },
     faq: {
@@ -1156,7 +1151,7 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
     },
     supplier: {
       directFactoryBadge: 'Usine Directe',
-      marketWholesalerBadge: 'Stand Vérifié',
+      marketWholesalerBadge: 'Stand Répertorié',
       districtLabel: 'District',
       floorLabel: 'Étage',
       gateLabel: 'Porte',
@@ -1170,10 +1165,10 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
     },
     seo: {
       homeTitle: "Sino Trade Link | Sourcing Usines Partout en Chine",
-      homeDesc: 'Sourcez directement auprès des usines partout en Chine (Yiwu, Shenzhen, Guangzhou, Ningbo). Consultez 27 706+ stands pour recevoir un devis géré par notre équipe.',
+      homeDesc: 'Sourcez directement auprès des usines partout en Chine (Yiwu, Shenzhen, Guangzhou, Ningbo). Consultez 27 706 fournisseurs répertoriés pour recevoir un devis géré par notre équipe.',
       homeKeywords: "sourcing usines Chine, annuaire fournisseurs Yiwu, visites fournisseurs",
-      directoryTitle: 'Annuaire du Marché de Gros en Chine | 27 706+ Stands & Devis Usine',
-      directoryDesc: 'Parcourez 27 706+ stands vérifiés gratuitement et demandez des devis directs d’usine partout en Chine via notre équipe bilingue.',
+      directoryTitle: 'Annuaire du Marché de Gros en Chine | 27 706 Stands Répertoriés & Devis Usine',
+      directoryDesc: 'Parcourez 27 706 fournisseurs répertoriés gratuitement et demandez des devis directs d’usine partout en Chine via notre équipe bilingue.',
       countriesTitle: '100 Corridors d’Importation depuis Yiwu, Chine | Fret Maritime & Douanes',
       countriesDesc: 'Guides d’importation par pays depuis Yiwu et le port de Ningbo vers 100 destinations avec délais maritimes, droits de douane et certifications.'
     }
@@ -1189,16 +1184,15 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
     hero: {
       badge: '🇨🇳 Chinaweite Fabrikbeschaffung · Yiwu, Shenzhen, Guangzhou & Mehr · Ohne Zwischenhändler',
       title: 'Direkteinkauf bei Fabriken & Märkten in Ganz China.',
-      subtitle: 'Wir beschaffen landesweit in Yiwu, Shenzhen, Guangzhou, Ningbo und allen chinesischen Industrieregionen — nicht nur auf dem Markt in Yiwu. Durchsuchen Sie 27.706+ Stände und fordern Sie Ihr Fabrikangebot direkt über unser Team an.',
+      subtitle: 'Wir beschaffen landesweit in Yiwu, Shenzhen, Guangzhou, Ningbo und allen chinesischen Industrieregionen — nicht nur auf dem Markt in Yiwu. Durchsuchen Sie 27.706 gelistete Anbieter und fordern Sie Ihr Fabrikangebot direkt über unser Team an.',
       searchPlaceholder: 'Suche nach Produkt, Kategorie oder Standnummer (z. B. Spielwaren, Küche, Stand 62159)...',
       searchBtn: 'Verzeichnis durchsuchen',
       trustLocation: 'Chinaweite Hubs: Yiwu, Shenzhen, Guangzhou, Ningbo',
       trustTeam: 'Direktes Einkaufsteam über WhatsApp',
-      trustData: 'Geprüftes China-Fabrik- & Großhandelsnetzwerk',
+      trustData: 'Verzeichnis chinesischer Fabriken und Großhandelsstände',
       trustGuarantee: 'Betreuter Einkauf — Wir Kontaktieren Lieferanten Für Sie',
-      statStalls: 'Indexierte Stände',
+      statStalls: 'Gelistete Anbieter',
       statPhones: 'Chinaweiter Fabrikzugang',
-      statFactories: 'Lizenzierte Fabriken',
       statKickbacks: 'Händleraufschläge'
     },
     faq: {
@@ -1222,7 +1216,7 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
     },
     supplier: {
       directFactoryBadge: 'Direktfabrik',
-      marketWholesalerBadge: 'Verifizierter Stand',
+      marketWholesalerBadge: 'Gelisteter Stand',
       districtLabel: 'Distrikt',
       floorLabel: 'Etage',
       gateLabel: 'Tor',
@@ -1236,10 +1230,10 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
     },
     seo: {
       homeTitle: "Sino Trade Link | Chinaweite Direkte Fabrikbeschaffung",
-      homeDesc: 'Direkteinkauf bei Fabriken überall in China (Yiwu, Shenzhen, Guangzhou, Ningbo). 27.706+ Stände gratis durchsuchen und Direktangebote anfragen.',
+      homeDesc: 'Direkteinkauf bei Fabriken überall in China (Yiwu, Shenzhen, Guangzhou, Ningbo). 27.706 gelistete Anbieter gratis durchsuchen und Direktangebote anfragen.',
       homeKeywords: "Fabrikbeschaffung China, Lieferantenverzeichnis Yiwu, Lieferantenbesuche",
-      directoryTitle: 'China Großhandelsverzeichnis | 27.706+ Stände & Direkte Fabrikanfragen',
-      directoryDesc: 'Durchsuchen Sie 27.706+ verifizierte Großhandelsstände kostenlos und fordern Sie direkte Fabrikpreise in ganz China über unser Team an.',
+      directoryTitle: 'China Großhandelsverzeichnis | 27.706 gelistete Anbieter & Direkte Fabrikanfragen',
+      directoryDesc: 'Durchsuchen Sie 27.706 gelistete Anbieter kostenlos und fordern Sie direkte Fabrikpreise in ganz China über unser Team an.',
       countriesTitle: '100 Länder-Importkorridore ab Yiwu, China | Seefracht & Zollbestimmungen',
       countriesDesc: 'Länderspezifische Großhandelsleitfäden von Yiwu & Hafen Ningbo in 100 Länder inklusive Seefrachtlaufzeiten, Zöllen und Einfuhrzertifikaten.'
     }
@@ -1255,16 +1249,15 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
     hero: {
       badge: '🇨🇳 استيراد من جميع أنحاء الصين · إيوو وشينزن وقوانغتشو وغيرها · بدون هوامش وسطاء',
       title: 'اشترِ مباشرة من المصانع والأسواق في أي مكان بالصين.',
-      subtitle: 'نوفر لك البضائع من شينزن وقوانغتشو ونينغبو وإيوو وكافة المناطق الصناعية في الصين — وليس من سوق إيوو فقط. تصفح 27,706+ محل مجاناً ودع فريقنا يتفاوض ويجهز عرض السعر لك مباشرة.',
+      subtitle: 'نوفر لك البضائع من شينزن وقوانغتشو ونينغبو وإيوو وكافة المناطق الصناعية في الصين — وليس من سوق إيوو فقط. تصفح 27,706 مورد مدرج في الدليل مجاناً ودع فريقنا يتفاوض ويجهز عرض السعر لك مباشرة.',
       searchPlaceholder: 'ابحث حسب المنتج أو الفئة أو رقم المحل (مثال: ألعاب، أدوات منزلية، محل 62159)...',
       searchBtn: 'ابحث في الدليل',
       trustLocation: 'مراكزنا بالصين: إيوو، شينزن، قوانغتشو، نينغبو',
       trustTeam: 'فريق المشتريات المباشر عبر واتساب',
-      trustData: 'شبكة مصانع ومحلات موثقة في عموم الصين',
+      trustData: 'دليل المصانع والمحلات في الصين',
       trustGuarantee: 'تواصل وتفاوض مُدار — نتواصل مع الموردين نيابةً عنك',
-      statStalls: 'محل مسجل في الدليل',
+      statStalls: 'مورد مدرج في الدليل',
       statPhones: 'وصول لمصانع عموم الصين',
-      statFactories: 'مصنع مرخص',
       statKickbacks: 'عمولات خفية'
     },
     faq: {
@@ -1288,7 +1281,7 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
     },
     supplier: {
       directFactoryBadge: 'مصنع مباشر',
-      marketWholesalerBadge: 'محل موثق',
+      marketWholesalerBadge: 'محل مدرج في الدليل',
       districtLabel: 'المنطقة',
       floorLabel: 'الطابق',
       gateLabel: 'البوابة',
@@ -1302,10 +1295,10 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
     },
     seo: {
       homeTitle: "Sino Trade Link | الشراء المباشر من مصانع عموم الصين",
-      homeDesc: 'استورد مباشرة من المصانع في أي مكان بالصين (إيوو، شينزن، قوانغتشو، نينغبو). تصفح 27,706+ محل مجاناً واطلب تسعيرة المصنع عبر فريقنا.',
+      homeDesc: 'استورد مباشرة من المصانع في أي مكان بالصين (إيوو، شينزن، قوانغتشو، نينغبو). تصفح 27,706 مورد مدرج في الدليل مجاناً واطلب تسعيرة المصنع عبر فريقنا.',
       homeKeywords: "الاستيراد من مصانع الصين، دليل موردي إيوو، زيارة الموردين",
-      directoryTitle: 'دليل سوق الجملة في الصين | 27,706+ محل وعروض أسعار المصانع المباشرة',
-      directoryDesc: 'ابحث في أكثر من 27,706 محل موثق مجاناً واطلب تسعيرات مباشرة من المصانع في عموم الصين عبر فريقنا.',
+      directoryTitle: 'دليل سوق الجملة في الصين | 27,706 مورد مدرج في الدليل وعروض أسعار المصانع المباشرة',
+      directoryDesc: 'ابحث في 27,706 مورد مدرج في الدليل مجاناً واطلب تسعيرات مباشرة من المصانع في عموم الصين عبر فريقنا.',
       countriesTitle: 'مسارات الاستيراد والشحن من إيوو، الصين إلى 100 دولة | الشحن البحري والجمارك',
       countriesDesc: 'أدلة شاملة للاستيراد من سوق إيوو وميناء نينغبو إلى 100 دولة تشمل مدة الشحن البحري والرسوم الجمركية وشهادات المطابقة المطلوبة.'
     }
@@ -1321,16 +1314,15 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
     hero: {
       badge: '🇨🇳 Закупки по всему Китаю · Иу, Шэньчжэнь, Гуанчжоу и др. · Без скрытых наценок',
       title: 'Закупайте напрямую у фабрик и рынков в любой точке Китая.',
-      subtitle: 'Мы выкупаем товар по всему Китаю (Иу, Шэньчжэнь, Гуанчжоу, Нинбо, Фошань), а не только на рынке Иу. Выберите павильон из 27 706+ — наш отдел рассчитает прямую фабричную цену.',
+      subtitle: 'Мы выкупаем товар по всему Китаю (Иу, Шэньчжэнь, Гуанчжоу, Нинбо, Фошань), а не только на рынке Иу. Выберите павильон из 27 706 записей в каталоге — наш отдел рассчитает прямую фабричную цену.',
       searchPlaceholder: 'Поиск по товару, категории или номеру бутика (например: Игрушки, Посуда, павильон 62159)...',
       searchBtn: 'Найти поставщиков',
       trustLocation: 'Хабы в Китае: Иу, Шэньчжэнь, Гуанчжоу, Нинбо',
       trustTeam: 'Отдел закупок в WhatsApp (ответ за 2–6 ч)',
-      trustData: 'Проверенная сеть фабрик и павильонов КНР',
+      trustData: 'Каталог фабрик и павильонов Китая',
       trustGuarantee: 'Полное сопровождение — сами ведем переговоры с фабриками',
-      statStalls: 'Павильонов в базе',
+      statStalls: 'Поставщиков в каталоге',
       statPhones: 'Закупки по всему Китаю',
-      statFactories: 'Прямых фабрик',
       statKickbacks: 'Скрытых наценок'
     },
     faq: {
@@ -1354,7 +1346,7 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
     },
     supplier: {
       directFactoryBadge: 'Прямая фабрика',
-      marketWholesalerBadge: 'Проверенный павильон',
+      marketWholesalerBadge: 'Павильон в каталоге',
       districtLabel: 'Корпус',
       floorLabel: 'Этаж',
       gateLabel: 'Ворота',
@@ -1368,10 +1360,10 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
     },
     seo: {
       homeTitle: "Sino Trade Link | Прямые закупки по всему Китаю",
-      homeDesc: 'Закупайте напрямую с фабрик в любой точке Китая (Иу, Шэньчжэнь, Гуанчжоу, Нинбо). Смотрите 27 706+ павильонов бесплатно и запрашивайте прямой расчет у нас.',
+      homeDesc: 'Закупайте напрямую с фабрик в любой точке Китая (Иу, Шэньчжэнь, Гуанчжоу, Нинбо). Смотрите 27 706 записей в каталоге павильонов бесплатно и запрашивайте прямой расчет у нас.',
       homeKeywords: "закупки с фабрик Китая, каталог поставщиков Иу, посещение поставщиков",
-      directoryTitle: 'Каталог оптового рынка Китая | 27 706+ проверенных павильонов и запросы цен',
-      directoryDesc: 'Бесплатный поиск среди 27 706+ проверенных павильонов в Иу и прямой расчет фабричных цен по всему Китаю через нашу команду.',
+      directoryTitle: 'Каталог оптового рынка Китая | 27 706 павильонов в каталоге и запросы цен',
+      directoryDesc: 'Бесплатный поиск среди 27 706 павильонов в каталоге в Иу и прямой расчет фабричных цен по всему Китаю через нашу команду.',
       countriesTitle: 'Доставка и импорт из Иу, Китай в 100 стран | Сроки, порты и таможня',
       countriesDesc: 'Логистические справочники по доставке оптовых грузов из Иу и порта Нинбо в 100 стран мира: сроки, пошлины и сертификация.'
     }
@@ -1387,16 +1379,15 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
     hero: {
       badge: '🇨🇳 Acquisti in Tutta la Cina · Yiwu, Shenzhen, Guangzhou e Oltre · Zero Ricarichi',
       title: 'Acquista Direttamente da Fabbriche e Mercati in Tutta la Cina.',
-      subtitle: 'Operiamo in tutta la Cina (Yiwu, Shenzhen, Guangzhou, Ningbo e poli industriali), non solo a Yiwu. Consulta 27.706+ stand gratis e richiedi un preventivo diretto tramite il nostro team.',
+      subtitle: 'Operiamo in tutta la Cina (Yiwu, Shenzhen, Guangzhou, Ningbo e poli industriali), non solo a Yiwu. Consulta 27.706 fornitori in elenco gratis e richiedi un preventivo diretto tramite il nostro team.',
       searchPlaceholder: 'Cerca per prodotto, categoria o numero di stand (es. Giocattoli, Casalinghi, Stand 62159)...',
       searchBtn: 'Cerca nel Catalogo',
       trustLocation: 'Poli in Tutta la Cina: Yiwu, Shenzhen, Guangzhou, Ningbo',
       trustTeam: 'Team Acquisti Diretti su WhatsApp',
-      trustData: 'Rete verificata di fabbriche e stand cinesi',
+      trustData: 'Elenco di fabbriche e stand cinesi',
       trustGuarantee: 'Trattativa Gestita — Contattiamo le Fabbriche per Te',
-      statStalls: 'Stand Indicizzati',
+      statStalls: 'Fornitori in elenco',
       statPhones: 'Accesso Fabbriche in Tutta la Cina',
-      statFactories: 'Fabbriche Certificate',
       statKickbacks: 'Ricarichi di Agenzia'
     },
     faq: {
@@ -1420,7 +1411,7 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
     },
     supplier: {
       directFactoryBadge: 'Fabbrica Diretta',
-      marketWholesalerBadge: 'Stand Verificato',
+      marketWholesalerBadge: 'Stand in Elenco',
       districtLabel: 'Distretto',
       floorLabel: 'Piano',
       gateLabel: 'Ingresso',
@@ -1434,10 +1425,10 @@ export const UI_DICT: Record<LocaleCode, UIDictionary> = {
     },
     seo: {
       homeTitle: "Sino Trade Link | Acquisti Diretti dalle Fabbriche in Tutta la Cina",
-      homeDesc: 'Acquista direttamente dalle fabbriche ovunque in Cina (Yiwu, Shenzhen, Guangzhou, Ningbo). Esplora 27.706+ stand gratis e richiedi un preventivo al nostro team.',
+      homeDesc: 'Acquista direttamente dalle fabbriche ovunque in Cina (Yiwu, Shenzhen, Guangzhou, Ningbo). Esplora 27.706 fornitori in elenco gratis e richiedi un preventivo al nostro team.',
       homeKeywords: "acquisti fabbriche Cina, elenco fornitori Yiwu, visite fornitori",
-      directoryTitle: 'Catalogo Mercato all’Ingrosso in Cina | 27.706+ Stand & Preventivi Fabbrica',
-      directoryDesc: 'Cerca tra 27.706+ stand verificati gratuitamente e richiedi preventivi diretti di fabbrica in tutta la Cina attraverso il nostro team.',
+      directoryTitle: 'Catalogo Mercato all’Ingrosso in Cina | 27.706 Stand in Elenco & Preventivi Fabbrica',
+      directoryDesc: 'Cerca tra 27.706 fornitori in elenco gratuitamente e richiedi preventivi diretti di fabbrica in tutta la Cina attraverso il nostro team.',
       countriesTitle: '100 Corridoi di Importazione da Yiwu, Cina | Trasporto Marittimo e Dogana',
       countriesDesc: 'Guide all’importazione paese per paese da Yiwu e dal porto di Ningbo verso 100 destinazioni con tempi di transito, dazi e certificazioni richieste.'
     }

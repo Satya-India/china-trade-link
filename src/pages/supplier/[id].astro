@@ -70,7 +70,7 @@ const fallbackKeywords = districtKeywordsMap[supplier.district] || districtKeywo
 
 const supplierName = supplier.clean_name || supplier.name;
 const isDirectFactory = supplier.is_direct_factory === 'Yes';
-const supplierTypeLabel = isDirectFactory ? 'Verified Direct Factory' : 'Verified Wholesale Stall';
+const supplierTypeLabel = isDirectFactory ? 'Direct Manufacturer' : 'Listed Wholesale Stall';
 const boothLabel = supplier.booth_no ? `Booth ${supplier.booth_no}` : `District ${supplier.district}`;
 
 // Concise product snippet for <title> (kept under 55 chars so Booth & Brand never truncate in SERPs)
@@ -87,7 +87,7 @@ const topProductsSnippet = extractedKeywords.length > 0
   ? extractedKeywords.slice(0, 6).join(', ')
   : (sampleProducts.slice(0, 2).join(', ') || translatedCategory || districtName);
 
-const seoDescription = `${supplierName}${supplier.company_name && supplier.company_name !== supplierName ? ` (${supplier.company_name})` : ''} is a ${isDirectFactory ? 'direct manufacturing factory' : 'verified wholesale supplier'} at Yiwu International Trade City ${districtName}, Floor ${supplier.floor || '1'}, Gate ${supplier.gate || 'Direct'}, ${boothLabel}. Wholesale products: ${topProductsSnippet}. Request direct RMB factory pricing or a supplier visit via Sino Trade Link.`;
+const seoDescription = `${supplierName}${supplier.company_name && supplier.company_name !== supplierName ? ` (${supplier.company_name})` : ''} is a ${isDirectFactory ? 'direct manufacturing factory' : 'listed wholesale supplier'} at Yiwu International Trade City ${districtName}, Floor ${supplier.floor || '1'}, Gate ${supplier.gate || 'Direct'}, ${boothLabel}. Wholesale products: ${topProductsSnippet}. Request direct RMB factory pricing or a supplier visit via Sino Trade Link.`;
 
 // Build rich keyword list for <meta name="keywords"> and on-page tag cloud
 const productKeywordVariations = extractedKeywords.slice(0, 8).flatMap(p => [
@@ -210,8 +210,8 @@ const supplierJsonLd = {
           "acceptedAnswer": {
             "@type": "Answer",
             "text": isDirectFactory
-              ? `Yes, ${supplierName} (${supplier.company_name || supplierName}) is classified as a Verified Direct Factory showroom in Yiwu Futian Market${supplier.years_in_futian ? ` with ${supplier.years_in_futian}+ years of market history` : ''}. Buyers can book a supplier visit through Sino Trade Link.`
-              : `${supplierName} is a verified wholesale market distributor located at Booth ${supplier.booth_no || 'N/A'} in ${districtName}. Our on-ground Yiwu field engineers can visit this stall to verify their factory source, real-time stock, and EXW/FOB wholesale pricing.`
+              ? `Yes, ${supplierName} (${supplier.company_name || supplierName}) is classified as a direct manufacturer showroom in Yiwu Futian Market${supplier.years_in_futian ? ` with ${supplier.years_in_futian}+ years of market history` : ''}. Buyers can book a supplier visit through Sino Trade Link.`
+              : `${supplierName} is a listed wholesale market distributor located at Booth ${supplier.booth_no || 'N/A'} in ${districtName}. Our on-ground Yiwu field engineers can visit this stall to verify their factory source, real-time stock, and EXW/FOB wholesale pricing.`
           }
         },
         {
@@ -276,7 +276,7 @@ const supplierJsonLd = {
             {isDirectFactory && (
               <span class="bg-emerald-500/20 text-emerald-300 text-xs font-bold px-2.5 py-1 rounded-md border border-emerald-500/40 flex items-center gap-1">
                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                Verified Direct Factory
+                Direct Manufacturer
               </span>
             )}
             {supplier.years_in_futian > 0 && (
@@ -384,7 +384,7 @@ const supplierJsonLd = {
               )}
               <div class="text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-100">
                 <strong class="text-slate-700 block mb-0.5">Supplier Classification & Credit:</strong>
-                <span>{supplierTypeLabel} &bull; Market Score: {supplier.market_credit_score || 'Verified'}{translatedCategory ? ` • ${translatedCategory}` : ''}</span>
+                <span>{supplierTypeLabel} &bull; Market Score: {supplier.market_credit_score || 'Unavailable'}{translatedCategory ? ` • ${translatedCategory}` : ''}</span>
               </div>
             </div>
           </div>
@@ -398,7 +398,7 @@ const supplierJsonLd = {
               Wholesale Product Catalog & Sourcing Keywords
             </h2>
             <p class="text-xs text-slate-500 mb-4">
-              Verified product lines and wholesale categories supplied by <strong>{supplierName}</strong> at {boothLabel}:
+              Listed product lines and wholesale categories supplied by <strong>{supplierName}</strong> at {boothLabel}:
             </p>
 
             {sampleProducts.length > 0 ? (
@@ -508,8 +508,8 @@ const supplierJsonLd = {
                 </summary>
                 <p class="text-xs text-slate-600 mt-2.5 leading-relaxed">
                   {isDirectFactory
-                    ? `Yes — ${supplierName} (${supplier.company_name || supplierName}) is listed as a Verified Direct Factory showroom in Yiwu Futian Market. For OEM custom molds or bulk orders over $5,000, we recommend booking a supplier visit.`
-                    : `${supplierName} is a verified wholesale market stall at ${boothLabel} in ${districtName}. Our bilingual Yiwu ground team can visit this booth to inspect their physical stock, verify whether they hold direct factory tooling, and negotiate Tier-1 EXW pricing.`}
+                    ? `Yes — ${supplierName} (${supplier.company_name || supplierName}) is listed as a direct manufacturer showroom in Yiwu Futian Market. For OEM custom molds or bulk orders over $5,000, we recommend booking a supplier visit.`
+                    : `${supplierName} is a listed wholesale market stall at ${boothLabel} in ${districtName}. Our bilingual Yiwu ground team can visit this booth to inspect their physical stock, verify whether they hold direct factory tooling, and negotiate Tier-1 EXW pricing.`}
                 </p>
               </details>
 
@@ -638,7 +638,7 @@ const supplierJsonLd = {
                 Compare Neighboring Booths (10-Booth Cluster Rule)
               </span>
               <h2 class="text-xl font-black text-slate-900">
-                More Verified Wholesale Stalls in {districtName}
+                More Listed Wholesale Stalls in {districtName}
               </h2>
             </div>
             <a 

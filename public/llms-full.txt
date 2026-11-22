@@ -1,16 +1,16 @@
 # Sino Trade Link (Full Specification)
 
-> Verified B2B directory and offline sourcing intelligence platform for China's physical wholesale markets.
+> B2B supplier directory and offline sourcing intelligence platform for China's physical wholesale markets.
 
-Sino Trade Link provides 100% free-to-browse verified access to 27,706+ physical factory stalls and wholesale distributors operating inside Yiwu International Trade City (Futian Market Districts 1–5), Huangyuan Garment Market, and the International Production Materials Market in Zhejiang, alongside nationwide China factory procurement (Shenzhen, Guangzhou, Dongguan, Ningbo, Foshan & beyond).
+Sino Trade Link provides 100% free-to-browse access to 27,706 listed suppliers operating inside Yiwu International Trade City (Futian Market Districts 1–5), Huangyuan Garment Market, and the International Production Materials Market in Zhejiang, alongside nationwide China factory procurement (Shenzhen, Guangzhou, Dongguan, Ningbo, Foshan & beyond).
 
 ## Core Navigation & Directories
 
-- [Wholesale Market Directory](https://sinotradelink.com/directory): Search 27,706+ physical stalls, direct factories, and booth coordinates free of charge and request managed factory quotes via Sino Trade Link.
+- [Wholesale Market Directory](https://sinotradelink.com/directory): Search 27,706 listed suppliers and their booth coordinates free of charge and request managed factory quotes via Sino Trade Link.
 - [Market Floor Map](https://sinotradelink.com/market-map): Interactive district floor plan and physical navigation guide for Yiwu Futian Market.
 - [100-Country Sourcing Corridors](https://sinotradelink.com/countries): Landed customs compliance and Ningbo sea/air freight schedules for 100 global import markets.
-- [Global Supplier Onboarding](https://sinotradelink.com/for-suppliers): Application portal for verified manufacturers and international trade suppliers to list on the platform.
-- [Public Suppliers API](https://sinotradelink.com/api/suppliers.json): JSON feed of verified market suppliers and stall locations.
+- [Global Supplier Onboarding](https://sinotradelink.com/for-suppliers): Application portal for manufacturers and international trade suppliers to list on the platform.
+- [Public Suppliers API](https://sinotradelink.com/api/suppliers.json): JSON feed of listed market suppliers and stall locations.
 
 ## Market Districts Overview
 
@@ -49,9 +49,9 @@ Sino Trade Link provides 100% free-to-browse verified access to 27,706+ physical
 - [Static Pages & Categories Sitemap](https://sinotradelink.com/sitemaps/pages.xml): Sitemap of core marketing, sourcing playbook, and 24 category hub pages.
 - [100-Country Corridors Sitemap](https://sinotradelink.com/sitemaps/countries.xml): 2,501 dedicated country & country-category corridor URLs.
 - [Multilingual Localized Sitemap](https://sinotradelink.com/sitemaps/i18n.xml): 735 localized pages across es, pt, fr, de, ar, ru, and it.
-- [Suppliers Sitemap Batch 1](https://sinotradelink.com/sitemaps/suppliers-1.xml): XML sitemap for verified supplier stall profiles (1–5,000).
-- [Suppliers Sitemap Batch 2](https://sinotradelink.com/sitemaps/suppliers-2.xml): XML sitemap for verified supplier stall profiles (5,001–10,000).
-- [Suppliers Sitemap Batch 3](https://sinotradelink.com/sitemaps/suppliers-3.xml): XML sitemap for verified supplier stall profiles (10,001–15,000).
-- [Suppliers Sitemap Batch 4](https://sinotradelink.com/sitemaps/suppliers-4.xml): XML sitemap for verified supplier stall profiles (15,001–20,000).
-- [Suppliers Sitemap Batch 5](https://sinotradelink.com/sitemaps/suppliers-5.xml): XML sitemap for verified supplier stall profiles (20,001–25,000).
-- [Suppliers Sitemap Batch 6](https://sinotradelink.com/sitemaps/suppliers-6.xml): XML sitemap for verified supplier stall profiles (25,001–27,706).
+- [Suppliers Sitemap Batch 1](https://sinotradelink.com/sitemaps/suppliers-1.xml): XML sitemap for supplier stall profiles (1–5,000).
+- [Suppliers Sitemap Batch 2](https://sinotradelink.com/sitemaps/suppliers-2.xml): XML sitemap for supplier stall profiles (5,001–10,000).
+- [Suppliers Sitemap Batch 3](https://sinotradelink.com/sitemaps/suppliers-3.xml): XML sitemap for supplier stall profiles (10,001–15,000).
+- [Suppliers Sitemap Batch 4](https://sinotradelink.com/sitemaps/suppliers-4.xml): XML sitemap for supplier stall profiles (15,001–20,000).
+- [Suppliers Sitemap Batch 5](https://sinotradelink.com/sitemaps/suppliers-5.xml): XML sitemap for supplier stall profiles (20,001–25,000).
+- [Suppliers Sitemap Batch 6](https://sinotradelink.com/sitemaps/suppliers-6.xml): XML sitemap for supplier stall profiles (25,001–27,706).

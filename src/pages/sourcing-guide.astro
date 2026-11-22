@@ -1,6 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
+const freightEstimateNote = 'Rates shown are illustrative estimates, not quotes. Confirm current rates with your merchant before shipping.';
+
 const shippingMethods = [
   {
     name: "1. International Express (FedEx IP / IE, UPS, DHL)",
@@ -12,8 +14,8 @@ const shippingMethods = [
     badgeColor: "bg-blue-100 text-blue-800 border-blue-200",
     insights: [
       "95% of physical product samples and urgent e-commerce restocks move via Express.",
-      "Never pay freight-collect on a US/EU courier account—Chinese forwarder agent tiers receive 20%–50% volume discounts off official retail tariffs.",
-      "Shipments valued under $800 USD enter the United States duty-free under Section 321 De Minimis.",
+      "Compare courier and forwarder rates for the same route, shipment size, and service level.",
+      "Check current customs and duty requirements for your shipment with your merchant or customs broker.",
       "Sensitive goods (lithium batteries, liquids, powders, cosmetics) cannot fly on standard mainland courier accounts; they route via Hong Kong DHL/FedEx channels at ~$10+/kg."
     ]
   },
@@ -27,7 +29,7 @@ const shippingMethods = [
     badgeColor: "bg-indigo-100 text-indigo-800 border-indigo-200",
     insights: [
       "Cargo flies consolidated commercial air freight from Shanghai/Hangzhou/Ningbo to LAX/JFK/ORD, clears customs in bulk, and hands off to UPS Ground for final-mile delivery.",
-      "Saves 30%–40% compared to pure Express while arriving in under two weeks.",
+      "Compare current rates and transit times with an express courier for your shipment.",
       "Rates scale down at 21 kg+, 51 kg+, 71 kg+, 301 kg+, and 501 kg+ weight breaks."
     ]
   },
@@ -47,7 +49,7 @@ const shippingMethods = [
   {
     name: "4. Sea Freight + UPS Combined (SFUC / Fast Sea DDP)",
     bestFor: "Multi-Carton Market Orders & FBA (100 kg – 2,000 kg)",
-    transit: "25–32 Days (Saves 10+ Days vs LCL)",
+    transit: "25–32 Days",
     divisor: "Billed by KG (100 kg+ Minimum)",
     rateBenchmark: "$1.50/kg (US West) • $1.60/kg (Central) • $1.80/kg (US East)",
     badge: "Most Popular for E-Commerce",
@@ -68,7 +70,7 @@ const shippingMethods = [
     badgeColor: "bg-amber-100 text-amber-800 border-amber-200",
     insights: [
       "You share a container with other importers and pay strictly by Cubic Meter (CBM).",
-      "Real-life unit math: 400 boxed wine glasses (19 × 23 × 19 cm per box) = 3.3 CBM total. At $310/CBM all-in to Los Angeles ($1,023 total), landed shipping is just $2.56 per unit.",
+      "Illustrative freight calculation: 400 boxed wine glasses (19 × 23 × 19 cm per box) = 3.3 CBM total. At $310/CBM all-in to Los Angeles ($1,023 total), landed shipping is just $2.56 per unit.",
       "Under EXW terms, budget $10–$30/CBM for domestic China trucking to Ningbo Port plus $100–$200 for China export customs clearance."
     ]
   },
@@ -83,7 +85,7 @@ const shippingMethods = [
     insights: [
       "Once your combined Yiwu stall orders exceed 15–18 CBM, booking a dedicated 20' GP container (28 CBM capacity) is often cheaper and safer than LCL.",
       "China export documentation and terminal handling for a full container is roughly $300 flat.",
-      "For European & Central Asian buyers, the Yixinou (Yiwu–Madrid) Railway Express cuts sea transit time by 50% at less than half the cost of air freight."
+      "European and Central Asian buyers can compare rail, sea, and air services for their route."
     ]
   },
   {
@@ -118,8 +120,8 @@ const oemSteps = [
     summary: "Why online marketplace inquiries stall out on multi-round custom development.",
     details: [
       "Most online B2B listings are staffed by junior English-speaking sales reps at trading companies who do not understand mold gating, circuit board BOM optimization, or fabric GSM.",
-      "In Yiwu Futian Market, Floor 4 and Floor 5 house direct manufacturer showrooms (and our database flags 10,141 licensed factories) where you negotiate directly with plant owners.",
-      "Case Study Benchmark: Replacing US-sourced PCB components with domestic Shenzhen/Zhejiang equivalents during pre-production engineering routinely cuts unit BOM cost by up to 50%."
+      "In Yiwu Futian Market, Floor 4 and Floor 5 house direct manufacturer showrooms (factories listed on the platform are marked as direct manufacturers) where you negotiate directly with plant owners.",
+      "Component substitution can reduce unit cost; results vary by product."
     ]
   },
   {
@@ -135,11 +137,11 @@ const oemSteps = [
   {
     step: "04",
     title: "Protect Your IP: NNN Agreements & Provisional Patents",
-    summary: "Standard Western NDAs are rarely enforceable in Chinese courts—use China-specific legal tools.",
+    summary: "Enforceability of contracts and IP protections in China varies. Consult a qualified lawyer before relying on any agreement or filing.",
     details: [
-      "Sign a bilingual NNN Agreement (Non-Disclosure, Non-Use, Non-Circumvention) stamped with the supplier's official red corporate seal (Gongzhang) before sending 3D CAD files.",
-      "Non-Use prevents the factory from selling your mold's output in Yiwu showrooms; Non-Circumvention stops them from bypassing you to sell directly to your customers.",
-      "For structural or functional innovations, file a Provisional Patent (< $300 USD) in your primary target market (e.g., USPTO), locking in a 12-month priority window while you test sales."
+      "Before sharing 3D CAD files, consider asking your lawyer whether a bilingual non-disclosure, non-use, and non-circumvention (NNN) agreement and the supplier's company seal are appropriate.",
+      "Non-use and non-circumvention clauses may help address unauthorized use of your designs or direct sales to your customers.",
+      "For structural or functional innovations, consider asking a patent lawyer whether a provisional application is available and appropriate for the markets where you seek protection."
     ]
   },
   {
@@ -155,7 +157,7 @@ const oemSteps = [
   {
     step: "06",
     title: "Approve & Stress-Test the Pre-Production (PP) Sample",
-    summary: "The approved PP sample is your golden legal benchmark for mass production and final QC.",
+    summary: "Consider documenting the approved PP sample as the reference for mass production and final QC.",
     details: [
       "Insist that the PP sample uses the exact bulk material and assembly line process (not a hand-glued prototype).",
       "Plush & Textiles Check: Inspect seam tension, stitch density, symmetrical embroidery, and zero loose threads.",
@@ -200,14 +202,14 @@ const importChecklist = [
   },
   {
     q: "2. Which 5 types of buyers benefit most from combining direct stall data with on-ground execution?",
-    a: "(1) First-time importers who want verified suppliers without risking $3,000+ on flights and hotels; (2) E-commerce & Amazon FBA sellers testing 300–500 unit small-batch private label runs; (3) Established brands optimizing supply chains to cut out 15%–30% trading company markups; (4) Multi-SKU retail, supermarket, hotel, and hospitality buyers procuring 50–500+ different items across multiple market districts; and (5) Specialized buyers sourcing industrial materials, furniture, or stock lots."
+    a: "(1) First-time importers who want to compare supplier listings without risking $3,000+ on flights and hotels; (2) E-commerce & Amazon FBA sellers testing 300–500 unit small-batch private label runs; (3) Established brands optimizing supply chains to cut out 15%–30% trading company markups; (4) Multi-SKU retail, supermarket, hotel, and hospitality buyers procuring 50–500+ different items across multiple market districts; and (5) Specialized buyers sourcing industrial materials, furniture, or stock lots."
   },
   {
     q: "3. What are the 8 essential checkpoints to verify a Chinese supplier before wiring a deposit?",
     a: "(1) Official Chinese AIC Business License (Unified Social Credit Code & registered capital); (2) Business scope check (confirming 'manufacturing/production' vs pure 'wholesale/trading'); (3) Physical booth & factory coordinate verification (District, Gate, Floor, Booth No. or industrial park); (4) Factory registration & owner identity verification by our on-ground team; (5) Operating history & years active in Chinese wholesale hubs; (6) Sample workmanship & specification adherence; (7) Valid export & product compliance certificates (CE, RoHS, CPC, FDA); and (8) Corporate bank account beneficiary match."
   },
   {
-    q: "4. What 6 details must be written into your Purchase Order (Proforma Invoice) before production?",
+    q: "4. What six details should you consider including in your purchase order or pro forma invoice before production?",
     a: "(1) Exact product specifications (materials, dimensions, weight, Pantone codes, and approved PP sample reference); (2) Packaging specs (inner box, master carton ply rating, barcode labels, and shipping marks); (3) Incoterm & currency (EXW Booth, FOB Ningbo, or DDP Door); (4) Payment milestone schedule (e.g., 30% deposit, 70% balance after passed QC inspection); (5) Lead time & late-delivery penalty clause; and (6) Defect tolerance threshold (AQL 2.5/4.0) & replacement/compensation agreement."
   },
   {
@@ -232,7 +234,7 @@ const importChecklist = [
         The Complete <span class="bg-gradient-to-r from-blue-400 via-indigo-300 to-amber-300 bg-clip-text text-transparent">China Sourcing, OEM & Freight</span> Playbook
       </h1>
       <p class="mt-4 text-sm sm:text-base text-slate-300 max-w-3xl mx-auto leading-relaxed">
-        Everything you need to source directly from Yiwu's 27,706+ verified stalls, develop private-label products, calculate real-time volumetric & CBM freight costs, and verify factories on the ground—without paying 5%–10% commission middlemen.
+        Everything you need to source directly from Yiwu's 27,706 listed suppliers, develop private-label products, estimate freight costs using volumetric weight and CBM, and plan a supplier visit.
       </p>
 
       <!-- Quick Section Jump Navigation -->
@@ -266,12 +268,12 @@ const importChecklist = [
               China Freight, Volumetric Weight & Per-Unit Landed Cost Calculator
             </h2>
             <p class="text-xs text-slate-300 mt-1">
-              Couriers charge whichever is greater: <strong class="text-white">Actual Gross Weight</strong> or <strong class="text-white">Dimensional Weight (L×W×H ÷ 5000 for Express, ÷ 6000 for Air)</strong>. Enter your carton specs below to see your true billable weight and best shipping mode.
+              Couriers charge whichever is greater: <strong class="text-white">Actual Gross Weight</strong> or <strong class="text-white">Dimensional Weight (L×W×H ÷ 5000 for Express, ÷ 6000 for Air)</strong>. Enter your carton specs below to estimate billable weight and compare shipping methods.
             </p>
           </div>
           <div class="shrink-0 text-right">
             <span class="inline-block px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-xs font-bold">
-              Instant Live Calculation
+              Illustrative Freight Calculator
             </span>
           </div>
         </div>
@@ -409,11 +411,13 @@ const importChecklist = [
               </table>
             </div>
 
+            <p class="text-xs text-slate-600">{freightEstimateNote}</p>
+
             <!-- Dynamic Recommendation Banner -->
             <div id="res-recommendation" class="p-4 rounded-2xl bg-blue-50 border border-blue-200 text-xs text-blue-950 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
                 <strong class="font-black block text-blue-900">Recommended Mode: Sea Freight + UPS Combined (SFUC)</strong>
-                <span id="res-rec-text" class="text-blue-800">Your shipment is over 100 kg billable weight. SFUC saves ~75% vs Express and arrives 10+ days faster than standard LCL sea freight.</span>
+                <span id="res-rec-text" class="text-blue-800">Compare estimated freight costs and transit times for the shipment shown above.</span>
               </div>
               <a
                 href="https://wa.me/8613482725985?text=Hi%20SinoTradeLink%2C%20I%20used%20your%20CBM%20%26%20Freight%20Calculator%20and%20would%20like%20a%20live%20consolidation%20%26%20shipping%20quote%20from%20Yiwu."
@@ -511,6 +515,7 @@ const importChecklist = [
                 <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80">
                   <span class="text-[10px] uppercase font-bold text-slate-400 block">Reference Rate</span>
                   <span class="font-mono font-bold text-emerald-700 text-[11px]">{m.rateBenchmark}</span>
+                  <p class="mt-1 text-[11px] leading-relaxed text-slate-600">{freightEstimateNote}</p>
                 </div>
               </div>
 
@@ -613,15 +618,15 @@ const importChecklist = [
             Ready to Execute in Yiwu?
           </span>
           <h3 class="text-xl sm:text-2xl font-black text-white">
-            Start with Verified Stall Data or Dispatch Our Yiwu Team Today
+            Browse Yiwu Supplier Listings
           </h3>
           <p class="text-xs text-slate-300 mt-1 max-w-xl">
-            Search 27,706+ stalls for free, paste any Alibaba.com product link for a 1-piece factory quote, or request an On-Demand Physical Stall Audit within 24–48 hours.
+            Search 27,706 listed suppliers or contact us to discuss a stall visit.
           </p>
         </div>
         <div class="flex flex-wrap gap-3 shrink-0">
           <a href="/directory" class="px-4 py-2.5 rounded-xl bg-white text-slate-950 font-black text-xs hover:bg-slate-100 transition-colors">
-            Search 27,706 Stalls
+            Search 27,706 Listed Suppliers
           </a>
           <a href="https://wa.me/8613482725985" target="_blank" rel="noopener" class="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs transition-colors">Contact us on WhatsApp</a>
         </div>
@@ -724,16 +729,16 @@ const importChecklist = [
       var titleEl = resRecBox ? resRecBox.querySelector('strong') : null;
       if (totalCbm >= 15) {
         if (titleEl) titleEl.textContent = 'Recommended Mode: 20\' GP or 40\' HQ Full Container Load (FCL)';
-        resRecText.textContent = 'At ' + totalCbm.toFixed(1) + ' CBM, booking a dedicated 20\' GP container (28 CBM capacity) from Ningbo Port is cheaper and safer than LCL or per-kg DDP.';
+        resRecText.textContent = 'At ' + totalCbm.toFixed(1) + ' CBM, ask your merchant for a full container quote to compare with LCL and per-kg DDP.';
       } else if (totalCbm >= 3.5 && totalLclCost < totalSfucCost) {
         if (titleEl) titleEl.textContent = 'Recommended Mode: Sea Freight LCL (CBM Volume Basis)';
-        resRecText.textContent = 'At ' + totalCbm.toFixed(2) + ' CBM, LCL sea freight gives you the lowest landed cost per unit ($' + (totalLclCost / units).toFixed(2) + '/pc).';
+        resRecText.textContent = 'At ' + totalCbm.toFixed(2) + ' CBM, the illustrative LCL freight cost is $' + (totalLclCost / units).toFixed(2) + ' per unit.';
       } else if (expBillableKg < 45) {
         if (titleEl) titleEl.textContent = 'Recommended Mode: International Express (FedEx IP/IE)';
         resRecText.textContent = 'For small shipments under 45 kg, Express courier is fastest and avoids minimum sea freight surcharges.';
       } else {
         if (titleEl) titleEl.textContent = 'Recommended Mode: Sea Freight + UPS Combined (SFUC Fast DDP)';
-        resRecText.textContent = 'SFUC gives you the best balance of speed (25–32 days) and low landed cost ($' + (totalSfucCost / units).toFixed(2) + '/pc) without port deconsolidation delays.';
+        resRecText.textContent = 'The illustrative SFUC freight cost is $' + (totalSfucCost / units).toFixed(2) + ' per unit. Confirm the transit time with your merchant.';
       }
     }
 

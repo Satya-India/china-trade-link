@@ -131,7 +131,7 @@ const baseFaqQuestions = isCategoryMode && category
         "name": `How can ${country.name} buyers avoid 15–30% China trading agent commissions?`,
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": `${country.corridorAdvantage} Browse verified stalls and contact us to discuss a supplier visit in China.`
+          "text": `${country.corridorAdvantage} Browse supplier listings and contact us to discuss a supplier visit in China.`
         }
       }
     ]
@@ -165,7 +165,7 @@ const baseFaqQuestions = isCategoryMode && category
         "name": `How can Sino Trade Link help ${country.name} importers?`,
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": `${country.corridorAdvantage} Browse verified stalls and contact us to discuss your sourcing requirements.`
+          "text": `${country.corridorAdvantage} Browse supplier listings and contact us to discuss your sourcing requirements.`
         }
       }
     ];
@@ -277,7 +277,7 @@ const pageJsonLd = {
               </>
             ) : (
               <span class="px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-xs font-bold">
-                27,706 Verified Stalls &bull; China-Wide Direct Factory Quotes
+                27,706 Listed Suppliers &bull; China-Wide Direct Factory Quotes
               </span>
             )}
           </div>
@@ -297,7 +297,7 @@ const pageJsonLd = {
           <p class="mt-3 text-sm sm:text-base text-slate-300 leading-relaxed max-w-3xl">
             {isCategoryMode && category ? (
               <>
-                Source <strong class="text-white">{category.shortName}</strong> directly from verified factory booths in <strong class="text-white">{category.districtLabel} ({category.floor}, {category.gateGuide})</strong> with consolidated ocean &amp; air delivery to <strong class="text-blue-300">{country.ports}</strong>. {category.description}
+                Source <strong class="text-white">{category.shortName}</strong> directly from listed factory booths in <strong class="text-white">{category.districtLabel} ({category.floor}, {category.gateGuide})</strong> with consolidated ocean &amp; air delivery to <strong class="text-blue-300">{country.ports}</strong>. {category.description}
               </>
             ) : (
               <>
@@ -372,7 +372,7 @@ const pageJsonLd = {
             24 Yiwu Product Category Corridors for {country.name}
           </h2>
           <p class="text-xs text-slate-500 mt-0.5">
-            Select a specialized Yiwu Futian Market category below to view verified booths, typical MOQs, and {country.customsCompliance} QC checklists for {country.name}.
+            Select a specialized Yiwu Futian Market category below to view listed booths, typical MOQs, and {country.customsCompliance} QC checklists for {country.name}.
           </p>
         </div>
         {isCategoryMode && (
@@ -411,20 +411,20 @@ const pageJsonLd = {
     </div>
   </section>
 
-  <!-- Verified Yiwu Factory Stalls Exporting to Country -->
+  <!-- Listed Yiwu Factory Stalls -->
   <section class="py-12 bg-slate-50 border-b border-slate-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
           <h2 class="text-xl sm:text-2xl font-black text-slate-900">
             {isCategoryMode && category
-              ? `Verified Yiwu ${category.shortName} Factory Stalls Exporting to ${country.name}`
-              : `Verified Yiwu Factory Stalls Exporting to ${country.name} (${country.flag})`}
+              ? `Listed Yiwu ${category.shortName} Factory Stalls for ${country.name} Buyers`
+              : `Listed Yiwu Factory Stalls for ${country.name} Buyers (${country.flag})`}
           </h2>
           <p class="text-xs text-slate-500 mt-0.5">
             {isCategoryMode && category
-              ? `Showing verified stalls in ${category.districtLabel} (${category.floor}) ready for LCL/FCL shipment to ${country.ports}.`
-              : `Showing verified direct manufacturers across Yiwu Futian Market Districts 1–5 ready for export to ${country.ports}.`}
+              ? `Showing listed stalls in ${category.districtLabel} (${category.floor}). Ask suppliers about LCL or FCL shipping to ${country.ports}.`
+              : `Showing listings marked as direct manufacturers across Yiwu Futian Market Districts 1–5. Confirm export options with each supplier.`}
           </p>
         </div>
 

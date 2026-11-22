@@ -30,7 +30,7 @@ export const CATEGORY_HUBS: CategoryHub[] = [
     packId: 'toys-crafts',
     typicalMoq: '1–3 Cartons (Ready Stock) / 500–1,000 pcs (Custom OEM)',
     avgMasterCartonCbm: '0.18 – 0.28 CBM (Vacuum-compressed available)',
-    description: 'Source directly from verified plush toy manufacturers and wholesale stalls in Yiwu International Trade City District 1, Floor 1. Compare PP cotton density, crystal super-soft fabric GSM, and EN71/ASTM F963 export compliance.',
+    description: 'Source directly from listed plush toy manufacturers and wholesale stalls in Yiwu International Trade City District 1, Floor 1. Compare PP cotton density, crystal super-soft fabric GSM, and EN71/ASTM F963 export compliance.',
     qcChecklist: [
       'Verify virgin 3D hollow PP cotton filling vs. clumpy recycled scrap foam',
       'Check crystal super-soft velour GSM weight (260g/m² vs. thin 180g/m²) and seam pull-strength (>70N)',
@@ -186,7 +186,7 @@ export const CATEGORY_HUBS: CategoryHub[] = [
     packId: 'hardware-kitchen',
     typicalMoq: '50–100 pcs (Ready Stock) / 300–500 pcs (Custom Logo)',
     avgMasterCartonCbm: '0.15 – 0.26 CBM (Nesting 20"/24"/28" luggage sets save 60% CBM)',
-    description: 'Browse verified luggage and bag manufacturers in Yiwu District 2, Floor 1: PU leather handbags, Oxford laptop backpacks, primary schoolbags, cosmetic pouches, and 3-piece nesting ABS/PC trolley suitcases.',
+    description: 'Browse listed luggage and bag manufacturers in Yiwu District 2, Floor 1: PU leather handbags, Oxford laptop backpacks, primary schoolbags, cosmetic pouches, and 3-piece nesting ABS/PC trolley suitcases.',
     qcChecklist: [
       'Inspect Oxford/PU fabric denier (600D/900D/1680D), interior lining tear resistance, and bar-tack stitching at shoulder strap stress points',
       'Test zipper slider smoothness (100+ rapid pulls) and telescopic aluminum trolley handle wobble (<1.5cm)',

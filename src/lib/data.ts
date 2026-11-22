@@ -33,7 +33,6 @@ export interface MarketStats {
   totalSuppliers: number;
   unmaskedPhoneCount: number;
   phoneCoverageRate: string;
-  directFactories: number;
   veteranSuppliers: number;
   byDistrict: Record<string, number>;
 }
@@ -178,7 +177,7 @@ export async function getSupplierById(id: string, db?: any): Promise<Supplier | 
 }
 
 /**
- * Fetch neighboring/related verified suppliers in the same district for internal SEO linking
+ * Fetch neighboring/related suppliers in the same district for internal SEO linking
  */
 export async function getRelatedSuppliers(supplier: Supplier, limit = 6, db?: any): Promise<Supplier[]> {
   const activeDb = db || (await getD1Database());
@@ -225,7 +224,6 @@ export const MARKET_STATS_BASELINE: MarketStats = {
   totalSuppliers: 27706,
   unmaskedPhoneCount: 27677,
   phoneCoverageRate: '99.9',
-  directFactories: 10141,
   veteranSuppliers: 22691,
   byDistrict: {
     '1': 4966,

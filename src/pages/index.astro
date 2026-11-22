@@ -11,7 +11,7 @@ const featuredSuppliers = await getFeaturedSuppliers(8);
 
 <Layout
   title="Sino Trade Link | China-Wide Direct Factory Sourcing"
-  description="Source directly from factories anywhere in China (Yiwu, Shenzhen, Guangzhou, Ningbo & beyond). Browse 27,706+ verified stalls free and request managed factory quotes."
+  description="Source directly from factories anywhere in China (Yiwu, Shenzhen, Guangzhou, Ningbo & beyond). Browse 27,706 listed suppliers free and request managed factory quotes."
   activePage="home"
 >
   <!-- Hero Section -->
@@ -31,7 +31,7 @@ const featuredSuppliers = await getFeaturedSuppliers(8);
       </h1>
 
       <p class="mt-6 text-base sm:text-xl text-slate-300 max-w-2xl mx-auto font-normal leading-relaxed">
-        We procure across <strong class="text-white font-semibold">Yiwu, Shenzhen, Guangzhou, Ningbo &amp; factory belts nationwide</strong>. Browse <strong class="text-white font-semibold">{stats.totalSuppliers.toLocaleString()}+ verified stalls</strong> free and request direct factory quotes through our team.
+        We procure across <strong class="text-white font-semibold">Yiwu, Shenzhen, Guangzhou, Ningbo &amp; factory belts nationwide</strong>. Browse <strong class="text-white font-semibold">{stats.totalSuppliers.toLocaleString()} listed suppliers</strong> free and request direct factory quotes through our team.
       </p>
 
       <!-- Search Bar -->
@@ -77,24 +77,20 @@ const featuredSuppliers = await getFeaturedSuppliers(8);
         <span class="hidden sm:block text-slate-700">|</span>
         <span class="flex items-center gap-1.5"><span class="text-blue-400">💬</span> Direct Sourcing Desk via WhatsApp</span>
         <span class="hidden sm:block text-slate-700">|</span>
-        <span class="flex items-center gap-1.5"><span class="text-amber-400">✅</span> Vetted China Factory &amp; Stall Network</span>
+        <span class="flex items-center gap-1.5"><span class="text-amber-400">✅</span> China Factory &amp; Stall Directory</span>
         <span class="hidden sm:block text-slate-700">|</span>
         <span class="flex items-center gap-1.5"><span class="text-emerald-400">🛡️</span> Managed Outreach — We Contact Suppliers For You</span>
       </div>
 
       <!-- Live Metric Badges Grid -->
-      <div class="mt-14 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+      <div class="mt-14 grid grid-cols-2 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
         <div class="bg-slate-800/60 backdrop-blur border border-slate-700/60 rounded-2xl p-4 text-center">
-          <div class="text-2xl sm:text-3xl font-black text-white">{stats.totalSuppliers.toLocaleString()}+</div>
-          <div class="text-xs text-slate-400 font-medium mt-1">Verified Stalls Indexed</div>
+          <div class="text-2xl sm:text-3xl font-black text-white">{stats.totalSuppliers.toLocaleString()}</div>
+          <div class="text-xs text-slate-400 font-medium mt-1">Listed Suppliers</div>
         </div>
         <div class="bg-slate-800/60 backdrop-blur border border-slate-700/60 rounded-2xl p-4 text-center">
           <div class="text-2xl sm:text-3xl font-black text-emerald-400">100% China</div>
           <div class="text-xs text-slate-400 font-medium mt-1">All Industrial Belts Covered</div>
-        </div>
-        <div class="bg-slate-800/60 backdrop-blur border border-slate-700/60 rounded-2xl p-4 text-center">
-          <div class="text-2xl sm:text-3xl font-black text-amber-400">{stats.directFactories.toLocaleString()}</div>
-          <div class="text-xs text-slate-400 font-medium mt-1">Licensed Factories</div>
         </div>
         <div class="bg-slate-800/60 backdrop-blur border border-slate-700/60 rounded-2xl p-4 text-center">
           <div class="text-2xl sm:text-3xl font-black text-blue-400">0%</div>
@@ -172,19 +168,19 @@ const featuredSuppliers = await getFeaturedSuppliers(8);
     </div>
   </section>
 
-  <!-- Featured Verified Stalls Section -->
+  <!-- Featured Supplier Listings Section -->
   <section class="py-16 bg-white border-b border-slate-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex flex-col md:flex-row md:items-end justify-between mb-10">
         <div>
           <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 block mb-1">
-            Hand-Picked Verified Profiles
+            Featured Supplier Profiles
           </span>
           <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
             Top Direct Factories & Veteran Suppliers
           </h2>
           <p class="text-sm text-slate-600 mt-1 max-w-xl">
-            Browse verified stall locations, product catalogs, and booth numbers — then request a direct factory quote or sample consolidation from our team.
+            Browse listed stall locations, product catalogs, and booth numbers — then request a direct factory quote or sample consolidation from our team.
           </p>
         </div>
         <a 
@@ -256,7 +252,7 @@ const featuredSuppliers = await getFeaturedSuppliers(8);
               China-to-US Shipping Cost & CBM Calculator
             </h3>
             <p class="text-xs text-slate-600 leading-relaxed mb-4">
-              Compare FedEx IP/IE, Air + UPS Combined (AFUC), Sea + UPS Combined (SFUC at $1.50–$1.80/kg), LCL CBM rates, and 20'GP/40'HQ containers—plus calculate volumetric weight (÷5000 vs ÷6000) instantly.
+              Compare illustrative freight estimates for FedEx, air and sea services, and calculate volumetric weight for your cartons.
             </p>
           </div>
           <span class="text-xs font-bold text-blue-600 flex items-center gap-1">

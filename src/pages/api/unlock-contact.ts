@@ -91,7 +91,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
       });
     }
 
-    const supplierName = supplier.clean_name || supplier.name || 'Verified Supplier';
+    const supplierName = supplier.clean_name || supplier.name || 'Listed Supplier';
     const internalPhone = supplier.unmasked_direct_phone || '';
 
     const inquiryId = crypto.randomUUID();
