@@ -22,7 +22,6 @@ export interface Supplier {
   sample_products: string;
   full_location: string;
   delivery_address: string;
-  chinagoods_url: string;
   shop_id: string;
   all_wechats: string;
   email: string;
@@ -105,7 +104,6 @@ function convertIndexItem(item: any): Supplier {
     english_category: englishCat,
     full_location: `District ${item.d}, Floor ${item.fl}, Gate ${item.g}, Street ${item.st}, Booth ${item.b}`,
     delivery_address: `Yiwu International Trade City District ${item.d}, Booth ${item.b}`,
-    chinagoods_url: `https://en.chinagoods.com/shop/${item.i}.html`,
     trust_badges: item.f === 1 ? 'Direct Factory' : 'Verified Stall',
     all_wechats: item.p || '',
     email: ''
