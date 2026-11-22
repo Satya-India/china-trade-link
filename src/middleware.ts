@@ -94,6 +94,16 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return new Response('Not Found', { status: 404, headers: h });
   }
 
+  // Retired public offers must bypass the language fallback and any cached pages.
+  if (/^\/(?:(?:es|pt|fr|de|ar|ru|it)\/)?(?:dropshipping|concierge)\/?$/.test(pathname)) {
+    const headers = new Headers({
+      'Content-Type': 'text/plain; charset=utf-8',
+      'Cache-Control': 'no-store'
+    });
+    applySecurityHeaders(headers, { isApi: false });
+    return new Response('This page has been permanently removed.', { status: 410, headers });
+  }
+
   // 2. Legacy /admin and /api/admin redirects -> 301 permanent redirect to https://sinotradelink.com/app
   if (pathname === '/admin' || pathname.startsWith('/admin/') || pathname === '/api/admin' || pathname.startsWith('/api/admin/')) {
     return Response.redirect('https://sinotradelink.com/app', 301);
