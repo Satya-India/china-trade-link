@@ -84,6 +84,29 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return Response.redirect(url.toString(), 301);
   }
 
+  // 1.5. Clean unlocalized root routes mistakenly requested with a locale prefix
+  // e.g. /es/supplier/12345 -> /supplier/12345, /fr/category/toys -> /category/toys
+  const unlocalizedLocaleMatch = pathname.match(/^\/(?:es|pt|fr|de|ar|ru|it)\/(supplier|category|market-map|sourcing-guide|for-suppliers)(\/.*)?$/);
+  if (unlocalizedLocaleMatch) {
+    const canonicalPath = `/${unlocalizedLocaleMatch[1]}${unlocalizedLocaleMatch[2] || ''}`;
+    url.pathname = canonicalPath;
+    return Response.redirect(url.toString(), 301);
+  }
+
+  // Collapse duplicate/nested locale prefixes (e.g. /es/ru/directory -> /es/directory)
+  const nonDefaultLocales = ['es', 'pt', 'fr', 'de', 'ar', 'ru', 'it'];
+  const segments = pathname.split('/').filter(Boolean);
+  let leadingLocaleCount = 0;
+  while (leadingLocaleCount < segments.length && nonDefaultLocales.includes(segments[leadingLocaleCount])) {
+    leadingLocaleCount++;
+  }
+  if (leadingLocaleCount > 1) {
+    const primaryLocale = segments[0];
+    const rest = segments.slice(leadingLocaleCount).join('/');
+    url.pathname = `/${primaryLocale}${rest ? `/${rest}` : ''}`;
+    return Response.redirect(url.toString(), 301);
+  }
+
   const method = context.request.method;
   const pathname = url.pathname;
 
