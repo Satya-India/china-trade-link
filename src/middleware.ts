@@ -69,6 +69,8 @@ function dispatchWaitUntil(context: any, promise: Promise<any>) {
 
 export const onRequest = defineMiddleware(async (context, next) => {
   const url = new URL(context.request.url);
+  const pathname = url.pathname;
+  const method = context.request.method;
   const isLocalDev = url.hostname === 'localhost' || url.hostname === '127.0.0.1';
 
   // 1. Canonical 301 Permanent Redirect: www.sinotradelink.com -> https://sinotradelink.com
@@ -106,9 +108,6 @@ export const onRequest = defineMiddleware(async (context, next) => {
     url.pathname = `/${primaryLocale}${rest ? `/${rest}` : ''}`;
     return Response.redirect(url.toString(), 301);
   }
-
-  const method = context.request.method;
-  const pathname = url.pathname;
 
   // 1c. Explicitly block sensitive dotfile, backup, SQL, and source map probes with 404
   if (/(?:^|\/)\.(?:env|git|dev\.vars|htaccess)|(?:\.map|\.sql|\.bak|\.local)$/i.test(pathname)) {
