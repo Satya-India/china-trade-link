@@ -46,7 +46,15 @@ export function mountSinoChatPanel(
   let loading = false;
   let draft: Record<string, string> = {};
   let items: Array<{ product: string; quantity?: string }> = [];
-  const convId = `stl-${Math.random().toString(36).slice(2, 10)}`;
+  let remainingMessages = 5;
+  let limitReached = false;
+  try {
+    const saved = JSON.parse(localStorage.getItem('stl_chat_state_v1') || '{}');
+    if (!saved.exp || Date.now() < saved.exp) {
+      if (typeof saved.remainingMessages === 'number') remainingMessages = saved.remainingMessages;
+      if (typeof saved.limitReached === 'boolean') limitReached = saved.limitReached;
+    }
+  } catch {}
 
   const aside = el(
     'aside',
@@ -72,17 +80,30 @@ export function mountSinoChatPanel(
   opts.onReopenReady?.(() => {
     aside.hidden = false;
   });
-  header.append(titleWrap, closeBtn);
+  const counterBadge = el('span', 'text-[11px] px-2 py-0.5 rounded-full bg-white/10 text-slate-200', `${remainingMessages}/5`);
+  const headerRight = el('div', 'flex items-center gap-2');
+  headerRight.append(counterBadge, closeBtn);
+  header.append(titleWrap, headerRight);
 
   // Human channels + Directory bar
   const bar = el('div', 'px-3 py-2 bg-slate-50 border-b border-slate-200 flex flex-wrap gap-1.5 text-[11px]');
   const dirLocPrefix = lang && lang !== 'en' && lang !== 'zh' ? `/${lang}` : '';
-  const mkLink = (label: string, href: string, cls: string, ext = false) => {
+  const mkLink = (label: string, href: string, cls: string, ext = false, trackChan = '') => {
     const a = el('a', cls, label);
     a.href = href;
     if (ext) {
       a.target = '_blank';
       a.rel = 'noopener noreferrer';
+    }
+    if (trackChan) {
+      a.onclick = () => {
+        fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'handover-click', locale: lang, channel: trackChan }),
+          keepalive: true,
+        }).catch(() => {});
+      };
     }
     return a;
   };
@@ -90,8 +111,8 @@ export function mountSinoChatPanel(
     mkLink('Directory', `${dirLocPrefix}/directory`, 'px-2 py-1 rounded-full bg-white border border-slate-200 font-semibold text-slate-800'),
     mkLink('Market Map', '/market-map', 'px-2 py-1 rounded-full bg-white border border-slate-200 font-semibold text-slate-700'),
     mkLink('OEM & Freight Guide', '/sourcing-guide', 'px-2 py-1 rounded-full bg-white border border-slate-200 font-semibold text-slate-700'),
-    mkLink('WhatsApp +86', 'https://wa.me/8613482725985', 'px-2 py-1 rounded-full bg-emerald-50 border border-emerald-200 font-semibold text-emerald-800', true),
-    mkLink('Email Desk', 'mailto:support@sinotradelink.com', 'px-2 py-1 rounded-full bg-white border border-slate-200 font-semibold text-slate-700')
+    mkLink('WhatsApp +86', 'https://wa.me/8613482725985', 'px-2 py-1 rounded-full bg-emerald-50 border border-emerald-200 font-semibold text-emerald-800', true, 'whatsapp'),
+    mkLink('Email Desk', 'mailto:support@sinotradelink.com', 'px-2 py-1 rounded-full bg-white border border-slate-200 font-semibold text-slate-700', false, 'email')
   );
 
   // Stream
@@ -188,12 +209,32 @@ export function mountSinoChatPanel(
     'Send'
   );
   sendBtn.type = 'submit';
+  input.disabled = limitReached;
+  sendBtn.disabled = limitReached;
   form.append(input, sendBtn);
+
+  function syncSessionUi(rem: number, reached: boolean) {
+    remainingMessages = reached ? 0 : rem;
+    limitReached = reached;
+    counterBadge.textContent = `${remainingMessages}/5`;
+    input.disabled = reached;
+    sendBtn.disabled = loading || reached;
+    try { localStorage.setItem('stl_chat_state_v1', JSON.stringify({ remainingMessages, limitReached, exp: Date.now() + 12 * 3600 * 1000 })); } catch {}
+  }
+
+  if (typeof BroadcastChannel !== 'undefined') {
+    const ch = new BroadcastChannel('stl_chat_sync');
+    ch.onmessage = (ev) => {
+      if (typeof ev.data?.remainingMessages === 'number') {
+        syncSessionUi(ev.data.remainingMessages, Boolean(ev.data.limitReached));
+      }
+    };
+  }
 
   form.onsubmit = async (e) => {
     e.preventDefault();
     const text = input.value.trim();
-    if (!text || loading) return;
+    if (!text || loading || limitReached) return;
     input.value = '';
     addMessage(text, true);
     loading = true;
@@ -211,10 +252,17 @@ export function mountSinoChatPanel(
           message: text,
           draft,
           items,
-          conversationId: convId,
         }),
       });
       const data = (await res.json()) as any;
+      const nextRem = typeof data.remainingMessages === 'number' ? data.remainingMessages : Math.max(0, remainingMessages - 1);
+      const reached = Boolean(data.sessionLimitReached || data.limitReached || res.status === 429);
+      syncSessionUi(nextRem, reached);
+      if (typeof BroadcastChannel !== 'undefined') {
+        const ch = new BroadcastChannel('stl_chat_sync');
+        ch.postMessage({ remainingMessages: reached ? 0 : nextRem, limitReached: reached });
+        ch.close();
+      }
       if (data.language) {
         lang = data.language;
         aside.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
@@ -246,7 +294,7 @@ export function mountSinoChatPanel(
       addMessage('Assistant is temporarily unavailable. Browse /directory or message WhatsApp +86 134 8272 5985 above.', false);
     } finally {
       loading = false;
-      sendBtn.disabled = false;
+      sendBtn.disabled = limitReached;
     }
   };
 
