@@ -4,6 +4,7 @@ import Footer from '../components/Footer.astro';
 import SourcingListDrawer from '../components/SourcingListDrawer.astro';
 import QuickSearchModal from '../components/QuickSearchModal.astro';
 import WhatsAppWidget from '../components/WhatsAppWidget.astro';
+import SinoChatLauncher from '../components/SinoChatLauncher.astro';
 import { getLocaleConfig, SUPPORTED_LOCALES } from '../lib/i18n';
 import '../styles/global.css';
 
@@ -117,5 +118,6 @@ const resolvedCanonical = canonicalUrl || new URL(Astro.url.pathname, 'https://s
     <SourcingListDrawer />
     <QuickSearchModal />
     {activePage !== 'home' && <WhatsAppWidget />}
+    <SinoChatLauncher locale={currentLocale.code} />
   </body>
 </html>

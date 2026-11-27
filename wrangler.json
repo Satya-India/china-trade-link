@@ -14,5 +14,9 @@
       "binding": "SESSION",
       "id": "5a252a687f15464cbfd7df0199271ff7"
     }
-  ]
+  ],
+  "vars": {
+    "CHATBOT_ENABLED": "true",
+    "MASTER_CHATBOT_ORIGIN": "https://chatbot.sinotradelink.com"
+  }
 }

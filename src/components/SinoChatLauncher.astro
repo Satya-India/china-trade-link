@@ -1,0 +1,93 @@
+---
+import { env as cfEnv } from 'cloudflare:workers';
+
+interface Props {
+  locale?: string;
+}
+
+const { locale = 'en' } = Astro.props;
+const env = ((cfEnv || {}) as Record<string, any>);
+const envEnabled = env.CHATBOT_ENABLED === 'true';
+let kvEmergencyDisabled = false;
+if (envEnabled && env.SESSION?.get) {
+  try {
+    kvEmergencyDisabled = (await env.SESSION.get('chatbot_emergency_disabled')) === '1';
+  } catch {}
+}
+const chatbotEnabled = envEnabled && !kvEmergencyDisabled;
+const pathname = Astro.url.pathname;
+const isExcluded = pathname.startsWith('/app') || pathname.includes('/admin');
+
+const LABELS: Record<string, { btn: string; aria: string }> = {
+  en: { btn: 'Ask Supplier AI', aria: 'Open Sino Trade Link Sourcing Assistant' },
+  es: { btn: 'Asistente IA', aria: 'Abrir asistente de proveedores Sino Trade Link' },
+  pt: { btn: 'Assistente IA', aria: 'Abrir assistente de fornecedores Sino Trade Link' },
+  fr: { btn: 'Assistant IA', aria: 'Ouvrir l’assistant fournisseurs Sino Trade Link' },
+  de: { btn: 'Lieferanten-KI', aria: 'Sino Trade Link Einkaufsassistent öffnen' },
+  ar: { btn: 'مساعد الموردين', aria: 'افتح مساعد الموردين Sino Trade Link' },
+  ru: { btn: 'ИИ по фабрикам', aria: 'Открыть помощник Sino Trade Link' },
+  it: { btn: 'Assistente IA', aria: 'Apri assistente fornitori Sino Trade Link' },
+};
+const ui = LABELS[locale] || LABELS.en;
+---
+
+{chatbotEnabled && !isExcluded && (
+  <>
+    <div id="stl-chat-root" data-locale={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}></div>
+    <button
+      id="stl-chat-launcher"
+      type="button"
+      aria-label={ui.aria}
+      aria-expanded="false"
+      class="fixed bottom-[calc(env(safe-area-inset-bottom)+1.5rem)] left-4 sm:left-6 z-[45] inline-flex items-center gap-2 rounded-full bg-[#0f172a] px-4 py-3 text-sm font-bold text-white border border-sky-400/50 shadow-lg shadow-black/25 hover:bg-[#075E54] focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2"
+      style="contain:layout style"
+    >
+      <svg class="h-4 w-4 text-sky-300 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+      </svg>
+      <span>{ui.btn}</span>
+    </button>
+
+    <script>
+      (function () {
+        const btnEl = document.getElementById('stl-chat-launcher') as HTMLButtonElement | null;
+        const rootEl = document.getElementById('stl-chat-root') as HTMLElement | null;
+        if (!btnEl || !rootEl) return;
+        const btn = btnEl;
+        const root = rootEl;
+        let mounted = false;
+
+        async function loadAndOpen() {
+          if (mounted) return;
+          mounted = true;
+          btn.setAttribute('aria-expanded', 'true');
+          btn.setAttribute('aria-busy', 'true');
+          try {
+            const locale = root.getAttribute('data-locale') || 'en';
+            const mod = await import('./sino-chat-panel');
+            btn.hidden = true;
+            mod.mountSinoChatPanel(root, {
+              locale,
+              onMinimize: () => {
+                btn.hidden = false;
+                btn.setAttribute('aria-expanded', 'false');
+              },
+              onReopenReady: (reopenFn: () => void) => {
+                btn.addEventListener('click', () => {
+                  btn.hidden = true;
+                  btn.setAttribute('aria-expanded', 'true');
+                  reopenFn();
+                });
+              },
+            });
+          } catch {
+            mounted = false;
+            btn.removeAttribute('aria-busy');
+          }
+        }
+
+        btn.addEventListener('click', loadAndOpen, { once: true });
+      })();
+    </script>
+  </>
+)}
