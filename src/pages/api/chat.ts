@@ -86,25 +86,26 @@ export const POST: APIRoute = async ({ request }) => {
   const sess = await resolveSignedSessionCookie(secret, request.headers.get('Cookie') || '');
   const isHandoverClick = parsed?.action === 'handover-click';
   const upstreamPath = isHandoverClick ? '/api/chat/handover-click' : '/api/chat';
+  const forwardedIp = request.headers.get('CF-Connecting-IP') || '';
   const sanitizedPayload = JSON.stringify(
     isHandoverClick
       ? { projectId: 'sino-trade-link', serverSessionId: sess.sid, locale: parsed.locale, channel: parsed.channel }
-      : { ...parsed, projectId: 'sino-trade-link', serverSessionId: sess.sid }
+      : { locale: parsed.locale, message: parsed.message, requestId: parsed.requestId, clientIp: forwardedIp, projectId: 'sino-trade-link', serverSessionId: sess.sid }
   );
   const signedCtx = await signContextV2(secret, upstreamPath, sanitizedPayload);
 
   const masterUrl = `${String(env.MASTER_CHATBOT_ORIGIN || 'https://chatbot.sinotradelink.com')}${upstreamPath}`;
-  const forwardedIp = request.headers.get('CF-Connecting-IP') || request.headers.get('X-Forwarded-For') || '';
   const clientUa = request.headers.get('User-Agent') || '';
   const upstreamRes = await fetch(masterUrl, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'X-Project-Context': signedCtx,
-      ...(forwardedIp ? { 'X-Forwarded-For': forwardedIp } : {}),
+      
       ...(clientUa ? { 'X-Client-User-Agent': clientUa.slice(0, 120) } : {}),
     },
     body: sanitizedPayload,
+    signal: AbortSignal.timeout(19_000),
   });
 
   const respText = await upstreamRes.text();

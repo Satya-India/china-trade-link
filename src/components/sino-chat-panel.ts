@@ -44,6 +44,7 @@ export function mountSinoChatPanel(
 ) {
   let lang = opts.locale || 'en';
   let loading = false;
+  let pending: { text: string; requestId: string } | undefined;
   let draft: Record<string, string> = {};
   let items: Array<{ product: string; quantity?: string }> = [];
   let remainingMessages = 5;
@@ -235,8 +236,11 @@ export function mountSinoChatPanel(
     e.preventDefault();
     const text = input.value.trim();
     if (!text || loading || limitReached) return;
+    const retry = pending?.text === text;
+    const requestId = retry ? pending!.requestId : crypto.randomUUID();
+    pending = { text, requestId };
     input.value = '';
-    addMessage(text, true);
+    if (!retry) addMessage(text, true);
     loading = true;
     sendBtn.disabled = true;
     const statusPill = el('div', 'text-xs text-slate-500 px-1', 'Searching 27,706+ listed suppliers…');
@@ -250,13 +254,18 @@ export function mountSinoChatPanel(
         body: JSON.stringify({
           locale: lang,
           message: text,
+          requestId,
           draft,
           items,
         }),
       });
       const data = (await res.json()) as any;
-      const nextRem = typeof data.remainingMessages === 'number' ? data.remainingMessages : Math.max(0, remainingMessages - 1);
-      const reached = Boolean(data.sessionLimitReached || data.limitReached || res.status === 429);
+      const reached = Boolean(data.sessionLimitReached || data.limitReached);
+      const retryable = !reached && (res.status === 429 || res.status >= 500 || data.reason === 'REQUEST_IN_PROGRESS');
+      if (!retryable) pending = undefined;
+      if (retryable && !input.value) input.value = text;
+      const nextRem = (res.ok || reached) && typeof data.remainingMessages === 'number'
+        ? data.remainingMessages : remainingMessages;
       syncSessionUi(nextRem, reached);
       if (typeof BroadcastChannel !== 'undefined') {
         const ch = new BroadcastChannel('stl_chat_sync');
@@ -267,10 +276,13 @@ export function mountSinoChatPanel(
         lang = data.language;
         aside.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
       }
-      if (data.fields && typeof data.fields === 'object') {
+      if (data.conversationState?.draft) {
+        draft = data.conversationState.draft;
+        items = data.conversationState.items || [];
+      } else if (data.fields && typeof data.fields === 'object') {
         draft = { ...draft, ...data.fields };
       }
-      if (Array.isArray(data.items) && data.items.length) {
+      if (!data.conversationState && Array.isArray(data.items) && data.items.length) {
         items = [...items, ...data.items].slice(0, 10);
       }
       const draftParts = [
@@ -290,6 +302,7 @@ export function mountSinoChatPanel(
         Array.isArray(data.catalogResult?.inCatalogMatches) ? data.catalogResult.inCatalogMatches : []
       );
     } catch {
+      if (!input.value) input.value = text;
       statusPill.remove();
       addMessage('Assistant is temporarily unavailable. Browse /directory or message WhatsApp +86 134 8272 5985 above.', false);
     } finally {
