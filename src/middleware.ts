@@ -254,7 +254,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
   }
 
   // 7. Check Cloudflare Edge Cache API (caches.default) using deploy-versioned URL string key
-  const EDGE_CACHE_VERSION = '20261122-contact-v1';
+  const EDGE_CACHE_VERSION = '20261128-chat-v2';
   const cache = typeof globalThis !== 'undefined' && 'caches' in globalThis ? (globalThis as any).caches?.default : null;
   const cacheKey = `${url.origin}${url.pathname}${url.search ? `${url.search}&` : '?'}__cf_ver=${EDGE_CACHE_VERSION}`;
 
